@@ -1,6 +1,6 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
-import com.se1889_jv.swp391.swpstart.util.constant.BillType;
+import com.se1889_jv.swp391.swpstart.util.constant.BillTypeEnum;
 import jakarta.persistence.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,13 +19,13 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Enumerated(EnumType.STRING)
-    private BillType billType;
-    private long paid;
-    private long inDebt;
+    private BillTypeEnum billType;
+    private double paid;
+    private double inDebt;
     private Instant createdAt;
     private String createdBy;
-    private long totalBillPrice;
-    private long totalLiftPrice;
+    private double totalBillPrice;
+    private double totalLiftPrice;
     private String note;
 
     @ManyToOne

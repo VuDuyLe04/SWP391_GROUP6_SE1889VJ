@@ -1,6 +1,6 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
-import com.se1889_jv.swp391.swpstart.util.constant.DebtType;
+import com.se1889_jv.swp391.swpstart.util.constant.DebtTypeEnum;
 import jakarta.persistence.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -18,7 +18,8 @@ public class DebtReceipt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private long debtAmount;
-    private DebtType debtType;
+    @Enumerated(EnumType.STRING)
+    private DebtTypeEnum debtType;
     private String debtReason;
     private Instant createdAt;
     private String createdBy;

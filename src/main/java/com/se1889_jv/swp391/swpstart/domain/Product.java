@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -21,13 +22,17 @@ public class Product {
     private double totalQuantity;
     private String image;
     private boolean storage;
+    private Instant createdAt;
+    private Instant updatedAt;
+    private String createdBy;
+    private String updatedBy;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id")
     private WareHouse warehouse;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
