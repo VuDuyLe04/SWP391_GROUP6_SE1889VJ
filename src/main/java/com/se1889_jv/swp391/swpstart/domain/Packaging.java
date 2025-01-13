@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "packaings")
 @Getter
 @Setter
 public class Packaging {
@@ -16,7 +16,7 @@ public class Packaging {
     private long id;
     private String packageType;
     private String quantityPerPackage;
-    private long liftCost;
+    private double liftCost;
 
     @OneToMany(mappedBy = "packaging", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BillDetail> billDetails;

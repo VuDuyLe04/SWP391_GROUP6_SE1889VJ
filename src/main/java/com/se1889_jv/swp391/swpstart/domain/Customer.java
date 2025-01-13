@@ -17,7 +17,7 @@ public class Customer {
     private String name;
     private String address;
     private String phone;
-    private long balance;
+    private double balance;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
