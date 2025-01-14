@@ -31,8 +31,6 @@ public class Store {
     @Enumerated(EnumType.STRING)
     private StatusStoreEnum status;
 
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<User> users;
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Customer> customers;
