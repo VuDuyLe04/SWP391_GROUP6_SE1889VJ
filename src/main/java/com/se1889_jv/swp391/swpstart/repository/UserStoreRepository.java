@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserStoreRepository extends JpaRepository<UserStore, Long> {
-    UserStore findTopByUserId(long userId);
+    UserStore findByUserIdAndStoreId(Long userId, Long storeId);
 
 }

@@ -11,10 +11,9 @@ public class UserStoreService implements IUserStoreService {
 
     @Autowired
     private UserStoreRepository userStoreRepository;
+
     @Override
-    public UserStore findUserStore(long userId) {
-        return userStoreRepository.findTopByUserId( userId);
+    public UserStore findUserStoreByUserIdAndStoreId(long userId, long storeId) {
+        return userStoreRepository.findByUserIdAndStoreId(userId, storeId);
     }
-
-
 }
