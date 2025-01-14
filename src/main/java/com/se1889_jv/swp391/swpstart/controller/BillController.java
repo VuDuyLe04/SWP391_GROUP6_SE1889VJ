@@ -30,18 +30,18 @@ public class BillController {
 
     @GetMapping("/homesale")
     public String homeSale(HttpSession session, Model model) {
-        long storeId = (long) session.getAttribute("storeId");
-        User user = userService.findUserById( (int) session.getAttribute("userId"));
-        if(user != null){
-            UserStore us = userStoreService.findUserStoreByUserIdAndStoreId(user.getId(),storeId);
-            Store store = storeService.findStoreById(storeId);
-            store.getAddress();
-
-            model.addAttribute("user", "bo m day");
-
-        } else {
-            return "redirect:/errorPage";
-        }
+//        long storeId = (long) session.getAttribute("storeId");
+//        User user = userService.findUserById( (int) session.getAttribute("userId"));
+//        if(user != null){
+//            UserStore us = userStoreService.findUserStoreByUserIdAndStoreId(user.getId(),storeId);
+//            Store store = storeService.findStoreById(storeId);
+//
+//
+//            model.addAttribute("user", "bo m day");
+//
+//        } else {
+//            return "redirect:/errorPage";
+//        }
         return "admin/sale/homesale";
     }
     //refer into errorPage
