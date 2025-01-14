@@ -1,6 +1,10 @@
 package com.se1889_jv.swp391.swpstart.controller;
 
 
+import com.se1889_jv.swp391.swpstart.domain.User;
+import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,9 +12,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class BillController {
-    @GetMapping("hello")
-    public String hello(Model model) {
-        model.addAttribute("message", "Hello World");
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping("homesale")
+    public String homeSale(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if( user == null){
+
+            model.addAttribute("user", "bo m day");
+
+        } else {
+            return "redirect:/errorPage";
+        }
         return "admin/sale/homesale";
+    }
+    //refer into errorPage
+    @GetMapping("/errorPage")
+    public String errorPage() {
+        return "client/handleerror/errorPage";
     }
 }
