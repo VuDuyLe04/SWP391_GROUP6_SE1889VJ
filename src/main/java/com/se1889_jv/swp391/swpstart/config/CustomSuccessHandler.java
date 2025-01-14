@@ -6,8 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.se1889_jv.swp391.swpstart.domain.User;
-import com.se1889_jv.swp391.swpstart.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -19,8 +18,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import java.util.Map;
 
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 

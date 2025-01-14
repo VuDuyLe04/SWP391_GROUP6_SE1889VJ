@@ -2,7 +2,7 @@ package com.se1889_jv.swp391.swpstart.controller.client;
 
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.dto.RegisterDTO;
-import com.se1889_jv.swp391.swpstart.service.UserService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -25,9 +25,8 @@ public class HomePageController {
     @RequestMapping("/")
     public String getHomePage(Model model) {
 
-        model.addAttribute("eric", "test");
-        model.addAttribute("hoidanit", "from controller with model");
-        return "nam";
+
+        return "client/homepage/show";
     }
 
     @GetMapping("/login")
@@ -60,5 +59,11 @@ public class HomePageController {
 
         return "redirect:/login";
 
+    }
+
+    @GetMapping("/access-deny")
+    public String getDenyPage(Model model) {
+
+        return "client/auth/deny";
     }
 }

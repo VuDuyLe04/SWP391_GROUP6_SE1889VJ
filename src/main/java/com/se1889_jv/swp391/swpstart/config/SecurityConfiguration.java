@@ -3,7 +3,7 @@ package com.se1889_jv.swp391.swpstart.config;
 //import com.se1889_jv.swp391.swpstart.service.CustomUserDetailsService;
 
 import com.se1889_jv.swp391.swpstart.service.CustomUserDetailsService;
-import com.se1889_jv.swp391.swpstart.service.UserService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -115,7 +115,7 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                             DispatcherType.INCLUDE).permitAll()
 
                     .requestMatchers("/", "/login", "/register", "/client/**", "/admin/**").permitAll()
-                    .anyRequest().authenticated())
+                    .anyRequest().permitAll())
 
 
             .formLogin(formLogin -> formLogin

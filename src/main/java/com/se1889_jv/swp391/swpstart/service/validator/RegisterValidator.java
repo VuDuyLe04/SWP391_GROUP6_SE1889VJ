@@ -1,7 +1,7 @@
 package com.se1889_jv.swp391.swpstart.service.validator;
 
 import com.se1889_jv.swp391.swpstart.domain.dto.RegisterDTO;
-import com.se1889_jv.swp391.swpstart.service.UserService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import org.springframework.stereotype.Service;
 
 import jakarta.validation.ConstraintValidator;

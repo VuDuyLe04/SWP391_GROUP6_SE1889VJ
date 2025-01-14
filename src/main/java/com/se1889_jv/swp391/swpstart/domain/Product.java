@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Table(name = "tables")
+@Table(name = "products")
 @Setter
 @Getter
 public class Product {
