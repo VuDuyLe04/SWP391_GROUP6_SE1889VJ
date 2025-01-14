@@ -35,6 +35,7 @@ public class BillController {
         if(user != null){
             UserStore us = userStoreService.findUserStoreByUserIdAndStoreId(user.getId(),storeId);
             Store store = storeService.findStoreById(storeId);
+            store.getAddress();
 
             model.addAttribute("user", "bo m day");
 
