@@ -21,4 +21,6 @@ public class Role {
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<User> users;
+
+
 }
