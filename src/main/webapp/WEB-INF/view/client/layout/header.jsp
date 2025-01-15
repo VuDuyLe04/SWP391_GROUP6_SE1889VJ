@@ -1,6 +1,60 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<style>
+    /* Nút popup */
+    .btn-getstarted {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 25px;
+        display: inline-block;
+    }
+
+    /* Popup ẩn */
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    /* Nội dung popup */
+    .popup-content {
+        background-color: white;
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 300px;
+        text-align: center;
+    }
+
+    /* Nút đóng */
+    .close {
+        color: red;
+        font-size: 24px;
+        cursor: pointer;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+    }
+
+</style>
+<script>
+    function openPopup() {
+        document.getElementById("popup").style.display = "block";
+    }
+
+    function closePopup() {
+        document.getElementById("popup").style.display = "none";
+    }
+
+</script>
 <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
@@ -40,8 +94,34 @@
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
-        <a class="btn-getstarted" href="/dashboard">Cửa hàng</a>
-        <a class="btn-getstarted" href="/login">Đăng nhập/Đăng ký</a>
+        <c:choose>
+            <c:when test="${sessionScope.user != null}">
+                <a class="btn-getstarted" href="javascript:void(0)" onclick="openPopup()">Cửa hàng</a>
+                <div id="popup" class="popup">
+                    <div class="popup-content">
+                        <span class="close" onclick="closePopup()">&times;</span>
+                        <ul>
+
+                            <c:set var="hasStore" value="false"/>
+                            <c:forEach items="${sessionScope.user.userStores}" var="userStore">
+                                <c:if test="${userStore.accessStoreStatus == 'ACCESSED'}">
+                                    <c:set var="hasStore" value="true"/>
+                                    <li><a href="/homesale/${userStore.store.id}">${userStore.store.name}</a></li>
+                                </c:if>
+                            </c:forEach>
+                            <c:if test="${!hasStore}">
+                                Không có cửa hàng nào
+                            </c:if>
+                        </ul>
+
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <a class="btn-getstarted" href="/login">Đăng nhập/Đăng ký</a>
+            </c:otherwise>
+        </c:choose>
+
 
     </div>
 </header>

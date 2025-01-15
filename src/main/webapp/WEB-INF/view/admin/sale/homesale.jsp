@@ -32,6 +32,12 @@
 </head>
 
 <body>
+
+<!-- start: header -->
+<%--<jsp:include page="../layout/header.jsp" />--%>
+<!-- end: header -->
+
+
 <div class="row bg-primary p-2">
     <div class="input-group col-md-4">
         <input
@@ -172,5 +178,9 @@
         </div>
     </div>
 </div>
+
+
+
+</script>
 </body>
 </html>

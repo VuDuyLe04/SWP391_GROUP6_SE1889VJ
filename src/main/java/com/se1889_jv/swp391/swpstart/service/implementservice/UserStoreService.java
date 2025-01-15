@@ -1,5 +1,7 @@
 package com.se1889_jv.swp391.swpstart.service.implementservice;
 
+import com.se1889_jv.swp391.swpstart.domain.Store;
+import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.UserStore;
 import com.se1889_jv.swp391.swpstart.repository.UserStoreRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IUserStoreService;
@@ -14,6 +16,11 @@ public class UserStoreService implements IUserStoreService {
     @Override
     public UserStore findUserStore(long userId) {
         return userStoreRepository.findTopByUserId( userId);
+    }
+
+    @Override
+    public UserStore findUserStoreByUserAndStore(User user, Store store) {
+        return this.userStoreRepository.findByUserAndStore(user, store);
     }
 
 
