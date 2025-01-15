@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Table(name = "tables")
+@Table(name = "products")
 @Setter
 @Getter
 public class Product {
@@ -37,4 +37,5 @@ public class Product {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BillDetail> billDetails;
+
 }
