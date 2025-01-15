@@ -2,14 +2,15 @@ package com.se1889_jv.swp391.swpstart.domain;
 
 import com.se1889_jv.swp391.swpstart.util.constant.UserAccessStoreStatusEnum;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Service;
 
 @Entity
 @Table(name = "user_stores")
-@Setter
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserStore {
     @Id
     private long id;
@@ -17,11 +18,13 @@ public class UserStore {
     @Enumerated(EnumType.STRING)
     private UserAccessStoreStatusEnum accessStoreStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
+
+
 }
