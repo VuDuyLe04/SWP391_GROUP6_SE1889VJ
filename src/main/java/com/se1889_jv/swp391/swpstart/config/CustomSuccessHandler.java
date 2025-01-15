@@ -23,7 +23,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-
     private final UserService userService;
 
     public CustomSuccessHandler(UserService userService) {
@@ -77,6 +76,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
             session.setAttribute("id", user.getId());
             session.setAttribute("phone", user.getPhone());
             session.setAttribute("role", user.getRole());
+
 
 
         }
