@@ -1,29 +1,43 @@
 package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 import com.se1889_jv.swp391.swpstart.domain.Role;
+import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
+import com.se1889_jv.swp391.swpstart.domain.UserStore;
 import com.se1889_jv.swp391.swpstart.domain.dto.RegisterDTO;
 import com.se1889_jv.swp391.swpstart.repository.RoleRepository;
+import com.se1889_jv.swp391.swpstart.repository.StoreRepository;
 import com.se1889_jv.swp391.swpstart.repository.UserRepository;
+import com.se1889_jv.swp391.swpstart.repository.UserStoreRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements IUserService {
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
+    @Autowired
+    private  UserRepository userRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
+    @Autowired
+    private  PasswordEncoder passwordEncoder;
 
-    }
+    @Autowired
+    private  RoleRepository roleRepository;
+
+    @Autowired
+    private  StoreRepository storeRepository;
+
+    @Autowired
+    private  UserStoreRepository userStoreRepository;
+
+
 
     @Override
     public User getUserByPhone(String phone) {
@@ -65,6 +79,14 @@ public class UserService implements IUserService {
     @Override
     public boolean checkPhoneExist(String phone) {
         return this.userRepository.existsByPhone(phone);
+    }
+
+
+
+    @Override
+    public List<UserStore> getAllUserStores(User user) {
+
+        return user.getUserStores();
     }
 
 }

@@ -114,7 +114,7 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                     .dispatcherTypeMatchers(DispatcherType.FORWARD,
                             DispatcherType.INCLUDE).permitAll()
 
-                    .requestMatchers("/", "/login", "/register", "/client/**", "/admin/**").permitAll()
+                    .requestMatchers("/**","/", "/login", "/register", "/client/**", "/admin/**").permitAll()
                     .anyRequest().permitAll())
 
 

@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Size;
 public class RegisterDTO {
     @Size(min = 3, message = "Tên phải có tối thiểu 3 ký tự")
     private String name;
-    @NotBlank(message = "Không được để trống")
     private String phone;
     @NotBlank(message = "Không được để trống")
     private String password;
