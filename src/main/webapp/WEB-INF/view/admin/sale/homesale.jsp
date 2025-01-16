@@ -109,7 +109,7 @@
 
 <div class="row bg-secondary">
     <div id="product-list" class="col-md-8 overflow-auto">
-        <c:forEach var="product" items="${productList}">
+        <c:forEach var="product" items="${productList}" varStatus="status">
         <div
                 class="product d-flex justify-content-between align-items-center mb-2 mt-2 bg-light p-1"
                 data-category="${product.category}"
@@ -122,9 +122,11 @@
                 <div class="m-2 product-name">${product.name}</div>
                 <div class="m-2">
                     <select class="form-control" id="packing-option">
-                        <option value="kg">kg</option>
-                        <option value="tui50kg">Túi 50kg</option>
-                        <option value="tui25kg">Túi 25kg</option>
+                        <c:forEach var="pack" items="${packagingList[status.index]}">
+                            <option value="${pack.id}">${pack.packageType}</option>
+                        </c:forEach>
+
+
                     </select>
                 </div>
                 <div class="m-2">

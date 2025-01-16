@@ -20,4 +20,15 @@ public class Packaging {
 
     @OneToMany(mappedBy = "packaging", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BillDetail> billDetails;
+
+    @Override
+    public String toString() {
+        return "Packaging{" +
+                "id=" + id +
+                ", packageType='" + packageType + '\'' +
+                ", quantityPerPackage='" + quantityPerPackage + '\'' +
+                ", liftCost=" + liftCost +
+                ", billDetails=" + billDetails +
+                '}';
+    }
 }

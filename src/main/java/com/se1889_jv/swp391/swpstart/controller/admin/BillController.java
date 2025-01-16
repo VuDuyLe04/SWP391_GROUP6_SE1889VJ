@@ -1,14 +1,8 @@
 package com.se1889_jv.swp391.swpstart.controller.admin;
 
 
-import com.se1889_jv.swp391.swpstart.domain.Product;
-import com.se1889_jv.swp391.swpstart.domain.Store;
-import com.se1889_jv.swp391.swpstart.domain.User;
-import com.se1889_jv.swp391.swpstart.domain.UserStore;
-import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
-import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
-import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
-import com.se1889_jv.swp391.swpstart.service.implementservice.UserStoreService;
+import com.se1889_jv.swp391.swpstart.domain.*;
+import com.se1889_jv.swp391.swpstart.service.implementservice.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,9 +19,8 @@ public class BillController {
     @Autowired
     private ProductService productService;
     @Autowired
-    private UserStoreService userStoreService;
-    @Autowired
-    private UserService userService;
+    private PackagingService packagingService;
+
     @Autowired
     private StoreService storeService;
 
@@ -41,8 +35,13 @@ public class BillController {
             if(store != null){
                 List<Product> productList = productService.getAllProducts();
                 List<String> categoryList = productService.getAllCategories();
+                List<List<Packaging>> packagingList = new ArrayList<>();
+                for(Product product : productList){
+                    packagingList.add(packagingService.getAllPackagingForQuantityProduct(product.getTotalQuantity()));
+                }
                 model.addAttribute("productList", productList);
                 model.addAttribute("categoryList", categoryList);
+                model.addAttribute("packagingList", packagingList);
                 model.addAttribute("user", user);
             } else {
                 return "redirect:/access-deny";
