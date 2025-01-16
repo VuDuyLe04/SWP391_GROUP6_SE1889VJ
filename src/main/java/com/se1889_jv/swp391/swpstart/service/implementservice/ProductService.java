@@ -17,4 +17,9 @@ public class ProductService implements IProductService {
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
+
+    @Override
+    public List<String> getAllCategories() {
+        return productRepository.findDistinctCategories();
+    }
 }

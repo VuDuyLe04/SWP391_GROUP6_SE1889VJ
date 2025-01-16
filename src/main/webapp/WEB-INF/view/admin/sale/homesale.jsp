@@ -26,6 +26,10 @@
             height: 90vh;
             overflow-y: auto;
         }
+        .hidden {
+            display: none !important;
+        }
+
     </style>
 
     <title>Document</title>
@@ -33,8 +37,9 @@
 
 <body>
 <div class="row bg-primary p-2">
-    <div class="input-group col-md-4">
+    <div class="input-group col-md-3">
         <input
+                id="search-input"
                 type="text"
                 class="form-control"
                 placeholder="Product name"
@@ -42,76 +47,92 @@
                 aria-describedby="basic-addon2"
         />
         <div class="input-group-append">
-            <button class="btn btn-success" type="button">Search</button>
+            <button class="btn btn-success search-btn" id="search-btn" type="button">Search</button>
         </div>
     </div>
 
     <div class="col-md-3">
-        <select class="form-control">
+        <select class="form-control" id="categorySelect">
             <option value="all">All</option>
-            <option value="nep">Gạo nếp</option>
-            <option value="te">Gạo tẻ</option>
-            <option value="nut">Gạo nứt</option>
-            <option value="gaodo">Gạo đỏ</option>
+            <c:forEach var="cate" items="${categoryList}">
+                <option value="${cate}">${cate}</option>
+            </c:forEach>
+
+
         </select>
     </div>
 
-    <div class="col-md-5 d-flex align-items-center">
+    <div class="col-md-3 d-flex align-items-center">
+
         <div class="form-check form-check-inline">
             <input
                     class="form-check-input"
                     type="checkbox"
                     id="filter1"
-                    value="filter1"
+                    value="thom"
             />
-            <label class="form-check-label" for="filter1">Thơm</label>
+            <label class="des form-check-label" for="filter1" >thom</label>
         </div>
         <div class="form-check form-check-inline">
             <input
                     class="form-check-input"
                     type="checkbox"
                     id="filter2"
-                    value="filter2"
+                    value="deo"
             />
-            <label class="form-check-label" for="filter2">Dẻo</label>
+            <label class="des form-check-label" for="filter2">deo</label>
         </div>
         <div class="form-check form-check-inline">
             <input
                     class="form-check-input"
                     type="checkbox"
                     id="filter3"
-                    value="filter3"
+                    value="bui"
             />
-            <label class="form-check-label" for="filter3">Bùi</label>
+            <label class="des form-check-label" for="filter3">bui</label>
         </div>
+
+    </div>
+    <div class="col-md-3">
+        <select class="form-control" id="sortSelect">
+            <option value="asc">Sắp xếp tăng dần</option>
+            <option value="desc">Sắp xếp giảm dần</option>
+        </select>
     </div>
 </div>
 
 <div class="row bg-secondary">
-    <div class="col-md-8 overflow-auto">
+    <div id="product-list" class="col-md-8 overflow-auto">
+        <c:forEach var="product" items="${productList}">
         <div
                 class="product d-flex justify-content-between align-items-center mb-2 mt-2 bg-light p-1"
+                data-category="${product.category}"
+                data-description="${product.description}"
+                data-price="${product.unitPrice}"
         >
-            <img src="/asset/img/anh1.jpg" alt="" width="50px" height="50px" />
 
-            <div class="m-2">name</div>
-            <div class="m-2">
-                <select class="form-control">
-                    <option value="kg">kg</option>
-                    <option value="tui50kg">Túi 50kg</option>
-                    <option value="tui25kg">Túi 25kg</option>
-                </select>
-            </div>
-            <div class="m-2">
-                <select class="form-control">
-                    <option value="giam100d">Giam 100d</option>
-                    <option value="giam200d">Giam 200d</option>
-                </select>
-            </div>
-            <div class="m-2 text-danger">price</div>
-            <input placeholder="quantity" type="number" />
-            <button class="btn btn-primary">Chon</button>
+                <img src="/asset/img/anh1.jpg" alt="" width="50px" height="50px" />
+
+                <div class="m-2 product-name">${product.name}</div>
+                <div class="m-2">
+                    <select class="form-control" id="packing-option">
+                        <option value="kg">kg</option>
+                        <option value="tui50kg">Túi 50kg</option>
+                        <option value="tui25kg">Túi 25kg</option>
+                    </select>
+                </div>
+                <div class="m-2">
+                    <select class="form-control">
+                        <option value="giam100d">Giam 100d</option>
+                        <option value="giam200d">Giam 200d</option>
+                    </select>
+                </div>
+                <div class="m-2 text-danger">${product.unitPrice}</div>
+                <input placeholder="quantity" type="number" id="quantity-input"/>
+                <button class="btn btn-primary add-to-bill">Chon</button>
+
         </div>
+        </c:forEach>
     </div>
     <div class="col-md-4 mt-2 ">
         <div class="p-3 bg-light rounded bill">
@@ -125,7 +146,7 @@
                     <a class="nav-link active" href="#">Hóa đơn</a>
                 </li>
             </ul>
-            <div class="list-product-bill">
+            <div class="list-product-bill" id="bill-list">
                 <div>
                     <div class="d-flex justify-content-between align-items-center">
                         <div>name</div>
@@ -172,5 +193,121 @@
         </div>
     </div>
 </div>
+
+<script >
+
+
+    const searchButton = document.getElementById("search-btn");
+    const searchInput = document.getElementById("search-input");
+    const products = document.querySelectorAll(".product");
+    const categorySelect = document.getElementById("categorySelect");
+
+
+    //search key
+    searchButton.addEventListener('click', () => {
+        const searchValue = searchInput.value.toLowerCase();
+        console.log(searchInput.value);
+        products.forEach(product => {
+
+            const productName = product.querySelector(".product-name").textContent.toLowerCase();
+            console.log(productName);
+            if (productName.includes(searchValue)) {
+                product.classList.remove("hidden");
+            } else {
+                product.classList.add("hidden");
+            }
+        });c
+        searchInput.value = ''
+    })
+
+    //search category
+    categorySelect.addEventListener("change", () => {
+        const selectedCategory = categorySelect.value.toLowerCase();
+        products.forEach(product => {
+            const productCategory = product.getAttribute("data-category").toLowerCase();
+            if (selectedCategory === "all" || productCategory === selectedCategory) {
+                product.classList.remove("hidden");
+            } else {
+                product.classList.add("hidden");
+            }
+        });
+    });
+
+    //check-box
+    const filter1 = document.getElementById('filter1');
+    const filter2 = document.getElementById('filter2');
+    const filter3 = document.getElementById('filter3');
+
+    function filterProducts() {
+        products.forEach(product => {
+            const des = product.getAttribute('data-description');
+            const option1 = des.includes(filter1.value) ;
+
+            const option2 = des.includes(filter2.value);
+
+            const option3 =des.includes(filter3.value);
+
+
+            const showThom = filter1.checked ? option1 : true;
+            const showDeo = filter2.checked ? option2 : true;
+            const showBui = filter3.checked ? option3 : true;
+
+            if (showThom && showDeo && showBui) {
+                product.classList.remove("hidden");
+            } else {
+                product.classList.add("hidden");
+            }
+        });
+    }
+    filter1.addEventListener('change', filterProducts);
+    filter2.addEventListener('change', filterProducts);
+    filter3.addEventListener('change', filterProducts);
+
+    filterProducts();
+
+    //sort
+    document.getElementById('sortSelect').addEventListener('change', function () {
+        const sortOrder = this.value;
+        const productList = document.getElementById('product-list');
+        const products = Array.from(productList.getElementsByClassName('product'));
+
+
+        products.sort((a, b) => {
+            const priceA = parseFloat(a.getAttribute('data-price'));
+            const priceB = parseFloat(b.getAttribute('data-price'));
+            return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+        });
+
+
+        productList.innerHTML = '';
+        products.forEach(product => {
+            productList.appendChild(product);
+        });
+    });
+
+    //bill list after choose
+    const billList = document.getElementById('bill-list');
+
+    function addToBill(product){
+        const productName = product.querySelector('.product-name').textContent;
+        const productPrice = product.getAttribute('data-price');
+        const quantityInput = document.getElementById('quantity-input');
+        const packingSelect = document.getElementById('packing-option');
+        console.log(quantityInput.value);
+        console.log(packingSelect.value);
+        console.log(productName);
+        console.log(productPrice);
+    }
+    const lis =document.querySelectorAll('.add-to-bill');
+    console.log(lis);
+    document.querySelectorAll('.add-to-bill').forEach(button => {
+        button.addEventListener('click',function (){
+            console.log('click');
+            const product = this.closest('.product');
+            addToBill(product);
+        })
+    })
+
+</script>
 </body>
 </html>
