@@ -14,5 +14,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
     @Query("SELECT DISTINCT p.category FROM Product p")
     List<String> findDistinctCategories();
+
+    List<Product> findProductByStorageIsTrue();
 }
 

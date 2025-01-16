@@ -22,4 +22,9 @@ public class ProductService implements IProductService {
     public List<String> getAllCategories() {
         return productRepository.findDistinctCategories();
     }
+
+    @Override
+    public List<Product> getAllProductsIsStorage() {
+        return productRepository.findProductByStorageIsTrue();
+    }
 }

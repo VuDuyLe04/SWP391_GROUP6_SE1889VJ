@@ -15,7 +15,7 @@ public class Packaging {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String packageType;
-    private String quantityPerPackage;
+    private double quantityPerPackage;
     private double liftCost;
 
     @OneToMany(mappedBy = "packaging", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

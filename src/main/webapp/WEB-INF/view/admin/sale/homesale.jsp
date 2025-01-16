@@ -121,9 +121,10 @@
 
                 <div class="m-2 product-name">${product.name}</div>
                 <div class="m-2">
-                    <select class="form-control" id="packing-option">
+                    <select class="form-control" id="packing-option" data-locate="${status.index}">
                         <c:forEach var="pack" items="${packagingList[status.index]}">
-                            <option value="${pack.id}">${pack.packageType}</option>
+
+                            <option value="${pack.id}"  id=`option-choice`  >${pack.packageType} </option>
                         </c:forEach>
 
 
@@ -137,7 +138,7 @@
                 </div>
                 <div class="m-2 text-danger">${product.unitPrice}</div>
                 <input placeholder="quantity" type="number" id="quantity-input"/>
-                <button class="btn btn-primary add-to-bill">Chon</button>
+                <button class="btn btn-primary add-to-bill" data-dex="${status.index}">Chon </button>
 
         </div>
         </c:forEach>
@@ -297,23 +298,40 @@
     //bill list after choose
     const billList = document.getElementById('bill-list');
 
-    function addToBill(product){
+
+    function addToBill(product, id){
         const productName = product.querySelector('.product-name').textContent;
         const productPrice = product.getAttribute('data-price');
         const quantityInput = document.getElementById('quantity-input');
-        const packingSelect = document.getElementById('packing-option');
-        console.log(quantityInput.value);
-        console.log(packingSelect.value);
-        console.log(productName);
-        console.log(productPrice);
+        const packingSelects = document.querySelectorAll('#packing-option');
+
+        packingSelects.forEach(i => {
+
+         if(i.getAttribute("data-locate") === id){
+             console.log(i.value);
+         }
+        })
+
+
+
+
+        // console.log(quantityInput.value);
+        //
+        // console.log(productName);
+        // console.log(productPrice);
     }
     const lis =document.querySelectorAll('.add-to-bill');
     console.log(lis);
     document.querySelectorAll('.add-to-bill').forEach(button => {
         button.addEventListener('click',function (){
-            console.log('click');
+            const productIndex = this.getAttribute('data-dex');
+
+
+            console.log('Product index:', productIndex);
+
+
             const product = this.closest('.product');
-            addToBill(product);
+            addToBill(product, productIndex);
         })
     })
 

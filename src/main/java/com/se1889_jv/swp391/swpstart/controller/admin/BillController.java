@@ -33,7 +33,7 @@ public class BillController {
         if( user != null){
             Store store = storeService.findStoreById(storeId);
             if(store != null){
-                List<Product> productList = productService.getAllProducts();
+                List<Product> productList = productService.getAllProductsIsStorage();
                 List<String> categoryList = productService.getAllCategories();
                 List<List<Packaging>> packagingList = new ArrayList<>();
                 for(Product product : productList){

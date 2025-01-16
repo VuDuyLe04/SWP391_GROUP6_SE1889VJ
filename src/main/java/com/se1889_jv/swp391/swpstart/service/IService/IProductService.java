@@ -7,5 +7,5 @@ import java.util.List;
 public interface IProductService {
     public List<Product> getAllProducts();
     public List<String> getAllCategories();
-
+    public List<Product> getAllProductsIsStorage();
 }
