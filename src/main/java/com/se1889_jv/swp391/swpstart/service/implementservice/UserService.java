@@ -86,7 +86,6 @@ public class UserService implements IUserService {
     @Override
     public List<UserStore> getAllUserStores(User user) {
 
-        //Lấy ra được danh sách store
         return user.getUserStores();
     }
 

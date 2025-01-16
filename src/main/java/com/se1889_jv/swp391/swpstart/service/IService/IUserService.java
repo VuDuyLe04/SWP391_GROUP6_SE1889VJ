@@ -16,6 +16,7 @@ public interface IUserService {
     Role getRoleByName(String name);
     User registerDTOtoUser(RegisterDTO registerDTO);
     boolean checkPhoneExist(String phone);
-
     List<UserStore> getAllUserStores(User user);
+
+
 }
