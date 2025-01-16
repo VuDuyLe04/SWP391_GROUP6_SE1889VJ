@@ -32,8 +32,6 @@ public class Store {
     private StatusStoreEnum status;
 
 
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Customer> customers;
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Bill> bills;
