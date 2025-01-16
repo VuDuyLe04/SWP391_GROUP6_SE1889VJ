@@ -30,6 +30,8 @@ public class BillController {
         } else {
             return "redirect:/access-deny";
         }
+
+
         return "admin/sale/homesale";
     }
 
