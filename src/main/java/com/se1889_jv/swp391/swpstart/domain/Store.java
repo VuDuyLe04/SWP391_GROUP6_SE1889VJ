@@ -33,6 +33,11 @@ public class Store {
 
 
 
+
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Customer> customers;
+
+
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Bill> bills;
 

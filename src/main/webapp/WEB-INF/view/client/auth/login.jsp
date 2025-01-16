@@ -38,10 +38,11 @@
 
 </head>
 <body>
+
 <!-- start: page -->
 <section class="body-sign">
     <div class="center-sign">
-        <a href="" class="logo pull-left">
+        <a href="/" class="logo pull-left">
             <img src="/client/auth/assets/images/logo.png" height="54" alt="Porto Admin" />
         </a>
 

@@ -9,8 +9,9 @@
     <title>Document</title>
 </head>
 <body>
-<<<<<<< HEAD
+
      ${message}
+
 
 </body>
 </html>

@@ -36,6 +36,12 @@
 </head>
 
 <body>
+
+<!-- start: header -->
+<%--<jsp:include page="../layout/header.jsp" />--%>
+<!-- end: header -->
+
+
 <div class="row bg-primary p-2">
     <div class="input-group col-md-3">
         <input
@@ -194,6 +200,7 @@
     </div>
 </div>
 
+
 <script >
 
 
@@ -216,8 +223,8 @@
             } else {
                 product.classList.add("hidden");
             }
-        });c
-        searchInput.value = ''
+        });
+        searchInput.value = '';
     })
 
     //search category
@@ -307,6 +314,7 @@
             addToBill(product);
         })
     })
+
 
 </script>
 </body>

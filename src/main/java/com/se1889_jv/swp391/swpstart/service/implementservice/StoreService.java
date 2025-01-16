@@ -10,8 +10,15 @@ import org.springframework.stereotype.Service;
 public class StoreService implements IStoreService {
     @Autowired
     private StoreRepository storeRepository;
+
+
     @Override
     public Store findStoreById(long id) {
-        return storeRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found Store"));
+        if (this.storeRepository.findById(id).isPresent()) {
+            return this.storeRepository.findById(id).get();
+        }
+
+        return null;
+
     }
 }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Entity
 @Table(name = "user_stores")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserStore {
@@ -24,35 +26,5 @@ public class UserStore {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Store getStore() {
-        return store;
-    }
-
-    public void setStore(Store store) {
-        this.store = store;
-    }
-
-    public UserAccessStoreStatusEnum getAccessStoreStatus() {
-        return accessStoreStatus;
-    }
-
-    public void setAccessStoreStatus(UserAccessStoreStatusEnum accessStoreStatus) {
-        this.accessStoreStatus = accessStoreStatus;
-    }
 }

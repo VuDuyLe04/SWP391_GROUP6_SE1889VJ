@@ -6,8 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.se1889_jv.swp391.swpstart.domain.User;
-import com.se1889_jv.swp391.swpstart.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -19,9 +18,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import java.util.Map;
-
+//Don't touch please
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -50,9 +47,9 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
     protected String determineTargetUrl(final Authentication authentication) {
 
         Map<String, String> roleTargetUrlMap = new HashMap<>();
-        roleTargetUrlMap.put("ROLE_ADMIN", "/");
+        roleTargetUrlMap.put("ROLE_ADMIN", "/dashboard");
         roleTargetUrlMap.put("ROLE_OWNER", "/");
-        roleTargetUrlMap.put("ROLE_STAFF", "/register");
+        roleTargetUrlMap.put("ROLE_STAFF", "/");
 
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (final GrantedAuthority grantedAuthority : authorities) {
@@ -76,11 +73,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         // query user
         User user = this.userService.getUserByPhone(phone);
         if (user != null) {
-            session.setAttribute("fullName", user.getName());
-            session.setAttribute("id", user.getId());
-            session.setAttribute("phone", user.getPhone());
-            session.setAttribute("role", user.getRole());
 
+            session.setAttribute("user", user);
 
         }
 
