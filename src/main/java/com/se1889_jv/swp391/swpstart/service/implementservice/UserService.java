@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,6 +66,11 @@ public class UserService implements IUserService {
     @Override
     public boolean checkPhoneExist(String phone) {
         return this.userRepository.existsByPhone(phone);
+    }
+
+    @Override
+    public List<User> getAll(){
+        return this.userRepository.findAll();
     }
 
 }
