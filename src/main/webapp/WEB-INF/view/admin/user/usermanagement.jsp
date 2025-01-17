@@ -61,7 +61,7 @@
             <header class="page-header" >
                 <h2>User Management </h2>
  <form id="search-form" action="searchuser" method="GET">
-     <input style="    margin-left: 553px;" type="text" id="search-input" placeholder="Tìm theo tên hoặc sđt" required>
+     <input  name="input" style="    margin-left: 553px;" type="text" id="search-input" placeholder="Tìm theo tên hoặc sđt" value="${input}" required>
  </form>
 
 

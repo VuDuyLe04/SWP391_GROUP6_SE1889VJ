@@ -14,4 +14,8 @@ public interface IUserService {
     User registerDTOtoUser(RegisterDTO registerDTO);
     boolean checkPhoneExist(String phone);
     List<User> getAll();
+    List<User> getUsersBySearch(String name, String phone);
+
+
+
 }

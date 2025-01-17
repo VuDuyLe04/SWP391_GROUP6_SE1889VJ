@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -15,11 +16,18 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserService userService;
+
     @GetMapping("/usermanagement")
-     public String getDashboard(Model model) {
+     public String getAllUser( Model model) {
         List<User> users = userService.getAll();
         model.addAttribute("users", users);
         return "admin/user/usermanagement";
     }
-
+     @GetMapping("searchuser")
+    public String getUsersBySearch(@RequestParam(value="input") String input, Model model) {
+         List<User> users = userService.getUsersBySearch(input,input);
+         model.addAttribute("input", input);
+         model.addAttribute("users", users);
+         return "admin/user/usermanagement";
+     }
 }
