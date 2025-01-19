@@ -22,4 +22,18 @@ public class CustomerService implements ICustomerService {
     public List<Customer> getAllCustomers() {
         return this.customerRepository.findAll();
     }
+
+    public Customer getCustomerById(Long id) {
+        return customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found"));
+    }
+
+    public void updateCustomer(Customer customer) {
+        Customer customer1 = customerRepository.findById(customer.getId()).orElseThrow(() -> new RuntimeException("Customer not found"));
+        if(customer1 != null){
+            customer1.setName(customer1.getName());
+            customer1.setPhone(customer1.getPhone());
+            customer1.setAddress(customer1.getAddress());
+        }
+        customerRepository.save(customer);
+    }
 }

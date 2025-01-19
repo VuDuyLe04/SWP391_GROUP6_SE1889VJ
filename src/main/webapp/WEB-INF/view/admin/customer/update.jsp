@@ -86,40 +86,49 @@
                                 <a href="#" class="fa fa-times"></a>
                             </div>
 
-                            <h2 class="panel-title">List Customer</h2>
+                            <h2 class="panel-title">Update Customer</h2>
                         </header>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-condensed mb-none">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tên</th>
-                                        <th class="text-right">Số điện thoại</th>
-                                        <th class="text-right">Địa chỉ</th>
-                                        <th class="text-right">Số dư</th>
-                                        <th class="text-right">Action</th>
+                        <div class="panel-body " >
+                            <form:form modelAttribute="customer" class="form-horizontal" method="post" action="/update">
+                                <div class="form-group row" hidden="hidden">
+                                    <label class="col-sm-3 col-form-label" for="name">Name</label>
+                                    <div class="col-sm-9">
+                                        <form:input path="id" class="form-control" id="id" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label" for="name">Name</label>
+                                    <div class="col-sm-9">
+                                        <form:input path="name" class="form-control" id="name" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label" for="phone">Phone</label>
+                                    <div class="col-sm-9">
+                                        <form:input path="phone" class="form-control" id="phone" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label" for="address">Address</label>
+                                    <div class="col-sm-9">
+                                        <form:input path="address" class="form-control" id="address" />
+                                    </div>
+                                </div>
 
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach items="${listCustomer}" var="customer">
-                                        <tr>
-                                        <td>${customer.id}</td>
-                                        <td>${customer.name}</td>
-                                        <td class="text-right">${customer.phone}</td>
-                                        <td class="text-right">${customer.address}</td>
-                                        <td class="text-right">${customer.balance}</td>
-                                        <td class="text-right">
-                                            <a href="/customer/create" class="btn btn-primary">Create</a>
-                                        </td>
-                                        </tr>
-                                    </c:forEach>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label" for="balance">Balance</label>
+                                    <div class="col-sm-9">
+                                        <form:input path="balance" class="form-control" id="balance" readonly="true" />
+                                    </div>
+                                </div>
 
-                                    </tbody>
-
-                                </table>
-                            </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-9 offset-sm-3">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <a href="admin/customer/table" class="btn btn-secondary">Cancel</a>
+                                    </div>
+                                </div>
+                            </form:form>
                         </div>
                     </section>
 

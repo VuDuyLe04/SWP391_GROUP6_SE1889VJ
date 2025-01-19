@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -36,5 +37,19 @@ public class CustomerController {
         System.out.println(this.customerService.getAllCustomers().toString());
         model.addAttribute("listCustomer", this.customerService.getAllCustomers());
         return "admin/customer/table";
+    }
+
+
+    @GetMapping("/customer/update/{id}")
+    public String showUpdateForm(@PathVariable("id") long id, Model model) {
+        Customer customer = customerService.getCustomerById(id);
+        model.addAttribute("customer", customer);
+        return "admin/customer/update";
+    }
+
+    @PostMapping("/update")
+    public String updateCustomer(@ModelAttribute Customer customer) {
+        customerService.updateCustomer(customer);
+        return "redirect:/customer";
     }
 }
