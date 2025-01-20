@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Dashboard | JSOFT Themes | JSOFT-Admin</title>
+    <title>Cập nhật khách hàng</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -58,7 +58,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Create Customer</h2>
+                <h2>Cập nhật khách hàng</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -67,7 +67,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Create customer</span></li>
+                        <li><span>Cập nhật khách hàng</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -82,41 +82,52 @@
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="panel-actions">
-                                <a href="#" class="fa fa-caret-down"></a>
-                                <a href="#" class="fa fa-times"></a>
+
                             </div>
 
-                            <h2 class="panel-title">Update Customer</h2>
+                            <h2 class="panel-title">Cập nhật khách hàng</h2>
                         </header>
                         <div class="panel-body " >
-                            <form:form modelAttribute="customer" class="form-horizontal" method="post" action="/update">
+                            <form:form modelAttribute="customer" class="form-horizontal" method="post" action="/customer/update">
+                                <c:set var="errorName">
+                                    <form:errors path="name"
+                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
+                                </c:set>
+
+                                <c:set var="errorPhone">
+                                    <form:errors path="phone"
+                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
+                                </c:set>
+
                                 <div class="form-group row" hidden="hidden">
-                                    <label class="col-sm-3 col-form-label" for="name">Name</label>
+                                    <label class="col-sm-3 col-form-label" for="name">Id</label>
                                     <div class="col-sm-9">
                                         <form:input path="id" class="form-control" id="id" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="name">Name</label>
+                                    <label class="col-sm-3 col-form-label" for="name">Tên</label>
                                     <div class="col-sm-9">
-                                        <form:input path="name" class="form-control" id="name" />
+                                        <form:input path="name" class="form-control ${not empty errorName ? 'is-invalid' : ''}" id="name" />
+                                        ${errorName}
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="phone">Phone</label>
+                                    <label class="col-sm-3 col-form-label" for="phone">Số điện thoại</label>
                                     <div class="col-sm-9">
-                                        <form:input path="phone" class="form-control" id="phone" />
+                                        <form:input path="phone" class="form-control ${not empty errorPhone ? 'is-invalid' : ''}" id="phone" />
+                                        ${errorPhone}
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="address">Address</label>
+                                    <label class="col-sm-3 col-form-label" for="address">Địa chỉ</label>
                                     <div class="col-sm-9">
                                         <form:input path="address" class="form-control" id="address" />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="balance">Balance</label>
+                                    <label class="col-sm-3 col-form-label" for="balance">Số dư</label>
                                     <div class="col-sm-9">
                                         <form:input path="balance" class="form-control" id="balance" readonly="true" />
                                     </div>
@@ -125,7 +136,7 @@
                                 <div class="form-group row">
                                     <div class="col-sm-9 offset-sm-3">
                                         <button type="submit" class="btn btn-primary">Update</button>
-                                        <a href="admin/customer/table" class="btn btn-secondary">Cancel</a>
+                                        <a href="/customer" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </div>
                             </form:form>

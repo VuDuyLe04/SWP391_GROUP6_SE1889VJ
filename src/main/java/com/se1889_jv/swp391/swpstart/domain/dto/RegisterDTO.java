@@ -1,7 +1,6 @@
 package com.se1889_jv.swp391.swpstart.domain.dto;
 
-import com.se1889_jv.swp391.swpstart.service.validator.RegisterChecked;
-import jakarta.validation.constraints.Email;
+import com.se1889_jv.swp391.swpstart.util.validator.RegisterChecked;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 

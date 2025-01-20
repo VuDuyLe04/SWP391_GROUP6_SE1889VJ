@@ -1,4 +1,4 @@
-package com.se1889_jv.swp391.swpstart.service.validator;
+package com.se1889_jv.swp391.swpstart.util.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

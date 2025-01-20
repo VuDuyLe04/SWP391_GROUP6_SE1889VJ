@@ -8,6 +8,7 @@ import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserStoreService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,8 +29,9 @@ public class BillController {
     private StoreService storeService;
 
     @GetMapping("/homesale/{id}")
-    public String homeSale(@PathVariable long id, HttpSession session, Model model) {
+    public String homeSale(@PathVariable long id, HttpServletRequest request, Model model) {
 
+        HttpSession session = request.getSession(false);
 
         User user = (User) session.getAttribute("user");
 
@@ -42,6 +44,7 @@ public class BillController {
 
 
         Store store = this.storeService.findStoreById(id);
+        session.setAttribute("store",store);
         UserStore userStore = this.userStoreService.findUserStoreByUserAndStore(user,store );
 
         if (userStore == null || userStore.getAccessStoreStatus().equals("ACCESSDENY")) {

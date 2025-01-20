@@ -1,6 +1,8 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
+import com.se1889_jv.swp391.swpstart.util.validator.ValidPhone;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,8 +16,11 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotEmpty(message = "Tên không được bỏ trống")
     private String name;
     private String address;
+
+    @ValidPhone
     private String phone;
     private double balance;
 

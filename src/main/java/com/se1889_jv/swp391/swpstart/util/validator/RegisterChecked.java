@@ -1,4 +1,4 @@
-package com.se1889_jv.swp391.swpstart.service.validator;
+package com.se1889_jv.swp391.swpstart.util.validator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,12 +9,13 @@ import java.lang.annotation.Target;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
-@Constraint(validatedBy = StrongPasswordValidator.class)
-@Target({ ElementType.METHOD, ElementType.FIELD })
+@Constraint(validatedBy = RegisterValidator.class)
+@Target({ ElementType.TYPE }) // Adjusted to apply to the class level
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface StrongPassword {
-    String message() default "Must be 8 characters long and combination of uppercase letters, lowercase letters, numbers, special characters.";
+public @interface RegisterChecked {
+
+    String message() default "User register validation failed";
 
     Class<?>[] groups() default {};
 

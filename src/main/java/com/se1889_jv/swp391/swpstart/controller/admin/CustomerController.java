@@ -2,10 +2,15 @@ package com.se1889_jv.swp391.swpstart.controller.admin;
 
 
 import com.se1889_jv.swp391.swpstart.domain.Customer;
+import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.service.implementservice.CustomerService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,17 +30,25 @@ public class CustomerController {
 
     @PostMapping("/customer/create")
     public String createCustomer(
-            @ModelAttribute("customer") Customer customer
+            @ModelAttribute("customer") @Valid Customer customer,
+            BindingResult result,
+            HttpServletRequest request
     ) {
-        this.customerService.createCustomer(customer);
+        if (result.hasErrors()) {
+            return "admin/customer/create";
+        }
+        HttpSession session = request.getSession(false);
+        Store store = (Store) session.getAttribute("store");
 
-        return "redirect:/customer/create";
+        this.customerService.createCustomer(customer, store);
+        return "redirect:/customer";
     }
 
     @GetMapping("/customer")
-    public String getCustomerTable(Model model){
-        System.out.println(this.customerService.getAllCustomers().toString());
-        model.addAttribute("listCustomer", this.customerService.getAllCustomers());
+    public String getCustomerTable(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Store store = (Store) session.getAttribute("store");
+        model.addAttribute("listCustomer", this.customerService.getAllCustomers(store));
         return "admin/customer/table";
     }
 
@@ -47,9 +60,17 @@ public class CustomerController {
         return "admin/customer/update";
     }
 
-    @PostMapping("/update")
-    public String updateCustomer(@ModelAttribute Customer customer) {
-        customerService.updateCustomer(customer);
+    @PostMapping("/customer/update")
+    public String updateCustomer(
+            @ModelAttribute("customer") @Valid Customer customer,
+            BindingResult result
+                                 ) {
+        if (result.hasErrors()) {
+            return "admin/customer/update";
+        }
+
+        this.customerService.updateCustomer(customer);
         return "redirect:/customer";
     }
+
 }

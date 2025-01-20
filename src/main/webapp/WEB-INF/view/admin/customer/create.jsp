@@ -82,39 +82,51 @@
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="panel-actions">
-                                <a href="#" class="fa fa-caret-down"></a>
-                                <a href="#" class="fa fa-times"></a>
+
                             </div>
 
-                            <h2 class="panel-title">Form Elements</h2>
+                            <h2 class="panel-title">Tạo mới khách hàng</h2>
                         </header>
                         <div class="panel-body">
                             <form:form modelAttribute="customer" class="form-horizontal form-bordered" method="post" action="/customer/create">
+
+                                <c:set var="errorName">
+                                    <form:errors path="name"
+                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
+                                </c:set>
+
+                                <c:set var="errorPhone">
+                                    <form:errors path="phone"
+                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
+                                </c:set>
+
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputDisabled">Name</label>
+                                    <label class="col-md-3 control-label" >Tên</label>
                                     <div class="col-md-6">
-                                        <form:input path="name" class="form-control" id="inputDisabled" />
+                                        <form:input path="name" class="form-control ${not empty errorName ? 'is-invalid' : ''}" />
+                                            ${errorName}
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputDefault">Phone</label>
+                                    <label class="col-md-3 control-label" >Số điện thoại</label>
                                     <div class="col-md-6">
-                                        <form:input path="phone" class="form-control" id="inputDefault" />
+                                        <form:input path="phone" class="form-control ${not empty errorPhone ? 'is-invalid' : ''}"  />
+                                            ${errorPhone}
                                     </div>
                                 </div>
 
 
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputReadOnly">Address</label>
+                                    <label class="col-md-3 control-label" for="inputReadOnly">Địa chỉ</label>
                                     <div class="col-md-6">
                                         <form:input path="address" class="form-control" id="inputReadOnly" />
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputHelpText">Balance</label>
+                                    <label class="col-md-3 control-label" for="inputHelpText">Số dư</label>
                                     <div class="col-md-6">
                                         <form:input path="balance" class="form-control" id="inputHelpText" readonly="true" />
                                     </div>
@@ -122,7 +134,7 @@
 
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-3">
-                                        <button type="submit" class="btn btn-primary">Create</button>
+                                        <button type="submit" class="btn btn-primary">Tạo</button>
                                     </div>
                                 </div>
                             </form:form>

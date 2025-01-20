@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Dashboard | JSOFT Themes | JSOFT-Admin</title>
+    <title>Danh sách người dùng</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -58,7 +58,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Create Customer</h2>
+                <h2>Danh sách khách hàng</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -67,7 +67,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Create customer</span></li>
+                        <li><span>Danh sách khách hàng</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -82,11 +82,10 @@
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="panel-actions">
-                                <a href="#" class="fa fa-caret-down"></a>
-                                <a href="#" class="fa fa-times"></a>
+
                             </div>
 
-                            <h2 class="panel-title">List Customer</h2>
+                            <h2 class="panel-title">Danh sách khách hàng</h2>
                         </header>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -98,7 +97,7 @@
                                         <th class="text-right">Số điện thoại</th>
                                         <th class="text-right">Địa chỉ</th>
                                         <th class="text-right">Số dư</th>
-                                        <th class="text-right">Action</th>
+                                        <th class="text-right">Hoạt động</th>
 
                                     </tr>
                                     </thead>
@@ -111,7 +110,8 @@
                                         <td class="text-right">${customer.address}</td>
                                         <td class="text-right">${customer.balance}</td>
                                         <td class="text-right">
-                                            <a href="/customer/create" class="btn btn-primary">Create</a>
+                                            <a href="/customer/update/${customer.id}" class="btn btn-primary">Update</a>
+                                            <a href="#" class="btn btn-primary">Nợ</a>
                                         </td>
                                         </tr>
                                     </c:forEach>
