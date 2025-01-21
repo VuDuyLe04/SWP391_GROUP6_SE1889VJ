@@ -82,7 +82,24 @@
 
             <div class="row">
                 <div class="col-md-6">
+                    <form action="filteruser">
+                     <label for="role">By role</label>
+                        <select id="role" name="role">
+                            <option value="-1">All</option>
+                            <option value="1">Admin</option>
+                            <option value="2">Owner</option>
+                            <option value="3">Staff</option>
+                        </select>
+                        <label for="active">By status</label>
+                        <select id="active" name="role">
+                            <option value="-1">All</option>
 
+                            <option value="1">Active</option>
+                            <option value="0">Banned</option>
+                        </select>
+                        <button type="submit">Filter</button>
+
+                    </form>
                  <button>Add a user</button>
 
                     <table border="1">

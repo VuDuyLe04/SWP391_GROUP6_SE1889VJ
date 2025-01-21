@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,5 +30,17 @@ public class UserController {
          model.addAttribute("input", input);
          model.addAttribute("users", users);
          return "admin/user/usermanagement";
+     }
+     @GetMapping("filteruser")
+    public String getUserByFilter(@RequestParam(value="role") String role,
+                                  @RequestParam(value ="active") String active, Model model) {
+         List<User> users = new ArrayList<>();
+
+        if(role.equals("-1") && active.equals("-1"))  users = userService.getAll();
+         else if (role.equals("-1") && !active.equals("-1")
+         else if (role.equals("-1") && !active.equals("-1")
+             else
+
+
      }
 }
