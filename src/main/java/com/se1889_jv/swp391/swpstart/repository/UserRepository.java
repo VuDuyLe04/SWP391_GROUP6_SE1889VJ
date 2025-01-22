@@ -10,6 +10,9 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
     User findByPhone(String phone);
-    List<User> findUserByNameContainingOrPhone(String name,String phone);
+    List<User> findUsersByNameContainingOrPhone(String name, String phone);
     boolean existsByPhone(String phone);
+    List<User> findUsersByActive(boolean active);
+    List<User> findUsersByRoleId(Long roleId);
+    List<User> findUsersByRoleIdAndActive(Long roleId, boolean active);
 }

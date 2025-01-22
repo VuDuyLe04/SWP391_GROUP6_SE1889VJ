@@ -75,10 +75,25 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> getUsersBySearch(String name, String phone) {
-        return this.userRepository.findUserByNameContainingOrPhone(name,phone);
+        return this.userRepository.findUsersByNameContainingOrPhone(name,phone);
 
     }
 
+    @Override
+    public List<User> getUsersbyRoleID(Long id) {
+
+        return this.userRepository.findUsersByRoleId(id);
+    }
+
+    @Override
+    public List<User> getUsersByActive(boolean active) {
+        return this.userRepository.findUsersByActive(active);
+    }
+
+    @Override
+    public List<User> getUsersByRoleIDAndActive(Long id, boolean active) {
+        return this.userRepository.findUsersByRoleIdAndActive(id, active);
+    }
 
 
 }

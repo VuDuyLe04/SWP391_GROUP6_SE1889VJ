@@ -15,6 +15,9 @@ public interface IUserService {
     boolean checkPhoneExist(String phone);
     List<User> getAll();
     List<User> getUsersBySearch(String name, String phone);
+    List<User> getUsersbyRoleID(Long id);
+    List<User> getUsersByActive(boolean active);
+    List<User> getUsersByRoleIDAndActive(Long id, boolean active);
 
 
 

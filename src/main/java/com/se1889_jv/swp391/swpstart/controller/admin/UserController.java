@@ -19,28 +19,36 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/usermanagement")
-     public String getAllUser( Model model) {
+    public String getAllUser(Model model) {
         List<User> users = userService.getAll();
         model.addAttribute("users", users);
         return "admin/user/usermanagement";
     }
-     @GetMapping("searchuser")
-    public String getUsersBySearch(@RequestParam(value="input") String input, Model model) {
-         List<User> users = userService.getUsersBySearch(input,input);
-         model.addAttribute("input", input);
-         model.addAttribute("users", users);
-         return "admin/user/usermanagement";
-     }
-     @GetMapping("filteruser")
-    public String getUserByFilter(@RequestParam(value="role") String role,
-                                  @RequestParam(value ="active") String active, Model model) {
-         List<User> users = new ArrayList<>();
 
-        if(role.equals("-1") && active.equals("-1"))  users = userService.getAll();
-         else if (role.equals("-1") && !active.equals("-1")
-         else if (role.equals("-1") && !active.equals("-1")
-             else
+    @GetMapping("searchuser")
+    public String getUsersBySearch(@RequestParam(value = "input") String input, Model model) {
+        List<User> users = userService.getUsersBySearch(input, input);
+        model.addAttribute("input", input);
+        model.addAttribute("users", users);
+        return "admin/user/usermanagement";
+    }
 
+    @GetMapping("filteruser")
+    public String getUserByFilter(@RequestParam(value = "role") String roleId,
+                                  @RequestParam(value = "active") String active, Model model) {
 
-     }
+        List<User> users = new ArrayList<>();
+
+        if (roleId.equals("-1") && active.equals("-1")) users = userService.getAll();
+        else if (!roleId.equals("-1") && active.equals("-1"))
+            users = userService.getUsersbyRoleID(Long.parseLong(roleId));
+        else if (roleId.equals("-1") && !active.equals("-1"))
+            users = userService.getUsersByActive(active.equals("1"));
+        else users = userService.getUsersByRoleIDAndActive(Long.parseLong(roleId), active.equals("1"));
+
+        model.addAttribute("users", users);
+        model.addAttribute("active", active);
+        model.addAttribute("roleId", roleId);
+        return "admin/user/usermanagement";
+    }
 }

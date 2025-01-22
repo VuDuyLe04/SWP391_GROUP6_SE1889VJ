@@ -85,17 +85,17 @@
                     <form action="filteruser">
                      <label for="role">By role</label>
                         <select id="role" name="role">
-                            <option value="-1">All</option>
-                            <option value="1">Admin</option>
-                            <option value="2">Owner</option>
-                            <option value="3">Staff</option>
+                            <option ${roleId == -1 ? "selected" : ""} value="-1">All</option>
+                            <option ${roleId == 1 ? "selected" : ""}  value="1">Admin</option>
+                            <option ${roleId == 2 ? "selected" : ""}  value="2">Owner</option>
+                            <option ${roleId == 3 ? "selected" : ""}  value="3">Staff</option>
                         </select>
                         <label for="active">By status</label>
-                        <select id="active" name="role">
-                            <option value="-1">All</option>
+                        <select id="active" name="active">
+                            <option ${active == -1 ? "selected" : ""}  value="-1">All</option>
 
-                            <option value="1">Active</option>
-                            <option value="0">Banned</option>
+                            <option ${active == 1 ? "selected" : ""}  value="1">Active</option>
+                            <option ${active == 0? "selected" : ""}  value="0">Banned</option>
                         </select>
                         <button type="submit">Filter</button>
 
