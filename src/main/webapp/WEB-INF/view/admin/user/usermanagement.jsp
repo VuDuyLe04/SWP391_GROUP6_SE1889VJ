@@ -160,7 +160,7 @@
                                                 <c:if test="${sessionScope.user.role.id == 1}">
                                                     <td><span class="text-primary">${u.role.name}</span></td>
                                                     <td>
-                                                        <span class="label ${u.active == 'true' ? 'label-success' : 'label-danger'} label-sm">
+                                                        <span class="label ${u.active == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
                                                             <i class="fa ${u.active == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
                                                             ${u.active == "true" ? "Active" : "Banned"}
                                                         </span>
@@ -226,6 +226,12 @@
     }
     .mt-xs {
         margin-top: 5px;
+    }
+    .status-label {
+        display: inline-block;
+        min-width: 85px;
+        text-align: center;
+        padding: 5px 10px;
     }
 </style>
 
