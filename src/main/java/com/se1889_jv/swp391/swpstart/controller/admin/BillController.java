@@ -44,14 +44,14 @@ public class BillController {
 
 
         Store store = this.storeService.findStoreById(id);
-        session.setAttribute("store",store);
+
         UserStore userStore = this.userStoreService.findUserStoreByUserAndStore(user,store );
 
         if (userStore == null || userStore.getAccessStoreStatus().equals("ACCESSDENY")) {
             return "redirect:/access-deny";
         }
-
-        return "admin/sale/sale";
+        session.setAttribute("store",store);
+        return "redirect:/dashboard";
     }
 
 }

@@ -1,6 +1,8 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
+import com.se1889_jv.swp391.swpstart.util.validator.annotation.WareHouseExist;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +17,9 @@ public class WareHouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+//    @WareHouseExist
+//    @NotBlank
     private String name;
     
     @ManyToOne

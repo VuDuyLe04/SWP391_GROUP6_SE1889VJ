@@ -47,7 +47,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
     protected String determineTargetUrl(final Authentication authentication) {
 
         Map<String, String> roleTargetUrlMap = new HashMap<>();
-        roleTargetUrlMap.put("ROLE_ADMIN", "/dashboard");
+        roleTargetUrlMap.put("ROLE_ADMIN", "/");
         roleTargetUrlMap.put("ROLE_OWNER", "/");
         roleTargetUrlMap.put("ROLE_STAFF", "/");
 
@@ -73,7 +73,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         // query user
         User user = this.userService.getUserByPhone(phone);
         if (user != null) {
-
+            user.setPassword(null);
             session.setAttribute("user", user);
 
         }

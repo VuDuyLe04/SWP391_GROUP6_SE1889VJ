@@ -8,33 +8,34 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Danh sách người dùng</title>
-    <meta name="keywords" content="HTML5 Admin Template" />
+    <title>Danh sách khu vực</title>
+    <meta name="keywords" content="HTML5 Admin Template"/>
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
 
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
     <!-- Web Fonts  -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light"
+          rel="stylesheet" type="text/css">
 
     <!-- Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css"/>
 
     <!-- Specific Page Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css"/>
 
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme.css" />
+    <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme.css"/>
 
     <!-- Skin CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/stylesheets/skins/default.css" />
+    <link rel="stylesheet" href="/client/auth/assets/stylesheets/skins/default.css"/>
 
     <!-- Theme Custom CSS -->
     <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme-custom.css">
@@ -48,17 +49,17 @@
 <section class="body">
 
     <!-- start: header -->
-    <jsp:include page="../layout/header.jsp" />
+    <jsp:include page="../layout/header.jsp"/>
     <!-- end: header -->
 
     <div class="inner-wrapper">
         <!-- start: sidebar -->
-        <jsp:include page="../layout/sidebar.jsp" />
+        <jsp:include page="../layout/sidebar.jsp"/>
         <!-- end: sidebar -->
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Danh sách khách hàng</h2>
+                <h2>Danh sách khu vực</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -67,13 +68,12 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Danh sách khách hàng</span></li>
+                        <li><span>Danh sách khu vực</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
             </header>
-
 
 
             <!-- start: page -->
@@ -85,7 +85,7 @@
 
                             </div>
 
-                            <h2 class="panel-title">Danh sách khách hàng</h2>
+                            <h2 class="panel-title">Danh sách khu vực</h2>
                         </header>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -94,25 +94,20 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Tên</th>
-                                        <th class="text-right">Số điện thoại</th>
-                                        <th class="text-right">Địa chỉ</th>
-                                        <th class="text-right">Số dư</th>
                                         <th class="text-right">Hoạt động</th>
 
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${listCustomer}" var="customer">
+                                    <c:forEach items="${listWareHouse}" var="warehouse">
                                         <tr>
-                                        <td>${customer.id}</td>
-                                        <td>${customer.name}</td>
-                                        <td class="text-right">${customer.phone}</td>
-                                        <td class="text-right">${customer.address}</td>
-                                        <td class="text-right">${customer.balance}</td>
-                                        <td class="text-right">
-                                            <a href="/customer/update/${customer.id}" class="btn btn-primary">Cập nhật</a>
-                                            <a href="#" class="btn btn-primary">Nợ</a>
-                                        </td>
+                                            <td>${warehouse.id}</td>
+                                            <td>${warehouse.name}</td>
+                                            <td class="text-right">
+                                                <a href="/warehouse/update/${warehouse.id}"
+                                                   class="btn btn-primary">Cập nhật</a>
+                                                <a href="#" class="btn btn-primary">Nợ</a>
+                                            </td>
                                         </tr>
                                     </c:forEach>
 
@@ -124,13 +119,11 @@
                     </section>
 
 
-
                 </div>
             </div>
             <!-- end: page -->
         </section>
     </div>
-
 
 
 </section>

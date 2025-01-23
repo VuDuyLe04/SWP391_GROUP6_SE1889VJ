@@ -213,6 +213,16 @@
                     <li>
                         <a role="menuitem" tabindex="-1" href="pages-signin.html"><i class="fa fa-power-off"></i> Logout</a>
                     </li>
+
+                    <li>
+                        <form id="logoutForm" method="post" action="/logout">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <a role="menuitem" tabindex="-1" href="#"
+                               onclick="document.getElementById('logoutForm').submit(); return false;">
+                                <i class="fa fa-power-off"></i> Đăng xuất
+                            </a>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>

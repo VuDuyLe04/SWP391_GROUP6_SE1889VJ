@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Danh sách người dùng</title>
+    <title>Tạo khu vực mới</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -58,7 +58,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Danh sách khách hàng</h2>
+                <h2>Khu vực</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -67,7 +67,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Danh sách khách hàng</span></li>
+                        <li><span>Khu vực</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -85,41 +85,34 @@
 
                             </div>
 
-                            <h2 class="panel-title">Danh sách khách hàng</h2>
+                            <h2 class="panel-title">Tạo khu vực mới</h2>
                         </header>
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-condensed mb-none">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tên</th>
-                                        <th class="text-right">Số điện thoại</th>
-                                        <th class="text-right">Địa chỉ</th>
-                                        <th class="text-right">Số dư</th>
-                                        <th class="text-right">Hoạt động</th>
+                            <form:form modelAttribute="warehouse" class="form-horizontal form-bordered" method="post" action="/warehouse/create">
 
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach items="${listCustomer}" var="customer">
-                                        <tr>
-                                        <td>${customer.id}</td>
-                                        <td>${customer.name}</td>
-                                        <td class="text-right">${customer.phone}</td>
-                                        <td class="text-right">${customer.address}</td>
-                                        <td class="text-right">${customer.balance}</td>
-                                        <td class="text-right">
-                                            <a href="/customer/update/${customer.id}" class="btn btn-primary">Cập nhật</a>
-                                            <a href="#" class="btn btn-primary">Nợ</a>
-                                        </td>
-                                        </tr>
-                                    </c:forEach>
+                                <c:set var="errorName">
+                                    <form:errors path="name"
+                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
+                                </c:set>
 
-                                    </tbody>
 
-                                </table>
-                            </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" >Tên khu vực</label>
+                                    <div class="col-md-6">
+                                        <form:input path="name" class="form-control ${not empty errorName ? 'is-invalid' : ''}" />
+                                            ${errorName}
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <button type="submit" class="btn btn-primary">Tạo</button>
+                                    </div>
+                                </div>
+                            </form:form>
+
                         </div>
                     </section>
 

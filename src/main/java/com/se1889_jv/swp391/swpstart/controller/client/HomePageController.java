@@ -54,7 +54,7 @@ public class HomePageController {
         String hashPassword = this.passwordEncoder.encode(user.getPassword());
 
         user.setPassword(hashPassword);
-        user.setRole(this.userService.getRoleByName("ADMIN"));
+        user.setRole(this.userService.getRoleByName("OWNER"));
         // save
         this.userService.createUser(user);
 

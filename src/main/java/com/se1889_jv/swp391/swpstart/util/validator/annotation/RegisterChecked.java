@@ -1,4 +1,4 @@
-package com.se1889_jv.swp391.swpstart.util.validator;
+package com.se1889_jv.swp391.swpstart.util.validator.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.se1889_jv.swp391.swpstart.util.validator.RegisterValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

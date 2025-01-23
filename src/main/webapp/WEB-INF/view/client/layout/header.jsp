@@ -116,6 +116,13 @@
 
                     </div>
                 </div>
+
+                <form id="logoutForm" method="post" action="/logout">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <a class="btn-getstarted" href="#" onclick="document.getElementById('logoutForm').submit(); return false;">Đăng xuất</a>
+                </form>
+
+
             </c:when>
             <c:otherwise>
                 <a class="btn-getstarted" href="/login">Đăng nhập/Đăng ký</a>

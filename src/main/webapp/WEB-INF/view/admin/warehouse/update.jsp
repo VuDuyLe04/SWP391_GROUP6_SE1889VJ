@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Danh sách người dùng</title>
+    <title>Cập nhật khu vực</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -58,7 +58,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Danh sách khách hàng</h2>
+                <h2>Cập nhật khu vực</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -67,7 +67,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Danh sách khách hàng</span></li>
+                        <li><span>Cập nhật khu vực</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -85,41 +85,36 @@
 
                             </div>
 
-                            <h2 class="panel-title">Danh sách khách hàng</h2>
+                            <h2 class="panel-title">Cập nhật khu vực</h2>
                         </header>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-condensed mb-none">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tên</th>
-                                        <th class="text-right">Số điện thoại</th>
-                                        <th class="text-right">Địa chỉ</th>
-                                        <th class="text-right">Số dư</th>
-                                        <th class="text-right">Hoạt động</th>
+                        <div class="panel-body " >
+                            <form:form modelAttribute="warehouse" class="form-horizontal" method="post" action="/warehouse/update">
+                                <c:set var="errorName">
+                                    <form:errors path="name"
+                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
+                                </c:set>
 
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach items="${listCustomer}" var="customer">
-                                        <tr>
-                                        <td>${customer.id}</td>
-                                        <td>${customer.name}</td>
-                                        <td class="text-right">${customer.phone}</td>
-                                        <td class="text-right">${customer.address}</td>
-                                        <td class="text-right">${customer.balance}</td>
-                                        <td class="text-right">
-                                            <a href="/customer/update/${customer.id}" class="btn btn-primary">Cập nhật</a>
-                                            <a href="#" class="btn btn-primary">Nợ</a>
-                                        </td>
-                                        </tr>
-                                    </c:forEach>
+                                <div class="form-group row" hidden="hidden">
+                                    <label class="col-sm-3 col-form-label" for="name">Id</label>
+                                    <div class="col-sm-9">
+                                        <form:input path="id" class="form-control" id="id" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label" for="name">Tên</label>
+                                    <div class="col-sm-9">
+                                        <form:input path="name" class="form-control ${not empty errorName ? 'is-invalid' : ''}" id="name" />
+                                        ${errorName}
+                                    </div>
+                                </div>
 
-                                    </tbody>
-
-                                </table>
-                            </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-9 offset-sm-3">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <a href="/warehouse" class="btn btn-secondary">Cancel</a>
+                                    </div>
+                                </div>
+                            </form:form>
                         </div>
                     </section>
 

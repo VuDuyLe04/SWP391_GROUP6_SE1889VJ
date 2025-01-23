@@ -1,6 +1,7 @@
-package com.se1889_jv.swp391.swpstart.util.validator;
+package com.se1889_jv.swp391.swpstart.util.validator.annotation;
 
 
+import com.se1889_jv.swp391.swpstart.util.validator.ValidPhoneValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

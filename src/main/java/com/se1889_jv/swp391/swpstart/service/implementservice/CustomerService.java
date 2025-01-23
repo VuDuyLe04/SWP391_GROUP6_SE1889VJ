@@ -39,12 +39,12 @@ public class CustomerService implements ICustomerService {
         Customer customer1 = getCustomerById(customer.getId());
         if(customer1 != null){
 
-            customer1.setName(customer1.getName());
-            customer1.setPhone(customer1.getPhone());
-            customer1.setAddress(customer1.getAddress());
+            customer1.setName(customer.getName());
+            customer1.setPhone(customer.getPhone());
+            customer1.setAddress(customer.getAddress());
 
         }
 
-        customerRepository.save(customer);
+        customerRepository.save(customer1);
     }
 }

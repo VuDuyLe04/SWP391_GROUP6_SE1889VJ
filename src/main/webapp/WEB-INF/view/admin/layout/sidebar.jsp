@@ -49,7 +49,7 @@
                         </a>
                     </li>
                     <li>
-                        <a>
+                        <a href="/warehouse">
                             <i class="fa fa-table" aria-hidden="true"></i>
                             <span>Kho hàng</span>
                         </a>
