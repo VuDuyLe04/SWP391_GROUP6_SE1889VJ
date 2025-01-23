@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface WareHouseExist {
-    String message() default "Kho đã tồn tại";
+    String message() default "Khu vực đã tồn tại";
 
     Class<?>[] groups() default {};
 

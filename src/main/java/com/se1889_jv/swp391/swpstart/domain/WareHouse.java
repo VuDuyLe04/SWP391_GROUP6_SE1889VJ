@@ -18,15 +18,14 @@ public class WareHouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-//    @WareHouseExist
-//    @NotBlank
+    @WareHouseExist
     private String name;
     
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToMany(mappedBy = "warehouse", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "warehouse", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Product> products;
 
 }

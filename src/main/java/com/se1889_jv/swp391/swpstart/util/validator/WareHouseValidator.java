@@ -27,8 +27,18 @@ public class WareHouseValidator implements ConstraintValidator<WareHouseExist, S
         if (wareHouseService == null) {
             return true; // Hoặc false nếu bạn muốn xử lý khác
         }
-        boolean result = this.wareHouseService.existsWareHouseByName(name, Utility.getStoreInSession());
-        return !result;
+        boolean result = true;
+        if (name == null || name.isEmpty()) {
+            result = false;
+            constraintValidatorContext
+                    .buildConstraintViolationWithTemplate("Tên khu vực không được để trống")
+                    .addConstraintViolation()
+                    .disableDefaultConstraintViolation();
+        } else {
+            result = !this.wareHouseService.existsWareHouseByName(name, Utility.getStoreInSession());
+        }
+
+        return result;
     }
 }
 

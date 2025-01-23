@@ -33,7 +33,7 @@ public class WareHouseController {
 
     //tạo mới
     @PostMapping("/warehouse/create")
-    public String createWareHouse(@ModelAttribute("warehouse") @Valid WareHouse wareHouse, BindingResult bindingResult, HttpServletRequest request) {
+    public String createWareHouse(@ModelAttribute("warehouse") @Valid WareHouse wareHouse, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/warehouse/create";
         }
@@ -67,7 +67,7 @@ public class WareHouseController {
 
     @PostMapping("/warehouse/update")
     public String updateWareHouse(
-            @ModelAttribute("customer") @Valid WareHouse wareHouse,
+            @Valid @ModelAttribute("customer") WareHouse wareHouse,
             BindingResult result
     ) {
         if (result.hasErrors()) {

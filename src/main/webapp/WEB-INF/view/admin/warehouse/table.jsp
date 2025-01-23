@@ -85,7 +85,7 @@
 
                             </div>
 
-                            <h2 class="panel-title">Danh sách khu vực</h2>
+                            <a href="/warehouse/create" class="panel-featured-right">Tạo mới khu vực</a>
                         </header>
                         <div class="panel-body">
                             <div class="table-responsive">

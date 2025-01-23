@@ -73,7 +73,7 @@ public class CustomerController {
 
     @PostMapping("/customer/update")
     public String updateCustomer(
-            @ModelAttribute("customer") @Valid Customer customer,
+            @Valid @ModelAttribute("customer") Customer customer,
             BindingResult result
                                  ) {
         if (result.hasErrors()) {
