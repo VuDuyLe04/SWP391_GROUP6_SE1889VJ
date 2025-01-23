@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -66,5 +67,33 @@ public class UserService implements IUserService {
     public boolean checkPhoneExist(String phone) {
         return this.userRepository.existsByPhone(phone);
     }
+
+    @Override
+    public List<User> getAll(){
+        return this.userRepository.findAll();
+    }
+
+    @Override
+    public List<User> getUsersBySearch(String name, String phone) {
+        return this.userRepository.findUsersByNameContainingOrPhone(name,phone);
+
+    }
+
+    @Override
+    public List<User> getUsersbyRoleID(Long id) {
+
+        return this.userRepository.findUsersByRoleId(id);
+    }
+
+    @Override
+    public List<User> getUsersByActive(boolean active) {
+        return this.userRepository.findUsersByActive(active);
+    }
+
+    @Override
+    public List<User> getUsersByRoleIDAndActive(Long id, boolean active) {
+        return this.userRepository.findUsersByRoleIdAndActive(id, active);
+    }
+
 
 }
