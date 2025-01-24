@@ -75,7 +75,7 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> getUsersBySearch(String name, String phone) {
-        return this.userRepository.findUsersByNameContainingOrPhone(name,phone);
+        return this.userRepository.findUsersByNameContainingOrPhoneContaining(name,phone);
 
     }
 

@@ -86,7 +86,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <form id="search-form" action="searchuser" method="GET" class="search nav-form">
+                                        <form id="search-form" action="usermanagement" method="get" class="search nav-form">
                                             <div class="input-group input-search">
                                                 <input type="text" class="form-control" name="input" 
                                                        placeholder="Search by name or phone..." value="${input}" required>
@@ -105,29 +105,40 @@
                         <div class="panel-body">
                             <div class="row mb-md">
                                 <div class="col-sm-6">
-                                    <form action="filteruser" class="form-inline">
-                                        <div class="form-group mr-md">
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
-                                                <select id="role" name="role" class="form-control">
-                                                    <option ${roleId == -1 ? "selected" : ""} value="-1">All Roles</option>
-                                                    <option ${roleId == 1 ? "selected" : ""} value="1">Admin</option>
-                                                    <option ${roleId == 2 ? "selected" : ""} value="2">Owner</option>
-                                                    <option ${roleId == 3 ? "selected" : ""} value="3">Staff</option>
-                                                </select>
+                                    <form action="usermanagement" method="get" class="form-inline">
+                                        <c:if test="${sessionScope.user.role.id == 1}">
+                                            <div class="form-group mr-md">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                                                    <select id="role" name="role" class="form-control">
+                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >All Roles</option>
+                                                        <option ${roleId == 1 ? "selected" : ""} value="1">Admin</option>
+                                                        <option ${roleId == 2 ? "selected" : ""} value="2">Owner</option>
+                                                        <option ${roleId == 3 ? "selected" : ""} value="3">Staff</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group mr-md">
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
-                                                <select id="active" name="active" class="form-control">
-                                                    <option ${active == -1 ? "selected" : ""} value="-1">All Status</option>
-                                                    <option ${active == 1 ? "selected" : ""} value="1">Active</option>
-                                                    <option ${active == 0 ? "selected" : ""} value="0">Banned</option>
-                                                </select>
+                                            <div class="form-group mr-md">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
+                                                    <select id="active" name="active" class="form-control">
+                                                        <option ${active == -1 ? "selected" : ""} value="-1">All Status</option>
+                                                        <option ${active == 1 ? "selected" : ""} value="1">Active</option>
+                                                        <option ${active == 0 ? "selected" : ""} value="0">Banned</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Filter</button>
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Filter</button>
+                                        </c:if>
+<%--                                        <c:if test="${sessionScope.user.role.id == 2}">--%>
+<%--                                            <select id="store" name="store" class="form-control">--%>
+<%--                                                <option value="0">All Status</option>--%>
+<%--                                                <c:forEach items="${stores}" var="s">--%>
+<%--                                                    <option value="${s.id}">${s.name}</option>--%>
+<%--                                                </c:forEach>--%>
+<%--                                            </select>--%>
+<%--                                        </c:if>--%>
+
                                     </form>
                                 </div>
                                 <div class="col-sm-6">
@@ -167,10 +178,10 @@
                                                     </td>
                                                 </c:if>
                                                 <td>
-                                                    <button class="btn btn-default btn-sm mr-xs" title="View">
+                                                    <button id="view-button" class="btn btn-default btn-sm mr-xs" title="View ">
                                                         <i class="fa fa-eye"></i>
                                                     </button>
-                                                    <button class="btn btn-primary btn-sm" title="Update">
+                                                    <button id="update-button"class="btn btn-primary btn-sm" title="Update">
                                                         <i class="fa fa-pencil"></i>
                                                     </button>
                                                 </td>
@@ -242,6 +253,7 @@
             document.getElementById("search-form").submit();
         }
     });
+    // document.getElementById("view-button").addEventListener("click",function ());
 </script>
 
 
