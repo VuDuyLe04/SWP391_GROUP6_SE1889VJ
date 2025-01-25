@@ -164,7 +164,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="u" items="${users}">
+                                        <c:forEach var="u" items="${userPage.content}">
                                             <tr>
                                                 <td><strong>${u.name}</strong></td>
                                                 <td>${u.phone}</td>
@@ -189,6 +189,11 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
+                                <div class="pagination">
+                                    <c:forEach begin="0" end="${userPage.totalPages -1}" var="i" >
+                                        <a href="usermanagement?page=${i+1}">${i+1}</a>
+                                    </c:forEach>
+                                </div>
                             </div>
                         </div>
                     </section>
