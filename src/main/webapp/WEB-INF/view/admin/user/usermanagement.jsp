@@ -191,7 +191,7 @@
                                 </table>
 
                                 <c:set var="c" value="${userPage.number}"></c:set>
-                                <ul class="pagination">
+                                <ul class="pagination justify-content-center" style="margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
                                         <a class="page-link" href="usermanagement?page=${c - 1}">Previous</a>
                                     </li>
@@ -269,6 +269,12 @@
         min-width: 85px;
         text-align: center;
         padding: 5px 10px;
+    }
+    .pagination {
+        margin: 20px auto;
+        display: inline-flex;
+        justify-content: center;
+        padding-left: 0;
     }
 </style>
 
