@@ -189,11 +189,32 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
-                                <div class="pagination">
-                                    <c:forEach begin="0" end="${userPage.totalPages -1}" var="i" >
-                                        <a href="usermanagement?page=${i}">${i+1}</a>
+
+                                <c:set var="c" value="${userPage.number}"></c:set>
+                                <ul class="pagination">
+                                    <li class="page-item ${c==0 ?'disabled':''} ">
+                                        <a class="page-link" href="usermanagement?page=${c - 1}">Previous</a>
+                                    </li>
+
+                                    <c:forEach begin="0" end="${userPage.totalPages - 1}" var="i">
+                                        <c:if test="${i >= c - 1 && i <= c + 1}">
+                                            <li class="page-item ${c == i ? 'active' : ''}">
+                                                <a class="page-link" href="usermanagement?page=${i}">${i + 1}</a>
+                                            </li>
+                                        </c:if>
+                                        <c:if test="${i == c- 2 || i == c+ 2}">
+                                            <li><span>...</span></li>
+                                        </c:if>
                                     </c:forEach>
-                                </div>
+
+
+
+                                    <li class="page-item ${c== userPage.totalPages -1?'disabled':''} ">
+                                        <a class="page-link" href="usermanagement?page=${c + 1}">Next</a>
+                                    </li>
+
+                                </ul>
+
                             </div>
                         </div>
                     </section>
