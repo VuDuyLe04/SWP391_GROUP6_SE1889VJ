@@ -191,7 +191,7 @@
                                 </table>
                                 <div class="pagination">
                                     <c:forEach begin="0" end="${userPage.totalPages -1}" var="i" >
-                                        <a href="usermanagement?page=${i+1}">${i+1}</a>
+                                        <a href="usermanagement?page=${i}">${i+1}</a>
                                     </c:forEach>
                                 </div>
                             </div>
