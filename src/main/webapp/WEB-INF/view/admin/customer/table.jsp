@@ -49,6 +49,7 @@
 
     <!-- start: header -->
     <jsp:include page="../layout/header.jsp" />
+
     <!-- end: header -->
 
     <div class="inner-wrapper">
@@ -82,7 +83,20 @@
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="panel-actions">
-
+                                <a href="/customer/create" class="btn btn-success" style="display: inline-flex; /* Sử dụng flexbox để căn giữa */
+        justify-content: center;
+        align-items: center;
+        width: 120px;
+        height: 40px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #ffffff;
+        background: linear-gradient(90deg, #28a745, #218838);
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;">Create New Customer</a>
                             </div>
 
                             <h2 class="panel-title">Danh sách khách hàng</h2>
