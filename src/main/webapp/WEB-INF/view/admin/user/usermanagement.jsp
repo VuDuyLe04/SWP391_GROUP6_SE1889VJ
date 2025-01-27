@@ -193,7 +193,7 @@
                                 <c:set var="c" value="${userPage.number}"></c:set>
                                 <ul class="pagination justify-content-center" style="margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
-                                        <a class="page-link" href="usermanagement?page=${c - 1}">Previous</a>
+                                        <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}">Previous</a>
                                     </li>
 
                                     <c:forEach begin="0" end="${userPage.totalPages - 1}" var="i">
@@ -210,7 +210,7 @@
 
 
                                     <li class="page-item ${c== userPage.totalPages -1?'disabled':''} ">
-                                        <a class="page-link" href="usermanagement?page=${c + 1}">Next</a>
+                                        <a class="page-link" href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}">Next</a>
                                     </li>
 
                                 </ul>
