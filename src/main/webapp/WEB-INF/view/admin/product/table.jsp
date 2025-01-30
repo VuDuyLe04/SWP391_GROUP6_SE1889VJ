@@ -79,7 +79,103 @@
             <!-- start: page -->
 
 
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
 
+                    <h2 class="panel-title">List product</h2>
+                </header>
+                <div class="panel-body">
+
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <form method="GET" action="/product/search" class="form-inline" style="margin-bottom: 20px;">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="name" placeholder="Search by name" value="${param.name}" />
+                                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-condensed mb-none">
+                            <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Rice name</th>
+                                <th class="text-right">Image</th>
+                                <th class="text-right">Price</th>
+                                <th class="text-right">Category</th>
+                                <th class="text-right">Warehouse</th>
+                                <th class="text-right">Quantity in stock
+                                </th>
+                                <th class="text-right">Describe</th>
+                                <th class="text-right">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="product" items="${listProduct}">
+                                    <tr>
+                                        <td>${product.id}</td>
+                                        <td class="hidden-xs hidden-sm">${product.name}</td>
+                                        <td class="text-right">${product.image}</td>
+                                        <td class="text-right">${product.unitPrice}</td>
+                                        <td class="text-right">${product.category}</td>
+                                        <td class="text-right">${product.warehouse.name}</td>
+                                        <td class="text-right ">${product.totalQuantity}</td>
+                                        <td class="text-right ">${product.description}</td>
+                                        <td class="text-right">
+                                            <button class="btn btn-primary btn-sm" onclick="window.location.href='/product/update/${product.id}'">Update</button>
+
+                                            <button class="btn btn-success btn-sm" onclick="addToCart('${product.id}')">Add to cart</button>
+                                            <form method="post" action="/product/delete" style="display:inline;">
+                                                <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                                                <input type="hidden" name="id" value="${product.id}" />
+                                                <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                        <div class="pagination-container text-center mt-3">
+                            <ul class="pagination justify-content-center">
+
+                                <c:if test="${currentPage > 0}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="/product?page=${currentPage - 1}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo; Trước</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+
+                                <c:forEach begin="0" end="${totalPages - 1}" var="i">
+                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="/product?page=${i}">${i + 1}</a>
+                                    </li>
+                                </c:forEach>
+
+                                <c:if test="${currentPage < totalPages - 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="/product?page=${currentPage + 1}" aria-label="Next">
+                                            <span aria-hidden="true">Sau &raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </div>
+                    </div>
+                <div class="panel-heading">
+                    <a href="/product/create" class="btn btn-success">Create New Product</a>
+                </div>
+
+            </section>
 
 
 

@@ -21,11 +21,12 @@ public class Product {
     private double unitPrice;
     private double totalQuantity;
     private String image;
-    private boolean storage;
-    private Instant createdAt;
-    private Instant updatedAt;
-    private String createdBy;
+    private String storage;
+//    private Instant createdAt;
+//    private Instant updatedAt;
+//    private String createdBy;
     private String updatedBy;
+//    private Instant deletedAt;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
