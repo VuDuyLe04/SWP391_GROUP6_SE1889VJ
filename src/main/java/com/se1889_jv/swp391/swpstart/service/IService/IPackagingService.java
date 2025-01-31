@@ -7,4 +7,6 @@ import java.util.List;
 public interface IPackagingService {
     List<Packaging> getAllPackaging();
     List<Packaging> getAllPackagingForQuantityProduct(double quantity);
+    Packaging getPackagingById(long id);
+    Packaging getPackagingByPackingType(String packingType);
 }

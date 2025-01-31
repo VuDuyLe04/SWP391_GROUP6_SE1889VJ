@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class PackagingService implements IPackagingService {
@@ -20,5 +21,16 @@ public class PackagingService implements IPackagingService {
     @Override
     public List<Packaging> getAllPackagingForQuantityProduct(double quantity) {
         return packagingRepository.findAllPackingForProduct(quantity);
+    }
+    @Override
+    public Packaging getPackagingById(long id) {
+        return packagingRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Packaging with ID " + id + " not found"));
+    }
+
+    @Override
+    public Packaging getPackagingByPackingType(String packingType) {
+        return packagingRepository.getPackagingByPackageType(packingType);
+
     }
 }

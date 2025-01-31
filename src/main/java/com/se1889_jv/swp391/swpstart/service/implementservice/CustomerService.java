@@ -16,4 +16,13 @@ public class CustomerService implements ICustomerService {
     public List<Customer> getCustomersByStoreId(Long storeId) {
         return customerRepository.getCustomersByStoreId(storeId);
     }
+
+    @Override
+    public Customer getCustomerByNameAndPhone(String infor) {
+        String [] part  = infor.split(" - ");
+        String name = part[0].trim();
+        String phone = part[1].trim();
+        return customerRepository.getCustomersByNameAndPhone(name,phone);
+    }
+
 }

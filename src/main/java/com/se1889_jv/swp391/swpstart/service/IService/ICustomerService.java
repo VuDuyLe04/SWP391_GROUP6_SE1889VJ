@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ICustomerService {
     List<Customer> getCustomersByStoreId(Long storeId);
+    Customer getCustomerByNameAndPhone(String infor);
 }

@@ -12,9 +12,11 @@ import java.util.List;
 @Setter
 public class BillDTO {
     private List<BillDetail> billDetails;
+    private double paid;
+    private double inDebt;
     private double totalPrice;
     private double totalLift;
-    private Customer customer;
+    private String customerInformation;
     private String des;
     private int storeId;
     public BillDTO() {
@@ -44,13 +46,7 @@ public class BillDTO {
         this.totalLift = totalLift;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
 
     public String getDes() {
         return des;

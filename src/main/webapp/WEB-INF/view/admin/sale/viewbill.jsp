@@ -78,10 +78,9 @@
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
             </header>
-            <c:forEach var="a" items="${bill}">
-                <h1>${a.liftPrice}</h1>
+            <c:forEach var="n" items="${name}">
+                <h1>${n}</h1>
             </c:forEach>
-            <h2>${storeId}</h2>
 
 
         </section>

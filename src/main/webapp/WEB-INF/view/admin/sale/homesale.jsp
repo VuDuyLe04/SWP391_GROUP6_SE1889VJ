@@ -54,13 +54,18 @@
         .toast.show {
             display: block;
             opacity: 1;
-            transform: translateX(0); /* Di chuyển vào khung nhìn */
+            transform: translateX(0);
         }
 
 
         .toast.hide {
             opacity: 0;
-            transition: opacity 1s ease; /* Mờ dần */
+            transition: opacity 1s ease;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            display: none;
         }
 
 
@@ -152,7 +157,7 @@
                  data-price="${product.unitPrice}">
 
 
-                <div class="m-2 product-name">${product.name}</div>
+                <div class="m-2 product-name col-md-3">${product.name}</div>
 
 
                 <!-- Nút mở modal "View" -->
@@ -182,7 +187,7 @@
                                 <p><strong>Danh mục:</strong> ${product.category}</p>
                                 <p><strong>Mô tả:</strong> ${product.description}</p>
                                 <p><strong>Giá:</strong> ${product.unitPrice}</p>
-                                <p><strong>Số lượng:</strong> ${product.totalQuantity} kg</p>
+                                <p id="quantity-product"><strong>Số lượng:</strong> ${product.totalQuantity} kg</p>
                                 <p><strong>Vị trí:</strong> ${warehouse[status.index].name}</p>
                             </div>
                             <div class="modal-footer">
@@ -276,21 +281,25 @@
                 <div class="mb-3">
                     <div class="d-flex justify-content-between">
                         <span class="fw-semibold">Tổng tiền hàng</span>
-                        <span id="total-price" class="fw-bold">0</span>
+                        <input style="border: none; width: 100px"  id="total-price" class="fw-bold" value="0" readonly>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span class="fw-semibold">Giảm giá</span>
-                        <span id="sale-price" class="text-danger">0</span>
+                        <input style="border: none; width: 100px"  id="sale-price" class="text-danger" value="0" readonly>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span class="fw-semibold">Khách cần trả</span>
-                        <span class="fw-bold text-success" id="price-payment" >0</span>
+                        <input name="totalPrice" style="border: none; width: 100px" class="fw-bold text-success" id="price-payment" value="0" readonly>
+                    </div>
+                    <div class="d-none justify-content-between" >
+                        <span class="fw-semibold">Be hang</span>
+                        <input name="totalLift" style="border: none; width: 100px" class="fw-bold text-success" id="total-lift" value="0" readonly>
                     </div>
                     <hr />
                 </div>
 
                 <div class="mb-3">
-        <textarea
+        <textarea name="des"
                 class="form-control"
                 rows="2"
                 placeholder="Ghi chú"
@@ -300,7 +309,7 @@
                 <div class="mb-3 position-relative">
                     <label for="search-phone" class="form-label">Khách hàng</label>
                     <div class="d-flex">
-                        <input type="text" class="form-control" id="search-phone" placeholder="Nhập số điện thoại" >
+                        <input name="customerInformation" type="text" class="form-control" id="search-phone" placeholder="Nhập số điện thoại" >
                         <button id="add-customer-btn" class="btn btn-outline-primary ms-2" type="button" data-bs-toggle="modal" data-bs-target="#customerModal">
                             <i class="bi bi-plus-circle">+</i>
                         </button>
@@ -319,20 +328,22 @@
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label for="customer-name" class="form-label">Tên khách hàng</label>
-                                    <input type="text" class="form-control" id="customer-name" placeholder="Nhập tên khách hàng" required>
+                                    <input name="cusName" type="text" class="form-control" id="customer-name" placeholder="Nhập tên khách hàng">
                                 </div>
                                 <div class="mb-3">
                                     <label for="customer-phone" class="form-label">Số điện thoại</label>
-                                    <input type="text" class="form-control" id="customer-phone" placeholder="Nhập số điện thoại" required>
+                                    <input name="cusPhone" type="text" class="form-control" id="customer-phone"
+                                           placeholder="Nhập số điện thoại">
+                                    <div id="phone-error" class="error-message">Số điện thoại không hợp lệ. Vui lòng nhập lại!</div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="customer-address" class="form-label">Địa chỉ</label>
-                                    <textarea class="form-control" id="customer-address" rows="2" placeholder="Nhập địa chỉ" required></textarea>
+                                    <textarea name="cusAddress" class="form-control" id="customer-address" rows="2" placeholder="Nhập địa chỉ"></textarea>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <button type="button" class="btn btn-success" id="save-customer-button">Lưu thông tin khách hàng</button>
+                                <div  class="btn btn-secondary" data-bs-dismiss="modal">Đóng</div>
+                                <div  class="btn btn-success" id="save-customer-button">Lưu thông tin khách hàng</div>
                             </div>
                         </div>
                     </div>
@@ -340,7 +351,7 @@
 
 
                 <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-success btn-block" style="height: 50px">
+                    <button type="submit" class="btn btn-success btn-block pay-button" style="height: 50px">
                         Thanh toán
                     </button>
                 </div>
@@ -356,7 +367,20 @@
 </div>
 
 <script >
+    //validate phone
+    const phoneInput = document.getElementById("customer-phone");
+    const errorDiv = document.getElementById("phone-error");
 
+    phoneInput.addEventListener("input", function () {
+        const phoneRegex = /^(\+84|0)\d{9,10}$/;
+        if (phoneRegex.test(phoneInput.value)) {
+            errorDiv.style.display = "none";
+            phoneInput.style.borderColor = "green";
+        } else {
+            errorDiv.style.display = "block";
+            phoneInput.style.borderColor = "red";
+        }
+    });
 
     const searchButton = document.getElementById("search-btn");
     const searchInput = document.getElementById("search-input");
@@ -367,18 +391,24 @@
     //search key
     searchButton.addEventListener('click', () => {
         const searchValue = searchInput.value.toLowerCase();
-        console.log(searchInput.value);
-        products.forEach(product => {
+        if(searchValue.length !== 0 ){
+            products.forEach(product => {
 
-            const productName = product.querySelector(".product-name").textContent.toLowerCase();
-            console.log(productName);
-            if (productName.includes(searchValue)) {
-                product.classList.remove("hidden");
-            } else {
-                product.classList.add("hidden");
-            }
-        });
-        searchInput.value = '';
+                const productName = product.querySelector(".product-name").textContent.toLowerCase();
+                if (productName.includes(searchValue)) {
+                    product.classList.remove("hidden");
+                } else {
+                    product.classList.add("hidden");
+                }
+            });
+            searchInput.value = '';
+        } else {
+            products.forEach(product => {
+                product.classList.remove('hidden');
+            })
+        }
+
+
     })
 
     //search category
@@ -449,10 +479,17 @@
     //bill list after choose
     const billList = document.getElementById('bill-list');
     const listSender = [];
+    function showAttention(name){
+        //const mess = 'Sản phẩm '+name+' chỉ còn lại '+quantityOfProduct+ ' kg sản phẩm !';
+        const mess = 'Sản phẩm '+name+' không đủ số lượng';
+        showToast(mess)
 
+
+    }
     function handleAddToBill(index, productId, name, price) {
 
         const modal = document.getElementById('productModal'+index);
+        const viewModel = document.getElementById('viewProductModal'+index);
         const quantityModel = modal.querySelector('input[name="quantity"]');
         const quantityOfProduct = modal.querySelector('input[name="quantity"]').getAttribute('data-quantity')
 
@@ -466,15 +503,16 @@
         const quantity = parseFloat(quantityString);
         if (packPerUnit * quantity > parseFloat(quantityOfProduct)) {
 
-
-            const mess = 'Sản phẩm '+name+' chỉ còn lại '+quantityOfProduct+ ' sản phẩm !';
-            showToast(mess)
-
-            modal.querySelector('.btn-close').click();
+            showAttention(name)
             quantityModel.value = 1;
+            modal.querySelector('.btn-close').click();
             return;
         }
 
+        let quantityUpdate = parseFloat(quantityOfProduct) - packPerUnit * quantity;
+
+        modal.querySelector('input[name="quantity"]').setAttribute('data-quantity', quantityUpdate);
+        let maxQuantity = parseInt(quantityUpdate/packPerUnit);
         const billDetails = {
             product: {
                 id: productId,
@@ -489,8 +527,8 @@
             }
             ,quantity
             ,disCount
+            ,maxQuantity
         }
-        console.log(billDetails);
         let found = false;
         for (let item of listSender) {
             if (billDetails.product.id === item.product.id && billDetails.packing.packId === item.packing.packId) {
@@ -509,13 +547,15 @@
 
         modal.querySelector('.btn-close').click();
         generate(listSender);
-
+        console.log(billDetails.maxQuantity);
     }
+
 
     function generate(list) {
         let pay = 0;
         let totalPrice = 0;
         let sale = 0;
+        let totalLift=0
         let html = ``;
         for (let i = 0; i < list.length; i++) {
             const product = list[i];
@@ -528,39 +568,51 @@
             let disCount = product.disCount || 0;
             let unitPer = parseFloat(product.packing.packPerUnit);
             let total = unitPrice * quantity * unitPer -  quantity* unitPer*disCount;
-            let salePrice =quantity* unitPer*disCount;
-            let liftTotal = quantity*product.packing.liftCost;
+            let salePrice =quantity*unitPer*disCount;
+            let liftTotal = product.packing.liftCost;
+            let actualSellPrice = parseFloat(unitPrice*unitPer - disCount*unitPer);
+            let maxQuan = product.maxQuantity;
             totalPrice += unitPrice * quantity * unitPer
             pay += total;
             sale += quantity* unitPer*disCount;
+            totalLift += liftTotal * quantity;
             html += '<div >' +
 
                 '<div class="d-flex justify-content-between align-items-center mb-3">' +
-                '<input class="col-md-2 text-center" value="' + productId + '" readonly style="border: none;" hidden="hidden" name="billDetails['+ i +'].product.id">'+
+                '<input class="col-md-2 text-center" value="' + parseInt(productId) + '" readonly style="border: none;" hidden="hidden" name="billDetails['+ i +'].product.id">'+
                 '<input class="col-md-2 text-center" value="' + nameProduct + '" readonly style="border: none;">' +
                 '<input class="col-md-2 text-center" value="' + packaging + '" readonly style="border: none;" name="billDetails[' + i + '].packaging.packageType">' +
-                '<input class="col-md-2 text-center" value="' + quantity + '" readonly style="border: none;" name="billDetails[' + i + '].quantity">' +
-                '<input class="col-md-2 text-center" value="' + unitPrice + ' VND" readonly style="border: none;">' +
-                '<input class="col-md-2 text-center" value="' + salePrice + ' VND" readonly style="border: none;">' +
+                '<input class="col-md-2 text-center" value="' + quantity + '" ' +
+                'style="border: none;" type="number" name="billDetails[' + i + '].quantity" ' +
+                'max="' + maxQuan + '" ' +
+                'oninput="if(this.value > ' + maxQuan + ') { showAttention(\'' + nameProduct + '\'); this.value = ' + quantity + '; } else {updateQuantity(' + i + ', this.value);}">' +
+                '<input class="col-md-2 text-center" value="' + parseFloat(unitPrice*unitPer) + '" readonly style="border: none;" name="billDetails[' + i + '].listedPrice">' +
+                '<input class="col-md-2 text-center" value="' + actualSellPrice +'" readonly style="border: none;" name="billDetails[' + i + '].actualSellPrice" hidden="hidden">' +
+                '<input class="col-md-2 text-center" value="' + salePrice + '" readonly style="border: none;">' +
                 '<input class="col-md-2 text-center" value="' + total + '" readonly style="border: none;" name="billDetails[' + i + '].actualSellPrice">'+
                 '<input class="col-md-2 text-center" value="' + liftTotal + '" readonly hidden="hidden"  style="border: none;" name="billDetails[' + i + '].liftPrice">'+
                 '</div>' +
                 '</div>'
                 ;
-
         }
 
 
-        totalPayment(totalPrice, sale, pay);
+        totalPayment(totalPrice, sale, pay, totalLift);
         billList.innerHTML= html;
     }
-    function totalPayment(total, sale, pay){
+    function totalPayment(total, sale, pay, lift){
         const totalPrice = document.getElementById('total-price');
         const salePrice = document.getElementById('sale-price');
         const payment = document.getElementById('price-payment');
-       totalPrice.innerHTML = total;
-        salePrice.innerHTML =sale;
-        payment.innerHTML=pay;
+        const totalLift = document.getElementById('total-lift')
+       totalPrice.value = total;
+        salePrice.value =sale;
+        payment.value=pay;
+        totalLift.value=lift;
+    }
+    function updateQuantity(index,quantity){
+        listSender[index].quantity = parseInt(quantity);
+        generate(listSender);
     }
 
     function showToast(message) {
@@ -592,6 +644,7 @@
             }
         %>
     ];
+    console.log(customerList);
 
     document.getElementById('add-customer-btn').addEventListener('click', function() {
 
@@ -618,9 +671,9 @@
                     suggestions.forEach(cust => {
                         const suggestionItem = document.createElement("div");
                         suggestionItem.className = "suggestion-item";
-                        suggestionItem.textContent = cust.name + ' - ' + cust.phone;
+                        suggestionItem.textContent = cust.name + ' - ' +cust.phone;
                         suggestionItem.addEventListener("click", function () {
-                            searchInput.value = cust.name;
+                            searchInput.value = cust.name + ' - ' +cust.phone;
                             suggestionBox.style.display = "none";
                         });
                         suggestionBox.appendChild(suggestionItem);
@@ -646,14 +699,20 @@
 
         if (name && phone && address) {
             const searchPhoneInput = document.getElementById('search-phone');
-            searchPhoneInput.value = name +'-'+ phone;
+            searchPhoneInput.value = name + ' - ' + phone;
 
-            var myModal = new bootstrap.Modal(document.getElementById('customerModal'));
-            myModal.click();
+
+            let myModal = bootstrap.Modal.getInstance(document.getElementById('customerModal'));
+            myModal.hide();
         } else {
             alert("Vui lòng nhập đầy đủ thông tin: Tên, Số điện thoại và Địa chỉ.");
         }
     });
+
+    // check all quantity before payment
+    document.getElementById('pay-button').addEventListener('click', function () {
+
+    })
 
 
 

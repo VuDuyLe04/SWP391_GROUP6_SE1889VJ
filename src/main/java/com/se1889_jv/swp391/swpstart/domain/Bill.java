@@ -38,11 +38,5 @@ public class Bill {
     @OneToMany(mappedBy = "bill")
     private List<BillDetail>  billDetails;
 
-    @PrePersist
-    public void handleBeforeCreate() {
-        HttpServletRequest request = null;
-        HttpSession session = request.getSession(false);
-        this.createdBy = (String) session.getAttribute("name");
-        this.createdAt = Instant.now();
-    }
+
 }
