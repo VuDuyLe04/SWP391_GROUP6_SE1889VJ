@@ -165,7 +165,35 @@
                                     </thead>
                                     <tbody>
                                         <c:forEach var="u" items="${userPage.content}">
-                                            <tr>
+                                            <!-- The Modal -->
+                                            <div class="modal" id="myModal">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Modal Heading</h4>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+
+                                                        <!-- Modal body -->
+                                                        <div class="modal-body">
+                                                            Modal body..
+                                                        </div>
+
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+                            <tr>
                                                 <td><strong>${u.name}</strong></td>
                                                 <td>${u.phone}</td>
                                                 <c:if test="${sessionScope.user.role.id == 1}">
@@ -216,12 +244,12 @@
                                 </ul>
 
                             </div>
+
                         </div>
                     </section>
                 </div>
             </div>
         </section>
-
     </div>
 </section>
 
@@ -278,15 +306,31 @@
     }
 </style>
 
+
+
+<!-- Đoạn mã JavaScript của bạn -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
-    document.getElementById("search-input").addEventListener("keypress",function(event){
-        if(event.key === "Enter"){
+    document.getElementById("search-input").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
             event.preventDefault();
             document.getElementById("search-form").submit();
         }
     });
-    // document.getElementById("view-button").addEventListener("click",function ());
+
+
+
+        document.getElementById("openModal").addEventListener("click", function() {
+        // Lấy modal element
+        var myModal = new bootstrap.Modal(document.getElementById("myModal"));
+        // Hiển thị modal
+        myModal.show();
+    });
 </script>
+
+
 
 
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
