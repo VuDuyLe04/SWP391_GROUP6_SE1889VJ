@@ -34,7 +34,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserStore> userStores;
-public void addUserStore() {
+    public void addUserStore() {
 
     User user = new User();
     user.getUserStores();
