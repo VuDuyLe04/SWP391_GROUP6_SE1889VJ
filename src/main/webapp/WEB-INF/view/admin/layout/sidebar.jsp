@@ -54,25 +54,14 @@
                             <span>Kho hàng</span>
                         </a>
                     </li>
-                    <li class="nav-parent">
+                    <li>
                         <a>
                             <i class="fa fa-map-marker" aria-hidden="true"></i>
-                            <span>Maps</span>
+                            <span>Cửa hàng</span>
                         </a>
 
                     </li>
-                    <li >
-                        <a>
-                            <i class="fa fa-columns" aria-hidden="true"></i>
-                            <span>Layouts</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a>
-                            <i class="fa fa-align-left" aria-hidden="true"></i>
-                            <span>Menu Levels</span>
-                        </a>
-                    </li>
+
 
                 </ul>
             </nav>

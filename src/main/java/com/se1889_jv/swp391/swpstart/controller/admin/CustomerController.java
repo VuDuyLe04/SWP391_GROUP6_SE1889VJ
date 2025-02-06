@@ -36,14 +36,12 @@ public class CustomerController {
     @PostMapping("/customer/create")
     public String createCustomer(
             @ModelAttribute("customer") @Valid Customer customer,
-            BindingResult result,
-            HttpServletRequest request
+            BindingResult result
     ) {
         if (result.hasErrors()) {
             return "admin/customer/create";
         }
-        HttpSession session = request.getSession(false);
-        Store store = (Store) session.getAttribute("store");
+        Store store = Utility.getStoreInSession();
 
         this.customerService.createCustomer(customer, store);
         return "redirect:/customer";
