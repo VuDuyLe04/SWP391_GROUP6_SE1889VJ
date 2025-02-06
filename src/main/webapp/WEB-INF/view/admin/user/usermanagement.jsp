@@ -208,7 +208,7 @@
                                                 </c:if>
                                                 <td>
                                                     <button class="btn btn-default btn-sm mr-xs" onclick="openUserModal(${u.id})" title="View">
-
+                                                        <i class="fa fa-eye"></i>
                                                     </button>
                                                     <button class="btn btn-primary btn-sm" title="Update">
                                                         <i class="fa fa-pencil"></i>
