@@ -143,9 +143,9 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <button class="btn btn-primary mb-xs mt-xs mr-xs">
+                                        <a href="adduser" class="btn btn-primary mb-xs mt-xs mr-xs">
                                             <i class="fa fa-plus mr-xs"></i>Add User
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -166,8 +166,9 @@
                                     <tbody>
                                         <c:forEach var="u" items="${userPage.content}">
                                             <!-- The Modal -->
-                                            <div class="modal" id="myModal">
-                                                <div class="modal-dialog">
+                                            <div class="modal" id="userModal-${u.id}">
+
+                                            <div class="modal-dialog">
                                                     <div class="modal-content">
 
                                                         <!-- Modal Header -->
@@ -206,10 +207,10 @@
                                                     </td>
                                                 </c:if>
                                                 <td>
-                                                    <button id="view-button" class="btn btn-default btn-sm mr-xs" title="View ">
-                                                        <i class="fa fa-eye"></i>
+                                                    <button class="btn btn-default btn-sm mr-xs" onclick="openUserModal(${u.id})" title="View">
+
                                                     </button>
-                                                    <button id="update-button"class="btn btn-primary btn-sm" title="Update">
+                                                    <button class="btn btn-primary btn-sm" title="Update">
                                                         <i class="fa fa-pencil"></i>
                                                     </button>
                                                 </td>
@@ -313,24 +314,17 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    document.getElementById("search-input").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            document.getElementById("search-form").submit();
+    function openUserModal(userId) {
+        var modalElement = document.getElementById("userModal-" + userId);
+        if (modalElement) {
+            console.log("Modal found:", modalElement);
+            var modal = new bootstrap.Modal(modalElement);
+            modal.show(); // Show the modal
+        } else {
+            console.error("Modal not found for userId:", userId);
         }
-    });
-
-
-
-        document.getElementById("openModal").addEventListener("click", function() {
-        // Lấy modal element
-        var myModal = new bootstrap.Modal(document.getElementById("myModal"));
-        // Hiển thị modal
-        myModal.show();
-    });
+    }
 </script>
-
-
 
 
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
@@ -379,5 +373,11 @@
 
 <!-- Examples -->
 <script src="/client/auth/assets/javascripts/dashboard/examples.dashboard.js"></script>
+
+<script>
+    function openUserModal(userId) {
+        $('#userModal' + userId).modal('show');
+    }
+</script>
 </body>
 </html>

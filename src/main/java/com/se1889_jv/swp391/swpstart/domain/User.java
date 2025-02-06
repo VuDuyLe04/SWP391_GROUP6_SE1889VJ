@@ -32,7 +32,7 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;//admin
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserStore> userStores;
 public void addUserStore() {
 
