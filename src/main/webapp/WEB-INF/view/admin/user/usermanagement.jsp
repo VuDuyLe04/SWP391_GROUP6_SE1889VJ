@@ -93,6 +93,101 @@
             justify-content: center;
             padding-left: 0;
         }
+        /* Existing modal styles */
+        html, body {
+            overflow-y: scroll !important;
+            margin-right: 0 !important;
+            padding-right: 0 !important;
+            width: 100% !important;
+        }
+        
+        /* Update modal styles */
+        .modal {
+            text-align: center;
+            padding: 0 !important;
+        }
+        
+        .modal:before {
+            content: '';
+            display: inline-block;
+            height: 15vh; /* Giảm khoảng cách từ top để modal nằm gần nút Filter */
+            vertical-align: middle;
+            margin-right: -4px;
+        }
+        
+        .modal-dialog {
+            display: inline-block;
+            text-align: left;
+            vertical-align: middle;
+            max-width: 700px !important; /* Tăng chiều rộng */
+            width: 90% !important;
+            margin: 0 auto !important;
+            transform: translate(0, -25%) !important;
+        }
+        
+        .modal-content {
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: auto !important;
+            min-height: 200px !important; /* Giảm chiều cao tối thiểu */
+        }
+        
+        .modal-body {
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .user-info {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .info-group {
+            width: calc(50% - 10px); /* 2 cột, trừ đi margin */
+            margin-bottom: 8px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-group label {
+            width: 120px;
+            font-size: 0.9em;
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+        
+        .info-value {
+            font-size: 0.9em;
+            flex: 1;
+        }
+        
+        .modal-header {
+            background: #0088cc;
+            color: white;
+            border-radius: 4px 4px 0 0;
+            padding: 10px 15px;
+        }
+        
+        .modal-footer {
+            padding: 10px 15px;
+            border-top: 1px solid #dee2e6;
+            background: #f8f9fa;
+            border-radius: 0 0 4px 4px;
+            justify-content: flex-end;
+        }
+        
+        .modal-footer .btn {
+            padding: 5px 15px;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -293,28 +388,56 @@
 
 
 <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="margin-top:330px">
             <div class="modal-header">
-                <h5 class="modal-title" id="userModalLabel">Thông tin chi tiết của người dùng</h5>
+                <h4 class="modal-title" id="userModalLabel">
+                    <i class="fa fa-user-circle mr-xs"></i> User Information
+                </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p><strong>Tên:</strong> <span id="modal-name"></span></p>
-                <p><strong>Số điện thoại:</strong> <span id="modal-phone"></span></p>
-                <p><strong>Vai trò:</strong> <span id="modal-role"></span></p>
-                <p><strong>Trạng thái:</strong> <span id="modal-status"></span></p>
-                <p><strong>Ngày tạo:</strong> <span id="modal-createdAt"></span></p>
-                <p><strong>Người tạo:</strong> <span id="modal-createdBy"></span></p>
-                <p><strong>Ngày cập nhật:</strong> <span id="modal-updatedAt"></span></p>
-                <p><strong>Người cập nhật:</strong> <span id="modal-updatedBy"></span></p>
-
-
+                <div class="user-info">
+                    <div class="info-group">
+                        <label><i class="fa fa-user mr-xs"></i> Name:</label>
+                        <span id="modal-name" class="info-value"></span>
+                    </div>
+                    <div class="info-group">
+                        <label><i class="fa fa-phone mr-xs"></i> Phone:</label>
+                        <span id="modal-phone" class="info-value"></span>
+                    </div>
+                    <div class="info-group">
+                        <label><i class="fa fa-users mr-xs"></i> Role:</label>
+                        <span id="modal-role" class="info-value"></span>
+                    </div>
+                    <div class="info-group">
+                        <label><i class="fa fa-check-circle mr-xs"></i> Status:</label>
+                        <span id="modal-status" class="info-value"></span>
+                    </div>
+                    <div class="info-group">
+                        <label><i class="fa fa-calendar mr-xs"></i> Created At:</label>
+                        <span id="modal-createdAt" class="info-value"></span>
+                    </div>
+                    <div class="info-group">
+                        <label><i class="fa fa-user-plus mr-xs"></i> Created By:</label>
+                        <span id="modal-createdBy" class="info-value"></span>
+                    </div>
+                    <div class="info-group">
+                        <label><i class="fa fa-calendar-plus-o mr-xs"></i> Updated At:</label>
+                        <span id="modal-updatedAt" class="info-value"></span>
+                    </div>
+                    <div class="info-group">
+                        <label><i class="fa fa-user-plus mr-xs"></i> Updated By:</label>
+                        <span id="modal-updatedBy" class="info-value"></span>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                    <i class="fa fa-times mr-xs"></i>Close
+                </button>
             </div>
         </div>
     </div>
