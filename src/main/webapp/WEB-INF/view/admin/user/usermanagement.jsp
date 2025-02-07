@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
-<html class="fixed">
+<html class="fixed" style="overflow: hidden">
 <head>
 
     <!-- Basic -->
@@ -235,7 +235,14 @@
                                                         data-name="${u.name}"
                                                         data-phone="${u.phone}"
                                                         data-role="${u.role.name}"
-                                                        data-status="${u.active == 'true' ? 'Active' : 'Banned'}">
+                                                        data-status="${u.active == 'true' ? 'Hoạt động' : 'Cấm'}"
+                                                        data-createdAt = "${u.createdAt}"
+                                                        data-createdBy = "${u.createdBy}"
+                                                        data-updatedAt = "${u.updatedAt}"
+                                                        data-updatedBy = "${u.updatedBy}"
+                                                        data-userStores = "${u.userStores}"
+                                                >
+
                                                     <i class="fa fa-eye"></i>
                                                 </button>
                                                 <button id="update-button"class="btn btn-primary btn-sm" title="Update">
@@ -289,16 +296,22 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="userModalLabel">User Information</h5>
+                <h5 class="modal-title" id="userModalLabel">Thông tin chi tiết của người dùng</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p><strong>Name:</strong> <span id="modal-name"></span></p>
-                <p><strong>Phone:</strong> <span id="modal-phone"></span></p>
-                <p><strong>Role:</strong> <span id="modal-role"></span></p>
-                <p><strong>Status:</strong> <span id="modal-status"></span></p>
+                <p><strong>Tên:</strong> <span id="modal-name"></span></p>
+                <p><strong>Số điện thoại:</strong> <span id="modal-phone"></span></p>
+                <p><strong>Vai trò:</strong> <span id="modal-role"></span></p>
+                <p><strong>Trạng thái:</strong> <span id="modal-status"></span></p>
+                <p><strong>Ngày tạo:</strong> <span id="modal-createdAt"></span></p>
+                <p><strong>Người tạo:</strong> <span id="modal-createdBy"></span></p>
+                <p><strong>Ngày cập nhật:</strong> <span id="modal-updatedAt"></span></p>
+                <p><strong>Người cập nhật:</strong> <span id="modal-updatedBy"></span></p>
+
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -320,11 +333,21 @@
             const phone = $(this).data('phone');
             const role = $(this).data('role');
             const status = $(this).data('status');
+            const createdAt = $(this).data('createdAt');
+            const createdBy = $(this).data('createdBy');
+            const updatedAt = $(this).data('updatedAt');
+            const updatedBy = $(this).data('updatedBy');
+            const userStores = $(this).data('userStores');
 
             $('#modal-name').text(name);
             $('#modal-phone').text(phone);
             $('#modal-role').text(role);
             $('#modal-status').text(status);
+            $('#modal-createdAt').text(createdAt);
+            $('#modal-createdBy').text(createdBy);
+            $('#modal-updatedAt').text(updatedAt);
+            $('#modal-updatedBy').text(updatedBy);
+
 
             $('#userModal').modal('show');
         });
