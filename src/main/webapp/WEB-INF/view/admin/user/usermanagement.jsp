@@ -119,8 +119,8 @@
             display: inline-block;
             text-align: left;
             vertical-align: middle;
-            max-width: 700px !important; /* Tăng chiều rộng */
-            width: 90% !important;
+            max-width: 800px !important;
+            width: 95% !important;
             margin: 0 auto !important;
             transform: translate(0, -25%) !important;
         }
@@ -130,11 +130,11 @@
             border-radius: 4px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             height: auto !important;
-            min-height: 200px !important; /* Giảm chiều cao tối thiểu */
+            max-height: 500px !important;
         }
         
         .modal-body {
-            padding: 15px;
+            padding: 20px;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
@@ -145,12 +145,13 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
+            gap: 15px;
         }
         
         .info-group {
-            width: calc(50% - 10px); /* 2 cột, trừ đi margin */
-            margin-bottom: 8px;
-            padding: 8px;
+            width: calc(50% - 10px);
+            margin-bottom: 12px;
+            padding: 10px;
             background: #f8f9fa;
             border-radius: 3px;
             display: flex;
@@ -159,13 +160,13 @@
         
         .info-group label {
             width: 120px;
-            font-size: 0.9em;
+            font-size: 14px;
             margin-bottom: 0;
             white-space: nowrap;
         }
         
         .info-value {
-            font-size: 0.9em;
+            font-size: 14px;
             flex: 1;
         }
         
@@ -174,6 +175,16 @@
             color: white;
             border-radius: 4px 4px 0 0;
             padding: 10px 15px;
+            height: 50px;
+        }
+        
+        .modal-header .close {
+            display: none !important;
+        }
+        
+        .modal-title {
+            font-size: 14px;
+            margin: 0;
         }
         
         .modal-footer {
@@ -181,12 +192,12 @@
             border-top: 1px solid #dee2e6;
             background: #f8f9fa;
             border-radius: 0 0 4px 4px;
-            justify-content: flex-end;
+            height: 50px;
         }
         
         .modal-footer .btn {
             padding: 5px 15px;
-            font-size: 0.9em;
+            font-size: 14px;
         }
     </style>
 </head>
