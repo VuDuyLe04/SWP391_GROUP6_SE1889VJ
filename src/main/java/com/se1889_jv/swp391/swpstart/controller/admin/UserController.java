@@ -51,5 +51,11 @@ public class UserController {
 
         return "admin/user/usermanagement";
     }
+    @GetMapping("/adduser")
+    public String addUser() {
+        return "admin/user/adduser";
+
+    }
+
 
 }
