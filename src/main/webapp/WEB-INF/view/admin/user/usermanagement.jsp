@@ -42,7 +42,58 @@
 
     <!-- Head Libs -->
     <script src="/client/auth/assets/vendor/modernizr/modernizr.js"></script>
-
+    <style>
+        .panel-featured-primary {
+            border-color: #0088cc;
+        }
+        .panel-featured-primary .panel-heading {
+            background-color: #0088cc;
+            color: #FFF;
+            border-radius: 5px 5px 0 0;
+        }
+        .input-group-addon {
+            background-color: #0088cc;
+            color: #FFF;
+            border-color: #0088cc;
+        }
+        .table > thead > tr > th {
+            background-color: #f5f5f5;
+            border-bottom: 2px solid #0088cc;
+        }
+        .btn-primary {
+            background-color: #0088cc;
+            border-color: #0088cc;
+        }
+        .btn-primary:hover {
+            background-color: #006699;
+            border-color: #006699;
+        }
+        .label-sm {
+            font-size: 90%;
+            padding: 3px 8px;
+        }
+        .mr-xs {
+            margin-right: 5px;
+        }
+        .mb-xs {
+            margin-bottom: 5px;
+        }
+        .mt-xs {
+            margin-top: 5px;
+        }
+        .status-label {
+            display: inline-block;
+            min-width: 85px;
+            text-align: center;
+            padding: 5px 10px;
+        }
+        .pagination {
+            margin: 20px auto;
+            display: inline-flex;
+            justify-content: center;
+            padding-left: 0;
+        }
+    </style>
 </head>
 <body>
 
@@ -164,57 +215,36 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="u" items="${userPage.content}">
-                                            <!-- The Modal -->
-                                            <div class="modal" id="myModal">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-
-                                                        <!-- Modal Header -->
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title">Modal Heading</h4>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                        </div>
-
-                                                        <!-- Modal body -->
-                                                        <div class="modal-body">
-                                                            Modal body..
-                                                        </div>
-
-                                                        <!-- Modal footer -->
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-
-                            <tr>
-                                                <td><strong>${u.name}</strong></td>
-                                                <td>${u.phone}</td>
-                                                <c:if test="${sessionScope.user.role.id == 1}">
-                                                    <td><span class="text-primary">${u.role.name}</span></td>
-                                                    <td>
-                                                        <span class="label ${u.active == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
-                                                            <i class="fa ${u.active == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
-                                                            ${u.active == "true" ? "Active" : "Banned"}
-                                                        </span>
-                                                    </td>
-                                                </c:if>
+                                    <c:forEach var="u" items="${userPage.content}">
+                                        <tr>
+                                            <td><strong>${u.name}</strong></td>
+                                            <td>${u.phone}</td>
+                                            <c:if test="${sessionScope.user.role.id == 1}">
+                                                <td><span class="text-primary">${u.role.name}</span></td>
                                                 <td>
-                                                    <button id="view-button" class="btn btn-default btn-sm mr-xs" title="View ">
-                                                        <i class="fa fa-eye"></i>
-                                                    </button>
-                                                    <button id="update-button"class="btn btn-primary btn-sm" title="Update">
-                                                        <i class="fa fa-pencil"></i>
-                                                    </button>
+                <span class="label ${u.active == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
+                    <i class="fa ${u.active == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
+                    ${u.active == "true" ? "Active" : "Banned"}
+                </span>
                                                 </td>
-                                            </tr>
-                                        </c:forEach>
+                                            </c:if>
+                                            <td>
+                                                <button
+                                                        class="btn btn-default btn-sm mr-xs view-button"
+                                                        title="View"
+                                                        data-name="${u.name}"
+                                                        data-phone="${u.phone}"
+                                                        data-role="${u.role.name}"
+                                                        data-status="${u.active == 'true' ? 'Active' : 'Banned'}">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                                <button id="update-button"class="btn btn-primary btn-sm" title="Update">
+                                                    <i class="fa fa-pencil"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+
                                     </tbody>
                                 </table>
 
@@ -253,89 +283,58 @@
     </div>
 </section>
 
-<style>
-    .panel-featured-primary {
-        border-color: #0088cc;
-    }
-    .panel-featured-primary .panel-heading {
-        background-color: #0088cc;
-        color: #FFF;
-        border-radius: 5px 5px 0 0;
-    }
-    .input-group-addon {
-        background-color: #0088cc;
-        color: #FFF;
-        border-color: #0088cc;
-    }
-    .table > thead > tr > th {
-        background-color: #f5f5f5;
-        border-bottom: 2px solid #0088cc;
-    }
-    .btn-primary {
-        background-color: #0088cc;
-        border-color: #0088cc;
-    }
-    .btn-primary:hover {
-        background-color: #006699;
-        border-color: #006699;
-    }
-    .label-sm {
-        font-size: 90%;
-        padding: 3px 8px;
-    }
-    .mr-xs {
-        margin-right: 5px;
-    }
-    .mb-xs {
-        margin-bottom: 5px;
-    }
-    .mt-xs {
-        margin-top: 5px;
-    }
-    .status-label {
-        display: inline-block;
-        min-width: 85px;
-        text-align: center;
-        padding: 5px 10px;
-    }
-    .pagination {
-        margin: 20px auto;
-        display: inline-flex;
-        justify-content: center;
-        padding-left: 0;
-    }
-</style>
 
+
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalLabel">User Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Name:</strong> <span id="modal-name"></span></p>
+                <p><strong>Phone:</strong> <span id="modal-phone"></span></p>
+                <p><strong>Role:</strong> <span id="modal-role"></span></p>
+                <p><strong>Status:</strong> <span id="modal-status"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Đoạn mã JavaScript của bạn -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
+<script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
 
 <script>
-    document.getElementById("search-input").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            document.getElementById("search-form").submit();
-        }
-    });
+    $(document).ready(function() {
+        $('.view-button').on('click', function() {
+            const name = $(this).data('name');
+            const phone = $(this).data('phone');
+            const role = $(this).data('role');
+            const status = $(this).data('status');
 
+            $('#modal-name').text(name);
+            $('#modal-phone').text(phone);
+            $('#modal-role').text(role);
+            $('#modal-status').text(status);
 
-
-        document.getElementById("openModal").addEventListener("click", function() {
-        // Lấy modal element
-        var myModal = new bootstrap.Modal(document.getElementById("myModal"));
-        // Hiển thị modal
-        myModal.show();
+            $('#userModal').modal('show');
+        });
     });
 </script>
 
 
 
 
-<script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
-<script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
 <script src="/client/auth/assets/vendor/nanoscroller/nanoscroller.js"></script>
 <script src="/client/auth/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script src="/client/auth/assets/vendor/magnific-popup/magnific-popup.js"></script>
