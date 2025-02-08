@@ -76,7 +76,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <section class="panel panel-featured panel-featured-primary">
-                        <form action="/createuser" method="POST">
+                        <form action="createuser" >
                             <!-- Phone -->
                             <label for="phone">Số điện thoại:</label>
                             <input
@@ -84,8 +84,7 @@
                                     id="phone"
                                     name="phone"
                                     placeholder="Nhập số điện thoại"
-                                    pattern="^[0-9]{10}$"
-                                    title="Số điện thoại phải bao gồm 10 chữ số"
+
                                     value="${param.phone != null ? param.phone : ''}"
                                     onblur="checkPhone(this.value)"
                                     required
@@ -131,7 +130,8 @@
 
                             <!-- Role-based Active Status -->
                             <c:if test="${sessionScope.user.role.id == 1}">
-                                <label for="active">Trạng thái:</label><br>
+                                <label for="active">Hoạt động:</label><br>
+
                                 <input
                                         type="checkbox"
                                         id="active"
@@ -139,7 +139,8 @@
                                         value="true"
                                     ${param.active == 'true' ? 'checked' : ''}
                                 >
-                                <label for="active">Hoạt động</label>
+
+
                             </c:if>
 
                             <c:if test="${sessionScope.user.role.id == 2}">
@@ -151,7 +152,8 @@
                             </c:if>
 
                             <!-- Submit Button -->
-                            <button type="submit">Tạo </button>
+                            <button type="submit" ${success != null ? 'disabled' : ''}>Tạo </button>
+                            ${success}
                         </form>
 
                     </section>

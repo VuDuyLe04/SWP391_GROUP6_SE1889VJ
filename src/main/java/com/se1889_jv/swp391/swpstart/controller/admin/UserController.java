@@ -1,7 +1,9 @@
 package com.se1889_jv.swp391.swpstart.controller.admin;
 
 
+import com.se1889_jv.swp391.swpstart.domain.Role;
 import com.se1889_jv.swp391.swpstart.domain.User;
+import com.se1889_jv.swp391.swpstart.service.implementservice.RoleService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -22,6 +25,8 @@ public class UserController {
     UserService userService;
     @Autowired
     StoreService storeService;
+    @Autowired
+    RoleService roleService;
 
     @GetMapping("/usermanagement")
     public String getAllUser(@RequestParam(value = "input", required = false) String input,
@@ -32,7 +37,7 @@ public class UserController {
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
         Pageable pageable = PageRequest.of(Integer.parseInt(page),5 ,sort);
         Page<User> users = userService.getAll(pageable);
-        if (!(input == null)) {
+        if (input != null) {
             users = userService.getUsersBySearch(input, input,pageable);
             model.addAttribute("input", input);
         }
@@ -46,12 +51,10 @@ public class UserController {
         model.addAttribute("roleId", roleId);
         model.addAttribute("userPage", users);
 
-//        List<Store> stores = storeService.getAllStores();
-//        model.addAttribute("stores", stores);
 
         return "admin/user/usermanagement";
     }
-    @GetMapping("adduserin")
+    @GetMapping("adduser")
     public String addUserIn(){
         return "admin/user/adduserin";
     }
@@ -68,6 +71,30 @@ public class UserController {
 
         }
         return "admin/user/adduserin";
+
+    }
+    @GetMapping("createuser")
+    public String createUser(@RequestParam(value="phone") String phone,
+                             @RequestParam(value="password") String password,
+                             @RequestParam(value="name") String name,
+                             @RequestParam(value="active",defaultValue = "false") String active,
+                             Model model){
+
+        User user = new User();
+        user.setPhone(phone);
+        user.setPassword(password);
+        user.setName(name);
+        user.setActive(active.toLowerCase().equals("true"));
+        // phan biet staff vs owner
+        user.setCreatedBy("admin");
+        user.setRole(roleService.getRole(Long.valueOf(1L)));
+        user.setUserStores(null);
+        userService.createUser(user);
+        if (userService.getUserByPhone(phone) != null) {
+            model.addAttribute("success","Tạo người dùng thành công");
+        }
+        return "admin/user/adduserin";
+
 
     }
 
