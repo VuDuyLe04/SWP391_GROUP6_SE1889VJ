@@ -336,7 +336,12 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2><i class="fa fa-users mr-xs"></i> Tạo người dùng</h2>
+                <h2>
+                    <a href="usermanagement" style="color: inherit; text-decoration: none;">
+                        <i class="fa fa-arrow-left mr-xs" style="cursor: pointer;"></i>
+                    </a>
+                    Tạo người dùng
+                </h2>
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
                         <li>
