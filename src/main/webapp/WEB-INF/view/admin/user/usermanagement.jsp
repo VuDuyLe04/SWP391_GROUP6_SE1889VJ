@@ -300,9 +300,10 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <button class="btn btn-primary mb-xs mt-xs mr-xs">
+                                        <a href="adduserin" class="btn btn-primary mb-xs mt-xs mr-xs">
                                             <i class="fa fa-plus mr-xs"></i>Add User
-                                        </button>
+                                        </a>
+
                                     </div>
                                 </div>
                             </div>

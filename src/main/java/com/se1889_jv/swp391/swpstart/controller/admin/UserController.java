@@ -51,5 +51,37 @@ public class UserController {
 
         return "admin/user/usermanagement";
     }
+    @GetMapping("adduserin")
+    public String addUserIn(){
+        return "admin/user/adduserin";
+    }
+    @GetMapping("checkphone")
+    public String checkPhone(@RequestParam(value="phone") String phone,
+                                    Model model){
+        String error = null;
+
+        if(phone != null){
+            if(userService.getUserByPhone(phone) != null){
+                error = "Số điện thoại đã tồn tại! ";
+                model.addAttribute("error", error);
+            }
+
+        }
+        return "admin/user/adduserin";
+
+    }
 
 }
+// su khac biet giua return redirect and return ko co direct
+// redirect sang mot url moi, thanh 2 request, ngan ngua viec gui lai form vi no la 2 request
+//nen khi refresh lai trang thi no chi noi dung cua request thu 2,thuong khong gui dc du lieu kem
+//chi co the gui qua url
+
+// return ko redirect ko chuyen sang 1 url moi, chi 1 request, bi gui lai form
+// va thuong dunf khi can tra ve file jsp de render , thuong gui dc du lieu di kem
+// thong qua Modal
+
+
+// dung param de lay du lieu tu request, nhung chi trong mot request thoi, con neu 2 request thi ko lay duoc
+//vi du nhu neu dung redirect sang urrl moi thi ko lay duoc
+// nma neu jsp gui len server,sau do server return ve jsp do (ko redirect) thi van lay duoc
