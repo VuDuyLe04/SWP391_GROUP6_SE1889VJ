@@ -383,7 +383,7 @@
                             <p style="color: red">
                                 ${error}
                             </p>
-                            <p id="phoneError" style="color:red; display: none"> "Số điện thoại không hợp lệ. Xin vui lòng nhập lại!"</p>
+                            <p id="phoneError" style="color:red; display: none"> </p>
                             <!-- Password -->
                             <label for="password">Mật khẩu:</label>
                             <input
@@ -407,7 +407,7 @@
                                     value="${useru.password != null ? useru.password : ''}"
                                     required
                             >
-                            <p id="repassError"  style="color: red"></p>
+                            <p id="repassError" style="color: red"></p>
 
                             <!-- Name -->
                             <label for="name">Tên:</label>
@@ -453,17 +453,32 @@
 </section>
 
 <script>
-    function checkPhone(phone,id) {
-        const phoneRegex = /^[0-9]{10}$/;
-        if ( phoneRegex.test(phone))
- window.location.href = "checkphone?updatedPhone=" + phone + "&id="+ id;
-        // window.location.href = "checkphone?updatedPhone=" + phone ;
-        else{
-            document.getElementById("phoneError").style.display = "block";
-            return fasle; // ngan ngua submit
+    function checkPhone(phone) {
+        const phoneRegex = /^[0-9]{10}$/; // Kiểm tra số điện thoại có đúng 10 chữ số
+        const phoneError = document.getElementById("phoneError"); // Phần tử hiển thị lỗi
+
+        if (phone.trim() === "") {
+            phoneError.textContent = "Vui lòng nhập số điện thoại!";
+            phoneError.style.color = "red";
+            phoneError.style.display = "block";
+
+            return false; // Ngăn chặn submit
         }
+
+        if (!phoneRegex.test(phone)) {
+            phoneError.textContent = "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số!";
+            phoneError.style.color = "red";
+            phoneError.style.display = "block";
+
+            return false; // Ngăn chặn submit
+        }
+
+        // Số điện thoại hợp lệ
+        phoneError.style.display = "none"; // Ẩn thông báo lỗi
+        window.location.href = "checkphone?updatedPhone=" + phone + "&id="+ id;
         return true;
     }
+
 
 
     function checkPassword() {
@@ -474,14 +489,23 @@
         const repassError = document.getElementById("repassError");
 
         const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/;
-        if (password && password.trim() !== "" && !passRegex.test(password)) {
+
+        // Check if password is empty
+        if (!password || password.trim() === "") {
+            passError.textContent = "Vui lòng nhập mật khẩu!";
+            return false;
+        } else if (!passRegex.test(password)) {
             passError.textContent = "Mật khẩu không hợp lệ. Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!";
             return false;
         } else {
             passError.textContent = "";
         }
 
-        if ( repassword && repassword.trim() !== "" && password !== repassword) {
+        // Check if repassword is empty
+        if (!repassword || repassword.trim() === "") {
+            repassError.textContent = "Vui lòng nhập lại mật khẩu!";
+            return false;
+        } else if (password !== repassword) {
             repassError.textContent = "Mật khẩu không khớp. Xin vui lòng nhập lại!";
             return false;
         } else {
