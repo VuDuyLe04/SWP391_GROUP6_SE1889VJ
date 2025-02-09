@@ -66,23 +66,27 @@ public class UserController {
                                     Model model){
         String error = null;
         String phone = updatedPhone != null ? updatedPhone : createdPhone;
-        if(phone != null){
-            if(userService.getUserByPhone(phone) != null){
+
+            if(phone != null && userService.getUserByPhone(phone) != null){
                 error = "Số điện thoại đã tồn tại! ";
                 model.addAttribute("error", error);
+
             }
 
+
+        if(updatedPhone != null){
+                User user = userService.findById(Long.parseLong(id));
+                user.setPhone(updatedPhone);
+                model.addAttribute("useru", user);
+
+        return "admin/user/updateuser";
+
         }
-       if(updatedPhone != null && id!= null) {
+        else
+        return "admin/user/adduserin";
 
-//
-            User user = userService.findById(Long.parseLong(id));
-            model.addAttribute("useru", user);
-            return "admin/user/updateuser";
 
-        }
 
-        else return "admin/user/adduserin";
 
     }
     @GetMapping("createuser")
