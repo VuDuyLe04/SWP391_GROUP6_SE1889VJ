@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -87,7 +88,7 @@ public class UserController {
         user.setActive(active.toLowerCase().equals("true"));
         // phan biet staff vs owner
         user.setCreatedBy("admin");
-        user.setRole(roleService.getRole(Long.valueOf(1L)));
+        user.setRole(roleService.getRole(Long.valueOf(2L)));
         user.setUserStores(null);
         userService.createUser(user);
         if (userService.getUserByPhone(phone) != null) {
@@ -95,7 +96,28 @@ public class UserController {
         }
         return "admin/user/adduserin";
 
+    }
+    @GetMapping("updateuser")
+    public String updateUser(@RequestParam String id,
+                             @RequestParam(value="phone",required = false) String phone,
+                             @RequestParam(value="password",required = false) String password,
+                             @RequestParam(value="name",required = false) String name,
+                             @RequestParam(value="active",defaultValue = "false") String active,
+                             Model model){
+        User user = new User();
 
+            user = userService.findById(Long.parseLong(id));
+        if(phone != null){
+            user.setPhone(phone);
+            user.setPassword(password);
+            user.setName(name);
+            user.setActive(active.toLowerCase().equals("true"));
+
+            userService.createUser(user);
+        }
+
+        model.addAttribute("useru", user);
+        return "admin/user/updateuser";
     }
 
 }

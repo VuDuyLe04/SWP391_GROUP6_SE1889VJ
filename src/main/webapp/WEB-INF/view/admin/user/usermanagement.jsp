@@ -352,9 +352,9 @@
 
                                                     <i class="fa fa-eye"></i>
                                                 </button>
-                                                <button id="update-button"class="btn btn-primary btn-sm" title="Update">
+                                                <a href="updateuser?id=${u.id}" class="btn btn-primary btn-sm" title="Update">
                                                     <i class="fa fa-pencil"></i>
-                                                </button>
+                                                </a>
                                             </td>
                                         </tr>
                                     </c:forEach>

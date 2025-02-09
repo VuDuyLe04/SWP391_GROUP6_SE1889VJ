@@ -349,7 +349,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Tạo người dùng</span></li>
+                        <li><span>Chỉnh sửa người dùng</span></li>
                     </ol>
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
@@ -358,7 +358,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <section class="panel panel-featured panel-featured-primary">
-                        <form action="createuser" >
+                        <form action="updateuser" >
                             <!-- Phone -->
                             <label for="phone">Số điện thoại:</label>
                             <input
@@ -366,15 +366,15 @@
                                     id="phone"
                                     name="phone"
                                     placeholder="Nhập số điện thoại"
+                                    value="${useru.phone != null ? useru.phone : ''}"
 
-                                    value="${param.phone != null ? param.phone : ''}"
                                     onblur="checkPhone(this.value)"
                                     required
                             >
 
-                       <p style="color: red">
-                           ${error}
-                       </p>
+                            <p style="color: red">
+                                ${error}
+                            </p>
                             <p id="phoneError" style="display:none"> "Số điện thoại không hợp lệ. Xin vui lòng nhập lại!"</p>
                             <!-- Password -->
                             <label for="password">Mật khẩu:</label>
@@ -383,8 +383,9 @@
                                     id="password"
                                     name="password"
                                     placeholder="Nhập mật khẩu"
+
                                     onblur="checkPassword()"
-                                    value="${param.password != null ? param.password : ''}"
+                                    value="${useru.password != null ? useru.password : ''}"
                                     required
                             >
                             <p id="passError" style="color: red" > </p>
@@ -395,10 +396,10 @@
                                     name="repassword"
                                     placeholder="Nhập lại mật khẩu"
                                     onblur="checkPassword()"
-                                    value="${param.repassword != null ? param.repassword : ''}"
+                                    value="${useru.password != null ? useru.password : ''}"
                                     required
                             >
-<p id="repassError"  style="color: red"></p>
+                            <p id="repassError"  style="color: red"></p>
 
                             <!-- Name -->
                             <label for="name">Tên:</label>
@@ -407,7 +408,7 @@
                                     id="name"
                                     name="name"
                                     placeholder="Nhập tên"
-                                    value="${param.name != null ? param.name : ''}"
+                                    value="${useru.name != null ? useru.name : ''}"
                                     required
                             >
 
@@ -416,7 +417,7 @@
                                 <div class="status-container">
                                     <label>Trạng thái:</label>
                                     <label class="toggle-switch">
-                                        <input type="checkbox" id="active" name="active" value="true" ${param.active == 'true' ? 'checked' : ''}>
+                                        <input type="checkbox"  name="active" value=" ${useru.active == 'true' ? 'checked' : ''}">
                                         <span class="toggle-slider"></span>
                                     </label>
                                     <span class="status-label">Hoạt động</span>
@@ -432,7 +433,7 @@
                             </c:if>
                             <p style="color: limegreen">${success}</p>
                             <!-- Submit Button -->
-                            <button type="submit" ${success != null ? 'disabled' : ''}>Tạo </button>
+                            <button type="submit" ${success != null ? 'disabled' : ''}>Xác nhận </button>
 
                         </form>
 
@@ -447,12 +448,12 @@
     function checkPhone(phone) {
         const phoneRegex = /^[0-9]{10}$/;
         if ( phoneRegex.test(phone))
-        window.location.href = "checkphone?phone=" + phone;
+            window.location.href = "checkphone?phone=" + phone;
         else{
             document.getElementById("phoneError").style.display = "block";
             return fasle; // ngan ngua submit
         }
-return true;
+        return true;
     }
 
 
