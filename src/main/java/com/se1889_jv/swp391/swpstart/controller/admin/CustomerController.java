@@ -23,15 +23,7 @@ import java.util.List;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
-//    @GetMapping("/customer")
-//    public String getCustomerPage(Model model, @Param("keyword") String keyword) {
-//        List<Customer> list = this.customerService.getAll();
-//        if(keyword != null){
-//        list =  this.customerService.searchCustomer(keyword);
-//        }
-//        model.addAttribute("listCustomer", list);
-//        return "admin/customer/index";
-//        }
+
     @GetMapping("/customer/create")
     public String getCreateCustomerPage(Model model) {
         model.addAttribute("customer", new Customer());
@@ -51,7 +43,7 @@ public class CustomerController {
         Store store = (Store) session.getAttribute("store");
 
         this.customerService.createCustomer(customer, store);
-        return "redirect:/customer";
+        return "redirect:/customers";
     }
 
     @GetMapping("/customer")
@@ -80,23 +72,30 @@ public class CustomerController {
         }
 
         this.customerService.updateCustomer(customer);
-        return "redirect:/customer";
+        return "redirect:/customers";
     }
     @GetMapping("/customer/search")
-    public String searchProduct(@RequestParam("name") String name, Model model) {
+    public String searchCustomer(@RequestParam(required = false) String name,
+                                 @RequestParam(required = false) String phone,
+                                 Model model) {
         List<Customer> customers;
+
         if (name != null && !name.isEmpty()) {
-            customers = customerService.searchProductsByName(name);
+            customers = customerService.searchCustomersByName(name);
+        } else if (phone != null && !phone.isEmpty()) {
+            customers = customerService.searchCustomersByPhone(phone);
         } else {
-            customers = customerService.getAllProducts();
+            customers = customerService.getAllCustomers();
         }
-       model.addAttribute("listCustomer", customers);
+
+        model.addAttribute("listCustomer", customers);
         return "admin/customer/table";
     }
-    @GetMapping("/product")
-    public String getListProductPage(@RequestParam(defaultValue = "0") int page, Model model) {
+
+    @GetMapping("/customers")
+    public String getListCustomerPage(@RequestParam(defaultValue = "0") int page, Model model) {
         Pageable pageable = PageRequest.of(page, 5); // 5 sản phẩm mỗi trang
-        Page<Customer> customerPage = customerService.getAllProducts(pageable);
+        Page<Customer> customerPage = customerService.getAllCustomers(pageable);
         model.addAttribute("listCustomer", customerPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", customerPage.getTotalPages());

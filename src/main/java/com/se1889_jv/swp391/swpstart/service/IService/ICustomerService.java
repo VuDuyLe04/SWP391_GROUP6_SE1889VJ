@@ -13,13 +13,16 @@ public interface ICustomerService {
     List<Customer> getAllCustomers(Store store);
     Customer getCustomerById(long id);
     void updateCustomer(Customer customer);
-//    List<Customer> searchCustomer(String keyword);
-//    List<Customer> getAll();
-public List<Customer> getAllProducts();
-    public default List<Customer> searchProductsByName(String name) {
+public List<Customer> getAllCustomers();
+    public default List<Customer> searchCustomersByName(String name) {
 
         CustomerRepository customerRepository = null;
         return customerRepository.findByNameContainingIgnoreCase(name);
     }
-    Page<Customer> getAllProducts(Pageable pageable);
+    public default List<Customer> searchCustomersByPhone(String phone) {
+
+        CustomerRepository customerRepository = null;
+        return customerRepository.findByPhoneContainingIgnoreCase(phone);
+    }
+    Page<Customer> getAllCustomers(Pageable pageable);
 }

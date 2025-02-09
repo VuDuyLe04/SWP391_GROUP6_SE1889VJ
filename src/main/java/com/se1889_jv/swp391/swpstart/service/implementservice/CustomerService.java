@@ -48,27 +48,22 @@ public class CustomerService implements ICustomerService {
 
         customerRepository.save(customer);
     }
-    public List<Customer> searchProductsByName(String name) {
+    public List<Customer> searchCustomersByName(String name) {
         return customerRepository.findByNameContainingIgnoreCase(name);
+    }
+    public List<Customer> searchCustomersByPhone(String phone) {
+        return customerRepository.findByPhoneContainingIgnoreCase(phone);
     }
 
     @Override
-    public Page<Customer> getAllProducts(Pageable pageable) {
+    public Page<Customer> getAllCustomers(Pageable pageable) {
         return customerRepository.findAll(pageable);
     }
 
     @Override
-    public List<Customer> getAllProducts() {
+    public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
 
-//    @Override
-//    public List<Customer> searchCustomer(String keyword) {
-//        return this.customerRepository.searchCustomer(keyword);
-//    }
-//    @Override
-//    public List<Customer> getAll(){
-//        return this.customerRepository.findAll();
-//
-//    }
+
 }

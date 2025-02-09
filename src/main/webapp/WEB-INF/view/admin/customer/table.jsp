@@ -111,6 +111,17 @@
                                         </div>
                                     </form>
                                 </div>
+                                <div class="col-md-3">
+                                    <!-- Form tìm kiếm theo số điện thoại -->
+                                    <form method="GET" action="/customer/search" class="form-inline">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="phone" placeholder="Search by phone" value="${param.phone}" />
+                                            <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </span>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
 
                         </header>
@@ -146,6 +157,31 @@
                                     </tbody>
 
                                 </table>
+                                <div class="pagination-container text-center mt-3">
+                                    <ul class="pagination justify-content-center">
+                                        <c:if test="${currentPage > 0}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="/customers?page=${currentPage - 1}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo; Trước</span>
+                                                </a>
+                                            </li>
+                                        </c:if>
+                                        <c:if test="${totalPages > 0}">
+                                            <c:forEach begin="0" end="${totalPages - 1}" var="i">
+                                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                    <a class="page-link" href="/customers?page=${i}">${i + 1}</a>
+                                                </li>
+                                            </c:forEach>
+                                        </c:if>
+                                        <c:if test="${currentPage < totalPages - 1}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="/customers?page=${currentPage + 1}" aria-label="Next">
+                                                    <span aria-hidden="true">Sau &raquo;</span>
+                                                </a>
+                                            </li>
+                                        </c:if>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
 
