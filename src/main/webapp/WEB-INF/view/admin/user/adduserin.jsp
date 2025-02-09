@@ -372,10 +372,10 @@
                                     required
                             >
 
-                       <p>
+                       <p style="color: red">
                            ${error}
                        </p>
-                            <p id="phoneError" style="display:none"> "Số điện thoại không hợp lệ. Xin vui lòng nhập lại  "</p>
+                            <p id="phoneError" style="display:none"> "Số điện thoại không hợp lệ. Xin vui lòng nhập lại!"</p>
                             <!-- Password -->
                             <label for="password">Mật khẩu:</label>
                             <input
@@ -387,6 +387,7 @@
                                     value="${param.password != null ? param.password : ''}"
                                     required
                             >
+                            <p id="passError" style="color: red" > </p>
                             <label for="repassword">Nhập lại mật khẩu:</label>
                             <input
                                     type="password"
@@ -397,8 +398,8 @@
                                     value="${param.repassword != null ? param.repassword : ''}"
                                     required
                             >
-<p id="repassError" ></p>
-                            <p id="passError" > </p>
+<p id="repassError"  style="color: red"></p>
+
                             <!-- Name -->
                             <label for="name">Tên:</label>
                             <input
@@ -429,10 +430,10 @@
                                     <option value="false" ${param.active == 'false' ? 'selected' : ''}>Cấm</option>
                                 </select>
                             </c:if>
-
+<p style="color: limegreen">${success}</p>
                             <!-- Submit Button -->
                             <button type="submit" ${success != null ? 'disabled' : ''}>Tạo </button>
-                            ${success}
+
                         </form>
 
                     </section>
@@ -464,14 +465,14 @@ return true;
 
         const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/;
         if (password && password.trim() !== "" && !passRegex.test(password)) {
-            passError.textContent = "Mật khẩu không hợp lệ. Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt.";
+            passError.textContent = "Mật khẩu không hợp lệ. Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!";
             return false;
         } else {
             passError.textContent = "";
         }
 
-        if (repassword.trim() !== "" && password !== repassword) {
-            repassError.textContent = "Mật khẩu không khớp. Xin vui lòng nhập lại.";
+        if ( repassword && repassword.trim() !== "" && password !== repassword) {
+            repassError.textContent = "Mật khẩu không khớp. Xin vui lòng nhập lại!";
             return false;
         } else {
             repassError.textContent = "";
