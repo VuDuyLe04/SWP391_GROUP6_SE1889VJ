@@ -447,7 +447,7 @@
     function checkPhone(phone) {
         const phoneRegex = /^[0-9]{10}$/;
         if ( phoneRegex.test(phone))
-        window.location.href = "checkphone?phone=" + phone;
+        window.location.href = "checkphone?createdPhone=" + phone;
         else{
             document.getElementById("phoneError").style.display = "block";
             return fasle; // ngan ngua submit

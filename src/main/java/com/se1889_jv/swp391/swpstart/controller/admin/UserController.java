@@ -60,10 +60,12 @@ public class UserController {
         return "admin/user/adduserin";
     }
     @GetMapping("checkphone")
-    public String checkPhone(@RequestParam(value="phone") String phone,
+    public String checkPhone(@RequestParam(value="createdPhone",required = false) String createdPhone,
+                             @RequestParam(value="updatedPhone",required = false) String updatedPhone,
+                             @RequestParam(value="id",required = false) String id,
                                     Model model){
         String error = null;
-
+        String phone = updatedPhone != null ? updatedPhone : createdPhone;
         if(phone != null){
             if(userService.getUserByPhone(phone) != null){
                 error = "Số điện thoại đã tồn tại! ";
@@ -71,7 +73,16 @@ public class UserController {
             }
 
         }
-        return "admin/user/adduserin";
+       if(updatedPhone != null && id!= null) {
+
+//
+            User user = userService.findById(Long.parseLong(id));
+            model.addAttribute("useru", user);
+            return "admin/user/updateuser";
+
+        }
+
+        else return "admin/user/adduserin";
 
     }
     @GetMapping("createuser")
@@ -114,6 +125,9 @@ public class UserController {
             user.setActive(active.toLowerCase().equals("true"));
 
             userService.createUser(user);
+            if(user.getPhone().equals(phone)){
+                model.addAttribute("success","Cập nhật người dùng thành công!");
+            }
         }
 
         model.addAttribute("useru", user);

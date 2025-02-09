@@ -340,7 +340,7 @@
                     <a href="usermanagement" style="color: inherit; text-decoration: none;">
                         <i class="fa fa-arrow-left mr-xs" style="cursor: pointer;"></i>
                     </a>
-                    Tạo người dùng
+                    Chỉnh sửa người dùng
                 </h2>
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -360,6 +360,14 @@
                     <section class="panel panel-featured panel-featured-primary">
                         <form action="updateuser" >
                             <!-- Phone -->
+                            <input
+                                    type="text"
+                                       hidden=""
+                                    name="id"
+                                    placeholder="Nhập tên"
+                                    value="${useru.id != null ? useru.id : ''}"
+
+                            >
                             <label for="phone">Số điện thoại:</label>
                             <input
                                     type="text"
@@ -367,15 +375,15 @@
                                     name="phone"
                                     placeholder="Nhập số điện thoại"
                                     value="${useru.phone != null ? useru.phone : ''}"
-
-                                    onblur="checkPhone(this.value)"
+<%--                                    onblur="checkPhone(this.value)"--%>
+                                    onblur="checkPhone(this.value,'${useru.id}')"
                                     required
                             >
 
                             <p style="color: red">
                                 ${error}
                             </p>
-                            <p id="phoneError" style="display:none"> "Số điện thoại không hợp lệ. Xin vui lòng nhập lại!"</p>
+                            <p id="phoneError" style="color:red; display: none"> "Số điện thoại không hợp lệ. Xin vui lòng nhập lại!"</p>
                             <!-- Password -->
                             <label for="password">Mật khẩu:</label>
                             <input
@@ -417,7 +425,7 @@
                                 <div class="status-container">
                                     <label>Trạng thái:</label>
                                     <label class="toggle-switch">
-                                        <input type="checkbox"  name="active" value=" ${useru.active == 'true' ? 'checked' : ''}">
+                                        <input type="checkbox"  name="active"  ${useru.active == 'true' ? 'checked' : ''}>
                                         <span class="toggle-slider"></span>
                                     </label>
                                     <span class="status-label">Hoạt động</span>
@@ -445,10 +453,11 @@
 </section>
 
 <script>
-    function checkPhone(phone) {
+    function checkPhone(phone,id) {
         const phoneRegex = /^[0-9]{10}$/;
         if ( phoneRegex.test(phone))
-            window.location.href = "checkphone?phone=" + phone;
+ window.location.href = "checkphone?updatedPhone=" + phone + "&id="+ id;
+        // window.location.href = "checkphone?updatedPhone=" + phone ;
         else{
             document.getElementById("phoneError").style.display = "block";
             return fasle; // ngan ngua submit
