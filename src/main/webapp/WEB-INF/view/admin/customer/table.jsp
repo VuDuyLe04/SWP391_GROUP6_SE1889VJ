@@ -91,7 +91,7 @@
         font-size: 14px;
         font-weight: bold;
         color: #ffffff;
-        background: linear-gradient(90deg, #28a745, #218838);
+        background: linear-gradient(90deg, #0093DD, #007ACC);
         border: none;
         border-radius: 5px;
         text-decoration: none;
@@ -100,6 +100,19 @@
                             </div>
 
                             <h2 class="panel-title">Danh sách khách hàng</h2>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <form method="GET" action="/customer/search" class="form-inline" style="margin-bottom: 20px;">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="name" placeholder="Search by name" value="${param.name}" />
+                                            <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
                         </header>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -135,6 +148,8 @@
                                 </table>
                             </div>
                         </div>
+
+
                     </section>
 
 

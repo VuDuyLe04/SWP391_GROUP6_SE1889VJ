@@ -8,20 +8,30 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
-
-
+//    @GetMapping("/customer")
+//    public String getCustomerPage(Model model, @Param("keyword") String keyword) {
+//        List<Customer> list = this.customerService.getAll();
+//        if(keyword != null){
+//        list =  this.customerService.searchCustomer(keyword);
+//        }
+//        model.addAttribute("listCustomer", list);
+//        return "admin/customer/index";
+//        }
     @GetMapping("/customer/create")
     public String getCreateCustomerPage(Model model) {
         model.addAttribute("customer", new Customer());
@@ -71,6 +81,26 @@ public class CustomerController {
 
         this.customerService.updateCustomer(customer);
         return "redirect:/customer";
+    }
+    @GetMapping("/customer/search")
+    public String searchProduct(@RequestParam("name") String name, Model model) {
+        List<Customer> customers;
+        if (name != null && !name.isEmpty()) {
+            customers = customerService.searchProductsByName(name);
+        } else {
+            customers = customerService.getAllProducts();
+        }
+       model.addAttribute("listCustomer", customers);
+        return "admin/customer/table";
+    }
+    @GetMapping("/product")
+    public String getListProductPage(@RequestParam(defaultValue = "0") int page, Model model) {
+        Pageable pageable = PageRequest.of(page, 5); // 5 sản phẩm mỗi trang
+        Page<Customer> customerPage = customerService.getAllProducts(pageable);
+        model.addAttribute("listCustomer", customerPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", customerPage.getTotalPages());
+        return "admin/customer/table";
     }
 
 }
