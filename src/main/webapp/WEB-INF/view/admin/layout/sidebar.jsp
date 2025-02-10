@@ -23,7 +23,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/usermanagement">
                             <i class="fa fa-user" aria-hidden="true"></i>
                             <span>Người dùng</span>
                         </a>

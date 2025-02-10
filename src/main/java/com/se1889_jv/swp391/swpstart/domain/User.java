@@ -17,22 +17,28 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String phone;
+    private String phone; //ca hai
     @NotBlank
     private String password;
-    private String name;
+    private String name;//cahai
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
-    private boolean active;
+    private boolean active;//admin
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private Role role;
+    private Role role;//admin
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<UserStore> userStores;
+public void addUserStore() {
+
+    User user = new User();
+    user.getUserStores();
+
+}
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<TransactionService> transactionServices;

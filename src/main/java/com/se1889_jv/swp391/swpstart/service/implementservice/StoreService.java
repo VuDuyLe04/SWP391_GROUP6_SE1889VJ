@@ -6,6 +6,8 @@ import com.se1889_jv.swp391.swpstart.service.IService.IStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StoreService implements IStoreService {
     @Autowired
@@ -18,5 +20,10 @@ public class StoreService implements IStoreService {
         }
 
         return null;
+    }
+
+    @Override
+    public List<Store> getAllStores() {
+        return storeRepository.findAll();
     }
 }

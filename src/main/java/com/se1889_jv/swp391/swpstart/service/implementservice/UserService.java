@@ -11,6 +11,8 @@ import com.se1889_jv.swp391.swpstart.repository.UserRepository;
 import com.se1889_jv.swp391.swpstart.repository.UserStoreRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +35,6 @@ public class UserService implements IUserService {
 
     @Autowired
     private  StoreRepository storeRepository;
-
-    @Autowired
-    private  UserStoreRepository userStoreRepository;
 
 
 
@@ -80,6 +79,34 @@ public class UserService implements IUserService {
     public boolean checkPhoneExist(String phone) {
         return this.userRepository.existsByPhone(phone);
     }
+
+    @Override
+    public Page<User> getAll(Pageable pageable){
+        return this.userRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<User> getUsersBySearch(String name, String phone, Pageable pageable) {
+        return this.userRepository.findUsersByNameContainingOrPhoneContaining(name,phone,pageable);
+
+    }
+
+    @Override
+    public Page<User> getUsersbyRoleID(Long id, Pageable pageable) {
+
+        return this.userRepository.findUsersByRoleId(id,pageable);
+    }
+
+    @Override
+    public Page<User> getUsersByActive(boolean active, Pageable pageable) {
+        return this.userRepository.findUsersByActive(active,pageable);
+    }
+
+    @Override
+    public Page<User> getUsersByRoleIDAndActive(Long id, boolean active, Pageable pageable) {
+        return this.userRepository.findUsersByRoleIdAndActive(id, active,pageable);
+    }
+
 
 
 
