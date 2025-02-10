@@ -162,19 +162,19 @@
                             <ul class="pagination">
                                 <c:if test="${currentPage > 0}">
                                     <li>
-                                        <a href="/product/sorted?page=${currentPage - 1}&sort=${sort}&order=${order}">Trước</a>
+                                        <a href="/product?page=${currentPage - 1}&sort=${sort}&order=${order}">Trước</a>
                                     </li>
                                 </c:if>
 
                                 <c:forEach begin="0" end="${totalPages - 1}" var="i">
                                     <li class="${i == currentPage ? 'active' : ''}">
-                                        <a href="/product/sorted?page=${i}&sort=${sort}&order=${order}">${i + 1}</a>
+                                        <a href="/product?page=${i}&sort=${sort}&order=${order}">${i + 1}</a>
                                     </li>
                                 </c:forEach>
 
                                 <c:if test="${currentPage < totalPages - 1}">
                                     <li>
-                                        <a href="/product/sorted?page=${currentPage + 1}&sort=${sort}&order=${order}">Sau</a>
+                                        <a href="/product?page=${currentPage + 1}&sort=${sort}&order=${order}">Sau</a>
                                     </li>
                                 </c:if>
                             </ul>
