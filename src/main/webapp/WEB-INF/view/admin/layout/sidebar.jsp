@@ -36,7 +36,7 @@
 
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/product">
                             <i class="fa fa-tasks" aria-hidden="true"></i>
                             <span>Sản phẩm</span>
                         </a>
