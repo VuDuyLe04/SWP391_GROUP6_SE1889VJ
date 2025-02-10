@@ -216,7 +216,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2><i class="fa fa-users mr-xs"></i> User Management</h2>
+                <h2><i class="fa fa-users mr-xs"></i> Quản lí người dùng</h2>
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
                         <li>
@@ -246,7 +246,7 @@
                                         <form id="search-form" action="usermanagement" method="get" class="search nav-form">
                                             <div class="input-group input-search">
                                                 <input type="text" class="form-control" name="input" 
-                                                       placeholder="Search by name or phone..." value="${input}" required>
+                                                       placeholder="Tìm kiếm theo tên hoặc số điện thoại" value="${input}" required>
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-primary" type="submit">
                                                         <i class="fa fa-search"></i>
@@ -268,10 +268,10 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
                                                     <select id="role" name="role" class="form-control">
-                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >All Roles</option>
-                                                        <option ${roleId == 1 ? "selected" : ""} value="1">Admin</option>
-                                                        <option ${roleId == 2 ? "selected" : ""} value="2">Owner</option>
-                                                        <option ${roleId == 3 ? "selected" : ""} value="3">Staff</option>
+                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >Vai trò</option>
+                                                        <option ${roleId == 1 ? "selected" : ""} value="1">Quản trị viên</option>
+                                                        <option ${roleId == 2 ? "selected" : ""} value="2">Chủ sở hữu</option>
+                                                        <option ${roleId == 3 ? "selected" : ""} value="3">Nhân viên</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -279,13 +279,13 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
                                                     <select id="active" name="active" class="form-control">
-                                                        <option ${active == -1 ? "selected" : ""} value="-1">All Status</option>
-                                                        <option ${active == 1 ? "selected" : ""} value="1">Active</option>
-                                                        <option ${active == 0 ? "selected" : ""} value="0">Banned</option>
+                                                        <option ${active == -1 ? "selected" : ""} value="-1">Trạng thái</option>
+                                                        <option ${active == 1 ? "selected" : ""} value="1">Hoạt động</option>
+                                                        <option ${active == 0 ? "selected" : ""} value="0">Bị cấm</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Filter</button>
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>
                                         </c:if>
 <%--                                        <c:if test="${sessionScope.user.role.id == 2}">--%>
 <%--                                            <select id="store" name="store" class="form-control">--%>
@@ -301,7 +301,7 @@
                                 <div class="col-sm-6">
                                     <div class="pull-right">
                                         <a href="adduser" class="btn btn-primary mb-xs mt-xs mr-xs">
-                                            <i class="fa fa-plus mr-xs"></i>Add User
+                                            <i class="fa fa-plus mr-xs"></i>Tạo người dùng
                                         </a>
 
                                     </div>
@@ -312,13 +312,13 @@
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
                                         <tr>
-                                            <th><i class="fa fa-user mr-xs"></i>Name</th>
-                                            <th><i class="fa fa-phone mr-xs"></i>Phone</th>
+                                            <th><i class="fa fa-user mr-xs"></i>Tên</th>
+                                            <th><i class="fa fa-phone mr-xs"></i>Số điện thoại</th>
                                             <c:if test="${sessionScope.user.role.id == 1}">
-                                                <th><i class="fa fa-users mr-xs"></i>Role</th>
-                                                <th><i class="fa fa-check-circle mr-xs"></i>Status</th>
+                                                <th><i class="fa fa-users mr-xs"></i>Vai trò</th>
+                                                <th><i class="fa fa-check-circle mr-xs"></i>Trạng thái</th>
                                             </c:if>
-                                            <th><i class="fa fa-cogs mr-xs"></i>Actions</th>
+                                            <th><i class="fa fa-cogs mr-xs"></i>Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -338,7 +338,7 @@
                                             <td>
                                                 <button
                                                         class="btn btn-default btn-sm mr-xs view-button"
-                                                        title="View"
+                                                        title="Xem"
                                                         data-name="${u.name}"
                                                         data-phone="${u.phone}"
                                                         data-role="${u.role.name}"
@@ -352,7 +352,7 @@
 
                                                     <i class="fa fa-eye"></i>
                                                 </button>
-                                                <a href="updateuser?id=${u.id}" class="btn btn-primary btn-sm" title="Update">
+                                                <a href="updateuser?id=${u.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
                                             </td>
@@ -365,7 +365,7 @@
                                 <c:set var="c" value="${userPage.number}"></c:set>
                                 <ul class="pagination justify-content-center" style="margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
-                                        <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}">Previous</a>
+                                        <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}">Trước</a>
                                     </li>
 
                                     <c:forEach begin="0" end="${userPage.totalPages - 1}" var="i">
@@ -382,7 +382,7 @@
 
 
                                     <li class="page-item ${c== userPage.totalPages -1?'disabled':''} ">
-                                        <a class="page-link" href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}">Next</a>
+                                        <a class="page-link" href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}">Sau</a>
                                     </li>
 
                                 </ul>
@@ -404,7 +404,7 @@
         <div class="modal-content" style="margin-top:330px">
             <div class="modal-header">
                 <h4 class="modal-title" id="userModalLabel">
-                    <i class="fa fa-user-circle mr-xs"></i> User Information
+                    <i class="fa fa-user-circle mr-xs"></i> Thông tin chi tiết
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -413,42 +413,42 @@
             <div class="modal-body">
                 <div class="user-info">
                     <div class="info-group">
-                        <label><i class="fa fa-user mr-xs"></i> Name:</label>
+                        <label><i class="fa fa-user mr-xs"></i> Tên:</label>
                         <span id="modal-name" class="info-value"></span>
                     </div>
                     <div class="info-group">
-                        <label><i class="fa fa-phone mr-xs"></i> Phone:</label>
+                        <label><i class="fa fa-phone mr-xs"></i> Số điện thoại:</label>
                         <span id="modal-phone" class="info-value"></span>
                     </div>
                     <div class="info-group">
-                        <label><i class="fa fa-users mr-xs"></i> Role:</label>
+                        <label><i class="fa fa-users mr-xs"></i> Vai trò:</label>
                         <span id="modal-role" class="info-value"></span>
                     </div>
                     <div class="info-group">
-                        <label><i class="fa fa-check-circle mr-xs"></i> Status:</label>
+                        <label><i class="fa fa-check-circle mr-xs"></i> Trạng thái:</label>
                         <span id="modal-status" class="info-value"></span>
                     </div>
                     <div class="info-group">
-                        <label><i class="fa fa-calendar mr-xs"></i> Created At:</label>
+                        <label><i class="fa fa-calendar mr-xs"></i> Tạo ngày:</label>
                         <span id="modal-createdAt" class="info-value"></span>
                     </div>
                     <div class="info-group">
-                        <label><i class="fa fa-user-plus mr-xs"></i> Created By:</label>
+                        <label><i class="fa fa-user-plus mr-xs"></i> Tạo bởi:</label>
                         <span id="modal-createdBy" class="info-value"></span>
                     </div>
                     <div class="info-group">
-                        <label><i class="fa fa-calendar-plus-o mr-xs"></i> Updated At:</label>
+                        <label><i class="fa fa-calendar-plus-o mr-xs"></i> Cập nhật ngày:</label>
                         <span id="modal-updatedAt" class="info-value"></span>
                     </div>
                     <div class="info-group">
-                        <label><i class="fa fa-user-plus mr-xs"></i> Updated By:</label>
+                        <label><i class="fa fa-user-plus mr-xs"></i> Cập nhật bởi:</label>
                         <span id="modal-updatedBy" class="info-value"></span>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">
-                    <i class="fa fa-times mr-xs"></i>Close
+                    <i class="fa fa-times mr-xs"></i>Đóng
                 </button>
             </div>
         </div>
