@@ -27,7 +27,6 @@ public class Bill {
     private double totalBillPrice;
     private double totalLiftPrice;
     private String note;
-
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
@@ -39,11 +38,5 @@ public class Bill {
     @OneToMany(mappedBy = "bill")
     private List<BillDetail>  billDetails;
 
-    @PrePersist
-    public void handleBeforeCreate() {
-        HttpServletRequest request = null;
-        HttpSession session = request.getSession(false);
-        this.createdBy = (String) session.getAttribute("name");
-        this.createdAt = Instant.now();
-    }
+
 }

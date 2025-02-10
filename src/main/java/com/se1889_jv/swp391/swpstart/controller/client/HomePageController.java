@@ -48,12 +48,13 @@ public class HomePageController {
         if (bindingResult.hasErrors()) {
             return "client/auth/register";
         }
+
         User user = this.userService.registerDTOtoUser(registerDTO);
 
         String hashPassword = this.passwordEncoder.encode(user.getPassword());
 
         user.setPassword(hashPassword);
-        user.setRole(this.userService.getRoleByName("STAFF"));
+        user.setRole(this.userService.getRoleByName("OWNER"));
         // save
         this.userService.createUser(user);
 

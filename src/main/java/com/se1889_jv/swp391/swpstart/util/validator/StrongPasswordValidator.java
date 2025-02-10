@@ -1,5 +1,6 @@
-package com.se1889_jv.swp391.swpstart.service.validator;
+package com.se1889_jv.swp391.swpstart.util.validator;
 
+import com.se1889_jv.swp391.swpstart.util.validator.annotation.StrongPassword;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
