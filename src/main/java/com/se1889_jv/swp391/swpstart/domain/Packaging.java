@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,11 @@ public class Packaging {
     private String packageType;
     private String quantityPerPackage;
     private double liftCost;
-
+    private Instant createdAt;
+    private Instant updatedAt;
+    private String createdBy;
+    private String updatedBy;
+    private boolean storage;
     @OneToMany(mappedBy = "packaging", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BillDetail> billDetails;
 }

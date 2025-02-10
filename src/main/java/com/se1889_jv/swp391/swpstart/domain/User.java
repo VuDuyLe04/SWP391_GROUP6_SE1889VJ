@@ -14,7 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -32,21 +31,11 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserStore> userStores;
 
-    //    @Setter
-//    @Getter
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    public static class UserDTO {
-//        private long id;
-//        private String phone;
-//        private String name;
-//        private Instant createdAt;
-//        private Instant updatedAt;
-//        private String createdBy;
-//        private String updatedBy;
-//        private boolean active;
-//    }
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<TransactionService> transactionServices;
+
+
 }
