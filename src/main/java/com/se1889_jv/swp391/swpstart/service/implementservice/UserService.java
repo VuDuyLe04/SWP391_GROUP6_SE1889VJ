@@ -6,11 +6,12 @@ import com.se1889_jv.swp391.swpstart.domain.dto.RegisterDTO;
 import com.se1889_jv.swp391.swpstart.repository.RoleRepository;
 import com.se1889_jv.swp391.swpstart.repository.UserRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IUserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,30 +70,30 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> getAll(){
-        return this.userRepository.findAll();
+    public Page<User> getAll(Pageable pageable){
+        return this.userRepository.findAll(pageable);
     }
 
     @Override
-    public List<User> getUsersBySearch(String name, String phone) {
-        return this.userRepository.findUsersByNameContainingOrPhone(name,phone);
+    public Page<User> getUsersBySearch(String name, String phone, Pageable pageable) {
+        return this.userRepository.findUsersByNameContainingOrPhoneContaining(name,phone,pageable);
 
     }
 
     @Override
-    public List<User> getUsersbyRoleID(Long id) {
+    public Page<User> getUsersbyRoleID(Long id, Pageable pageable) {
 
-        return this.userRepository.findUsersByRoleId(id);
+        return this.userRepository.findUsersByRoleId(id,pageable);
     }
 
     @Override
-    public List<User> getUsersByActive(boolean active) {
-        return this.userRepository.findUsersByActive(active);
+    public Page<User> getUsersByActive(boolean active, Pageable pageable) {
+        return this.userRepository.findUsersByActive(active,pageable);
     }
 
     @Override
-    public List<User> getUsersByRoleIDAndActive(Long id, boolean active) {
-        return this.userRepository.findUsersByRoleIdAndActive(id, active);
+    public Page<User> getUsersByRoleIDAndActive(Long id, boolean active, Pageable pageable) {
+        return this.userRepository.findUsersByRoleIdAndActive(id, active,pageable);
     }
 
 

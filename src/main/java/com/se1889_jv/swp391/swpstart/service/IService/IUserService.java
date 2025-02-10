@@ -3,6 +3,8 @@ package com.se1889_jv.swp391.swpstart.service.IService;
 import com.se1889_jv.swp391.swpstart.domain.Role;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.dto.RegisterDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -13,12 +15,16 @@ public interface IUserService {
     Role getRoleByName(String name);
     User registerDTOtoUser(RegisterDTO registerDTO);
     boolean checkPhoneExist(String phone);
-    List<User> getAll();
-    List<User> getUsersBySearch(String name, String phone);
-    List<User> getUsersbyRoleID(Long id);
-    List<User> getUsersByActive(boolean active);
-    List<User> getUsersByRoleIDAndActive(Long id, boolean active);
 
 
 
+    Page<User> getAll(Pageable pageable);
+
+    Page<User> getUsersBySearch(String name, String phone, Pageable pageable);
+
+    Page<User> getUsersbyRoleID(Long id, Pageable pageable);
+
+    Page<User> getUsersByActive(boolean active, Pageable pageable);
+
+    Page<User> getUsersByRoleIDAndActive(Long id, boolean active, Pageable pageable);
 }
