@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
+
 public interface ICustomerService {
     Customer createCustomer(Customer customer, Store store);
     List<Customer> getAllCustomers(Store store);
@@ -25,4 +26,6 @@ public List<Customer> getAllCustomers();
         return customerRepository.findByPhoneContainingIgnoreCase(phone);
     }
     Page<Customer> getAllCustomers(Pageable pageable);
+    List<Customer> getCustomersByStoreId(Long storeId);
+    Customer getCustomerByNameAndPhone(String infor);
 }

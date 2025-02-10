@@ -13,6 +13,7 @@ public class StoreService implements IStoreService {
     @Autowired
     private StoreRepository storeRepository;
 
+
     @Override
     public Store findStoreById(long id) {
         if (this.storeRepository.findById(id).isPresent()) {
@@ -20,6 +21,7 @@ public class StoreService implements IStoreService {
         }
 
         return null;
+
     }
 
     @Override

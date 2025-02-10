@@ -8,20 +8,26 @@ import com.se1889_jv.swp391.swpstart.service.IService.IUserStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserStoreService implements IUserStoreService {
 
     @Autowired
     private UserStoreRepository userStoreRepository;
-    @Override
-    public UserStore findUserStore(long userId) {
-        return userStoreRepository.findTopByUserId( userId);
-    }
 
     @Override
     public UserStore findUserStoreByUserAndStore(User user, Store store) {
         return this.userStoreRepository.findByUserAndStore(user, store);
     }
 
+    @Override
+    public List<UserStore> getAllUserStoresByUserId(long userId) {
+        return userStoreRepository.findAllByUserId(userId);
+    }
 
+    @Override
+    public UserStore findUserStore(long userId) {
+        return null;
+    }
 }

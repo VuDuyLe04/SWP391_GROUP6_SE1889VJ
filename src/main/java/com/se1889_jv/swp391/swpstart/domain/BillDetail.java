@@ -25,7 +25,7 @@ public class BillDetail {
     private Packaging packaging;
 
     @ManyToOne
-    @JoinColumn(name = "product_Id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne

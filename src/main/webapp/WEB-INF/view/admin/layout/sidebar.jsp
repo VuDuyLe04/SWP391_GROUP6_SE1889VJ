@@ -55,6 +55,13 @@
                         </a>
                     </li>
                     <li>
+                        <a href="/packaings">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <span>Quy cách đóng gói</span>
+                        </a>
+
+                    </li>
+                    <li>
                         <a>
                             <i class="fa fa-map-marker" aria-hidden="true"></i>
                             <span>Cửa hàng</span>

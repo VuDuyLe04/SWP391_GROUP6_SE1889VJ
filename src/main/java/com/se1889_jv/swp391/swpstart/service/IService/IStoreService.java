@@ -9,4 +9,7 @@ public interface IStoreService {
     Store findStoreById(long id);
     List<Store> getAllStores();
 
+
+
+
 }

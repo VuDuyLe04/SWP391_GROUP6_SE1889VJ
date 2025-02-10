@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class CustomerService implements ICustomerService {
     @Autowired
@@ -65,5 +66,17 @@ public class CustomerService implements ICustomerService {
         return customerRepository.findAll();
     }
 
+    @Override
+    public List<Customer> getCustomersByStoreId(Long storeId) {
+        return customerRepository.getCustomersByStoreId(storeId);
+    }
+
+    @Override
+    public Customer getCustomerByNameAndPhone(String infor) {
+        String [] part  = infor.split(" - ");
+        String name = part[0].trim();
+        String phone = part[1].trim();
+        return customerRepository.getCustomersByNameAndPhone(name,phone);
+    }
 
 }
