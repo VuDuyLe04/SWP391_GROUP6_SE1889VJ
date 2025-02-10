@@ -50,6 +50,8 @@ public class Store {
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserStore> userStores;
 
+    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Packaging> packagings;
     @PrePersist
     public void handleBeforeCreate() {
         HttpServletRequest request = null;

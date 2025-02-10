@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface UserStoreRepository extends JpaRepository<UserStore, Long> {
-    UserStore findByUserIdAndStoreId(Long userId, Long storeId);
+    List<UserStore> findAllByUserId(Long userId);
 
     UserStore findByUserAndStore(User user, Store store);
 }

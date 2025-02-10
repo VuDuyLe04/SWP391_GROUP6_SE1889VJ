@@ -585,7 +585,7 @@
                 '<input class="col-md-2 text-center" value="' + quantity + '" ' +
                 'style="border: none;" type="number" name="billDetails[' + i + '].quantity" ' +
                 'max="' + maxQuan + '" ' +
-                'oninput="if(this.value > ' + maxQuan + ') { showAttention(\'' + nameProduct + '\'); this.value = ' + quantity + '; } else {updateQuantity(' + i + ', this.value);}">' +
+                'oninput="if(this.value > ' + maxQuan + ') { showAttention(\'' + nameProduct + '\'); this.value = ' + quantity + '; } else {updateQuantity(' + i + ', this.value, '+ unitPer +' ,' + quantity +');}">' +
                 '<input class="col-md-2 text-center" value="' + parseFloat(unitPrice*unitPer) + '" readonly style="border: none;" name="billDetails[' + i + '].listedPrice">' +
                 '<input class="col-md-2 text-center" value="' + actualSellPrice +'" readonly style="border: none;" name="billDetails[' + i + '].actualSellPrice" hidden="hidden">' +
                 '<input class="col-md-2 text-center" value="' + salePrice + '" readonly style="border: none;">' +
@@ -610,8 +610,16 @@
         payment.value=pay;
         totalLift.value=lift;
     }
-    function updateQuantity(index,quantity){
-        listSender[index].quantity = parseInt(quantity);
+    function updateQuantity(index, newQuantity, unitPer, oldQuantity){
+        const modal = document.getElementById('productModal'+index);
+        let quantityOfProduct = modal.querySelector('input[name="quantity"]').getAttribute('data-quantity');
+        let quantityUpdate = parseFloat(quantityOfProduct) + unitPer * oldQuantity - unitPer*newQuantity;
+
+        modal.querySelector('input[name="quantity"]').setAttribute('data-quantity', quantityUpdate);
+        let quantityOfProductNew = modal.querySelector('input[name="quantity"]').getAttribute('data-quantity');
+        console.log(quantityOfProductNew);
+        listSender[index].maxQuantity = parseInt(quantityOfProductNew/unitPer);
+        listSender[index].quantity = parseInt(newQuantity);
         generate(listSender);
     }
 

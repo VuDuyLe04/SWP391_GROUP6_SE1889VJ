@@ -76,7 +76,7 @@ public class BillController {
                 List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
                 System.out.println(customerList);
                 for(Product product : productList){
-                    packagingList.add(packagingService.getAllPackagingForQuantityProduct(product.getTotalQuantity()));
+                    packagingList.add(packagingService.getAllPackagingForQuantityProduct(product.getTotalQuantity(), storeId));
                     wareHouseList.add(wareHouseService.getWareHouseById(product.getWarehouse().getId()));
                 }
 
