@@ -366,8 +366,7 @@
                                     id="phone"
                                     name="phone"
                                     placeholder="Nhập số điện thoại"
-
-                                    value="${param.phone != null ? param.phone : ''}"
+                                    value="${phone != null ? phone : param.phone}"
                                     onblur="checkPhone(this.value)"
                                     required
                             >
@@ -375,7 +374,7 @@
                        <p style="color: red">
                            ${error}
                        </p>
-                            <p id="phoneError" style="display:none"> "Số điện thoại không hợp lệ. Xin vui lòng nhập lại!"</p>
+                            <p id="phoneError" style="display:none;color:red"> "Số điện thoại không hợp lệ. Xin vui lòng nhập lại!"</p>
                             <!-- Password -->
                             <label for="password">Mật khẩu:</label>
                             <input
@@ -416,7 +415,7 @@
                                 <div class="status-container">
                                     <label>Trạng thái:</label>
                                     <label class="toggle-switch">
-                                        <input type="checkbox" id="active" name="active" value="true" ${param.active == 'true' ? 'checked' : ''}>
+                                        <input type="checkbox"  name="active" value="true" ${param.active == 'true' ? 'checked' : ''}>
                                         <span class="toggle-slider"></span>
                                     </label>
                                     <span class="status-label">Hoạt động</span>

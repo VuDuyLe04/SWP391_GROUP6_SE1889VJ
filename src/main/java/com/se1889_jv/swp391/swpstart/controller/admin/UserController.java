@@ -63,31 +63,32 @@ public class UserController {
     public String checkPhone(@RequestParam(value="createdPhone",required = false) String createdPhone,
                              @RequestParam(value="updatedPhone",required = false) String updatedPhone,
                              @RequestParam(value="id",required = false) String id,
-                                    Model model){
+                             Model model) {
         String error = null;
         String phone = updatedPhone != null ? updatedPhone : createdPhone;
 
-            if(phone != null && userService.getUserByPhone(phone) != null){
-                error = "Số điện thoại đã tồn tại! ";
-                model.addAttribute("error", error);
-
+        if (phone != null) {
+            User existingUser = userService.getUserByPhone(phone);
+            if (existingUser != null) {
+                if (id != null && existingUser.getId() != Long.parseLong(id)) {
+                    error = "Số điện thoại đã tồn tại!";
+                } else if (id == null) {
+                    error = "Số điện thoại đã tồn tại!";
+                }
             }
-
-
-        if(updatedPhone != null){
-                User user = userService.findById(Long.parseLong(id));
-                user.setPhone(updatedPhone);
-                model.addAttribute("useru", user);
-
-        return "admin/user/updateuser";
-
         }
-        else
-        return "admin/user/adduserin";
 
-
-
-
+        model.addAttribute("error", error);
+        
+        if (updatedPhone != null && id != null) {
+            User user = userService.findById(Long.parseLong(id));
+            user.setPhone(updatedPhone);
+            model.addAttribute("useru", user);
+            return "admin/user/updateuser";
+        } else {
+            model.addAttribute("phone", phone);
+            return "admin/user/adduserin";
+        }
     }
     @GetMapping("createuser")
     public String createUser(@RequestParam(value="phone") String phone,

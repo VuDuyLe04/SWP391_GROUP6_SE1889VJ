@@ -453,29 +453,25 @@
 </section>
 
 <script>
-    function checkPhone(phone) {
-        const phoneRegex = /^[0-9]{10}$/; // Kiểm tra số điện thoại có đúng 10 chữ số
-        const phoneError = document.getElementById("phoneError"); // Phần tử hiển thị lỗi
+    function checkPhone(phone, id) {
+        const phoneRegex = /^[0-9]{10}$/;
+        const phoneError = document.getElementById("phoneError");
 
         if (phone.trim() === "") {
             phoneError.textContent = "Vui lòng nhập số điện thoại!";
-            phoneError.style.color = "red";
             phoneError.style.display = "block";
-
-            return false; // Ngăn chặn submit
+            return false;
         }
 
         if (!phoneRegex.test(phone)) {
             phoneError.textContent = "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số!";
-            phoneError.style.color = "red";
             phoneError.style.display = "block";
-
-            return false; // Ngăn chặn submit
+            return false;
         }
 
         // Số điện thoại hợp lệ
-        phoneError.style.display = "none"; // Ẩn thông báo lỗi
-        window.location.href = "checkphone?updatedPhone=" + phone + "&id="+ id;
+        phoneError.style.display = "none";
+        window.location.href = "checkphone?updatedPhone=" + phone + "&id=" + id;
         return true;
     }
 
