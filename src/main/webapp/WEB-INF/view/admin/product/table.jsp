@@ -166,11 +166,14 @@
                                     </li>
                                 </c:if>
 
-                                <c:forEach begin="0" end="${totalPages - 1}" var="i">
-                                    <li class="${i == currentPage ? 'active' : ''}">
-                                        <a href="/product?page=${i}&sort=${sort}&order=${order}">${i + 1}</a>
-                                    </li>
-                                </c:forEach>
+                                <c:if test="${totalPages > 0}">
+                                    <c:forEach begin="0" end="${totalPages - 1}" var="i">
+                                        <li class="${i == currentPage ? 'active' : ''}">
+                                            <a href="/product?page=${i}&sort=${sort}&order=${order}">${i + 1}</a>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
+
 
                                 <c:if test="${currentPage < totalPages - 1}">
                                     <li>

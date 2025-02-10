@@ -25,7 +25,7 @@ public class Product {
     private String updatedBy;
 
 //    private Instant deletedAt;
-    //    private Instant createdAt;
+//    private Instant createdAt;
 //    private Instant updatedAt;
 //    private String createdBy;
 
