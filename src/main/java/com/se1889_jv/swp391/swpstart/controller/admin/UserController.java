@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -91,28 +93,34 @@ public class UserController {
         }
     }
     @GetMapping("createuser")
-    public String createUser(@RequestParam(value="phone") String phone,
-                             @RequestParam(value="password") String password,
-                             @RequestParam(value="name") String name,
-                             @RequestParam(value="active",defaultValue = "false") String active,
-                             Model model){
+    public String createUser(@RequestParam(value = "phone") String phone,
+                             @RequestParam(value = "password") String password,
+                             @RequestParam(value = "name") String name,
+                             @RequestParam(value = "active", defaultValue = "false") String active,
+                             Model model) {
 
         User user = new User();
         user.setPhone(phone);
         user.setPassword(password);
-        user.setName(name);
-        user.setActive(active.toLowerCase().equals("true"));
-        // phan biet staff vs owner
+
+        // Định dạng lại name
+        String formattedName = Arrays.stream(name.trim().toLowerCase().split("\\s+"))
+                .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
+                .collect(Collectors.joining(" "));
+        user.setName(formattedName);
+
+        user.setActive(Boolean.parseBoolean(active));
         user.setCreatedBy("admin");
-        user.setRole(roleService.getRole(Long.valueOf(2L)));
+        user.setRole(roleService.getRole(2L));
         user.setUserStores(null);
         userService.createUser(user);
+
         if (userService.getUserByPhone(phone) != null) {
-            model.addAttribute("success","Tạo người dùng thành công");
+            model.addAttribute("success", "Tạo người dùng thành công");
         }
         return "admin/user/adduserin";
-
     }
+
     @GetMapping("updateuser")
     public String updateUser(@RequestParam String id,
                              @RequestParam(value="phone",required = false) String phone,
