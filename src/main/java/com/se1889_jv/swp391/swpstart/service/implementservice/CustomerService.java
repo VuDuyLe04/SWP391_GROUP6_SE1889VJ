@@ -6,7 +6,8 @@ import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,4 +48,22 @@ public class CustomerService implements ICustomerService {
 
         customerRepository.save(customer1);
     }
+    public List<Customer> searchCustomersByName(String name) {
+        return customerRepository.findByNameContainingIgnoreCase(name);
+    }
+    public List<Customer> searchCustomersByPhone(String phone) {
+        return customerRepository.findByPhoneContainingIgnoreCase(phone);
+    }
+
+    @Override
+    public Page<Customer> getAllCustomers(Pageable pageable) {
+        return customerRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
+    }
+
+
 }

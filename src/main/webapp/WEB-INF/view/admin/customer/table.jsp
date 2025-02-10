@@ -49,6 +49,7 @@
 
     <!-- start: header -->
     <jsp:include page="../layout/header.jsp" />
+
     <!-- end: header -->
 
     <div class="inner-wrapper">
@@ -82,10 +83,47 @@
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="panel-actions">
-
+                                <a href="/customer/create" class="btn btn-success" style="display: inline-flex; /* Sử dụng flexbox để căn giữa */
+        justify-content: center;
+        align-items: center;
+        width: 120px;
+        height: 40px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #ffffff;
+        background: linear-gradient(90deg, #0093DD, #007ACC);
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;">Create New Customer</a>
                             </div>
 
                             <h2 class="panel-title">Danh sách khách hàng</h2>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <form method="GET" action="/customer/search" class="form-inline" style="margin-bottom: 20px;">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="name" placeholder="Search by name" value="${param.name}" />
+                                            <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- Form tìm kiếm theo số điện thoại -->
+                                    <form method="GET" action="/customer/search" class="form-inline">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="phone" placeholder="Search by phone" value="${param.phone}" />
+                                            <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
                         </header>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -119,8 +157,35 @@
                                     </tbody>
 
                                 </table>
+                                <div class="pagination-container text-center mt-3">
+                                    <ul class="pagination justify-content-center">
+                                        <c:if test="${currentPage > 0}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="/customers?page=${currentPage - 1}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo; Trước</span>
+                                                </a>
+                                            </li>
+                                        </c:if>
+                                        <c:if test="${totalPages > 0}">
+                                            <c:forEach begin="0" end="${totalPages - 1}" var="i">
+                                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                    <a class="page-link" href="/customers?page=${i}">${i + 1}</a>
+                                                </li>
+                                            </c:forEach>
+                                        </c:if>
+                                        <c:if test="${currentPage < totalPages - 1}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="/customers?page=${currentPage + 1}" aria-label="Next">
+                                                    <span aria-hidden="true">Sau &raquo;</span>
+                                                </a>
+                                            </li>
+                                        </c:if>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
+
+
                     </section>
 
 
