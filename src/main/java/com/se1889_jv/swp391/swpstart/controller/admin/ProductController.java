@@ -3,6 +3,7 @@ package com.se1889_jv.swp391.swpstart.controller.admin;
 import com.se1889_jv.swp391.swpstart.domain.Product;
 import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +21,23 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/product")
-    public String getListProductPage(@RequestParam(defaultValue = "0") int page, Model model) {
-        Pageable pageable = PageRequest.of(page, 10); // 10 sản phẩm mỗi trang
+    public String getListProductPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "unitPrice") String sort,
+            @RequestParam(defaultValue = "asc") String order,
+            Model model) {
+        Sort.Direction direction = order.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(direction, sort));
         Page<Product> productPage = productService.getAllProducts(pageable);
         model.addAttribute("listProduct", productPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("sort", sort);
+        model.addAttribute("order", order);
+
         return "admin/product/table";
     }
+
 
     @GetMapping("/product/create")
     public String getCreateProductPage(Model model) {
@@ -84,6 +94,38 @@ public class ProductController {
         return "admin/product/table";
     }
 
+    @GetMapping("/product/view/{id}")
+    public String viewProduct(@PathVariable("id") Long id, Model model) {
+        Product product = productService.getProductById(id);
+        model.addAttribute("product", product);
+        return "admin/product/view";
+    }
+
+//    @GetMapping("/product/sorted")
+//    public String getSortedProductPage(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "unitPrice") String sort,
+//            @RequestParam(defaultValue = "asc") String order,
+//            Model model) {
+//
+//        // Xác định hướng sắp xếp
+//        Sort.Direction direction = order.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+//
+//        // Tạo Pageable với thông tin sắp xếp
+//        Pageable pageable = PageRequest.of(page, 5, Sort.by(direction, sort));
+//
+//        // Gọi ProductService để lấy dữ liệu đã sắp xếp
+//        Page<Product> productPage = productService.getAllProducts(pageable);
+//
+//        // Đưa dữ liệu vào Model
+//        model.addAttribute("listProduct", productPage.getContent());
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("totalPages", productPage.getTotalPages());
+//        model.addAttribute("sort", sort);
+//        model.addAttribute("order", order);
+//
+//        return "admin/product/table";
+//    }
 
 
 

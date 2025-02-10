@@ -67,7 +67,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>List Product</span></li>
+                        <li><span>Danh sách sản phẩm</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -86,37 +86,51 @@
                         <a href="#" class="fa fa-times"></a>
                     </div>
 
-                    <h2 class="panel-title">List product</h2>
+                    <h2 class="panel-title">Danh sách sản phẩm</h2>
                 </header>
                 <div class="panel-body">
 
-                    <div class="row mb-3">
-                        <div class="col-md-3">
+
+                        <div class="col-md-6">
                             <form method="GET" action="/product/search" class="form-inline" style="margin-bottom: 20px;">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="name" placeholder="Search by name" value="${param.name}" />
+                                    <input type="text" class="form-control" name="name" placeholder="Nhập tên gạo" value="${param.name}" required pattern="[A-Za-z0-9 ]+" title="Chỉ nhập chữ cái và số">
+
                                     <span class="input-group-btn">
-                        <button class="btn btn-primary" type="submit">Search</button>
+                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                     </span>
                                 </div>
                             </form>
                         </div>
+
+
+
+                    <div class="col-md-6 text-right">
+                        <form method="GET" action="/product" class="form-inline">
+                            <label for="sort">Sắp xếp theo giá:</label>
+                            <select name="order" id="sort" class="form-control" onchange="this.form.submit()">
+                                <option value="asc" ${order == 'asc' ? 'selected' : ''}>Thấp đến cao</option>
+                                <option value="desc" ${order == 'desc' ? 'selected' : ''}>Cao đến thấp</option>
+                            </select>
+                            <input type="hidden" name="sort" value="unitPrice">
+                        </form>
                     </div>
+
+
+                </div>
+
 
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-condensed mb-none">
                             <thead>
                             <tr>
                                 <th>Code</th>
-                                <th>Rice name</th>
-                                <th class="text-right">Image</th>
-                                <th class="text-right">Price</th>
-                                <th class="text-right">Category</th>
-                                <th class="text-right">Warehouse</th>
-                                <th class="text-right">Quantity in stock
-                                </th>
-                                <th class="text-right">Describe</th>
-                                <th class="text-right">Actions</th>
+                                <th>Tên gạo</th>
+                                <th class="text-center">Hình ảnh</th>
+                                <th class="text-center">Giá gạo</th>
+
+                                <th class="text-center">Kho</th>
+                                <th class="text-center" style="width: 350px;">Hành động</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -124,20 +138,20 @@
                                     <tr>
                                         <td>${product.id}</td>
                                         <td class="hidden-xs hidden-sm">${product.name}</td>
-                                        <td class="text-right">${product.image}</td>
-                                        <td class="text-right">${product.unitPrice}</td>
-                                        <td class="text-right">${product.category}</td>
-                                        <td class="text-right">${product.warehouse.name}</td>
-                                        <td class="text-right ">${product.totalQuantity}</td>
-                                        <td class="text-right ">${product.description}</td>
-                                        <td class="text-right">
-                                            <button class="btn btn-primary btn-sm" onclick="window.location.href='/product/update/${product.id}'">Update</button>
+                                        <td class="text-center">${product.image}</td>
+                                        <td class="text-center">${product.unitPrice} đ/kg</td>
+                                        <td class="text-center">${product.storage}</td>
 
-                                            <button class="btn btn-success btn-sm" onclick="addToCart('${product.id}')">Add to cart</button>
+
+                                        <td class="text-center">
+                                            <button class="btn btn-primary btn-sm" onclick="window.location.href='/product/update/${product.id}'">Cập nhật</button>
+
+                                            <button class="btn btn-info btn-sm" onclick="window.location.href='/product/view/${product.id}'">Xem chi tiết</button>
+
                                             <form method="post" action="/product/delete" style="display:inline;">
                                                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
                                                 <input type="hidden" name="id" value="${product.id}" />
-                                                <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button>
+                                                <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure you want to delete this item?');">Xóa sản phẩm</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -145,34 +159,30 @@
                             </tbody>
                         </table>
                         <div class="pagination-container text-center mt-3">
-                            <ul class="pagination justify-content-center">
-
+                            <ul class="pagination">
                                 <c:if test="${currentPage > 0}">
-                                    <li class="page-item">
-                                        <a class="page-link" href="/product?page=${currentPage - 1}" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo; Trước</span>
-                                        </a>
+                                    <li>
+                                        <a href="/product/sorted?page=${currentPage - 1}&sort=${sort}&order=${order}">Trước</a>
                                     </li>
                                 </c:if>
 
                                 <c:forEach begin="0" end="${totalPages - 1}" var="i">
-                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                        <a class="page-link" href="/product?page=${i}">${i + 1}</a>
+                                    <li class="${i == currentPage ? 'active' : ''}">
+                                        <a href="/product/sorted?page=${i}&sort=${sort}&order=${order}">${i + 1}</a>
                                     </li>
                                 </c:forEach>
 
                                 <c:if test="${currentPage < totalPages - 1}">
-                                    <li class="page-item">
-                                        <a class="page-link" href="/product?page=${currentPage + 1}" aria-label="Next">
-                                            <span aria-hidden="true">Sau &raquo;</span>
-                                        </a>
+                                    <li>
+                                        <a href="/product/sorted?page=${currentPage + 1}&sort=${sort}&order=${order}">Sau</a>
                                     </li>
                                 </c:if>
                             </ul>
+
                         </div>
                     </div>
                 <div class="panel-heading">
-                    <a href="/product/create" class="btn btn-success">Create New Product</a>
+                    <a href="/product/create" class="btn btn-success">Tạo sản phẩm mới</a>
                 </div>
 
             </section>

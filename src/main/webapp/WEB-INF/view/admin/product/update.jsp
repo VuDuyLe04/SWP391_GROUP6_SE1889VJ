@@ -58,7 +58,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>List Product</h2>
+                <h2>Cập nhật sản phẩm</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -67,7 +67,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Update Product</span></li>
+                        <li><span>Cập nhật</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -87,53 +87,57 @@
                                 <a href="#" class="fa fa-times"></a>
                             </div>
 
-                            <h2 class="panel-title">Update product</h2>
+                            <h2 class="panel-title">Cập nhật</h2>
                         </header>
                         <div class="panel-body">
                             <form:form method="post" modelAttribute="product" action="/product/update">
+
+
+
+
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputDefault">Rice name</label>
+                                    <label class="col-md-3 control-label" for="inputDefault">Tên gạo</label>
                                     <div class="col-md-6">
                                         <form:input path="name" type="text" class="form-control" id="inputDefault" />
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputImage">Image</label>
+                                    <label class="col-md-3 control-label" for="inputImage">Hình ảnh</label>
                                     <div class="col-md-6">
                                         <form:input path="image" class="form-control" id="inputImage" type="text"/>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputPrice">Price</label>
+                                    <label class="col-md-3 control-label" for="inputPrice">Giá gạo</label>
                                     <div class="col-md-6">
                                         <form:input path="unitPrice" type="number" id="inputPrice" class="form-control"/>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputCategory">Type</label>
+                                    <label class="col-md-3 control-label" for="inputCategory">Loại gạo</label>
                                     <div class="col-md-6">
                                         <form:input path="category" type="text"  class="form-control" id="inputCategory"/>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputStorage">Storage</label>
+                                    <label class="col-md-3 control-label" for="inputStorage">kho</label>
                                     <div class="col-md-6">
                                         <form:input path="storage" type="text"  class="form-control" id="inputStorage"/>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputQuantity">Quantity in stock</label>
+                                    <label class="col-md-3 control-label" for="inputQuantity">Số lượng trong kho</label>
                                     <div class="col-md-6">
                                         <form:input path="totalQuantity" type="number"  class="form-control" id="inputQuantity"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputDescription">Des</label>
+                                    <label class="col-md-3 control-label" for="inputDescription">Mô tả</label>
                                     <div class="col-md-6">
                                         <form:input path="description" type="text"  class="form-control" id="inputDescription"/>
                                     </div>
@@ -142,7 +146,7 @@
                                 <!-- Nút Create -->
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-3">
-                                        <button type="submit" class="btn btn-primary">Update Product</button>
+                                        <button type="submit" class="btn btn-primary">Cập nhật</button>
                                     </div>
                                 </div>
                             </form:form>

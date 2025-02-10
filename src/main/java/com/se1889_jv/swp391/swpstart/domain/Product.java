@@ -22,11 +22,13 @@ public class Product {
     private double totalQuantity;
     private String image;
     private String storage;
-//    private Instant createdAt;
+    private String updatedBy;
+
+//    private Instant deletedAt;
+    //    private Instant createdAt;
 //    private Instant updatedAt;
 //    private String createdBy;
-    private String updatedBy;
-//    private Instant deletedAt;
+
 
     @ManyToOne
     @JoinColumn(name = "store_id")
@@ -38,5 +40,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BillDetail> billDetails;
+
+
 
 }

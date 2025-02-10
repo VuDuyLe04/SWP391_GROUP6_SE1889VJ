@@ -43,9 +43,10 @@ public class ProductService implements IProductService {
         return productRepository.findByNameContainingIgnoreCase(name);
     }
 
-    @Override
     public Page<Product> getAllProducts(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
+
+
 
 }
