@@ -16,5 +16,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     List<String> findDistinctCategories();
 
     List<Product> findProductByStorageIsTrue();
-}
 
+    List<Product> findByNameContainingIgnoreCase(String name);
+
+}
