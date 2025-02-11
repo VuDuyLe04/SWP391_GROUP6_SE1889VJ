@@ -107,7 +107,7 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
                     .requestMatchers("/", "/login", "/register", "/client/**", "/admin/**").permitAll()
 
-//                    .requestMatchers("/dashboard").hasRole("ADMIN")
+                    .requestMatchers("/warehouse", "/warehouse/**").hasRole("OWNER")
 
 //                    .requestMatchers("/customer/**", "/product/**").hasRole("OWNER")
 

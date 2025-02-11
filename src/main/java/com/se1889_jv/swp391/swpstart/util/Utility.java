@@ -13,6 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class Utility {
@@ -51,9 +52,9 @@ public class Utility {
 
     public static List<Store> getListStoreOfOwner(User user) {
         List<Store> stores = new ArrayList<>();
-//        stores = user.getUserStores().
+        stores = user.getUserStores().stream().map(item -> item.getStore()).collect(Collectors.toList());
 
-        return List.of(getStoreInSession());
+        return stores;
     }
 
 }
