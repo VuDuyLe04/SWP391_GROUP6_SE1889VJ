@@ -27,6 +27,11 @@ public class User {
     private String createdBy;
     private String updatedBy;
     private boolean active;
+    //thuộc tính mới
+    private double balance;
+    private Instant renewalDate;
+    private Instant expirationDate;
+    private boolean statusService;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -39,7 +44,7 @@ public void addUserStore() {
     user.getUserStores();
 }
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<TransactionService> transactionServices;
 
 

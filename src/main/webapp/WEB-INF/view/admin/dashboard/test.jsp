@@ -5,7 +5,6 @@
 <html class="fixed">
 <head>
 
-
     <!-- Basic -->
     <meta charset="UTF-8">
 
@@ -77,56 +76,6 @@
             background-color: #0056b3;
         }
     </style>
-    <style>
-        /* Tạo danh sách gọn gàng và dễ nhìn hơn */
-        #popupModal ul {
-            list-style: none; /* Bỏ dấu chấm */
-            padding: 0;
-            margin: 0;
-            text-align: center; /* Căn giữa nội dung */
-        }
-
-        /* Tạo khoảng cách và viền cho mỗi mục */
-        #popupModal li {
-            background: #f8f9fa; /* Màu nền nhẹ */
-            border-radius: 8px; /* Bo góc */
-            margin: 10px auto; /* Căn giữa và tạo khoảng cách */
-            padding: 14px;
-            width: 80%; /* Giới hạn chiều rộng */
-            font-size: 18px; /* Chữ lớn hơn */
-            transition: 0.3s; /* Hiệu ứng hover */
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Hiệu ứng khi hover vào */
-        #popupModal li:hover {
-            background: #e2e6ea; /* Màu sáng hơn khi di chuột */
-            transform: scale(1.03);
-        }
-
-        /* Tạo khoảng cách giữa link và nội dung */
-        #popupModal li a {
-            text-decoration: none; /* Bỏ gạch chân */
-            color: #007bff; /* Màu xanh */
-            font-weight: bold;
-            display: block; /* Cả vùng có thể nhấp */
-            font-size: 20px; /* Chữ to hơn */
-        }
-
-        /* Hiệu ứng khi hover vào link */
-        #popupModal li a:hover {
-            color: #0056b3; /* Màu xanh đậm hơn */
-        }
-
-        /* Căn chỉnh thông báo khi không có cửa hàng */
-        #popupModal p {
-            text-align: center;
-            font-weight: bold;
-            font-size: 18px; /* Chữ lớn hơn */
-        }
-    </style>
-
-
 </head>
 <body>
 <section class="body">
@@ -134,6 +83,7 @@
     <!-- start: header -->
     <jsp:include page="../layout/header.jsp" />
     <!-- end: header -->
+
 
     <div class="inner-wrapper">
         <!-- start: sidebar -->
@@ -460,7 +410,6 @@
                     </div>
                 </div>
             </div>
-
 
 
             <div class="row">
@@ -936,13 +885,7 @@
 
                     <c:if test="${userStore.accessStoreStatus == 'ACCESSED'}">
                         <c:set var="hasStore" value="true"/>
-                        <li>
-                            <form id="storeForm" method="post" action="/storesession">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                <input type="hidden" value="${userStore.store.id}" name="storeId">
-                                <a href="#" onclick="document.getElementById('storeForm').submit(); return false;">${userStore.store.name}</a>
-                            </form>
-                        </li>
+                        <li><a href="/homesale/${userStore.store.id}">${userStore.store.name}</a></li>
                     </c:if>
                 </c:forEach>
                 <c:if test="${!hasStore}">
@@ -956,9 +899,9 @@
 </div>
 
 <!-- Vendor -->
-<%--<script src="/client/auth/assets/vendor/jquery/jquery.js"></script>--%>
+<script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
-<%--<script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>--%>
+<script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
 <script src="/client/auth/assets/vendor/nanoscroller/nanoscroller.js"></script>
 <script src="/client/auth/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script src="/client/auth/assets/vendor/magnific-popup/magnific-popup.js"></script>

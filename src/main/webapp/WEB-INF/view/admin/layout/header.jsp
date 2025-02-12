@@ -194,8 +194,21 @@
                     <img src="/client/auth/assets/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="/client/auth/assets/images/!logged-user.jpg" />
                 </figure>
                 <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@JSOFT.com">
-                    <span class="name">John Doe Junior</span>
-                    <span class="role">administrator</span>
+                    <span class="name">${sessionScope.user.name}</span>
+                    <span class="role">
+                        <c:if test="${sessionScope.user.role.name == 'OWNER'}">
+                            CHỦ CỬA HÀNG
+                        </c:if>
+
+                        <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
+                            ADMIN
+                        </c:if>
+
+                        <c:if test="${sessionScope.user.role.name == 'STAFF'}">
+                            NHÂN VIÊN
+                        </c:if>
+
+                    </span>
                 </div>
 
                 <i class="fa custom-caret"></i>
@@ -205,13 +218,7 @@
                 <ul class="list-unstyled">
                     <li class="divider"></li>
                     <li>
-                        <a role="menuitem" tabindex="-1" href="pages-user-profile.html"><i class="fa fa-user"></i> My Profile</a>
-                    </li>
-                    <li>
-                        <a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>
-                    </li>
-                    <li>
-                        <a role="menuitem" tabindex="-1" href="pages-signin.html"><i class="fa fa-power-off"></i> Logout</a>
+                        <a role="menuitem" tabindex="-1" href="#"><i class="fa fa-user"></i> My Profile</a>
                     </li>
 
                     <li>

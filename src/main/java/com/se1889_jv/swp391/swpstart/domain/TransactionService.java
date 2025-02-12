@@ -18,6 +18,7 @@ public class TransactionService {
     private int durationMonths;
     private Instant transactionDate;
     private double amount;
+    @Enumerated(EnumType.STRING)
     private TransactionStatus transactionStatus;
 
     @ManyToOne

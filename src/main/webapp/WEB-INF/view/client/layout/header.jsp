@@ -66,56 +66,76 @@
 
         <nav id="navmenu" class="navmenu">
             <ul>
-                <li><a href="#hero" class="active">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#team">Team</a></li>
-                <li class="dropdown"><a href="#"><span>Dropdown</span> <i
-                        class="bi bi-chevron-down toggle-dropdown"></i></a>
-                    <ul>
-                        <li><a href="#">Dropdown 1</a></li>
-                        <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i
-                                class="bi bi-chevron-down toggle-dropdown"></i></a>
-                            <ul>
-                                <li><a href="#">Deep Dropdown 1</a></li>
-                                <li><a href="#">Deep Dropdown 2</a></li>
-                                <li><a href="#">Deep Dropdown 3</a></li>
-                                <li><a href="#">Deep Dropdown 4</a></li>
-                                <li><a href="#">Deep Dropdown 5</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Dropdown 2</a></li>
-                        <li><a href="#">Dropdown 3</a></li>
-                        <li><a href="#">Dropdown 4</a></li>
-                    </ul>
-                </li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#hero" class="active">Trang chủ</a></li>
+                <li><a href="#about">Giới thiệu</a></li>
+                <li><a href="#services">Dịch vụ</a></li>
+<%--                <li><a href="#portfolio">Portfolio</a></li>--%>
+                <li><a href="#team">Thành viên</a></li>
+<%--                <li class="dropdown"><a href="#"><span>Dropdown</span> <i--%>
+<%--                        class="bi bi-chevron-down toggle-dropdown"></i></a>--%>
+<%--                    <ul>--%>
+<%--                        <li><a href="#">Dropdown 1</a></li>--%>
+<%--                        <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i--%>
+<%--                                class="bi bi-chevron-down toggle-dropdown"></i></a>--%>
+<%--                            <ul>--%>
+<%--                                <li><a href="#">Deep Dropdown 1</a></li>--%>
+<%--                                <li><a href="#">Deep Dropdown 2</a></li>--%>
+<%--                                <li><a href="#">Deep Dropdown 3</a></li>--%>
+<%--                                <li><a href="#">Deep Dropdown 4</a></li>--%>
+<%--                                <li><a href="#">Deep Dropdown 5</a></li>--%>
+<%--                            </ul>--%>
+<%--                        </li>--%>
+<%--                        <li><a href="#">Dropdown 2</a></li>--%>
+<%--                        <li><a href="#">Dropdown 3</a></li>--%>
+<%--                        <li><a href="#">Dropdown 4</a></li>--%>
+<%--                    </ul>--%>
+<%--                </li>--%>
+                <li><a href="#contact">Liên hệ</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
         <c:choose>
             <c:when test="${sessionScope.user != null}">
-                <a class="btn-getstarted" href="javascript:void(0)" onclick="openPopup()">Cửa hàng</a>
-                <div id="popup" class="popup">
-                    <div class="popup-content">
-                        <span class="close" onclick="closePopup()">&times;</span>
-                        <ul>
+                <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
+                    <a class="btn-getstarted" href="/dashboard">Quản lý hệ thống</a>
+                </c:if>
 
-                            <c:set var="hasStore" value="false"/>
-                            <c:forEach items="${sessionScope.user.userStores}" var="userStore">
-                                <c:if test="${userStore.accessStoreStatus == 'ACCESSED'}">
-                                    <c:set var="hasStore" value="true"/>
-                                    <li><a href="/homesale/${userStore.store.id}">${userStore.store.name}</a></li>
+                <c:if test="${sessionScope.user.role.name == 'OWNER'}">
+                    <a class="btn-getstarted" href="/dashboard">Quản lý các cửa hàng</a>
+                </c:if>
+
+                <c:if test="${sessionScope.user.role.name == 'STAFF'}">
+                    <a class="btn-getstarted" href="javascript:void(0)" onclick="openPopup()">Chọn cửa hàng</a>
+                    <div id="popup" class="popup">
+                        <div class="popup-content">
+                            <span class="close" onclick="closePopup()">&times;</span>
+                            <ul>
+
+                                <c:set var="hasStore" value="false"/>
+                                <c:forEach items="${sessionScope.user.userStores}" var="userStore">
+                                    <c:if test="${userStore.accessStoreStatus == 'ACCESSED'}">
+                                        <c:set var="hasStore" value="true"/>
+                                        <li>
+                                            <form id="storeForm" method="post" action="/storesession">
+                                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                                <input type="hidden" value="${userStore.store.id}" name="storeId">
+                                                <a href="#" onclick="document.getElementById('storeForm').submit(); return false;">${userStore.store.name}</a>
+                                            </form>
+
+
+
+                                        </li>
+                                    </c:if>
+                                </c:forEach>
+                                <c:if test="${!hasStore}">
+                                    <p style="color: red">Không có cửa hàng nào để quản lý</p>
                                 </c:if>
-                            </c:forEach>
-                            <c:if test="${!hasStore}">
-                                Không có cửa hàng nào
-                            </c:if>
-                        </ul>
+                            </ul>
 
+                        </div>
                     </div>
-                </div>
+                </c:if>
+
 
                 <form id="logoutForm" method="post" action="/logout">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
