@@ -125,18 +125,18 @@ public class UserController {
     @GetMapping("/updateuser")
     public String updateUser(@RequestParam String id,
                              @RequestParam(value="phone",required = false) String phone,
-                             @RequestParam(value="password",required = false) String password,
+//                             @RequestParam(value="password",required = false) String password,
                              @RequestParam(value="name",required = false) String name,
-                             @RequestParam(value="active",defaultValue = "false") String active,
+                             @RequestParam(value="active",defaultValue = "false") boolean active,
                              Model model){
         User user = new User();
 
             user = userService.findById(Long.parseLong(id));
         if(phone != null){
             user.setPhone(phone);
-            user.setPassword(password);
+//            user.setPassword(password);
             user.setName(name);
-            user.setActive(active.toLowerCase().equals("true"));
+            user.setActive(active);
 
             userService.createUser(user);
             if(user.getPhone().equals(phone)){
