@@ -441,7 +441,7 @@
                             </c:if>
                             <p style="color: limegreen">${success}</p>
                             <!-- Submit Button -->
-                            <button type="submit" ${success != null ? 'disabled' : ''}>Xác nhận </button>
+                            <button type="submit" >Xác nhận </button>
 
                         </form>
 
@@ -463,13 +463,13 @@
         if (phone.trim() === "") {
             phoneError.textContent = "Vui lòng nhập số điện thoại!";
             phoneError.style.display = "block";
-            return false;
+
         }
 
         if (!phoneRegex.test(phone)) {
             phoneError.textContent = "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số!";
             phoneError.style.display = "block";
-            return false;
+
         }
 
         // Số điện thoại hợp lệ
