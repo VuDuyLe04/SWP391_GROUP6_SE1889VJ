@@ -268,7 +268,7 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
                                                     <select id="role" name="role" class="form-control">
-                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >Vai trò</option>
+                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >Các vai trò</option>
                                                         <option ${roleId == 1 ? "selected" : ""} value="1">Quản trị viên</option>
                                                         <option ${roleId == 2 ? "selected" : ""} value="2">Chủ sở hữu</option>
                                                         <option ${roleId == 3 ? "selected" : ""} value="3">Nhân viên</option>
@@ -279,7 +279,7 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
                                                     <select id="active" name="active" class="form-control">
-                                                        <option ${active == -1 ? "selected" : ""} value="-1">Trạng thái</option>
+                                                        <option ${active == -1 ? "selected" : ""} value="-1">Các trạng thái</option>
                                                         <option ${active == 1 ? "selected" : ""} value="1">Hoạt động</option>
                                                         <option ${active == 0 ? "selected" : ""} value="0">Bị cấm</option>
                                                     </select>
@@ -327,7 +327,14 @@
                                             <td><strong>${u.name}</strong></td>
                                             <td>${u.phone}</td>
                                             <c:if test="${sessionScope.user.role.id == 1}">
-                                                <td><span class="text-primary">${u.role.name}</span></td>
+                                                <td><span class="text-primary">
+                                                        <c:choose>
+                                                            <c:when test="${u.role.name == 'ADMIN'}">Quản trị viên</c:when>
+                                                            <c:when test="${u.role.name == 'OWNER'}">Chủ cửa hàng</c:when>
+                                                            <c:when test="${u.role.name == 'STAFF'}">Nhân viên</c:when>
+                                                            <c:otherwise>${u.role.name}</c:otherwise>
+                                                        </c:choose>
+                                                </span></td>
                                                 <td>
                 <span class="label ${u.active == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
                     <i class="fa ${u.active == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
