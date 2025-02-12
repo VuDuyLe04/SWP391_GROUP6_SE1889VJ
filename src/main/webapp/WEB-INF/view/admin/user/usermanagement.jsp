@@ -224,7 +224,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>User Management</span></li>
+                        <li><span>Quản lí người dùng</span></li>
                     </ol>
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>

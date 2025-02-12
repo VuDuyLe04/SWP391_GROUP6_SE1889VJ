@@ -6,6 +6,7 @@ import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.service.implementservice.RoleService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
+import com.se1889_jv.swp391.swpstart.util.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,11 +58,11 @@ public class UserController {
 
         return "admin/user/usermanagement";
     }
-    @GetMapping("adduser")
+    @GetMapping("/adduser")
     public String addUserIn(){
         return "admin/user/adduserin";
     }
-    @GetMapping("checkphone")
+    @GetMapping("/checkphone")
     public String checkPhone(@RequestParam(value="createdPhone",required = false) String createdPhone,
                              @RequestParam(value="updatedPhone",required = false) String updatedPhone,
                              @RequestParam(value="id",required = false) String id,
@@ -92,7 +93,7 @@ public class UserController {
             return "admin/user/adduserin";
         }
     }
-    @GetMapping("createuser")
+    @GetMapping("/createuser")
     public String createUser(@RequestParam(value = "phone") String phone,
                              @RequestParam(value = "password") String password,
                              @RequestParam(value = "name") String name,
@@ -121,7 +122,7 @@ public class UserController {
         return "admin/user/adduserin";
     }
 
-    @GetMapping("updateuser")
+    @GetMapping("/updateuser")
     public String updateUser(@RequestParam String id,
                              @RequestParam(value="phone",required = false) String phone,
                              @RequestParam(value="password",required = false) String password,
@@ -145,6 +146,13 @@ public class UserController {
 
         model.addAttribute("useru", user);
         return "admin/user/updateuser";
+    }
+
+    @GetMapping("/profile")
+    public String getProfilePage(Model model){
+        User user = Utility.getUserInSession();
+        model.addAttribute("user", user);
+        return "admin/profile/profile";
     }
 
 }
