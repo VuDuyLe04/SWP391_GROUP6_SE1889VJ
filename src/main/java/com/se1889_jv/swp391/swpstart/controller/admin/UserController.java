@@ -126,7 +126,7 @@ public class UserController {
                              @RequestParam(value="phone",required = false) String phone,
                              @RequestParam(value="password",required = false) String password,
                              @RequestParam(value="name",required = false) String name,
-                             @RequestParam(value="active",defaultValue = "false") String active,
+                             @RequestParam(value="active",required = false) String active,
                              Model model){
         User user = new User();
 
@@ -135,7 +135,7 @@ public class UserController {
             user.setPhone(phone);
             user.setPassword(password);
             user.setName(name);
-            user.setActive(active.toLowerCase().equals("true"));
+            user.setActive(Boolean.parseBoolean(active));
 
             userService.createUser(user);
             if(user.getPhone().equals(phone)){

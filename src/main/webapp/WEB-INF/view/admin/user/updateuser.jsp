@@ -421,24 +421,23 @@
                             >
 
                             <!-- Role-based Active Status -->
-                            <c:if test="${sessionScope.user.role.id == 1}">
+                            <c:if test="${sessionScope.user != null and sessionScope.user.role != null and sessionScope.user.role.id == 1}">
                                 <div class="status-container">
                                     <label>Trạng thái:</label>
                                     <label class="toggle-switch">
-                                        <input type="checkbox"  name="active"  ${useru.active == 'true' ? 'checked' : ''}>
+                                        <input type="checkbox"
+                                               name="active"
+                                               id ="active"
+                                               value="${useru.active != null ? useru.active : ''}"
+                                            ${useru != null && useru.active ? 'checked' : ''}>
                                         <span class="toggle-slider"></span>
                                     </label>
                                     <span class="status-label">Hoạt động</span>
                                 </div>
                             </c:if>
 
-                            <c:if test="${sessionScope.user.role.id == 2}">
-                                <label for="active">Trạng thái :</label>
-                                <select id="active" name="active" required>
-                                    <option value="true" ${param.active == 'true' ? 'selected' : ''}>Hoạt động</option>
-                                    <option value="false" ${param.active == 'false' ? 'selected' : ''}>Cấm</option>
-                                </select>
-                            </c:if>
+
+
                             <p style="color: limegreen">${success}</p>
                             <!-- Submit Button -->
                             <button type="submit" ${success != null ? 'disabled' : ''}>Xác nhận </button>
