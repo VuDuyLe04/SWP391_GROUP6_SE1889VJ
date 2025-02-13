@@ -128,12 +128,6 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputStorage">Kho</label>
-                                    <div class="col-md-6">
-                                        <form:input path="storage" type="text"  class="form-control" id="inputStorage"/>
-                                    </div>
-                                </div>
 
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputQuantity">Số lượng trong kho</label>
@@ -147,7 +141,18 @@
                                         <form:input path="description" type="text"  class="form-control" id="inputDescription"/>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="inputDescription">cửa hàng</label>
+                                    <div class="col-md-6">
+                                        <form:select path="store.id" cssClass="form-control" id="inputStore">
+                                            <c:forEach items="${listStore}" var="storeIt">
+                                                <form:option value="${storeIt.id}">
+                                                    ${storeIt.name}
+                                                </form:option>
+                                            </c:forEach>
+                                        </form:select>
+                                    </div>
+                                </div>
                                 <!-- Nút Create -->
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-3">

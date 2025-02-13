@@ -1,7 +1,11 @@
 package com.se1889_jv.swp391.swpstart.controller.admin;
 
 import com.se1889_jv.swp391.swpstart.domain.Product;
+import com.se1889_jv.swp391.swpstart.domain.Store;
+import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
+import com.se1889_jv.swp391.swpstart.util.Utility;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -26,28 +30,54 @@ ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "unitPrice") String sort,
             @RequestParam(defaultValue = "asc") String order,
-            Model model) {
+            @RequestParam(defaultValue = "0") String store,
+            Model model,
+            HttpSession session) {
+        User user =(User) session.getAttribute("user");
         Sort.Direction direction = order.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, 5, Sort.by(direction, sort));
-        Page<Product> productPage = productService.getAllProducts(pageable);
-        model.addAttribute("listProduct", productPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", productPage.getTotalPages());
-        model.addAttribute("sort", sort);
-        model.addAttribute("order", order);
+        if(user != null) {
+            List<Store> stores = Utility.getListStoreOfOwner(user);
+            Page<Product> productPage;
+            if("0".equals(store)) {
+                productPage = productService.getAllProducts(pageable);
+            } else {
+                Long storeId = Long.parseLong(store);
+                productPage = productService.getProductByStoreId(storeId, pageable);
+            }
+            model.addAttribute("listProduct", productPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", productPage.getTotalPages());
+            model.addAttribute("sort", sort);
+            model.addAttribute("order", order);
+            model.addAttribute("productPage", productPage);
+            model.addAttribute("stores", stores);
+            model.addAttribute("store", store);
+            return "admin/product/table";
+        }
+        return "redirect:/access-deny";
 
-        return "admin/product/table";
     }
 
 
-    @GetMapping("/product/create")
-    public String getCreateProductPage(Model model) {
+    @GetMapping("/product/createProduct")
+    public String getCreateProductPage(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        List<Store> stores = Utility.getListStoreOfOwner(user);
+
         model.addAttribute("product", new Product());
+        model.addAttribute("listStore", stores);
+
         return "admin/product/create";
     }
 
     @PostMapping("/product/create")
-    public String createProduct(Model model, @ModelAttribute("product") Product product) {
+    public String createProduct(@ModelAttribute("product") Product product) {
         productService.saveProduct(product);
         return "redirect:/product";
     }

@@ -20,7 +20,7 @@ public interface IProductService {
         ProductRepository productRepository = null;
         return productRepository.findByNameContainingIgnoreCase(name);
     }
-
+    Page<Product> getProductByStoreId(Long storeId, Pageable pageable);
 
     Page<Product> getAllProducts(Pageable pageable);
 }
