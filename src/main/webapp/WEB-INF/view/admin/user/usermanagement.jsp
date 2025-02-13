@@ -269,9 +269,14 @@
                                                     <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
                                                     <select id="role" name="role" class="form-control">
                                                         <option ${roleId == -1 ? "selected" : ""} value="-1" >Các vai trò</option>
-                                                        <option ${roleId == 1 ? "selected" : ""} value="1">Quản trị viên</option>
-                                                        <option ${roleId == 2 ? "selected" : ""} value="2">Chủ sở hữu</option>
-                                                        <option ${roleId == 3 ? "selected" : ""} value="3">Nhân viên</option>
+                                                        <c:forEach items="${roles}" var="r">
+                                                            <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
+                                                                <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>
+                                                                <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>
+                                                                <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>
+
+                                                        </c:forEach>
+
                                                     </select>
                                                 </div>
                                             </div>

@@ -53,6 +53,7 @@ public class UserController {
         model.addAttribute("active", active);
         model.addAttribute("roleId", roleId);
         model.addAttribute("userPage", users);
+        model.addAttribute("roles", roleService.getAllRoles());
 
 
         return "admin/user/usermanagement";
@@ -81,7 +82,6 @@ public class UserController {
         }
 
         model.addAttribute("error", error);
-        
         if (updatedPhone != null && id != null) {
             User user = userService.findById(Long.parseLong(id));
             user.setPhone(updatedPhone);
@@ -102,13 +102,10 @@ public class UserController {
         User user = new User();
         user.setPhone(phone);
         user.setPassword(password);
-
-        // Định dạng lại name
         String formattedName = Arrays.stream(name.trim().toLowerCase().split("\\s+"))
                 .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
                 .collect(Collectors.joining(" "));
         user.setName(formattedName);
-
         user.setActive(Boolean.parseBoolean(active));
         user.setCreatedBy("admin");
         user.setRole(roleService.getRole(2L));
@@ -133,10 +130,8 @@ public class UserController {
             user = userService.findById(Long.parseLong(id));
         if(phone != null){
             user.setPhone(phone);
-//            user.setPassword(password);
             user.setName(name);
             user.setActive(active);
-
             userService.createUser(user);
             if(user.getPhone().equals(phone)){
                 model.addAttribute("success","Cập nhật người dùng thành công!");
