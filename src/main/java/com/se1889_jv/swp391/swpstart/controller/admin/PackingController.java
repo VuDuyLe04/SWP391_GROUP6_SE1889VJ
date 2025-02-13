@@ -70,23 +70,28 @@ public class PackingController {
 
             Page<Packaging> allPacksOfAllStore;
 
-            // Handle different filter cases
             if (input != null && !input.isEmpty()) {
                 allPacksOfAllStore = packagingService.getPackagingByInput(input, pageable);
                 model.addAttribute("input", input);
-            } else if (!active.equals("-1")) {
-                allPacksOfAllStore = active.equals("1")
-                        ? packagingService.getPackagingIsActive(pageable)
-                        : packagingService.getPackagingIsInactive(pageable);
-                model.addAttribute("active", active);
             } else if ("0".equals(store)) {
-                allPacksOfAllStore = packagingService.getAllPackByUserManage(storesId, pageable);
+                if(active.equals("-1")){
+                    allPacksOfAllStore = packagingService.getAllPackByUserManage(storesId, pageable);
+                } else if(active.equals("1")) {
+                    allPacksOfAllStore = packagingService.getAllPackagingByStorage(storesId, pageable, true);
+                } else {
+                    allPacksOfAllStore = packagingService.getAllPackagingByStorage(storesId, pageable, false);
+                }
+
+            } else if (!active.equals("-1")) {
+                Long storeId = Long.parseLong(store);
+                allPacksOfAllStore = active.equals("1")
+                        ? packagingService.getAllPackagingByStoresIdAndStorage(storeId, pageable, true)
+                        : packagingService.getAllPackagingByStoresIdAndStorage(storeId, pageable, false);
             } else {
                 Long storeId = Long.parseLong(store);
                 allPacksOfAllStore = packagingService.getAllPackagingByStoreId(storeId, pageable);
             }
-
-            // Add attributes to model
+            model.addAttribute("active", active);
             model.addAttribute("store", store);
             model.addAttribute("stores", stores);
             model.addAttribute("packagings", allPacksOfAllStore.getContent());
@@ -95,7 +100,6 @@ public class PackingController {
 
             return "admin/packaging/packaging";
         } catch (Exception e) {
-            // Log the error and handle it appropriately
             return "redirect:/error";
         }
     }

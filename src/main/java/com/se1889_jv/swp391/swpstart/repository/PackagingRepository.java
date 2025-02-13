@@ -23,5 +23,8 @@ public interface PackagingRepository extends JpaRepository<Packaging, Long> {
     boolean existsByPackageType(String packageType);
     Page<Packaging> findAllByStoreIdIn(List<Long> storeId, Pageable pageable);
     List<Packaging> findAllByStoreIdIn(List<Long> storeId);
-
+    Page<Packaging> findAllByStoreIdAndStorageIsTrue(Long storeId, Pageable pageable);
+    Page<Packaging> findAllByStoreIdAndStorageIsFalse(Long storeId, Pageable pageable);
+    Page<Packaging> findAllByStoreIdInAndStorageIsTrue(List<Long> storeId, Pageable pageable);
+    Page<Packaging> findAllByStoreIdInAndStorageIsFalse(List<Long> storeId, Pageable pageable);
 }
