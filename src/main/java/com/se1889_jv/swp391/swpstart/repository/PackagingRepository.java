@@ -16,12 +16,15 @@ public interface PackagingRepository extends JpaRepository<Packaging, Long> {
     List<Packaging> findAllPackingForProduct(@Param(("quantity")) double quantity, @Param("storeId") Long storeId);
     Packaging getPackagingByPackageType(String packageType);
     List<Packaging> findPackagingByStoreId(Long storeId);
-    Page<Packaging> findAllByStoreId(Long storeId, Pageable pageable);
+    Page<Packaging> findPackagingByStoreId(Long storeId, Pageable pageable);
     Page<Packaging> findAllByStorageIsTrue(Pageable pageable);
     Page<Packaging> findAllByStorageIsFalse(Pageable pageable);
     Page<Packaging> findAllByPackageTypeContaining(String input, Pageable pageable);
     boolean existsByPackageType(String packageType);
     Page<Packaging> findAllByStoreIdIn(List<Long> storeId, Pageable pageable);
     List<Packaging> findAllByStoreIdIn(List<Long> storeId);
+    Page<Packaging> findByStoreIdAndStorage(Long storeId, boolean storage, Pageable pageable);
+
+    Page<Packaging> findByStoreIdInAndStorage(List<Long> storeIds, boolean storage, Pageable pageable);
 
 }

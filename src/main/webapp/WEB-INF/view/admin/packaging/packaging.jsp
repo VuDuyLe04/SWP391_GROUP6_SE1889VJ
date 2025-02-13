@@ -212,8 +212,8 @@
                                                     <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
                                                     <select id="active" name="active" class="form-control">
                                                         <option ${active == -1 ? "selected" : ""} value="-1">Tất cả</option>
-                                                        <option ${active == 1 ? "selected" : ""} value="1">Sử dụng</option>
-                                                        <option ${active == 0 ? "selected" : ""} value="0">Lưu trữ</option>
+                                                        <option ${active == 1 ? "selected" : ""} value="1">Lưu trữ</option>
+                                                        <option ${active == 0 ? "selected" : ""} value="0">Sử dụng</option>
                                                     </select>
                                                 </div>
                                             </div>

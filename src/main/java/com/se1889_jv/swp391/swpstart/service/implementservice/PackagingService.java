@@ -29,7 +29,7 @@ public class PackagingService implements IPackagingService {
 
     @Override
     public Page<Packaging> getAllPackagingByStoreId(Long storeId, Pageable pageable) {
-        return packagingRepository.findAllByStoreId(storeId, pageable);
+        return packagingRepository.findPackagingByStoreId(storeId, pageable);
     }
 
     @Override
@@ -84,5 +84,15 @@ public class PackagingService implements IPackagingService {
     @Override
     public void addPackaging(Packaging packaging) {
         packagingRepository.save(packaging);
+    }
+
+    @Override
+    public Page<Packaging> getPackagingByStoreAndStorage(Long storeId, boolean storage, Pageable pageable) {
+        return packagingRepository.findByStoreIdAndStorage(storeId, storage, pageable);
+    }
+
+    @Override
+    public Page<Packaging> getPackagingByStoresAndStorage(List<Long> storeIds, boolean storage, Pageable pageable) {
+        return packagingRepository.findByStoreIdInAndStorage(storeIds, storage, pageable);
     }
 }

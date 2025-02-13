@@ -54,32 +54,39 @@ public class PackingController {
                     .map(us -> us.getStore().getId())
                     .collect(Collectors.toList());
 
-            //get list Store for owner
             for(UserStore userStore : userStores) {
                 stores.add(storeService.findStoreById(userStore.getStore().getId()));
-                storesId.add(userStore.getStore().getId());
             }
-            Page<Packaging> allPacksOfAllStore;
-            List<Packaging> allPackOfOwner = packagingService.getAllPackagingForOwner(storesId);
 
-            if("0".equals(store)){
-                allPacksOfAllStore = packagingService.getAllPackByUserManage(storesId, pageable);
-            } else {
-                Long storeId = Long.parseLong(store);
-                allPacksOfAllStore = packagingService.getAllPackagingByStoreId(storeId, pageable);
-            }
+            Page<Packaging> allPacksOfAllStore;
 
             if (input != null && !input.isEmpty()) {
                 allPacksOfAllStore = packagingService.getPackagingByInput(input, pageable);
                 model.addAttribute("input", input);
-            } else if (!active.equals("-1")) {
-                if (active.equals("1")) {
-                    allPacksOfAllStore = packagingService.getPackagingIsActive(pageable);
-                } else if (active.equals("0")) {
-                    allPacksOfAllStore = packagingService.getPackagingIsInactive(pageable);
-                }
-                model.addAttribute("active", active);
             }
+            else {
+                Long storeId = "0".equals(store) ? null : Long.parseLong(store);
+
+                if (!active.equals("-1")) {
+                    // Chuyển đổi active value thành storage value
+                    boolean storageValue = active.equals("0"); // "0" là lưu trữ (storage=true), "1" là sử dụng (storage=false)
+
+                    if (storeId != null) {
+                        allPacksOfAllStore = packagingService.getPackagingByStoreAndStorage(storeId, storageValue, pageable);
+                    } else {
+                        allPacksOfAllStore = packagingService.getPackagingByStoresAndStorage(storesId, storageValue, pageable);
+                    }
+                    model.addAttribute("active", active);
+                } else {
+                    if (storeId != null) {
+                        allPacksOfAllStore = packagingService.getAllPackagingByStoreId(storeId, pageable);
+                    } else {
+                        allPacksOfAllStore = packagingService.getAllPackByUserManage(storesId, pageable);
+                    }
+                }
+            }
+
+            List<Packaging> allPackOfOwner = packagingService.getAllPackagingForOwner(storesId);
 
             model.addAttribute("store", store);
             model.addAttribute("stores", stores);
@@ -90,7 +97,6 @@ public class PackingController {
         } else {
             return "redirect:/access-deny";
         }
-
     }
     @PostMapping("/updatePackaging")
     public String updatePackaging(HttpSession session, Model model, Packaging packaging) {
