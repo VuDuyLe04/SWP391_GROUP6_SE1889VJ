@@ -380,33 +380,33 @@
                                     required
                             >
 
-                            <p style="color: red">
-                                ${error}
-                            </p>
-                            <p id="phoneError" style="color:red; display: none"> </p>
-                            <!-- Password -->
-                            <label for="password">Mật khẩu:</label>
-                            <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    placeholder="Nhập mật khẩu"
+<%--                            <p style="color: red">--%>
+<%--                                ${error}--%>
+<%--                            </p>--%>
+<%--                            <p id="phoneError" style="color:red; display: none"> </p>--%>
+<%--                            <!-- Password -->--%>
+<%--                            <label for="password">Mật khẩu:</label>--%>
+<%--                            <input--%>
+<%--                                    type="password"--%>
+<%--                                    id="password"--%>
+<%--                                    name="password"--%>
+<%--                                    placeholder="Nhập mật khẩu"--%>
 
-                                    onblur="checkPassword()"
-                                    value="${useru.password != null ? useru.password : ''}"
-                                    required
-                            >
-                            <p id="passError" style="color: red" > </p>
-                            <label for="repassword">Nhập lại mật khẩu:</label>
-                            <input
-                                    type="password"
-                                    id="repassword"
-                                    name="repassword"
-                                    placeholder="Nhập lại mật khẩu"
-                                    onblur="checkPassword()"
-                                    value="${useru.password != null ? useru.password : ''}"
-                                    required
-                            >
+<%--                                    onblur="checkPassword()"--%>
+<%--                                    value="${useru.password != null ? useru.password : ''}"--%>
+<%--                                    required--%>
+<%--                            >--%>
+<%--                            <p id="passError" style="color: red" > </p>--%>
+<%--                            <label for="repassword">Nhập lại mật khẩu:</label>--%>
+<%--                            <input--%>
+<%--                                    type="password"--%>
+<%--                                    id="repassword"--%>
+<%--                                    name="repassword"--%>
+<%--                                    placeholder="Nhập lại mật khẩu"--%>
+<%--                                    onblur="checkPassword()"--%>
+<%--                                    value="${useru.password != null ? useru.password : ''}"--%>
+<%--                                    required--%>
+<%--                            >--%>
                             <p id="repassError" style="color: red"></p>
 
                             <!-- Name -->
@@ -425,7 +425,7 @@
                                 <div class="status-container">
                                     <label>Trạng thái:</label>
                                     <label class="toggle-switch">
-                                        <input type="checkbox"  name="active"  ${useru.active == 'true' ? 'checked' : ''}>
+                                        <input id="statusToggle" type="checkbox"  name="active"  ${useru.active == 'true' ? 'checked' : ''}>
                                         <span class="toggle-slider"></span>
                                     </label>
                                     <span class="status-label">Hoạt động</span>
@@ -441,7 +441,7 @@
                             </c:if>
                             <p style="color: limegreen">${success}</p>
                             <!-- Submit Button -->
-                            <button type="submit" ${success != null ? 'disabled' : ''}>Xác nhận </button>
+                            <button type="submit" >Xác nhận </button>
 
                         </form>
 
@@ -453,6 +453,9 @@
 </section>
 
 <script>
+    document.getElementById('statusToggle').addEventListener('change', function() {
+        console.log('Trạng thái:', this.checked);
+    });
     function checkPhone(phone, id) {
         const phoneRegex = /^[0-9]{10}$/;
         const phoneError = document.getElementById("phoneError");
@@ -460,13 +463,13 @@
         if (phone.trim() === "") {
             phoneError.textContent = "Vui lòng nhập số điện thoại!";
             phoneError.style.display = "block";
-            return false;
+
         }
 
         if (!phoneRegex.test(phone)) {
             phoneError.textContent = "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số!";
             phoneError.style.display = "block";
-            return false;
+
         }
 
         // Số điện thoại hợp lệ
@@ -566,5 +569,6 @@
 
 <!-- Examples -->
 <script src="/client/auth/assets/javascripts/dashboard/examples.dashboard.js"></script>
+
 </body>
 </html>

@@ -91,7 +91,7 @@
                         </header>
                         <div class="panel-body">
                             <form:form method="post" modelAttribute="product" action="/product/update">
-
+                                <form:hidden path="id"/>
 
 
 

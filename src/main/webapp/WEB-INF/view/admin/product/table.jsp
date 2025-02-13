@@ -148,11 +148,11 @@
 
                                             <button class="btn btn-info btn-sm" onclick="window.location.href='/product/view/${product.id}'">Xem chi tiết</button>
 
-                                            <form method="post" action="/product/delete" style="display:inline;">
-                                                <input type="hidden" name="_csrf" value="${_csrf.token}" />
-                                                <input type="hidden" name="id" value="${product.id}" />
-                                                <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure you want to delete this item?');">Xóa sản phẩm</button>
-                                            </form>
+<%--                                            <form method="post" action="/product/delete" style="display:inline;">--%>
+<%--                                                <input type="hidden" name="_csrf" value="${_csrf.token}" />--%>
+<%--                                                <input type="hidden" name="id" value="${product.id}" />--%>
+<%--                                                <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure you want to delete this item?');">Xóa sản phẩm</button>--%>
+<%--                                            </form>--%>
                                         </td>
                                     </tr>
                                 </c:forEach>
