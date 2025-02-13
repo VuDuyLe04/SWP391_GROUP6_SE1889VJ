@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,9 @@ public class UserController {
     StoreService storeService;
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/usermanagement")
     public String getAllUser(@RequestParam(value = "input", required = false) String input,
@@ -99,10 +104,10 @@ public class UserController {
                              @RequestParam(value = "name") String name,
                              @RequestParam(value = "active", defaultValue = "false") String active,
                              Model model) {
-
+        User sessionUser = Utility.getUserInSession();
         User user = new User();
         user.setPhone(phone);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
 
         // Định dạng lại name
         String formattedName = Arrays.stream(name.trim().toLowerCase().split("\\s+"))
@@ -111,7 +116,7 @@ public class UserController {
         user.setName(formattedName);
 
         user.setActive(Boolean.parseBoolean(active));
-        user.setCreatedBy("admin");
+        user.setCreatedBy(sessionUser.getName());
         user.setRole(roleService.getRole(2L));
         user.setUserStores(null);
         userService.createUser(user);

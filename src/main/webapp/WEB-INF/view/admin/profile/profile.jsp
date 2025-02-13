@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>User Profile | Okler Themes | Porto-Admin</title>
+    <title>Thông tin cá nhân</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="Porto Admin - Responsive HTML5 Template">
     <meta name="author" content="okler.net">
@@ -77,7 +77,7 @@
                     <section class="panel">
                         <div class="panel-body">
                             <div class="thumb-info mb-md">
-                                <img src="/client/auth/assets/images/!logged-user.jpg" class="rounded img-responsive" alt="John Doe">
+                                <img src="/client/auth/assets/images/vuduyle.jpg" class="rounded img-responsive" alt="John Doe">
                                 <div class="thumb-info-title">
                                     <span class="thumb-info-inner">${sessionScope.user.name}</span>
                                     <span class="thumb-info-type">${sessionScope.user.role.name}</span>

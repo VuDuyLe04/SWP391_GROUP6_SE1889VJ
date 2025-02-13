@@ -116,8 +116,6 @@
                                     </div>
                                 </div>
 
-
-
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputReadOnly">Địa chỉ</label>
                                     <div class="col-md-6">
@@ -126,9 +124,21 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputHelpText">Số dư</label>
+                                    <label class="col-md-3 control-label" for="inputHelpText">Tiền nợ</label>
                                     <div class="col-md-6">
                                         <form:input path="balance" class="form-control" id="inputHelpText" readonly="true" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="inputHelpText">Cửa hàng</label>
+                                    <div class="col-md-6">
+                                        <select name="storeId">
+                                            <c:forEach items="${listStore}" var="store">
+                                                <option value="${store.id}">${store.name}</option>
+                                            </c:forEach>
+                                        </select>
+
                                     </div>
                                 </div>
 

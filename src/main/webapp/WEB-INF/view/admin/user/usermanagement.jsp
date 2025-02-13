@@ -246,7 +246,7 @@
                                         <form id="search-form" action="usermanagement" method="get" class="search nav-form">
                                             <div class="input-group input-search">
                                                 <input type="text" class="form-control" name="input" 
-                                                       placeholder="Tìm kiếm theo tên hoặc số điện thoại" value="${input}" required>
+                                                       placeholder="Tìm kiếm theo tên hoặc số điện thoại" value="${input}" >
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-primary" type="submit">
                                                         <i class="fa fa-search"></i>
@@ -370,7 +370,7 @@
                                 </table>
 
                                 <c:set var="c" value="${userPage.number}"></c:set>
-                                <ul class="pagination justify-content-center" style="margin-leftgit:413px">
+                                <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
                                         <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}">Trước</a>
                                     </li>
