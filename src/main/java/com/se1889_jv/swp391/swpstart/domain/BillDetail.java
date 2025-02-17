@@ -12,6 +12,7 @@ public class BillDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private String nameProduct;
     private double quantity;
     private double actualSellPrice;
     private double listedPrice;

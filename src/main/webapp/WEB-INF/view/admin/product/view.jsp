@@ -35,7 +35,7 @@
                         <div class="col-md-6">
                             <table class="table table-bordered">
                                 <tr>
-                                    <th>Đặc tính</th>
+                                    <th>Mô tả</th>
                                     <td>${product.description}</td>
                                 </tr>
                                 <tr>

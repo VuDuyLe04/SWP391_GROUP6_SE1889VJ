@@ -12,5 +12,5 @@ public interface IWareHouseService {
     WareHouse getWareHouseById(long id);
     boolean existsWareHouseByName(String name, Store store);
     void updateWareHouse(WareHouse warehouse);
-
+    List<WareHouse> getAllWareHouseByListStore(List<Store> store);
 }
