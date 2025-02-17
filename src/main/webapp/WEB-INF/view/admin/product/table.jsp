@@ -216,7 +216,6 @@
                                     <tr>
                                         <th>Code</th>
                                         <th>Tên gạo</th>
-                                        <th class="text-center">Hình ảnh</th>
                                         <th class="text-center">Giá gạo</th>
                                         <th class="text-center">Lưu trữ</th>
                                         <th class="text-center" style="width: 350px;">Hành động</th>
@@ -232,7 +231,6 @@
                                         <tr>
                                             <td>${product.id}</td>
                                             <td class="hidden-xs hidden-sm">${product.name}</td>
-                                            <td class="text-center">${product.image}</td>
                                             <td class="text-center">${product.unitPrice} đ/kg</td>
                                             <td class="text-center">
                                                 <span class="label ${product.storage == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">

@@ -3,7 +3,9 @@ package com.se1889_jv.swp391.swpstart.controller.admin;
 import com.se1889_jv.swp391.swpstart.domain.Product;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
+import com.se1889_jv.swp391.swpstart.domain.WareHouse;
 import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.WareHouseService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private WareHouseService wareHouseService;
     @GetMapping("/product")
     public String getListProductPage(
             @RequestParam(defaultValue = "0") int page,
@@ -69,10 +73,10 @@ ProductController {
         }
 
         List<Store> stores = Utility.getListStoreOfOwner(user);
-
+        List<WareHouse> wareHouses = wareHouseService.getAllWareHouseByListStore(stores);
         model.addAttribute("product", new Product());
         model.addAttribute("listStore", stores);
-
+        model.addAttribute("wareHouses", wareHouses);
         return "admin/product/create";
     }
 

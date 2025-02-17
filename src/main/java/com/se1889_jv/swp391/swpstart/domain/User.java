@@ -22,6 +22,7 @@ public class User {
     @NotBlank
     private String password;
     private String name;
+
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;
@@ -39,7 +40,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<UserStore> userStores;
-public void addUserStore() {
+    public void addUserStore() {
     User user = new User();
     user.getUserStores();
 }
