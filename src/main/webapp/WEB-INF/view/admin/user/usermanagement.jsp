@@ -305,8 +305,8 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <a href="adduser" class="btn btn-primary mb-xs mt-xs mr-xs">
-                                            <i class="fa fa-plus mr-xs"></i>Tạo người dùng
+                                        <a href="createuser" class="btn btn-primary mb-xs mt-xs mr-xs">
+                                            <i class="fa fa-plus mr-xs"></i>Tạo chủ cửa hàng
                                         </a>
 
                                     </div>
@@ -330,7 +330,8 @@
                                     <c:forEach var="u" items="${userPage.content}">
                                         <tr>
                                             <td><strong>${u.name}</strong></td>
-                                            <td>${u.phone}</td>
+                                            <td>${u.phone}
+                                                </td>
                                             <c:if test="${sessionScope.user.role.id == 1}">
                                                 <td><span class="text-primary">
                                                         <c:choose>
@@ -347,6 +348,7 @@
                 </span>
                                                 </td>
                                             </c:if>
+
                                             <td>
                                                 <button
                                                         class="btn btn-default btn-sm mr-xs view-button"
@@ -354,10 +356,10 @@
                                                         data-name="${u.name}"
                                                         data-phone="${u.phone}"
                                                         data-role="${u.role.name}"
-                                                        data-status="${u.active == 'true' ? 'Hoạt động' : 'Cấm'}"
-                                                        data-createdAt = "${u.createdAt}"
+                                                        data-status="${u.active == 'true' ? 'Active' : 'Banned'}"
+                                                        data-createdAt="${u.createdAtFormatted}"
                                                         data-createdBy = "${u.createdBy}"
-                                                        data-updatedAt = "${u.updatedAt}"
+                                                        data-updatedAt="${u.updatedAtFormatted}"
                                                         data-updatedBy = "${u.updatedBy}"
                                                         data-userStores = "${u.userStores}"
                                                 >
@@ -478,11 +480,19 @@
         $('.view-button').on('click', function() {
             const name = $(this).data('name');
             const phone = $(this).data('phone');
-            const role = $(this).data('role');
+            let role = $(this).data('role');
+            if(role === "ADMIN") role = "Quản trị viên";
+            else if(role === "OWNER") role = "Chủ cửa hàng";
+            else role = "Nhân viên";
+
+            const createdAt = $(this).attr('data-createdAt');
+            const updatedAt = $(this).attr('data-updatedAt');
+
+
             const status = $(this).data('status');
-            const createdAt = $(this).data('createdAt');
+         //   const createdAt = $(this).data('createdAt');
             const createdBy = $(this).data('createdBy');
-            const updatedAt = $(this).data('updatedAt');
+          //  const updatedAt = $(this).data('updatedAt');
             const updatedBy = $(this).data('updatedBy');
             const userStores = $(this).data('userStores');
 

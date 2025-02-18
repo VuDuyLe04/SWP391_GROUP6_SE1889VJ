@@ -58,10 +58,7 @@ public class UserController {
 
         return "admin/user/usermanagement";
     }
-    @GetMapping("adduser")
-    public String addUserIn(){
-        return "admin/user/adduserin";
-    }
+
     @GetMapping("checkphone")
     public String checkPhone(@RequestParam(value="createdPhone",required = false) String createdPhone,
                              @RequestParam(value="updatedPhone",required = false) String updatedPhone,
@@ -89,37 +86,38 @@ public class UserController {
             return "admin/user/updateuser";
         } else {
             model.addAttribute("phone", phone);
-            return "admin/user/adduserin";
+            return "admin/user/createuser";
         }
     }
     @GetMapping("createuser")
-    public String createUser(@RequestParam(value = "phone") String phone,
-                             @RequestParam(value = "password") String password,
-                             @RequestParam(value = "name") String name,
+    public String createUser(@RequestParam(value = "phone",required = false) String phone,
+                             @RequestParam(value = "password",required = false) String password,
+                             @RequestParam(value = "name",required = false) String name,
                              @RequestParam(value = "active", defaultValue = "false") String active,
                              Model model) {
-
-        User user = new User();
-        user.setPhone(phone);
-        user.setPassword(password);
-        String formattedName = Arrays.stream(name.trim().toLowerCase().split("\\s+"))
-                .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
-                .collect(Collectors.joining(" "));
-        user.setName(formattedName);
-        user.setActive(Boolean.parseBoolean(active));
-        user.setCreatedBy("admin");
-        user.setRole(roleService.getRole(2L));
-        user.setUserStores(null);
-        userService.createUser(user);
-
-        if (userService.getUserByPhone(phone) != null) {
-            model.addAttribute("success", "Tạo người dùng thành công");
+        if(phone != null){
+            User user = new User();
+            user.setPhone(phone);
+            user.setPassword(password);
+            String formattedName = Arrays.stream(name.trim().toLowerCase().split("\\s+"))
+                    .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
+                    .collect(Collectors.joining(" "));
+            user.setName(formattedName);
+            user.setActive(Boolean.parseBoolean(active));
+            user.setCreatedBy("admin");
+            user.setRole(roleService.getRole(2L));
+            user.setUserStores(null);
+            userService.createUser(user);
+            if (userService.getUserByPhone(phone) != null) {
+                model.addAttribute("success", "Tạo người dùng thành công");
+            }
         }
-        return "admin/user/adduserin";
+
+        return "admin/user/createuser";
     }
 
     @GetMapping("updateuser")
-    public String updateUser(@RequestParam String id,
+    public String updateUser(@RequestParam (value="id", required = false) String id,
                              @RequestParam(value="phone",required = false) String phone,
 //                             @RequestParam(value="password",required = false) String password,
                              @RequestParam(value="name",required = false) String name,
