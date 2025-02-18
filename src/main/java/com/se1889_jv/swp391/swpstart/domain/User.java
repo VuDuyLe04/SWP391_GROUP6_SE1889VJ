@@ -1,12 +1,19 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
 import com.se1889_jv.swp391.swpstart.util.Utility;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -25,7 +32,14 @@ public class User {
     @NotBlank(message = "Tên không được để trống")
     private String name;
 
+    @CreationTimestamp
+    @Column(updatable = false)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Ho_Chi_Minh")
     private Instant createdAt;
+    @UpdateTimestamp
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Ho_Chi_Minh")
     private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
@@ -49,6 +63,26 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<TransactionService> transactionServices;
+    public Date getCreatedAtAsDate() {
+        return createdAt != null ? Date.from(createdAt) : null;
+    }
 
+    public Date getUpdatedAtAsDate() {
+        return updatedAt != null ? Date.from(updatedAt) : null;
+    }
+    public String getCreatedAtFormatted() {
+        return formatInstant(createdAt);
+    }
+
+    public String getUpdatedAtFormatted() {
+        return formatInstant(updatedAt);
+    }
+
+    private String formatInstant(Instant instant) {
+        if (instant == null) return "";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                .withZone(ZoneId.of("Asia/Ho_Chi_Minh"));
+        return formatter.format(instant);
+    }
 
 }
