@@ -270,11 +270,11 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Gía bốc vác:</label>
-                                                    <input type="number" class="form-control" name="liftCost" required>
+                                                    <input min="0" type="number" class="form-control" name="liftCost" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Số lượng gạo 1 gói:</label>
-                                                    <input type="number" class="form-control" name="quantityPerPackage" required>
+                                                    <input min="0" type="number" class="form-control" name="quantityPerPackage" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Cửa hàng</label>
@@ -373,7 +373,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="liftCost-${u.id}">Gía bốc vác:</label>
-                                                                <input type="number" class="form-control" id="liftCost-${u.id}" name="liftCost" value="${u.liftCost}" required>
+                                                                <input min="0" type="number" class="form-control" id="liftCost-${u.id}" name="liftCost" value="${u.liftCost}" required>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="storage-${u.id}">Tình trạng:</label>
