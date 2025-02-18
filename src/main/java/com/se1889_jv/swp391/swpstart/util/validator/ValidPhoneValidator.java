@@ -9,8 +9,10 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ValidPhoneValidator implements ConstraintValidator<ValidPhone, String> {
+
     @Autowired
     private CustomerService customerService;
+
     @Override
     public boolean isValid(String phone, ConstraintValidatorContext constraintValidatorContext) {
 

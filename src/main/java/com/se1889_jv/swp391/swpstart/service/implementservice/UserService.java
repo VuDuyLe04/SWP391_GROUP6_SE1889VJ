@@ -118,13 +118,21 @@ public class UserService implements IUserService {
     }
 
 
-
-
-
     @Override
     public List<UserStore> getAllUserStores(User user) {
 
         return user.getUserStores();
+    }
+
+    @Override
+    public User updateUser(User user) {
+        User user1 = findById(user.getId());
+        if(user1 != null){
+            user1.setName(user.getName());
+            user1.setUpdatedAt(Instant.now());
+            user1.setUpdatedBy(user.getName());
+        }
+        return this.userRepository.save(user1);
     }
 
 }

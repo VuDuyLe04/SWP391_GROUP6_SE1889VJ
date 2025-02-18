@@ -19,9 +19,7 @@ public interface IUserService {
     boolean checkPhoneExist(String phone);
     List<UserStore> getAllUserStores(User user);
 
-
-
-
+    User updateUser(User user);
 
     Page<User> getAll(Pageable pageable);
 

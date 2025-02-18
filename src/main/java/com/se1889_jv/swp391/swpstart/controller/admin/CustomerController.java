@@ -7,14 +7,11 @@ import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.service.implementservice.CustomerService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,14 +35,17 @@ public class CustomerController {
                 return "redirect:/dashboard";
             }
         }
-        model.addAttribute("listStore", Utility.getListStoreOfOwner(user));
+        if (user.getRole().getName().equals("OWNER")) {
+            model.addAttribute("listStore", Utility.getListStoreOfOwner(user));
+        }
+
         return "admin/customer/create";
     }
 
     @PostMapping("/customer/create")
     public String createCustomer(Model model,
-            @ModelAttribute("customer") @Valid Customer customer, @RequestParam("storeId") String storeId,
-            BindingResult result
+                                 @ModelAttribute("customer") @Valid Customer customer,
+                                 BindingResult result, @RequestParam( value = "storeId", required = false) String storeId
     ) {
         User user = Utility.getUserInSession();
         if (result.hasErrors()) {
@@ -58,17 +58,17 @@ public class CustomerController {
             if (this.customerService.checkCustomerExistsInStoreByPhone(customer.getPhone(), store) == false){
                 this.customerService.createCustomer(customer, store);
             } else {
-//                result.rejectValue("phone","error.customer", "Khách hàng đã tồn tại trong cửa hàng");
+                result.rejectValue("phone", "error.customer", "Số điện thoại đã tồn tại trong khách hàng khác");
+                model.addAttribute("listStore", Utility.getListStoreOfOwner(user));
+                return "admin/customer/create";
             }
 
         } else {
             Store store = this.storeService.findStoreById(Long.parseLong(storeId));
             if (this.customerService.checkCustomerExistsInStoreByPhone(customer.getPhone(), store) == false){
-
                 this.customerService.createCustomer(customer, store);
-
             } else {
-//                result.rejectValue("phone","error.customer", "Khách hàng đã tồn tại trong cửa hàng");
+                result.rejectValue("phone", "error.customer", "Số điện thoại đã tồn tại trong khách hàng khác");
                 model.addAttribute("listStore", Utility.getListStoreOfOwner(user));
                 return "admin/customer/create";
             }
@@ -104,6 +104,7 @@ public class CustomerController {
         }
         Customer customer = customerService.getCustomerById(id);
         model.addAttribute("customer", customer);
+
         return "admin/customer/update";
     }
 

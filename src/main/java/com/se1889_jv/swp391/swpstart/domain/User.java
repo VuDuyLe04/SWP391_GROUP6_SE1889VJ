@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
+import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -21,6 +22,7 @@ public class User {
     private String phone;
     @NotBlank
     private String password;
+    @NotBlank(message = "Tên không được để trống")
     private String name;
     private Instant createdAt;
     private Instant updatedAt;
@@ -39,7 +41,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<UserStore> userStores;
-public void addUserStore() {
+    public void addUserStore() {
     User user = new User();
     user.getUserStores();
 }
