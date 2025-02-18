@@ -121,20 +121,48 @@ public class CustomerController {
         return "redirect:/customer";
     }
     @GetMapping("/customer/search")
-    public String searchCustomer(@RequestParam(required = false) String name,
+    public String searchCustomer(@RequestParam(defaultValue = "0") int page,@RequestParam(required = false) String name,
                                  @RequestParam(required = false) String phone,
                                  Model model) {
-        List<Customer> customers;
-
-        if (name != null && !name.isEmpty()) {
-            customers = customerService.searchCustomersByName(name);
-        } else if (phone != null && !phone.isEmpty()) {
-            customers = customerService.searchCustomersByPhone(phone);
+//        List<Customer> customers;
+        Store store = Utility.getStoreInSession();
+        User user = Utility.getUserInSession();
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getRole().getName().equals("STAFF")) {
+            if (store == null) {
+                return "redirect:/dashboard";
+            }
+        }
+        Pageable pageable = PageRequest.of(page, 5); // 5 sản phẩm mỗi trang
+        if (user.getRole().getName().equals("OWNER")){
+            Page<Customer> customers;
+            if (name != null && !name.isEmpty()) {
+                customers = customerService.searchCustomersByNameRoleOwner(name,Utility.getListStoreOfOwner(user),pageable );
+            } else if (phone != null && !phone.isEmpty()) {
+                customers = customerService.searchCustomersByPhoneRoleOwner(phone,Utility.getListStoreOfOwner(user),pageable );
+            } else {
+                customers = this.customerService.getAllCustomersRoleOwner(Utility.getListStoreOfOwner(user), pageable);
+            }
+            model.addAttribute("listCustomer", customers.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", customers.getTotalPages());
         } else {
-            customers = customerService.getAllCustomers();
+            Page<Customer> customers;
+            if (name != null && !name.isEmpty()) {
+                customers = customerService.searchCustomersByNameRoleStaff(name,store,pageable );
+            } else if (phone != null && !phone.isEmpty()) {
+                customers = customerService.searchCustomersByPhoneRoleStaff(phone,store,pageable );
+            } else {
+                customers = this.customerService.getAllCustomersRoleStafff(store, pageable);
+            }
+            model.addAttribute("listCustomer", customers.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", customers.getTotalPages());
         }
 
-        model.addAttribute("listCustomer", customers);
+//        model.addAttribute("listCustomer", customers);
         return "admin/customer/table";
     }
 
@@ -142,6 +170,9 @@ public class CustomerController {
     public String getListCustomerPage(@RequestParam(defaultValue = "0") int page, Model model) {
         Store store = Utility.getStoreInSession();
         User user = Utility.getUserInSession();
+        if (user == null) {
+            return "redirect:/login";
+        }
         if (user.getRole().getName().equals("STAFF")) {
             if (store == null) {
                 return "redirect:/dashboard";

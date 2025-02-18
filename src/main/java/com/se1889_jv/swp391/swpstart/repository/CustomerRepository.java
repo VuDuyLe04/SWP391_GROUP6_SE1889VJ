@@ -16,8 +16,14 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     List<Customer> findByStore(Store store);
 //    @Query("SELECT c from Customer c WHERE c.name LIKE %?1%")
 //    List<Customer> searchCustomer(String keyword);
-List<Customer> findByNameContainingIgnoreCase(String name);
-List<Customer> findByPhoneContainingIgnoreCase(String email);
+
+    //Role Owner
+    Page<Customer> findByNameContainingIgnoreCaseAndStoreIn(String name,List<Store> stores, Pageable pageable);
+    Page<Customer> findByPhoneContainingIgnoreCaseAndStoreIn(String email,List<Store> stores, Pageable pageable);
+    //Role Staff
+    Page<Customer> findByNameContainingIgnoreCaseAndStore(String name,Store store, Pageable pageable);
+    Page<Customer> findByPhoneContainingIgnoreCaseAndStore(String email,Store store, Pageable pageable);
+    //
     List<Customer> getCustomersByStoreId(Long storeId);
     Customer getCustomersByNameAndPhone(String name, String phone);
 
