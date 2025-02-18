@@ -6,11 +6,14 @@ import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.service.implementservice.RoleService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
+import com.se1889_jv.swp391.swpstart.util.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +33,9 @@ public class UserController {
     StoreService storeService;
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/usermanagement")
     public String getAllUser(@RequestParam(value = "input", required = false) String input,
@@ -58,7 +64,6 @@ public class UserController {
 
         return "admin/user/usermanagement";
     }
-
     @GetMapping("checkphone")
     public String checkPhone(@RequestParam(value="createdPhone",required = false) String createdPhone,
                              @RequestParam(value="updatedPhone",required = false) String updatedPhone,
@@ -79,6 +84,7 @@ public class UserController {
         }
 
         model.addAttribute("error", error);
+        
         if (updatedPhone != null && id != null) {
             User user = userService.findById(Long.parseLong(id));
             user.setPhone(updatedPhone);
@@ -95,26 +101,32 @@ public class UserController {
                              @RequestParam(value = "name",required = false) String name,
                              @RequestParam(value = "active", defaultValue = "false") String active,
                              Model model) {
-        if(phone != null){
-            User user = new User();
-            user.setPhone(phone);
-            user.setPassword(password);
-            String formattedName = Arrays.stream(name.trim().toLowerCase().split("\\s+"))
-                    .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
-                    .collect(Collectors.joining(" "));
-            user.setName(formattedName);
-            user.setActive(Boolean.parseBoolean(active));
-            user.setCreatedBy("admin");
-            user.setRole(roleService.getRole(2L));
-            user.setUserStores(null);
-            userService.createUser(user);
-            if (userService.getUserByPhone(phone) != null) {
-                model.addAttribute("success", "Tạo người dùng thành công");
-            }
+        if(phone !=null){
+        User sessionUser = Utility.getUserInSession();
+        User user = new User();
+        user.setPhone(phone);
+        user.setPassword(passwordEncoder.encode(password));
+
+        // Định dạng lại name
+        String formattedName = Arrays.stream(name.trim().toLowerCase().split("\\s+"))
+                .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
+                .collect(Collectors.joining(" "));
+        user.setName(formattedName);
+
+        user.setActive(Boolean.parseBoolean(active));
+        user.setCreatedBy(sessionUser.getName());
+        user.setRole(roleService.getRole(2L));
+        user.setUserStores(null);
+        userService.createUser(user);
+
+        if (userService.getUserByPhone(phone) != null) {
+            model.addAttribute("success", "Tạo người dùng thành công");
+        }
         }
 
         return "admin/user/createuser";
     }
+
 
     @GetMapping("updateuser")
     public String updateUser(@RequestParam (value="id", required = false) String id,
@@ -128,8 +140,10 @@ public class UserController {
             user = userService.findById(Long.parseLong(id));
         if(phone != null){
             user.setPhone(phone);
+//            user.setPassword(password);
             user.setName(name);
             user.setActive(active);
+
             userService.createUser(user);
             if(user.getPhone().equals(phone)){
                 model.addAttribute("success","Cập nhật người dùng thành công!");
@@ -138,6 +152,13 @@ public class UserController {
 
         model.addAttribute("useru", user);
         return "admin/user/updateuser";
+    }
+
+    @GetMapping("/profile")
+    public String getProfilePage(Model model){
+        User user = Utility.getUserInSession();
+        model.addAttribute("user", user);
+        return "admin/profile/profile";
     }
 
 }

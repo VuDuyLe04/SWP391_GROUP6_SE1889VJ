@@ -57,9 +57,15 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public Page<Customer> getAllCustomers(Pageable pageable) {
-        return customerRepository.findAll(pageable);
+    public Page<Customer> getAllCustomersRoleOwner(List<Store> stores, Pageable pageable) {
+        return this.customerRepository.findByStoreIn(stores, pageable);
     }
+
+    @Override
+    public Page<Customer> getAllCustomersRoleStafff(Store store, Pageable pageable) {
+        return this.customerRepository.findByStore(store, pageable);
+    }
+
 
     @Override
     public List<Customer> getAllCustomers() {
@@ -77,6 +83,11 @@ public class CustomerService implements ICustomerService {
         String name = part[0].trim();
         String phone = part[1].trim();
         return customerRepository.getCustomersByNameAndPhone(name,phone);
+    }
+
+    @Override
+    public boolean checkCustomerExistsInStoreByPhone(String phone, Store store) {
+        return this.customerRepository.existsByPhoneAndStore(phone, store);
     }
 
 }

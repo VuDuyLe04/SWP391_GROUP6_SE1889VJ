@@ -14,7 +14,7 @@ public interface ICustomerService {
     List<Customer> getAllCustomers(Store store);
     Customer getCustomerById(long id);
     void updateCustomer(Customer customer);
-public List<Customer> getAllCustomers();
+    public List<Customer> getAllCustomers();
     public default List<Customer> searchCustomersByName(String name) {
 
         CustomerRepository customerRepository = null;
@@ -25,7 +25,14 @@ public List<Customer> getAllCustomers();
         CustomerRepository customerRepository = null;
         return customerRepository.findByPhoneContainingIgnoreCase(phone);
     }
-    Page<Customer> getAllCustomers(Pageable pageable);
+
+    //Lấy tất cẩ customer trong tất cả các cửa hàng của Owner
+    Page<Customer> getAllCustomersRoleOwner(List<Store> stores,Pageable pageable);
+    //Lấy tất cả các customer trong cửa hàng mà Staff chọn quản lý
+    Page<Customer> getAllCustomersRoleStafff(Store store,Pageable pageable);
+
     List<Customer> getCustomersByStoreId(Long storeId);
     Customer getCustomerByNameAndPhone(String infor);
+
+    boolean checkCustomerExistsInStoreByPhone(String phone, Store store);
 }
