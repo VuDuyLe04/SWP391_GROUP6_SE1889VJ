@@ -104,7 +104,7 @@
                                 <div class="col-md-3">
                                     <form method="GET" action="/customer/search" class="form-inline" style="margin-bottom: 20px;">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="name" placeholder="Search by name" value="${param.name}" />
+                                            <input type="text" class="form-control" name="name" placeholder="Search by name" value="${param.name}"  required pattern="[A-Za-z0-9 ]{1,50}" title="Chỉ cho phép chữ cái, số và tối đa 50 ký tự"/>
                                             <span class="input-group-btn">
                         <button class="btn btn-primary" type="submit">Search</button>
                     </span>
