@@ -303,6 +303,7 @@
                                     <tr>
                                         <th><i class="fa"></i>STT</th>
                                         <th><i class="fa fa-user mr-xs"></i>Đóng gói</th>
+                                        <th><i class="fa fa-user mr-xs"></i>Gía bốc</th>
                                         <th><i class="fa fa-check-circle mr-xs"></i>Tình Trạng</th>
                                         <th><i class="fa fa-check-circle mr-xs"></i>Cửa hàng</th>
                                         <th><i class="fa fa-cogs mr-xs"></i>Hoạt động</th>
@@ -397,6 +398,7 @@
                                         <tr>
                                             <td>${status.index + 1}</td>
                                             <td>${u.packageType}</td>
+                                            <td>${u.liftCost}</td>
                                             <td>
                                                 <span class="label ${u.storage == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
                                                     <i class="fa ${u.storage == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
