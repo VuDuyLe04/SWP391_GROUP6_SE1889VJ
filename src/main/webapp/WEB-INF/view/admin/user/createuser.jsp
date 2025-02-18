@@ -431,7 +431,7 @@
                             </c:if>
                             <p style="color: limegreen">${success}</p>
                             <!-- Submit Button -->
-                            <button type="submit" ${success != null ? 'disabled' : ''}>Tạo </button>
+                            <button  id="submitBtn" type="submit" ${success != null || error != null ? 'disabled' : ''}>Tạo </button>
 
                         </form>
 
@@ -446,22 +446,25 @@
     function checkPhone(phone) {
         const phoneRegex = /^[0-9]{10}$/; // Kiểm tra số điện thoại có đúng 10 chữ số
         const phoneError = document.getElementById("phoneError"); // Phần tử hiển thị lỗi
-
+        const button = document.getElementById("submitBtn");
         if (phone.trim() === "") {
             phoneError.textContent = "Vui lòng nhập số điện thoại!";
             phoneError.style.display = "block";
+            button.disabled = true;
             return false; // Ngăn chặn submit
         }
 
         if (!phoneRegex.test(phone)) {
             phoneError.textContent = "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số!";
             phoneError.style.display = "block";
+            button.disabled = true;
             return false; // Ngăn chặn submit
         }
 
         // Số điện thoại hợp lệ
         phoneError.style.display = "none"; // Ẩn thông báo lỗi
         window.location.href = "checkphone?createdPhone=" + phone;
+        button.disabled = false;
         return true;
     }
 
@@ -469,19 +472,22 @@
     function checkPassword() {
         const password = document.getElementById("password").value;
         const passError = document.getElementById("passError");
+        const button = document.getElementById("submitBtn");
         const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/;
 
         // Check if password is empty
         if (!password || password.trim() === "") {
             passError.textContent = "Vui lòng nhập mật khẩu!";
+            button.disabled = true;
             return false;
         } else if (!passRegex.test(password)) {
             passError.textContent = "Mật khẩu không hợp lệ. Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!";
+            button.disabled = true;
             return false;
         } else {
             passError.textContent = "";
+            button.disabled = false;
         }
-
 
         return true;
     }
@@ -490,6 +496,7 @@
         const password = document.getElementById("password").value;
         const repassword = document.getElementById("repassword").value;
 
+        const button = document.getElementById("submitBtn");
         const repassError = document.getElementById("repassError");
 
 
@@ -497,16 +504,21 @@
         // Check if repassword is empty
         if (!repassword || repassword.trim() === "") {
             repassError.textContent = "Vui lòng nhập lại mật khẩu!";
+            button.disabled = true;
             return false;
         } else if (password !== repassword) {
             repassError.textContent = "Mật khẩu không khớp. Xin vui lòng nhập lại!";
+            button.disabled = true;
             return false;
         } else {
             repassError.textContent = "";
+
+            button.disabled = false;
         }
 
         return true;
     }
+
 
 </script>
 
