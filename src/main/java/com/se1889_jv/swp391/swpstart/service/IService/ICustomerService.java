@@ -28,4 +28,5 @@ public List<Customer> getAllCustomers();
     Page<Customer> getAllCustomers(Pageable pageable);
     List<Customer> getCustomersByStoreId(Long storeId);
     Customer getCustomerByNameAndPhone(String infor);
+    boolean existsCustomerByNameAndPhone(String infor);
 }

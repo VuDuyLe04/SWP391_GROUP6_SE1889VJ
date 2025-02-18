@@ -124,7 +124,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputStorage">kho</label>
+                                    <label class="col-md-3 control-label" for="inputStorage">Trạng thái</label>
                                     <div class="col-md-6">
                                         <form:input path="storage" type="text"  class="form-control" id="inputStorage"/>
                                     </div>

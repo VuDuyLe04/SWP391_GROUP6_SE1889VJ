@@ -17,4 +17,5 @@ List<Customer> findByNameContainingIgnoreCase(String name);
 List<Customer> findByPhoneContainingIgnoreCase(String email);
     List<Customer> getCustomersByStoreId(Long storeId);
     Customer getCustomersByNameAndPhone(String name, String phone);
+    boolean existsCustomerByNameAndPhone(String name, String phone);
 }

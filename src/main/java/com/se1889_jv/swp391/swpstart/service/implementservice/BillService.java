@@ -1,6 +1,7 @@
 package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 import com.se1889_jv.swp391.swpstart.domain.Bill;
+import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
 import com.se1889_jv.swp391.swpstart.repository.BillRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IBillService;
@@ -29,7 +30,20 @@ public class BillService implements IBillService {
         if(billDTO.getCustomerInformation().isEmpty()){
             bill.setCustomer(null);
         } else {
-            bill.setCustomer(customerService.getCustomerByNameAndPhone(billDTO.getCustomerInformation()));
+            if(customerService.existsCustomerByNameAndPhone(billDTO.getCustomerInformation())){
+                bill.setCustomer(customerService.getCustomerByNameAndPhone(billDTO.getCustomerInformation()));
+            } else {
+                Customer customer = new Customer();
+                customer.setAddress(billDTO.getCustomerAddress());
+                String [] part  = billDTO.getCustomerInformation().split(" - ");
+                String name = part[0].trim();
+                String phone = part[1].trim();
+                customer.setName(name);
+                customer.setPhone(phone);
+                Customer cus = customerService.createCustomer(customer, storeService.findStoreById(billDTO.getStoreId()));
+                bill.setCustomer(cus);
+            }
+
         }
         return billRepository.save(bill);
     }

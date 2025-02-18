@@ -48,6 +48,7 @@ public class WareHouseService implements IWareHouseService {
         if (oldWarehouse != null) {
             oldWarehouse.setName(warehouse.getName());
         }
+        assert oldWarehouse != null;
         this.wareHouseRepository.save(oldWarehouse);
     }
 

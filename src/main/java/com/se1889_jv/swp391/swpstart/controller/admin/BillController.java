@@ -70,11 +70,10 @@ public class BillController {
 
         User user = (User) session.getAttribute("user");
 
-
         if( user != null){
             Store store = storeService.findStoreById(storeId);
             if(store != null){
-                List<Product> productList = productService.getAllProductsIsStorage();
+                List<Product> productList = productService.getAllProductsByStoreIdAndIsStorage(storeId);
                 List<String> categoryList = productService.getAllCategories();
                 List<List<Packaging>> packagingList = new ArrayList<>();
                 List<WareHouse> wareHouseList = new ArrayList<>();
@@ -84,7 +83,6 @@ public class BillController {
                     packagingList.add(packagingService.getAllPackagingForQuantityProduct(product.getTotalQuantity(), storeId));
                     wareHouseList.add(wareHouseService.getWareHouseById(product.getWarehouse().getId()));
                 }
-
                 model.addAttribute("warehouse", wareHouseList);
                 model.addAttribute("productList", productList);
                 model.addAttribute("categoryList", categoryList);
@@ -96,7 +94,7 @@ public class BillController {
                 return "redirect:/access-deny";
             }
         } else {
-
+            return "redirect:/access-deny";
         }
 
 
@@ -108,7 +106,7 @@ public class BillController {
             return "redirect:/access-deny";
         }
         session.setAttribute("store",store);
-        return "redirect:/dashboard";
+        return "admin/sale/homesale";
     }
 
 }

@@ -42,8 +42,8 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getAllProductsIsStorage() {
-        return productRepository.findProductByStorageIsTrue();
+    public List<Product> getAllProductsByStoreIdAndIsStorage(Long storeId) {
+        return productRepository.findAllByStoreIdAndStorageIsTrue(storeId);
     }
 
     @Override
