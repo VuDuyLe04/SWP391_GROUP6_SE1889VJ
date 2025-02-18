@@ -393,7 +393,7 @@
                                     id="repassword"
                                     name="repassword"
                                     placeholder="Nhập lại mật khẩu"
-                                    onblur="checkPassword()"
+                                    onblur="checkRePassword()"
                                     value="${param.repassword != null ? param.repassword : ''}"
                                     required
                             >
@@ -468,11 +468,7 @@
 
     function checkPassword() {
         const password = document.getElementById("password").value;
-        const repassword = document.getElementById("repassword").value;
-
         const passError = document.getElementById("passError");
-        const repassError = document.getElementById("repassError");
-
         const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/;
 
         // Check if password is empty
@@ -485,6 +481,18 @@
         } else {
             passError.textContent = "";
         }
+
+
+        return true;
+    }
+
+    function checkRePassword() {
+        const password = document.getElementById("password").value;
+        const repassword = document.getElementById("repassword").value;
+
+        const repassError = document.getElementById("repassError");
+
+
 
         // Check if repassword is empty
         if (!repassword || repassword.trim() === "") {

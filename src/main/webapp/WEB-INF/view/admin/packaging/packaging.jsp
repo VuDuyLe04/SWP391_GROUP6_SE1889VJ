@@ -301,10 +301,11 @@
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
                                     <tr>
+                                        <th><i class="fa"></i>STT</th>
                                         <th><i class="fa fa-user mr-xs"></i>Đóng gói</th>
                                         <th><i class="fa fa-check-circle mr-xs"></i>Tình Trạng</th>
                                         <th><i class="fa fa-check-circle mr-xs"></i>Cửa hàng</th>
-                                        <th><i class="fa fa-cogs mr-xs"></i>Actions</th>
+                                        <th><i class="fa fa-cogs mr-xs"></i>Hoạt động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -394,6 +395,7 @@
 
                                         <!-- Bảng dữ liệu -->
                                         <tr>
+                                            <td>${status.index + 1}</td>
                                             <td>${u.packageType}</td>
                                             <td>
                                                 <span class="label ${u.storage == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">

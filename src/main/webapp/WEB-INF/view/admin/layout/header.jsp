@@ -14,22 +14,37 @@
     <!-- start: search & user box -->
     <div class="header-right">
 
-        <form action="pages-search-results.html" class="search nav-form">
-            <div class="input-group input-search">
-                <input type="text" class="form-control" name="q" id="q" placeholder="Search...">
-                <span class="input-group-btn">
-								<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-							</span>
+<%--        <form action="pages-search-results.html" class="search nav-form">--%>
+<%--            <div class="input-group input-search">--%>
+<%--                <input type="text" class="form-control" name="q" id="q" placeholder="Search...">--%>
+<%--                <span class="input-group-btn">--%>
+<%--								<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>--%>
+<%--							</span>--%>
+<%--            </div>--%>
+<%--        </form>--%>
+<%--        <span class="separator"></span>--%>
+        <c:if test="${sessionScope.user.role.name == 'STAFF'}">
+            <div class="notifications">
+                <form id="storeSwitcher" method="post" action="/storesession">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <select class="form-control" name="storeId" onchange="document.getElementById('storeSwitcher').submit();">
+                        <c:forEach items="${sessionScope.user.userStores}" var="userStore" varStatus="status">
+                            <option value="${userStore.store.id}"
+                                    <c:if test="${sessionScope.store.id == userStore.store.id}">selected</c:if>>
+                                    ${userStore.store.name}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </form>
             </div>
-        </form>
-
+        </c:if>
 
         <span class="separator"></span>
 
         <div id="userbox" class="userbox">
             <a href="#" data-toggle="dropdown">
                 <figure class="profile-picture">
-                    <img src="/client/auth/assets/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="/client/auth/assets/images/!logged-user.jpg" />
+                    <img src="/client/auth/assets/images/vuduyle.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="/client/auth/assets/images/!logged-user.jpg" />
                 </figure>
                 <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@JSOFT.com">
                     <span class="name">${sessionScope.user.name}</span>

@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Dashboard | JSOFT Themes | JSOFT-Admin</title>
+    <title>Quản lí sản phẩm</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -149,7 +149,7 @@
                                         <form id="search-form" action="/product/search" method="GET" class="search nav-form">
                                             <div class="input-group input-search">
                                                 <input type="text" class="form-control" name="name"
-                                                       placeholder="Tìm theo tên đóng gói" value="${param.name}" required pattern="[A-Za-z0-9 ]+" title="Chỉ nhập chữ cái và số">
+                                                       placeholder="Tìm theo tên đóng gói" value="${param.name}"  pattern="[A-Za-z0-9 ]+" title="Chỉ nhập chữ cái và số">
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-primary" type="submit">
                                                         <i class="fa fa-search"></i>
@@ -214,7 +214,7 @@
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
                                     <tr>
-                                        <th>Code</th>
+                                        <th>STT</th>
                                         <th>Tên gạo</th>
                                         <th class="text-center">Giá gạo</th>
                                         <th class="text-center">Lưu trữ</th>
@@ -229,7 +229,7 @@
 
                                         <!-- Bảng dữ liệu -->
                                         <tr>
-                                            <td>${product.id}</td>
+                                            <td>${status.index + 1}</td>
                                             <td class="hidden-xs hidden-sm">${product.name}</td>
                                             <td class="text-center">${product.unitPrice} đ/kg</td>
                                             <td class="text-center">
