@@ -109,7 +109,7 @@ ProductController {
     @PostMapping("/product/update")
     public String updateProduct(@ModelAttribute("product") Product product, RedirectAttributes redirectAttributes) {
         try {
-            productService.saveProduct(product);
+            productService.updateProduct(product);
             redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error updating product: " + e.getMessage());

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,6 +27,7 @@ public class ProductService implements IProductService {
         product.setStorage(true);
         return productRepository.save(product);
     }
+
 
     public Product findById(Long id) {
         return productRepository.findById(id).orElse(null);  // Tìm sản phẩm theo id
@@ -62,6 +65,21 @@ public class ProductService implements IProductService {
 
     public Page<Product> getAllProducts(Pageable pageable) {
         return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public void updateProduct(Product product) {
+        Optional<Product> productOptional = productRepository.findById(product.getId());
+        if (productOptional.isPresent()) {
+            productOptional.get().setName(product.getName());
+            productOptional.get().setDescription(product.getDescription());
+            productOptional.get().setStorage(product.isStorage());
+            productOptional.get().setCategory(product.getCategory());
+            productOptional.get().setTotalQuantity(product.getTotalQuantity());
+            productOptional.get().setImage(product.getImage());
+            productOptional.get().setUnitPrice(product.getUnitPrice());
+            productRepository.save(productOptional.get());
+        }
     }
 
 }
