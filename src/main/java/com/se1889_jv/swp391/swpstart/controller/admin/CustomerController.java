@@ -178,6 +178,11 @@ public class CustomerController {
                 return "redirect:/dashboard";
             }
         }
+        if (user.getRole().getName().equals("OWNER")){
+            if (user.getUserStores().isEmpty()) {
+                return "redirect:/dashboard";
+            }
+        }
         Pageable pageable = PageRequest.of(page, 5); // 5 sản phẩm mỗi trang
         if (user.getRole().getName().equals("OWNER")) {
             Page<Customer> customerPage = this.customerService.getAllCustomersRoleOwner(Utility.getListStoreOfOwner(user), pageable);
@@ -192,7 +197,6 @@ public class CustomerController {
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", customerPage.getTotalPages());
         }
-
 
         return "admin/customer/table";
     }
