@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>User Profile | Okler Themes | Porto-Admin</title>
+    <title>Thông tin cá nhân</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="Porto Admin - Responsive HTML5 Template">
     <meta name="author" content="okler.net">
@@ -77,7 +77,7 @@
                     <section class="panel">
                         <div class="panel-body">
                             <div class="thumb-info mb-md">
-                                <img src="/client/auth/assets/images/!logged-user.jpg" class="rounded img-responsive" alt="John Doe">
+                                <img src="/client/auth/assets/images/vuduyle.jpg" class="rounded img-responsive" alt="John Doe">
                                 <div class="thumb-info-title">
                                     <span class="thumb-info-inner">${sessionScope.user.name}</span>
                                     <span class="thumb-info-type">${sessionScope.user.role.name}</span>
@@ -100,60 +100,85 @@
                         <div class="tab-content">
                             <div id="edit" class="tab-pane active">
 
-                                <form class="form-horizontal" method="get">
+                                <div class="form-horizontal" method="get">
                                     <h4 class="mb-xlg">Thông tin cá nhân</h4>
-                                    <fieldset>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="profileFirstName">Số điện thoại</label>
-                                            <div class="col-md-8">
-                                                <input type="text" class="form-control" id="profileFirstName" value="${sessionScope.user.phone}">
+                                    <form:form modelAttribute="user" method="post" action="/profile/update">
+                                        <c:set var="errorName">
+                                            <form:errors path="name"
+                                                         cssClass="invalid-feedback" cssStyle="color: red"/>
+                                        </c:set>
+                                        <fieldset>
+                                            <form:hidden path="id" />
+                                            <form:hidden path="password" />
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" for="profileFirstName">Số điện thoại</label>
+                                                <div class="col-md-8">
+                                                    <form:input path="phone" class="form-control" id="profileFirstName" readonly="true"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" for="profileLastName">Tên</label>
+                                                <div class="col-md-8">
+                                                    <form:input path="name" class="form-control ${not empty errorName ? 'is-invalid' : ''}" id="profileLastName"/>
+                                                    ${errorName}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" for="profileCompany">Số dư</label>
+                                                <div class="col-md-8">
+                                                    <form:input path="balance" class="form-control" id="profileCompany" readonly="true"/>
+                                                </div>
+                                            </div>
+
+                                        </fieldset>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="col-md-9 col-md-offset-3">
+                                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="profileLastName">Tên</label>
-                                            <div class="col-md-8">
-                                                <input type="text" class="form-control" id="profileLastName" value="${sessionScope.user.name}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="profileCompany">Số dư</label>
-                                            <div class="col-md-8">
-                                                <input type="text" class="form-control" id="profileCompany" value="${sessionScope.user.balance}">
-                                            </div>
-                                        </div>
-                                    </fieldset>
+                                    </form:form>
+
                                     <hr class="dotted tall">
                                     <h4 class="mb-xlg">Đổi mật khẩu</h4>
-                                    <fieldset class="mb-xl">
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="profileNewPassword">Mật khẩu cũ</label>
-                                            <div class="col-md-8">
-                                                <input type="text" class="form-control" id="profileOldPassword">
+                                    <form method="post" action="/changepassword">
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                        <fieldset class="mb-xl">
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" for="profileNewPassword">Mật khẩu cũ</label>
+                                                <div class="col-md-8">
+                                                    <input type="password" name="oldPassword" value="${oldPassword}" class="form-control ${not empty errorOld ? 'is-invalid' : ''}" id="profileOldPassword" required>
+                                                    <span class="text-danger">${errorOld}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" for="profileNewPassword">Mật khẩu mới</label>
+                                                <div class="col-md-8">
+                                                    <input type="password" name="newPassword" value="${newPassword}" class="form-control ${not empty errorNew ? 'is-invalid' : ''}" id="profileNewPassword" required>
+                                                    <span class="text-danger">${errorNew}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" for="profileNewPasswordRepeat">Nhập lại mật khẩu mới</label>
+                                                <div class="col-md-8">
+                                                    <input type="password" name="repeatNewPassword" value="${repeatNewPassword}" class="form-control ${not empty errorReNew ? 'is-invalid' : ''}" id="profileNewPasswordRepeat" required>
+                                                    <span class="text-danger">${errorReNew}</span>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="col-md-9 col-md-offset-3">
+                                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                                    <button type="reset" class="btn btn-default">Reset</button>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="profileNewPassword">Mật khẩu mới</label>
-                                            <div class="col-md-8">
-                                                <input type="text" class="form-control" id="profileNewPassword">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="profileNewPasswordRepeat">Nhập lại mật khẩu mới</label>
-                                            <div class="col-md-8">
-                                                <input type="text" class="form-control" id="profileNewPasswordRepeat">
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <div class="panel-footer">
-                                        <div class="row">
-                                            <div class="col-md-9 col-md-offset-3">
-                                                <button type="submit" class="btn btn-primary">Submit</button>
-                                                <button type="reset" class="btn btn-default">Reset</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </form>
 
-                                </form>
+
+                                </div>
 
                             </div>
                         </div>
@@ -167,7 +192,23 @@
     </div>
 
 </section>
+<%
+    String message = (String) session.getAttribute("message");
+    if (message != null) {
+%>
+<div id="alertMessage" class="alert alert-success text-center" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 50%;" role="alert">
+    <%= message %>
+</div>
+<script>
 
+    setTimeout(function () {
+        document.getElementById("alertMessage").style.display = 'none';
+    }, 2000);
+</script>
+<%
+        session.removeAttribute("message");
+    }
+%>
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>

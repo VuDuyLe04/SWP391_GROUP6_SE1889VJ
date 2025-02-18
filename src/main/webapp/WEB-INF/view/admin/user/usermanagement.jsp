@@ -246,7 +246,7 @@
                                         <form id="search-form" action="usermanagement" method="get" class="search nav-form">
                                             <div class="input-group input-search">
                                                 <input type="text" class="form-control" name="input" 
-                                                       placeholder="Tìm kiếm theo tên hoặc số điện thoại" value="${input}" required>
+                                                       placeholder="Tìm kiếm theo tên hoặc số điện thoại" value="${input}" >
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-primary" type="submit">
                                                         <i class="fa fa-search"></i>
@@ -269,9 +269,14 @@
                                                     <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
                                                     <select id="role" name="role" class="form-control">
                                                         <option ${roleId == -1 ? "selected" : ""} value="-1" >Các vai trò</option>
-                                                        <option ${roleId == 1 ? "selected" : ""} value="1">Quản trị viên</option>
-                                                        <option ${roleId == 2 ? "selected" : ""} value="2">Chủ sở hữu</option>
-                                                        <option ${roleId == 3 ? "selected" : ""} value="3">Nhân viên</option>
+                                                        <c:forEach items="${roles}" var="r">
+                                                            <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
+                                                                <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>
+                                                                <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>
+                                                                <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>
+
+                                                        </c:forEach>
+
                                                     </select>
                                                 </div>
                                             </div>
@@ -300,8 +305,8 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <a href="adduser" class="btn btn-primary mb-xs mt-xs mr-xs">
-                                            <i class="fa fa-plus mr-xs"></i>Tạo người dùng
+                                        <a href="createuser" class="btn btn-primary mb-xs mt-xs mr-xs">
+                                            <i class="fa fa-plus mr-xs"></i>Tạo chủ cửa hàng
                                         </a>
 
                                     </div>
@@ -312,6 +317,7 @@
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
                                         <tr>
+                                            <th><i class="fa"></i>STT</th>
                                             <th><i class="fa fa-user mr-xs"></i>Tên</th>
                                             <th><i class="fa fa-phone mr-xs"></i>Số điện thoại</th>
                                             <c:if test="${sessionScope.user.role.id == 1}">
@@ -322,10 +328,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="u" items="${userPage.content}">
+                                    <c:forEach var="u" items="${userPage.content}" varStatus="status">
                                         <tr>
+                                            <td>${status.index + 1}</td>
                                             <td><strong>${u.name}</strong></td>
-                                            <td>${u.phone}</td>
+                                            <td>${u.phone}
+                                                </td>
                                             <c:if test="${sessionScope.user.role.id == 1}">
                                                 <td><span class="text-primary">
                                                         <c:choose>
@@ -342,6 +350,7 @@
                 </span>
                                                 </td>
                                             </c:if>
+
                                             <td>
                                                 <button
                                                         class="btn btn-default btn-sm mr-xs view-button"
@@ -349,10 +358,10 @@
                                                         data-name="${u.name}"
                                                         data-phone="${u.phone}"
                                                         data-role="${u.role.name}"
-                                                        data-status="${u.active == 'true' ? 'Hoạt động' : 'Cấm'}"
-                                                        data-createdAt = "${u.createdAt}"
+                                                        data-status="${u.active == 'true' ? 'Active' : 'Banned'}"
+                                                        data-createdAt="${u.createdAtFormatted}"
                                                         data-createdBy = "${u.createdBy}"
-                                                        data-updatedAt = "${u.updatedAt}"
+                                                        data-updatedAt="${u.updatedAtFormatted}"
                                                         data-updatedBy = "${u.updatedBy}"
                                                         data-userStores = "${u.userStores}"
                                                 >
@@ -370,15 +379,16 @@
                                 </table>
 
                                 <c:set var="c" value="${userPage.number}"></c:set>
-                                <ul class="pagination justify-content-center" style="margin-leftgit:413px">
+                                <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
-                                        <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}">Trước</a>
+                                        <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
                                     </li>
 
                                     <c:forEach begin="0" end="${userPage.totalPages - 1}" var="i">
                                         <c:if test="${i >= c - 1 && i <= c + 1}">
-                                            <li class="page-item ${c == i ? 'active' : ''}">
-                                                <a class="page-link" href="usermanagement?page=${i}">${i + 1}</a>
+                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a>
+
+
                                             </li>
                                         </c:if>
                                         <c:if test="${i == c- 2 || i == c+ 2}">
@@ -389,7 +399,7 @@
 
 
                                     <li class="page-item ${c== userPage.totalPages -1?'disabled':''} ">
-                                        <a class="page-link" href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}">Sau</a>
+                                        <a class="page-link" href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}&input=${input}&active=${active}&role=${roleId}">Sau</a>
                                     </li>
 
                                 </ul>
@@ -473,11 +483,19 @@
         $('.view-button').on('click', function() {
             const name = $(this).data('name');
             const phone = $(this).data('phone');
-            const role = $(this).data('role');
+            let role = $(this).data('role');
+            if(role === "ADMIN") role = "Quản trị viên";
+            else if(role === "OWNER") role = "Chủ cửa hàng";
+            else role = "Nhân viên";
+
+            const createdAt = $(this).attr('data-createdAt');
+            const updatedAt = $(this).attr('data-updatedAt');
+
+
             const status = $(this).data('status');
-            const createdAt = $(this).data('createdAt');
+         //   const createdAt = $(this).data('createdAt');
             const createdBy = $(this).data('createdBy');
-            const updatedAt = $(this).data('updatedAt');
+          //  const updatedAt = $(this).data('updatedAt');
             const updatedBy = $(this).data('updatedBy');
             const userStores = $(this).data('userStores');
 

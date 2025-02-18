@@ -22,6 +22,7 @@ public class ProductService implements IProductService {
 
     @Override
     public Product saveProduct(Product product) {
+        product.setStorage(true);
         return productRepository.save(product);
     }
 
@@ -41,8 +42,8 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getAllProductsIsStorage() {
-        return productRepository.findProductByStorageIsTrue();
+    public List<Product> getAllProductsByStoreIdAndIsStorage(Long storeId) {
+        return productRepository.findAllByStoreIdAndStorageIsTrue(storeId);
     }
 
     @Override
@@ -54,10 +55,13 @@ public class ProductService implements IProductService {
         return productRepository.findByNameContainingIgnoreCase(name);
     }
 
+    @Override
+    public Page<Product> getProductByStoreId(Long storeId, Pageable pageable) {
+        return productRepository.findAllByStoreId(storeId, pageable);
+    }
+
     public Page<Product> getAllProducts(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
-
-
 
 }

@@ -151,7 +151,7 @@
 <div class="row bg-secondary">
     <div id="product-list" class="col-md-7 overflow-auto">
         <c:forEach var="product" items="${productList}" varStatus="status">
-            <div class="product d-flex justify-content-around align-items-center mb-2 mt-2 bg-light p-1"
+            <div class="product d-flex justify-content-around align-items-center m-2 bg-light p-1 "
                  data-category="${product.category}"
                  data-description="${product.description}"
                  data-price="${product.unitPrice}">
@@ -264,12 +264,13 @@
                 </ul>
                 <div class="list-product-bill" >
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="text-primary col-md-2 text-center">Sản phẩm</h5>
+                        <h5 class="text-primary col-md-2 text-center">Tên</h5>
                         <h5 class="text-primary col-md-2 text-center">Loại</h5>
                         <h5 class="text-primary col-md-2 text-center">Số lượng</h5>
                         <h5 class="text-primary col-md-2 text-center">Gía</h5>
-                        <h5 class="text-primary col-md-2 text-center">Giamr</h5>
+                        <h5 class="text-primary col-md-2 text-center">Giảm</h5>
                         <h5 class="text-primary col-md-2 text-center">Tổng</h5>
+
                     </div>
                     <div id="bill-list">
 
@@ -316,6 +317,7 @@
                     </div>
                     <div id="suggestion-box" class="border bg-white mt-1" style="display: none; position: absolute; z-index: 1000;"></div>
                 </div>
+                <input id="cus-add" name="customerAddress" hidden="hidden">
 
                 <!-- Modal Thêm Khách Hàng -->
                 <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
@@ -579,26 +581,41 @@
             html += '<div >' +
 
                 '<div class="d-flex justify-content-between align-items-center mb-3">' +
-                '<input class="col-md-2 text-center" value="' + parseInt(productId) + '" readonly style="border: none;" hidden="hidden" name="billDetails['+ i +'].product.id">'+
+                '<input class="col-md-2 text-center" value="' + parseInt(productId) + '" readonly style="border: none;" hidden="hidden" name="billDetails[' + i + '].product.id">' +
                 '<input class="col-md-2 text-center" value="' + nameProduct + '" readonly style="border: none;">' +
                 '<input class="col-md-2 text-center" value="' + packaging + '" readonly style="border: none;" name="billDetails[' + i + '].packaging.packageType">' +
-                '<input class="col-md-2 text-center" value="' + quantity + '" ' +
+                '<input class="col-md-2 text-center" id="input-quantity-' +i +'" value="' + quantity + '" ' +
                 'style="border: none;" type="number" name="billDetails[' + i + '].quantity" ' +
                 'max="' + maxQuan + '" ' +
-                'oninput="if(this.value > ' + maxQuan + ') { showAttention(\'' + nameProduct + '\'); this.value = ' + quantity + '; } else {updateQuantity(' + i + ', this.value, '+ unitPer +' ,' + quantity +');}">' +
-                '<input class="col-md-2 text-center" value="' + parseFloat(unitPrice*unitPer) + '" readonly style="border: none;" name="billDetails[' + i + '].listedPrice">' +
-                '<input class="col-md-2 text-center" value="' + actualSellPrice +'" readonly style="border: none;" name="billDetails[' + i + '].actualSellPrice" hidden="hidden">' +
-                '<input class="col-md-2 text-center" value="' + salePrice + '" readonly style="border: none;">' +
-                '<input class="col-md-2 text-center" value="' + total + '" readonly style="border: none;" name="billDetails[' + i + '].actualSellPrice">'+
-                '<input class="col-md-2 text-center" value="' + liftTotal + '" readonly hidden="hidden"  style="border: none;" name="billDetails[' + i + '].liftPrice">'+
+                'oninput="if(this.value > ' + maxQuan + ') { showAttention(\'' + nameProduct + '\'); this.value = ' + quantity + '; } else {updateQuantity(' + i + ', this.value, ' + unitPer + ' ,' + quantity + ');}">' +
+                '<input class="col-md-2 text-center" value="' + parseFloat(unitPrice * unitPer) + '" readonly style="border: none;" name="billDetails[' + i + '].listedPrice">' +
+                '<input class="col-md-2 text-center" value="' + actualSellPrice + '" readonly style="border: none;" name="billDetails[' + i + '].actualSellPrice" hidden="hidden">' +
+                '<input class="col-md-1 text-center" value="' + salePrice + '" readonly style="border: none;">' +
+                '<input class="col-md-2 text-center" value="' + total + '" readonly style="border: none;" name="billDetails[' + i + '].actualSellPrice">' +
+                '<input class="col-md-2 text-center" value="' + liftTotal + '" readonly hidden="hidden"  style="border: none;" name="billDetails[' + i + '].liftPrice">' +
+                '<button type="button" class="col-md-1 btn btn-danger btn-sm d-flex align-items-center justify-content-center" style="width: 15px; height: 20px" onClick="removeFromBill('+i+', '+unitPer+')">x</button>'+
                 '</div>' +
-                '</div>'
-                ;
+
+            '</div>'
+            ;
         }
 
 
         totalPayment(totalPrice, sale, pay, totalLift);
         billList.innerHTML= html;
+    }
+    function removeFromBill(index, unitPer) {
+        const inputQuanDelete = document.getElementById("input-quantity-"+index);
+        console.log(typeof parseFloat(inputQuanDelete.value));
+        const inputQuan = parseFloat(inputQuanDelete.value);
+        const modal = document.getElementById('productModal'+index);
+        let quantityOfProduct = modal.querySelector('input[name="quantity"]').getAttribute('data-quantity');
+        let quantityUpdate = parseFloat(quantityOfProduct) + unitPer * inputQuan;
+        modal.querySelector('input[name="quantity"]').setAttribute('data-quantity', quantityUpdate);
+        let quantityOfProductNew = modal.querySelector('input[name="quantity"]').getAttribute('data-quantity');
+        // console.log(quantityOfProduct);
+            listSender.splice(index, 1);
+            generate(listSender);
     }
     function totalPayment(total, sale, pay, lift){
         const totalPrice = document.getElementById('total-price');
@@ -704,11 +721,11 @@
         const name = document.getElementById('customer-name').value;
         const phone = document.getElementById('customer-phone').value;
         const address = document.getElementById('customer-address').value;
-
+        const inputAddress = document.getElementById('cus-add');
         if (name && phone && address) {
             const searchPhoneInput = document.getElementById('search-phone');
             searchPhoneInput.value = name + ' - ' + phone;
-
+            inputAddress.value = address;
 
             let myModal = bootstrap.Modal.getInstance(document.getElementById('customerModal'));
             myModal.hide();

@@ -10,7 +10,7 @@ import java.util.List;
 public interface IProductService {
     public List<Product> getAllProducts();
     public List<String> getAllCategories();
-    public List<Product> getAllProductsIsStorage();
+    public List<Product> getAllProductsByStoreIdAndIsStorage(Long storeId);
     public Product getProductById(Long id);
     Product saveProduct(Product product);
     void deleteById(Long id);
@@ -20,7 +20,7 @@ public interface IProductService {
         ProductRepository productRepository = null;
         return productRepository.findByNameContainingIgnoreCase(name);
     }
-
+    Page<Product> getProductByStoreId(Long storeId, Pageable pageable);
 
     Page<Product> getAllProducts(Pageable pageable);
 }

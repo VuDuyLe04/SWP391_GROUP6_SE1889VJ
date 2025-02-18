@@ -39,26 +39,40 @@ public class CustomerService implements ICustomerService {
     @Override
     public void updateCustomer(Customer customer) {
         Customer customer1 = getCustomerById(customer.getId());
-        if(customer1 != null){
 
+        if(customer1 != null){
             customer1.setName(customer.getName());
             customer1.setPhone(customer.getPhone());
             customer1.setAddress(customer.getAddress());
-
         }
 
         customerRepository.save(customer1);
     }
-    public List<Customer> searchCustomersByName(String name) {
-        return customerRepository.findByNameContainingIgnoreCase(name);
+
+    public Page<Customer> searchCustomersByNameRoleOwner(String name ,List<Store> stores, Pageable pageable) {
+        return customerRepository.findByNameContainingIgnoreCaseAndStoreIn(name,stores, pageable);
     }
-    public List<Customer> searchCustomersByPhone(String phone) {
-        return customerRepository.findByPhoneContainingIgnoreCase(phone);
+
+    public Page<Customer> searchCustomersByPhoneRoleOwner(String phone ,List<Store> stores, Pageable pageable) {
+        return customerRepository.findByPhoneContainingIgnoreCaseAndStoreIn(phone,stores, pageable);
+    }
+
+    public Page<Customer> searchCustomersByNameRoleStaff(String name ,Store store, Pageable pageable) {
+        return customerRepository.findByNameContainingIgnoreCaseAndStore(name,store, pageable);
+    }
+
+    public Page<Customer> searchCustomersByPhoneRoleStaff(String phone ,Store store, Pageable pageable) {
+        return customerRepository.findByPhoneContainingIgnoreCaseAndStore(phone,store, pageable);
     }
 
     @Override
-    public Page<Customer> getAllCustomers(Pageable pageable) {
-        return customerRepository.findAll(pageable);
+    public Page<Customer> getAllCustomersRoleOwner(List<Store> stores, Pageable pageable) {
+        return this.customerRepository.findByStoreIn(stores, pageable);
+    }
+
+    @Override
+    public Page<Customer> getAllCustomersRoleStafff(Store store, Pageable pageable) {
+        return this.customerRepository.findByStore(store, pageable);
     }
 
     @Override
@@ -77,6 +91,19 @@ public class CustomerService implements ICustomerService {
         String name = part[0].trim();
         String phone = part[1].trim();
         return customerRepository.getCustomersByNameAndPhone(name,phone);
+    }
+
+    @Override
+    public boolean checkCustomerExistsInStoreByPhone(String phone, Store store) {
+        return this.customerRepository.existsByPhoneAndStore(phone, store);
+    }
+
+    @Override
+    public boolean existsCustomerByNameAndPhone(String infor) {
+        String [] part  = infor.split(" - ");
+        String name = part[0].trim();
+        String phone = part[1].trim();
+        return customerRepository.existsCustomerByNameAndPhone(name,phone);
     }
 
 }

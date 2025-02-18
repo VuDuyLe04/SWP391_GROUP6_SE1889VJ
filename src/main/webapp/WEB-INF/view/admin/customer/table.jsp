@@ -96,10 +96,9 @@
         border-radius: 5px;
         text-decoration: none;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;">Create New Customer</a>
+        transition: all 0.3s ease;">Tạo khách hàng mới</a>
                             </div>
 
-                            <h2 class="panel-title">Danh sách khách hàng</h2>
                             <div class="row mb-3">
                                 <div class="col-md-3">
                                     <form method="GET" action="/customer/search" class="form-inline" style="margin-bottom: 20px;">
@@ -130,23 +129,25 @@
                                 <table class="table table-bordered table-striped table-condensed mb-none">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>Số thứ tự</th>
                                         <th>Tên</th>
                                         <th class="text-right">Số điện thoại</th>
                                         <th class="text-right">Địa chỉ</th>
-                                        <th class="text-right">Số dư</th>
+                                        <th class="text-center">Tiền nợ</th>
+                                        <th class="text-right">Cửa hàng</th>
                                         <th class="text-right">Hoạt động</th>
 
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${listCustomer}" var="customer">
+                                    <c:forEach items="${listCustomer}" var="customer" varStatus="status">
                                         <tr>
-                                        <td>${customer.id}</td>
+                                            <td>${status.index + 1}</td>
                                         <td>${customer.name}</td>
                                         <td class="text-right">${customer.phone}</td>
                                         <td class="text-right">${customer.address}</td>
-                                        <td class="text-right">${customer.balance}</td>
+                                            <td class="text-center">${customer.balance}</td>
+                                            <td class="text-right">${customer.store.name}</td>
                                         <td class="text-right">
                                             <a href="/customer/update/${customer.id}" class="btn btn-primary">Cập nhật</a>
                                             <a href="#" class="btn btn-primary">Nợ</a>
@@ -161,7 +162,7 @@
                                     <ul class="pagination justify-content-center">
                                         <c:if test="${currentPage > 0}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customers?page=${currentPage - 1}" aria-label="Previous">
+                                                <a class="page-link" href="/customer?page=${currentPage - 1}" aria-label="Previous">
                                                     <span aria-hidden="true">&laquo; Trước</span>
                                                 </a>
                                             </li>
@@ -169,13 +170,13 @@
                                         <c:if test="${totalPages > 0}">
                                             <c:forEach begin="0" end="${totalPages - 1}" var="i">
                                                 <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                    <a class="page-link" href="/customers?page=${i}">${i + 1}</a>
+                                                    <a class="page-link" href="/customer?page=${i}">${i + 1}</a>
                                                 </li>
                                             </c:forEach>
                                         </c:if>
                                         <c:if test="${currentPage < totalPages - 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customers?page=${currentPage + 1}" aria-label="Next">
+                                                <a class="page-link" href="/customer?page=${currentPage + 1}" aria-label="Next">
                                                     <span aria-hidden="true">Sau &raquo;</span>
                                                 </a>
                                             </li>
