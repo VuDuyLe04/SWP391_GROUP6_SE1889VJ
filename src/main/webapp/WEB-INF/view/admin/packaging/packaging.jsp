@@ -270,11 +270,11 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Gía bốc vác:</label>
-                                                    <input type="number" class="form-control" name="liftCost" required>
+                                                    <input min="0" type="number" class="form-control" name="liftCost" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Số lượng gạo 1 gói:</label>
-                                                    <input type="number" class="form-control" name="quantityPerPackage" required>
+                                                    <input min="0" type="number" class="form-control" name="quantityPerPackage" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Cửa hàng</label>
@@ -303,6 +303,7 @@
                                     <tr>
                                         <th><i class="fa"></i>STT</th>
                                         <th><i class="fa fa-user mr-xs"></i>Đóng gói</th>
+                                        <th><i class="fa fa-user mr-xs"></i>Gía bốc</th>
                                         <th><i class="fa fa-check-circle mr-xs"></i>Tình Trạng</th>
                                         <th><i class="fa fa-check-circle mr-xs"></i>Cửa hàng</th>
                                         <th><i class="fa fa-cogs mr-xs"></i>Hoạt động</th>
@@ -373,7 +374,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="liftCost-${u.id}">Gía bốc vác:</label>
-                                                                <input type="number" class="form-control" id="liftCost-${u.id}" name="liftCost" value="${u.liftCost}" required>
+                                                                <input min="0" type="number" class="form-control" id="liftCost-${u.id}" name="liftCost" value="${u.liftCost}" required>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="storage-${u.id}">Tình trạng:</label>
@@ -397,6 +398,7 @@
                                         <tr>
                                             <td>${status.index + 1}</td>
                                             <td>${u.packageType}</td>
+                                            <td>${u.liftCost}</td>
                                             <td>
                                                 <span class="label ${u.storage == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
                                                     <i class="fa ${u.storage == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>

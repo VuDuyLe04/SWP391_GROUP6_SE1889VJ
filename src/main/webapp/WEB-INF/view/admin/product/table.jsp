@@ -218,6 +218,8 @@
                                         <th>Tên gạo</th>
                                         <th class="text-center">Giá gạo</th>
                                         <th class="text-center">Lưu trữ</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-center">Loại gạo</th>
                                         <th class="text-center" style="width: 350px;">Hành động</th>
                                     </tr>
                                     </thead>
@@ -238,8 +240,8 @@
                                                     ${product.storage == "true" ? "Active" : "Banned"}
                                                 </span>
                                             </td>
-
-
+                                            <td class="text-center">${product.totalQuantity}</td>
+                                            <td class="text-center">${product.category}</td>
                                             <td class="text-center">
                                                 <button class="btn btn-default btn-sm mr-xs view-modal" title="View" onclick="window.location.href='/product/view/${product.id}'">
                                                     <i class="fa fa-eye"></i>
@@ -260,18 +262,19 @@
                                     </tbody>
                                 </table>
 
-                                <c:set var="c" value="${productPage.number}"></c:set>
+                                <c:set var="c" value="${productPage.number}" />
 
                                 <ul class="pagination justify-content-center">
                                     <!-- Nút Previous -->
                                     <li class="page-item ${c == 0 ? 'disabled' : ''}">
-                                        <a class="page-link" href="product?page=${c == 0 ? 0 : (c - 1)}&sort=${param.sort}&order=${param.order}&store=${param.store}">Trước</a>
+                                        <a class="page-link"
+                                           href="${c == 0 ? '#' : 'product?page='}${c - 1}&sort=${param.sort}&order=${param.order}&store=${param.store}">Trước</a>
                                     </li>
 
                                     <!-- Hiển thị các số trang -->
                                     <c:if test="${productPage.totalPages > 0}">
                                         <c:forEach begin="0" end="${productPage.totalPages - 1}" var="i">
-                                            <c:if test="${i >= c - 1 && i <= c + 1}">
+                                            <c:if test="${i >= c - 2 && i <= c + 2}">
                                                 <li class="page-item ${c == i ? 'active' : ''}">
                                                     <a class="page-link" href="product?page=${i}&sort=${param.sort}&order=${param.order}&store=${param.store}">${i + 1}</a>
                                                 </li>
@@ -280,11 +283,12 @@
                                     </c:if>
 
                                     <!-- Nút Next -->
-                                    <li class="page-item ${c == productPage.totalPages - 1 ? 'disabled' : ''}">
-                                        <a class="page-link" href="product?page=${c == packagingPage.totalPages - 1 ? c : (c + 1)}&sort=${param.sort}&order=${param.order}&store=${param.store}">Sau</a>
+                                    <li class="page-item ${c >= productPage.totalPages - 1 ? 'disabled' : ''}">
+                                        <a class="page-link"
+                                           href="${c >= productPage.totalPages - 1 ? '#' : 'product?page='}${c + 1}&sort=${param.sort}&order=${param.order}&store=${param.store}">Sau</a>
                                     </li>
-
                                 </ul>
+
 
                             </div>
 
