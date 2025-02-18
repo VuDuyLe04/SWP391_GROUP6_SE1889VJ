@@ -41,29 +41,38 @@ public class UserController {
     public String getAllUser(@RequestParam(value = "input", required = false) String input,
                              @RequestParam(value = "role", required = false, defaultValue = "-1") String roleId,
                              @RequestParam(value = "active", required = false, defaultValue = "-1") String active,
-                             @RequestParam(value="page",required = false,defaultValue = "0") String page,
+                             @RequestParam(value = "page", required = false, defaultValue = "0") String page,
                              Model model) {
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
-        Pageable pageable = PageRequest.of(Integer.parseInt(page),5 ,sort);
-        Page<User> users = userService.getAll(pageable);
-        if (input != null) {
-            users = userService.getUsersBySearch(input, input,pageable);
-            model.addAttribute("input", input);
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), 5, sort);
+        Page<User> users;
+
+        if (input != null && !input.isEmpty()) {
+            users = userService.getUsersBySearch(input, input, pageable);
+        } else {
+            long roleIdValue = "-1".equals(roleId) ? -1 : Long.parseLong(roleId);
+            boolean isActive = "1".equals(active);
+
+            if (roleIdValue != -1 && "-1".equals(active)) {
+                users = userService.getUsersbyRoleID(roleIdValue, pageable);
+            } else if (roleIdValue == -1 && !"-1".equals(active)) {
+                users = userService.getUsersByActive(isActive, pageable);
+            } else if (roleIdValue != -1 && !"-1".equals(active)) {
+                users = userService.getUsersByRoleIDAndActive(roleIdValue, isActive, pageable);
+            } else {
+                users = userService.getAll(pageable);
+            }
         }
-        else if (!roleId.equals("-1") && active.equals("-1"))
-            users = userService.getUsersbyRoleID(Long.parseLong(roleId),pageable);
-        else if (roleId.equals("-1") && !active.equals("-1"))
-            users = userService.getUsersByActive(active.equals("1"),pageable);
-        else if (!roleId.equals("-1") && !active.equals("-1"))
-            users = userService.getUsersByRoleIDAndActive(Long.parseLong(roleId), active.equals("1"),pageable);
+
+        model.addAttribute("input", input != null ? input : "");
         model.addAttribute("active", active);
         model.addAttribute("roleId", roleId);
         model.addAttribute("userPage", users);
         model.addAttribute("roles", roleService.getAllRoles());
 
-
         return "admin/user/usermanagement";
     }
+
     @GetMapping("checkphone")
     public String checkPhone(@RequestParam(value="createdPhone",required = false) String createdPhone,
                              @RequestParam(value="updatedPhone",required = false) String updatedPhone,

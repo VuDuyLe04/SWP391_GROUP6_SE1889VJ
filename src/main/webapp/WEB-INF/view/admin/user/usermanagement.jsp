@@ -379,13 +379,14 @@
                                 <c:set var="c" value="${userPage.number}"></c:set>
                                 <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
-                                        <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}">Trước</a>
+                                        <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
                                     </li>
 
                                     <c:forEach begin="0" end="${userPage.totalPages - 1}" var="i">
                                         <c:if test="${i >= c - 1 && i <= c + 1}">
-                                            <li class="page-item ${c == i ? 'active' : ''}">
-                                                <a class="page-link" href="usermanagement?page=${i}">${i + 1}</a>
+                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a>
+
+
                                             </li>
                                         </c:if>
                                         <c:if test="${i == c- 2 || i == c+ 2}">
@@ -396,7 +397,7 @@
 
 
                                     <li class="page-item ${c== userPage.totalPages -1?'disabled':''} ">
-                                        <a class="page-link" href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}">Sau</a>
+                                        <a class="page-link" href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}&input=${input}&active=${active}&role=${roleId}">Sau</a>
                                     </li>
 
                                 </ul>
