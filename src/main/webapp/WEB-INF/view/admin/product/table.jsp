@@ -218,6 +218,8 @@
                                         <th>Tên gạo</th>
                                         <th class="text-center">Giá gạo</th>
                                         <th class="text-center">Lưu trữ</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-center">Loại gạo</th>
                                         <th class="text-center" style="width: 350px;">Hành động</th>
                                     </tr>
                                     </thead>
@@ -238,8 +240,8 @@
                                                     ${product.storage == "true" ? "Active" : "Banned"}
                                                 </span>
                                             </td>
-
-
+                                            <td class="text-center">${product.totalQuantity}</td>
+                                            <td class="text-center">${product.category}</td>
                                             <td class="text-center">
                                                 <button class="btn btn-default btn-sm mr-xs view-modal" title="View" onclick="window.location.href='/product/view/${product.id}'">
                                                     <i class="fa fa-eye"></i>

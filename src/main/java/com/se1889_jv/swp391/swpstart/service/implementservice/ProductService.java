@@ -38,6 +38,11 @@ public class ProductService implements IProductService {
         productRepository.deleteById(id);
     }
 
+    @Override
+    public Page<Product> searchProductsByName(String name, Pageable pageable) {
+        return productRepository.findAllByNameContainingIgnoreCase(name, pageable);
+    }
+
 
     @Override
     public List<String> getAllCategories() {
@@ -54,9 +59,7 @@ public class ProductService implements IProductService {
         return productRepository.findById(id).orElse(null);
     }
 
-    public List<Product> searchProductsByName(String name) {
-        return productRepository.findByNameContainingIgnoreCase(name);
-    }
+
 
     @Override
     public Page<Product> getProductByStoreId(Long storeId, Pageable pageable) {

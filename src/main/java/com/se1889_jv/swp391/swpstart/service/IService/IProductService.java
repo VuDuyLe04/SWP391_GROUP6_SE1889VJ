@@ -15,11 +15,7 @@ public interface IProductService {
     Product saveProduct(Product product);
     void deleteById(Long id);
 
-    public default List<Product> searchProductsByName(String name) {
-
-        ProductRepository productRepository = null;
-        return productRepository.findByNameContainingIgnoreCase(name);
-    }
+    Page<Product> searchProductsByName(String name, Pageable pageable);
     Page<Product> getProductByStoreId(Long storeId, Pageable pageable);
 
     Page<Product> getAllProducts(Pageable pageable);
