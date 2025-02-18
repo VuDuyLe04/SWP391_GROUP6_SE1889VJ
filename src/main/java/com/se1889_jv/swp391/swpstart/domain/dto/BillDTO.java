@@ -17,6 +17,7 @@ public class BillDTO {
     private double totalPrice;
     private double totalLift;
     private String customerInformation;
+    private String customerAddress;
     private String des;
     private int storeId;
     public BillDTO() {

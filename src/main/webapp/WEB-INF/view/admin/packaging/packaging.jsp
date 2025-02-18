@@ -127,6 +127,9 @@
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .but-sort{
+            padding-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -191,13 +194,15 @@
                         <div class="panel-body">
                             <div class="row mb-md">
                                 <div class="col-sm-6">
-                                    <form action="packaings" method="get" class="form-inline">
+                                    <form id="form-header" action="packaings" method="get" class="form-inline">
+                                        <!-- Hidden input for sort parameter -->
+                                        <input type="hidden" name="sort" id="sortField" value="${sort}">
+
                                         <div class="form-group mr-md">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-store"></i></span>
                                                 <select id="store" name="store" class="form-control">
                                                     <option value="0" ${store == 0 ? "selected" : ""}>Tất cả cửa hàng</option>
-
                                                     <c:forEach items="${stores}" var="storeItem">
                                                         <option value="${storeItem.id}" ${store == storeItem.id ? "selected" : ""}>
                                                                 ${storeItem.name}
@@ -207,19 +212,35 @@
                                             </div>
                                         </div>
 
-                                            <div class="form-group mr-md">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
-                                                    <select id="active" name="active" class="form-control">
-                                                        <option ${active == -1 ? "selected" : ""} value="-1">Tất cả</option>
-                                                        <option ${active == 1 ? "selected" : ""} value="1">Sử dụng</option>
-                                                        <option ${active == 0 ? "selected" : ""} value="0">Lưu trữ</option>
-                                                    </select>
-                                                </div>
+                                        <div class="form-group mr-md">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
+                                                <select id="active" name="active" class="form-control">
+                                                    <option ${active == -1 ? "selected" : ""} value="-1">Tất cả</option>
+                                                    <option ${active == 1 ? "selected" : ""} value="1">Sử dụng</option>
+                                                    <option ${active == 0 ? "selected" : ""} value="0">Lưu trữ</option>
+                                                </select>
                                             </div>
+                                        </div>
 
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Filter</button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-filter mr-xs"></i>Filter
+                                        </button>
 
+                                        <div class="d-flex gap-2 p-2 but-sort">
+                                            <button type="button" class="btn btn-secondary" onclick="setSort('liftCost,asc')">
+                                                <i class="fa fa-sort-amount-asc"></i> Giá tăng
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" onclick="setSort('liftCost,desc')">
+                                                <i class="fa fa-sort-amount-desc"></i> Giá giảm
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" onclick="setSort('createdAt,desc')">
+                                                <i class="fa fa-clock-o"></i> Mới nhất
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" onclick="setSort('createdAt,asc')">
+                                                <i class="fa fa-clock-o"></i> Muộn nhất
+                                            </button>
+                                        </div>
                                     </form>
                                 </div>
 
@@ -280,10 +301,11 @@
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
                                     <tr>
+                                        <th><i class="fa"></i>STT</th>
                                         <th><i class="fa fa-user mr-xs"></i>Đóng gói</th>
                                         <th><i class="fa fa-check-circle mr-xs"></i>Tình Trạng</th>
                                         <th><i class="fa fa-check-circle mr-xs"></i>Cửa hàng</th>
-                                        <th><i class="fa fa-cogs mr-xs"></i>Actions</th>
+                                        <th><i class="fa fa-cogs mr-xs"></i>Hoạt động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -373,6 +395,7 @@
 
                                         <!-- Bảng dữ liệu -->
                                         <tr>
+                                            <td>${status.index + 1}</td>
                                             <td>${u.packageType}</td>
                                             <td>
                                                 <span class="label ${u.storage == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
@@ -400,7 +423,7 @@
                                 <ul class="pagination justify-content-center">
                                     <!-- Nút Previous -->
                                     <li class="page-item ${c == 0 ? 'disabled' : ''}">
-                                        <a class="page-link" href="packaings?page=${c == 0 ? 0 : (c - 1)}&store=${param.store}&input=${param.input}">Trước</a>
+                                        <a class="page-link" href="packaings?page=${c == 0 ? 0 : (c - 1)}&store=${param.store}&input=${param.input}&sort${param.sort}&active=${param.active}">Trước</a>
                                     </li>
 
                                     <!-- Hiển thị các số trang -->
@@ -408,7 +431,7 @@
                                         <c:forEach begin="0" end="${packagingPage.totalPages - 1}" var="i">
                                             <c:if test="${i >= c - 1 && i <= c + 1}">
                                                 <li class="page-item ${c == i ? 'active' : ''}">
-                                                    <a class="page-link" href="packaings?page=${i}&store=${param.store}&input=${param.input}">${i + 1}</a>
+                                                    <a class="page-link" href="packaings?page=${i}&store=${param.store}&input=${param.input}&sort${param.sort}&active=${param.active}">${i + 1}</a>
                                                 </li>
                                             </c:if>
                                         </c:forEach>
@@ -416,11 +439,11 @@
 
                                     <!-- Nút Next -->
                                     <li class="page-item ${c == packagingPage.totalPages - 1 ? 'disabled' : ''}">
-                                        <a class="page-link" href="packaings?page=${c == packagingPage.totalPages - 1 ? c : (c + 1)}&store=${param.store}&input=${param.input}">Sau</a>
+                                        <a class="page-link" href="packaings?page=${c == packagingPage.totalPages - 1 ? c : (c + 1)}&store=${param.store}&input=${param.input}&sort${param.sort}&active=${param.active}">Sau</a>
                                     </li>
 
                                 </ul>
-                                </ul>
+
                             </div>
 
                         </div>
@@ -627,6 +650,11 @@
         packageError.style.display = "none";
         return true;
     }
+    function setSort(sortValue) {
+        document.getElementById('sortField').value = sortValue;
+        document.getElementById('form-header').submit();
+    }
+
 
 
 

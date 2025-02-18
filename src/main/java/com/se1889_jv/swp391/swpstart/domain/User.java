@@ -24,6 +24,7 @@ public class User {
     private String password;
     @NotBlank(message = "Tên không được để trống")
     private String name;
+
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;

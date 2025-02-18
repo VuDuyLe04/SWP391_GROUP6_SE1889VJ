@@ -48,6 +48,6 @@ public interface ICustomerService {
 
     List<Customer> getCustomersByStoreId(Long storeId);
     Customer getCustomerByNameAndPhone(String infor);
-
     boolean checkCustomerExistsInStoreByPhone(String phone, Store store);
+    boolean existsCustomerByNameAndPhone(String infor);
 }

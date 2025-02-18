@@ -23,20 +23,22 @@
 <%--            </div>--%>
 <%--        </form>--%>
 <%--        <span class="separator"></span>--%>
+        <c:if test="${sessionScope.user.role.name == 'STAFF'}">
+            <div class="notifications">
+                <form id="storeSwitcher" method="post" action="/storesession">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <select class="form-control" name="storeId" onchange="document.getElementById('storeSwitcher').submit();">
+                        <c:forEach items="${sessionScope.user.userStores}" var="userStore" varStatus="status">
+                            <option value="${userStore.store.id}"
+                                    <c:if test="${sessionScope.store.id == userStore.store.id}">selected</c:if>>
+                                    ${userStore.store.name}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </form>
+            </div>
+        </c:if>
 
-        <div class="notifications">
-            <form id="storeSwitcher" method="post" action="/storesession">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <select class="form-control" name="storeId" onchange="document.getElementById('storeSwitcher').submit();">
-                    <c:forEach items="${sessionScope.user.userStores}" var="userStore" varStatus="status">
-                        <option value="${userStore.store.id}"
-                                <c:if test="${sessionScope.store.id == userStore.store.id}">selected</c:if>>
-                                ${userStore.store.name}
-                        </option>
-                    </c:forEach>
-                </select>
-            </form>
-        </div>
         <span class="separator"></span>
 
         <div id="userbox" class="userbox">

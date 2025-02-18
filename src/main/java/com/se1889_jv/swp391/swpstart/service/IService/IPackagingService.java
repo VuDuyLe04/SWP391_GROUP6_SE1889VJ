@@ -20,4 +20,6 @@ public interface IPackagingService {
     Page<Packaging> getAllPackByUserManage(List<Long> storeId, Pageable pageable);
     List<Packaging> getAllPackagingForOwner(List<Long> storeId);
     void addPackaging(Packaging packaging);
+    Page<Packaging> getAllPackagingByStoresIdAndStorage(Long storeId, Pageable pageable, boolean storage);
+    Page<Packaging> getAllPackagingByStorage(List<Long> storeId, Pageable pageable, boolean storage);
 }

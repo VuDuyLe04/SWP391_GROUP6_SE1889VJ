@@ -312,6 +312,7 @@
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
                                         <tr>
+                                            <th><i class="fa"></i>STT</th>
                                             <th><i class="fa fa-user mr-xs"></i>Tên</th>
                                             <th><i class="fa fa-phone mr-xs"></i>Số điện thoại</th>
                                             <c:if test="${sessionScope.user.role.id == 1}">
@@ -322,8 +323,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="u" items="${userPage.content}">
+                                    <c:forEach var="u" items="${userPage.content}" varStatus="status">
                                         <tr>
+                                            <td>${status.index + 1}</td>
                                             <td><strong>${u.name}</strong></td>
                                             <td>${u.phone}</td>
                                             <c:if test="${sessionScope.user.role.id == 1}">

@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-
 import java.util.List;
 
 @Repository
@@ -33,4 +32,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Page<Customer> findByStore(Store store, Pageable pageable);
     //check khách hàng tồn tại trong cửa hàng
     boolean existsByPhoneAndStore(String phone, Store store);
+    boolean existsCustomerByNameAndPhone(String name, String phone);
 }
