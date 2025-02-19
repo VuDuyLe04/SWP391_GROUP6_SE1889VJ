@@ -105,7 +105,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputImage">Hình ảnh</label>
                                     <div class="col-md-6">
-                                        <form:input path="image" class="form-control" id="inputImage" type="text"/>
+                                        <form:input path="image" class="form-control" id="inputImage" type="text" readonly="true"/>
                                     </div>
                                 </div>
 
@@ -137,7 +137,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputQuantity">Số lượng trong kho</label>
                                     <div class="col-md-6">
-                                        <form:input path="totalQuantity" type="number"  class="form-control" id="inputQuantity"/>
+                                        <form:input path="totalQuantity" type="number"  class="form-control" id="inputQuantity" readonly="true"/>
                                     </div>
                                 </div>
                                 <div class="form-group">

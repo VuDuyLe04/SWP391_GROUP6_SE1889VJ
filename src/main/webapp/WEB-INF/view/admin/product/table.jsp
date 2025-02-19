@@ -217,9 +217,9 @@
                                         <th>STT</th>
                                         <th>Tên gạo</th>
                                         <th class="text-center">Giá gạo</th>
-                                        <th class="text-center">Lưu trữ</th>
                                         <th class="text-center">Số lượng</th>
                                         <th class="text-center">Loại gạo</th>
+                                        <th class="text-center">Lưu trữ</th>
                                         <th class="text-center" style="width: 350px;">Hành động</th>
                                     </tr>
                                     </thead>
@@ -234,14 +234,14 @@
                                             <td>${status.index + 1}</td>
                                             <td class="hidden-xs hidden-sm">${product.name}</td>
                                             <td class="text-center">${product.unitPrice} đ/kg</td>
+                                            <td class="text-center">${product.totalQuantity}</td>
+                                            <td class="text-center">${product.category}</td>
                                             <td class="text-center">
                                                 <span class="label ${product.storage == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
                                                     <i class="fa ${product.storage == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
                                                     ${product.storage == "true" ? "Active" : "Banned"}
                                                 </span>
                                             </td>
-                                            <td class="text-center">${product.totalQuantity}</td>
-                                            <td class="text-center">${product.category}</td>
                                             <td class="text-center">
                                                 <button class="btn btn-default btn-sm mr-xs view-modal" title="View" onclick="window.location.href='/product/view/${product.id}'">
                                                     <i class="fa fa-eye"></i>
