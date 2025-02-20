@@ -9,6 +9,7 @@ import com.se1889_jv.swp391.swpstart.service.implementservice.PackagingService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserStoreService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,10 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +97,10 @@ public class PackingController {
             model.addAttribute("packagings", allPacksOfAllStore.getContent());
             model.addAttribute("packagingPage", allPacksOfAllStore);
             model.addAttribute("sort", sort);
-
+            PackagingDTO packagingDTO = new PackagingDTO();
+            Packaging pck = new Packaging();
+            model.addAttribute("packagingDTO", packagingDTO);
+            model.addAttribute("pack", pck);
             return "admin/packaging/packaging";
         } catch (Exception e) {
             return "redirect:/error";
@@ -105,26 +108,39 @@ public class PackingController {
     }
 
     @PostMapping("/updatePackaging")
-    public String updatePackaging(HttpSession session, Model model, Packaging packaging) {
+    public String updatePackaging(HttpSession session, Model model,@Valid @ModelAttribute("packaging") Packaging packaging,
+                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
         if(user != null) {
-            packagingService.updatePackaging(packaging);
+            if(bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("errorInput", "Dữ liệu nhập vào không hợp lệ, vui lòng kiểm tra lại.");
+                return "redirect:/packaings";
+            } else {
+                packagingService.updatePackaging(packaging);
+            }
             return "redirect:/packaings";
         } else {
             return "redirect:/access-deny";
         }
-
     }
     @PostMapping("/addPackaging")
-    public String addPackaging(HttpSession session, Model model, PackagingDTO packagingDTO) {
+    public String addPackaging(HttpSession session, Model model,@Valid @ModelAttribute("packagingDTO") PackagingDTO packagingDTO
+    , BindingResult bindingResult, RedirectAttributes redirectAttributes
+    ) {
         User user = (User) session.getAttribute("user");
-        System.out.println(packagingDTO);
+        if (bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("errorInput", "Dữ liệu nhập vào không hợp lệ, vui lòng kiểm tra lại.");
+            redirectAttributes.addFlashAttribute("packagingDTOError", packagingDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.packagingDTOError", bindingResult);
+            redirectAttributes.addFlashAttribute("errorModal", "true");
+            return "redirect:/packaings";
+        }
         if(user != null) {
             Packaging pkg = new Packaging();
-            Store store = storeService.findStoreById(packagingDTO.getStoreId());
-            pkg.setPackageType(packagingDTO.getPackageType());
-            pkg.setLiftCost(packagingDTO.getLiftCost());
-            pkg.setQuantityPerPackage(packagingDTO.getQuantityPerPackage());
+            Store store = storeService.findStoreById(packagingDTO.getStoreIdDTO());
+            pkg.setPackageType(packagingDTO.getPackageTypeDTO());
+            pkg.setLiftCost(packagingDTO.getLiftCostDTO());
+            pkg.setQuantityPerPackage(packagingDTO.getQuantityPerPackageDTO());
             pkg.setStorage(true);
             pkg.setCreatedBy(user.getName());
             pkg.setStore(store);

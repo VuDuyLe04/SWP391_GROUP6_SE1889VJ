@@ -65,7 +65,6 @@ public class CustomerController {
                 model.addAttribute("listStore", Utility.getListStoreOfOwner(user));
                 return "admin/customer/create";
             }
-
         } else {
             Store store = this.storeService.findStoreById(Long.parseLong(storeId));
             if (this.customerService.checkCustomerExistsInStoreByPhone(customer.getPhone(), store) == false){

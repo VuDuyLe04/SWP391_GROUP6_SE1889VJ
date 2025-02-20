@@ -160,8 +160,11 @@
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
             </header>
-
-
+            <c:if test="${not empty errorInput}">
+                <div class="alert alert-danger" id="errorAlert">
+                        ${errorInput}
+                </div>
+            </c:if>
             <div class="row">
                 <div class="col-md-12">
                     <section class="panel panel-featured panel-featured-primary">
@@ -260,38 +263,41 @@
                                         </div>
 
                                         <!-- Modal Body -->
-                                        <form id="add-form" action="/addPackaging" method="post" onsubmit="return validateAddPack()">
-                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                        <form:form id="add-form" action="/addPackaging" method="post" onsubmit="return validateAddPack()" modelAttribute="packagingDTO">
+<%--                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />--%>
                                             <div class="modal-body">
                                                 <div class="form-group">
                                                     <label >Loại gói:</label>
-                                                    <input id="add-input-pack" type="text" class="form-control" name="packageType" required>
-                                                    <p id="packageErro" class="text-danger" style="display: none"></p>
+                                                    <form:input id="add-input-pack"  type="text" class="form-control" path="packageTypeDTO" value="${packagingDTOError.packageTypeDTO}"/>
+                                                    <form:errors path="packageTypeDTO" class="text-danger"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Gía bốc vác:</label>
-                                                    <input min="0" type="number" class="form-control" name="liftCost" required>
+                                                    <form:input min="0" type="number" class="form-control" path="liftCostDTO" value="${packagingDTOError.liftCostDTO}"/>
+                                                    <form:errors path="liftCostDTO" class="text-danger"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Số lượng gạo 1 gói:</label>
-                                                    <input min="0" type="number" class="form-control" name="quantityPerPackage" required>
+                                                    <form:input min="0" type="number" class="form-control" path="quantityPerPackageDTO" value="${packagingDTOError.quantityPerPackageDTO}" />
+                                                    <form:errors path="quantityPerPackageDTO" class="text-danger"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Cửa hàng</label>
                                                 </div>
-                                                <select id="store-option" name="storeId" class="form-control">
+                                                <select id="store-option" name="storeIdDTO" class="form-control">
                                                     <c:forEach items="${stores}" var="storeIt">
                                                         <option value="${storeIt.id}" ${store == storeIt.id ? "selected" : ""}>
                                                                 ${storeIt.name}
                                                         </option>
                                                     </c:forEach>
                                                 </select>
+                                                <form:hidden path="storeIdDTO"/>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" id="cancelButton">Hủy</button>
                                                 <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
                                             </div>
-                                        </form>
+                                        </form:form>
                                     </div>
                                 </div>
 
@@ -358,38 +364,47 @@
                                                     </div>
 
                                                     <!-- Modal update -->
-                                                    <form id="formUpdate-${u.id}" action="/updatePackaging" method="post">
-                                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                                        <div class="modal-body">
-                                                            <div class="form-group" hidden="hidden">
-                                                                <label for="packageType-${u.id}">Id:</label>
-                                                                <input  type="text" class="form-control" id="id-${u.id}" name="id" value="${u.id}" required>
+                                                <form:form id="formUpdate-${u.id}" action="/updatePackaging" method="post" modelAttribute="pack">
+                                                    <!-- CSRF Token -->
+<%--                                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />--%>
 
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="packageType-${u.id}">Loại gói:</label>
-                                                                <input type="text" class="form-control" id="packageType-${u.id}" data-type="${u.packageType}" data-store="${u.store.id}" name="packageType" value="${u.packageType}" required>
-                                                                <p id="packageTypeError-${u.id}" class="text-danger" style="display: none"></p>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="liftCost-${u.id}">Gía bốc vác:</label>
-                                                                <input min="0" type="number" class="form-control" id="liftCost-${u.id}" name="liftCost" value="${u.liftCost}" required>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="storage-${u.id}">Tình trạng:</label>
-                                                                <select class="form-control" id="storage-${u.id}" name="storage" required>
-                                                                    <option value="true" ${u.storage == 'true' ? 'selected' : ''}>Sử dụng</option>
-                                                                    <option value="false" ${u.storage == 'false' ? 'selected' : ''}>Lưu trữ</option>
-                                                                </select>
-                                                            </div>
-
+                                                    <div class="modal-body">
+                                                        <!-- ID (Ẩn) -->
+                                                        <div class="form-group" hidden="hidden">
+                                                            <label for="id-${u.id}">Id:</label>
+                                                            <form:input type="text" path="id" class="form-control" id="id-${u.id}" name="id" value="${u.id}" required="true"/>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-id="updateModal-${u.id}">Hủy</button>
-                                                            <button type="submit" class="btn btn-primary" id="button-update" onclick="getPackInputType(${u.id})">Cập nhật</button>
+
+                                                        <!-- Loại gói -->
+                                                        <div class="form-group">
+                                                            <label for="packageType-${u.id}">Loại gói:</label>
+                                                            <form:input type="text" path="packageType" class="form-control" id="packageType-${u.id}" data-type="${u.packageType}" data-store="${u.store.id}" name="packageType" value="${u.packageType}" />
+                                                            <p id="packageTypeError-${u.id}" class="text-danger" style="display: none"></p>
                                                         </div>
-                                                    </form>
+
+                                                        <!-- Giá bốc vác -->
+                                                        <div class="form-group">
+                                                            <label for="liftCost-${u.id}">Gía bốc vác:</label>
+                                                            <form:input type="number" path="liftCost" class="form-control" id="liftCost-${u.id}" name="liftCost" value="${u.liftCost}" />
+                                                        </div>
+
+                                                        <!-- Tình trạng -->
+                                                        <div class="form-group">
+                                                            <label for="storage-${u.id}">Tình trạng:</label>
+                                                            <select class="form-control" id="storage-${u.id}" name="storage">
+                                                                <option value="true" <c:if test="${u.storage == true}">selected</c:if>>Sử dụng</option>
+                                                                <option value="false" <c:if test="${u.storage == false}">selected</c:if>>Lưu trữ</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Buttons -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-id="updateModal-${u.id}">Hủy</button>
+                                                        <button type="submit" class="btn btn-primary" id="button-update" onclick="getPackInputType(${u.id})">Cập nhật</button>
+                                                    </div>
+                                                </form:form>
+
 
                                             </div>
                                         </div>
@@ -458,6 +473,7 @@
             </c:forEach></div>
 
 
+
             <!-- start: page -->
 
             <!-- end: page -->
@@ -517,6 +533,17 @@
 <!-- Examples -->
 <script src="/client/auth/assets/javascripts/dashboard/examples.dashboard.js"></script>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var errorModal = "<c:out value='${errorModal}'/>";
+        if (errorModal === "true") {
+            setTimeout(function () {
+                const modalAddPackage = document.getElementById("addPack");
+                if (modalAddPackage) {
+                    modalAddPackage.style.display = "block";
+                }
+            }, 1000);
+        }
+    });
     document.addEventListener("DOMContentLoaded", function () {
         const viewButtons = document.querySelectorAll(".view-modal");
         const closeButtons = document.querySelectorAll(".close");
@@ -656,7 +683,21 @@
         document.getElementById('sortField').value = sortValue;
         document.getElementById('form-header').submit();
     }
-
+    //hide alert
+    setTimeout(function() {
+        var alertBox = document.getElementById("errorAlert");
+        var fadeEffect = setInterval(function () {
+            if (!alertBox.style.opacity) {
+                alertBox.style.opacity = 1;
+            }
+            if (alertBox.style.opacity > 0) {
+                alertBox.style.opacity -= 0.1;
+            } else {
+                clearInterval(fadeEffect);
+                alertBox.style.display = "none";
+            }
+        }, 200);
+    }, 5000);
 
 
 

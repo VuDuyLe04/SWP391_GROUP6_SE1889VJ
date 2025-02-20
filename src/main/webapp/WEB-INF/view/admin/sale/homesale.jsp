@@ -69,6 +69,36 @@
         }
 
 
+
+        .popup {
+            display: none; /* Mặc định ẩn */
+            position: fixed;
+            top: 20px; /* Căn trên */
+            right: 20px; /* Căn phải */
+            background: rgba(255, 0, 0, 0.9); /* Màu đỏ cảnh báo */
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateX(100px); /* Ẩn bên ngoài màn hình */
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        .fade-in {
+            opacity: 1 !important;
+            transform: translateX(0);
+        }
+
+        /* Hiệu ứng mờ dần */
+        .fade-out {
+            opacity: 0 !important;
+            transform: translateX(100px);
+        }
+
+
+
     </style>
 
     <title>Document</title>
@@ -80,7 +110,11 @@
 <%--<jsp:include page="../layout/header.jsp" />--%>
 <!-- end: header -->
 
-
+<div id="popup-message" class="popup">
+    <div class="popup-content">
+        <p>Vui lòng chọn sản phẩm trước khi thanh toán!</p>
+    </div>
+</div>
 <div class="row bg-primary p-2 align-items-center">
     <!-- Search Box -->
     <div class="col-md-3">
@@ -147,6 +181,8 @@
             <option value="desc">Sắp xếp giảm dần</option>
         </select>
     </div>
+
+
 </div>
 <div class="row bg-secondary">
     <div id="product-list" class="col-md-7 overflow-auto">
@@ -155,7 +191,6 @@
                  data-category="${product.category}"
                  data-description="${product.description}"
                  data-price="${product.unitPrice}">
-
 
                 <div class="m-2 product-name col-md-3">${product.name}</div>
 
@@ -250,7 +285,7 @@
 
     <div class="col-md-5 mt-2 ">
         <div class="p-3 bg-light rounded bill">
-            <form action="/createbill" method="post">
+            <form action="/createbill" method="post" id="form-sender">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <span>${user.name}</span>
@@ -353,18 +388,13 @@
 
 
                 <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-success btn-block pay-button" style="height: 50px">
+                    <button type="submit" class="btn btn-success btn-block pay-button" id="submit-but" style="height: 50px">
                         Thanh toán
                     </button>
                 </div>
             </form>
 
         </div>
-    </div>
-</div>
-<div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
-    <div id="toast" class="toast">
-        Không đủ số lượng sản phẩm trong kho!
     </div>
 </div>
 
@@ -735,9 +765,29 @@
     });
 
     // check all quantity before payment
-    document.getElementById('pay-button').addEventListener('click', function () {
+    document.getElementById('submit-but').addEventListener('click', function (event) {
+        const formSender = document.getElementById("form-sender");
 
-    })
+        if (listSender.length === 0) {
+            event.preventDefault(); // Ngăn form submit
+
+            const popup = document.getElementById("popup-message");
+            popup.style.display = "block";
+            popup.classList.add("fade-in");
+
+            setTimeout(() => {
+                popup.classList.remove("fade-in");
+                popup.classList.add("fade-out");
+
+                setTimeout(() => {
+                    popup.style.display = "none";
+                    popup.classList.remove("fade-out");
+                }, 1000);
+            }, 3000);
+        } else {
+            formSender.submit();
+        }
+    });
 
 
 
