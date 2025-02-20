@@ -130,6 +130,9 @@ public class PackingController {
         User user = (User) session.getAttribute("user");
         if (bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("errorInput", "Dữ liệu nhập vào không hợp lệ, vui lòng kiểm tra lại.");
+            redirectAttributes.addFlashAttribute("packagingDTOError", packagingDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.packagingDTOError", bindingResult);
+            redirectAttributes.addFlashAttribute("errorModal", "true");
             return "redirect:/packaings";
         }
         if(user != null) {

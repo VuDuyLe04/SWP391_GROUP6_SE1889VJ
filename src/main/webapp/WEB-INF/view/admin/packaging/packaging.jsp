@@ -268,16 +268,18 @@
                                             <div class="modal-body">
                                                 <div class="form-group">
                                                     <label >Loại gói:</label>
-                                                    <form:input id="add-input-pack"  type="text" class="form-control" path="packageTypeDTO" />
-                                                    <p id="packageErro" class="text-danger" style="display: none"></p>
+                                                    <form:input id="add-input-pack"  type="text" class="form-control" path="packageTypeDTO" value="${packagingDTOError.packageTypeDTO}"/>
+                                                    <form:errors path="packageTypeDTO" class="text-danger"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Gía bốc vác:</label>
-                                                    <form:input min="0" type="number" class="form-control" path="liftCostDTO" />
+                                                    <form:input min="0" type="number" class="form-control" path="liftCostDTO" value="${packagingDTOError.liftCostDTO}"/>
+                                                    <form:errors path="liftCostDTO" class="text-danger"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Số lượng gạo 1 gói:</label>
-                                                    <form:input min="0" type="number" class="form-control" path="quantityPerPackageDTO" />
+                                                    <form:input min="0" type="number" class="form-control" path="quantityPerPackageDTO" value="${packagingDTOError.quantityPerPackageDTO}" />
+                                                    <form:errors path="quantityPerPackageDTO" class="text-danger"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Cửa hàng</label>
@@ -471,6 +473,7 @@
             </c:forEach></div>
 
 
+
             <!-- start: page -->
 
             <!-- end: page -->
@@ -530,6 +533,17 @@
 <!-- Examples -->
 <script src="/client/auth/assets/javascripts/dashboard/examples.dashboard.js"></script>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var errorModal = "<c:out value='${errorModal}'/>";
+        if (errorModal === "true") {
+            setTimeout(function () {
+                const modalAddPackage = document.getElementById("addPack");
+                if (modalAddPackage) {
+                    modalAddPackage.style.display = "block";
+                }
+            }, 1000);
+        }
+    });
     document.addEventListener("DOMContentLoaded", function () {
         const viewButtons = document.querySelectorAll(".view-modal");
         const closeButtons = document.querySelectorAll(".close");
