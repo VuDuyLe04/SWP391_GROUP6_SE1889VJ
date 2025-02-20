@@ -191,6 +191,16 @@ public class UserController {
                 model.addAttribute("repeatNewPassword", repeatNewPassword);
                 return "admin/profile/profile";
             }
+
+            if (oldPassword.equals(newPassword)) {
+                model.addAttribute("user", userSession);
+                model.addAttribute("errorNew", "Mật khẩu mới phải khác mật khẩu cũ");
+                model.addAttribute("oldPassword", oldPassword);
+                model.addAttribute("newPassword", newPassword);
+                model.addAttribute("repeatNewPassword", repeatNewPassword);
+                return "admin/profile/profile";
+            }
+
             if (newPassword.equals(repeatNewPassword)) {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setUpdatedAt(Instant.now());
@@ -201,7 +211,7 @@ public class UserController {
                 session.setAttribute("message", "Đổi mật khẩu thành công");
                 return "redirect:/profile";
             }
-            else {
+            else  {
                 model.addAttribute("user", userSession);
                 model.addAttribute("errorReNew", "Mật khẩu không khớp");
                 model.addAttribute("oldPassword", oldPassword);
@@ -209,6 +219,8 @@ public class UserController {
                 model.addAttribute("repeatNewPassword", repeatNewPassword);
                 return "admin/profile/profile";
             }
+
+
         } else {
             model.addAttribute("user", userSession);
             model.addAttribute("errorOld", "Mật khẩu cũ không đúng");

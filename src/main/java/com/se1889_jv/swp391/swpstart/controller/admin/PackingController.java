@@ -118,6 +118,7 @@ public class PackingController {
     @PostMapping("/addPackaging")
     public String addPackaging(HttpSession session, Model model, PackagingDTO packagingDTO) {
         User user = (User) session.getAttribute("user");
+        System.out.println(packagingDTO);
         if(user != null) {
             Packaging pkg = new Packaging();
             Store store = storeService.findStoreById(packagingDTO.getStoreId());

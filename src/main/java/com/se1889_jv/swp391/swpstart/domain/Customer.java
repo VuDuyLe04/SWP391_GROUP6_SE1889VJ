@@ -1,6 +1,7 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
 import com.se1889_jv.swp391.swpstart.util.Utility;
+import com.se1889_jv.swp391.swpstart.util.validator.annotation.ValidDouble;
 import com.se1889_jv.swp391.swpstart.util.validator.annotation.ValidPhone;
 import jakarta.persistence.*;
 import jakarta.servlet.http.HttpServletRequest;

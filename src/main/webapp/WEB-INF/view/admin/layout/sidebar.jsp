@@ -90,7 +90,7 @@
 
                     <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
                         <li>
-                            <a>
+                            <a href="/service/table">
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <span>Dịch vụ</span>
                             </a>

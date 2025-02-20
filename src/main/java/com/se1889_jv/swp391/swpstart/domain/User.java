@@ -26,6 +26,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String phone;
     @NotBlank
     private String password;

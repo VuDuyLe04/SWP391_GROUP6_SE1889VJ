@@ -4,6 +4,7 @@ package com.se1889_jv.swp391.swpstart.controller.admin;
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
+import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import com.se1889_jv.swp391.swpstart.service.implementservice.CustomerService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
@@ -23,6 +24,8 @@ import java.util.List;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private CustomerRepository customerRepository;
     @Autowired
     private StoreService storeService;
     @GetMapping("/customer/create")
@@ -111,8 +114,14 @@ public class CustomerController {
     @PostMapping("/customer/update")
     public String updateCustomer(
             @Valid @ModelAttribute("customer") Customer customer,
-            BindingResult result
-                                 ) {
+            @RequestParam(value = "oldPhone") String oldPhone,
+            BindingResult result) {
+        if (this.customerRepository.existsByPhoneAndStoreExcludingOldPhone(customer.getPhone(),oldPhone,customer.getStore())== true){
+            result.rejectValue("phone", "error.customer", "Số điện thoại đã tồn tại trong khách hàng khác");
+            customer.setPhone(oldPhone);
+        }
+
+
         if (result.hasErrors()) {
             return "admin/customer/update";
         }

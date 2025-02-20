@@ -8,33 +8,34 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Danh sách người dùng</title>
-    <meta name="keywords" content="HTML5 Admin Template" />
+    <title>Danh sách dịch vụ</title>
+    <meta name="keywords" content="HTML5 Admin Template"/>
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
 
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
     <!-- Web Fonts  -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light"
+          rel="stylesheet" type="text/css">
 
     <!-- Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css"/>
 
     <!-- Specific Page Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css"/>
 
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme.css" />
+    <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme.css"/>
 
     <!-- Skin CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/stylesheets/skins/default.css" />
+    <link rel="stylesheet" href="/client/auth/assets/stylesheets/skins/default.css"/>
 
     <!-- Theme Custom CSS -->
     <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme-custom.css">
@@ -48,18 +49,18 @@
 <section class="body">
 
     <!-- start: header -->
-    <jsp:include page="../layout/header.jsp" />
+    <jsp:include page="../layout/header.jsp"/>
 
     <!-- end: header -->
 
     <div class="inner-wrapper">
         <!-- start: sidebar -->
-        <jsp:include page="../layout/sidebar.jsp" />
+        <jsp:include page="../layout/sidebar.jsp"/>
         <!-- end: sidebar -->
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Danh sách khách hàng</h2>
+                <h2>Danh sách dịch vụ</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -68,13 +69,12 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Danh sách khách hàng</span></li>
+                        <li><span>Danh sách dịch vụ</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
             </header>
-
 
 
             <!-- start: page -->
@@ -83,7 +83,7 @@
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="panel-actions">
-                                <a href="/customer/create" class="btn btn-success" style="display: inline-flex; /* Sử dụng flexbox để căn giữa */
+                                <a href="/service/create" class="btn btn-success" style="display: inline-flex; /* Sử dụng flexbox để căn giữa */
         justify-content: center;
         align-items: center;
         width: 120px;
@@ -96,16 +96,18 @@
         border-radius: 5px;
         text-decoration: none;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;">Tạo khách hàng mới</a>
+        transition: all 0.3s ease;">Thêm dịch vụ mới</a>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-3">
-                                    <form method="GET" action="/customer/search" class="form-inline" style="margin-bottom: 20px;">
+                                    <form method="GET" action="/customer/search" class="form-inline"
+                                          style="margin-bottom: 20px;">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="name" placeholder="Tìm kiếm bằng" value="${param.name}" />
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="Tìm kiếm theo tên" value="${param.name}"/>
                                             <span class="input-group-btn">
-                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                        <button class="btn btn-primary" type="submit">Search</button>
                     </span>
                                         </div>
                                     </form>
@@ -114,9 +116,10 @@
                                     <!-- Form tìm kiếm theo số điện thoại -->
                                     <form method="GET" action="/customer/search" class="form-inline">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="phone" placeholder="Tìm kiếm bằng số điện thoại" value="${param.phone}" />
+                                            <input type="text" class="form-control" name="phone"
+                                                   placeholder="Search by phone" value="${param.phone}"/>
                                             <span class="input-group-btn">
-                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                    <button class="btn btn-primary" type="submit">Search</button>
                 </span>
                                         </div>
                                     </form>
@@ -128,30 +131,29 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-condensed mb-none">
                                     <thead>
+
                                     <tr>
                                         <th>Số thứ tự</th>
                                         <th>Tên</th>
-                                        <th class="text-right">Số điện thoại</th>
-                                        <th class="text-right">Địa chỉ</th>
-                                        <th class="text-center">Tiền nợ</th>
-                                        <th class="text-right">Cửa hàng</th>
+                                        <th class="text-right">Thời gian dịch vụ</th>
+                                        <th class="text-right">Giá</th>
+                                        <th class="text-right">Trạng thái</th>
                                         <th class="text-right">Hoạt động</th>
-
                                     </tr>
+
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${listCustomer}" var="customer" varStatus="status">
+                                    <c:forEach items="${listService}" var="service" varStatus="status">
                                         <tr>
                                             <td>${status.index + 1}</td>
-                                        <td>${customer.name}</td>
-                                        <td class="text-right">${customer.phone}</td>
-                                        <td class="text-right">${customer.address}</td>
-                                            <td class="text-center">${customer.balance}</td>
-                                            <td class="text-right">${customer.store.name}</td>
-                                        <td class="text-right">
-                                            <a href="/customer/update/${customer.id}" class="btn btn-primary">Cập nhật</a>
-                                            <a href="#" class="btn btn-primary">Nợ</a>
-                                        </td>
+                                            <td>${service.name}</td>
+                                            <td class="text-right">${service.durationMonths}</td>
+                                            <td class="text-right">${service.price}</td>
+                                            <td class="text-center">${service.active}</td>
+                                            <td class="text-right">
+                                                <a href="/service/update/${service.id}" class="btn btn-primary">Cập
+                                                    nhật</a>
+                                            </td>
                                         </tr>
                                     </c:forEach>
 
@@ -162,7 +164,8 @@
                                     <ul class="pagination justify-content-center">
                                         <c:if test="${currentPage > 0}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customer?page=${currentPage - 1}" aria-label="Previous">
+                                                <a class="page-link" href="/customer?page=${currentPage - 1}"
+                                                   aria-label="Previous">
                                                     <span aria-hidden="true">&laquo; Trước</span>
                                                 </a>
                                             </li>
@@ -170,13 +173,14 @@
                                         <c:if test="${totalPages > 0}">
                                             <c:forEach begin="0" end="${totalPages - 1}" var="i">
                                                 <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                    <a class="page-link" href="/customer?page=${i}">${i + 1}</a>
+                                                    <a class="page-link" href="/service/table?page=${i}">${i + 1}</a>
                                                 </li>
                                             </c:forEach>
                                         </c:if>
                                         <c:if test="${currentPage < totalPages - 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customer?page=${currentPage + 1}" aria-label="Next">
+                                                <a class="page-link" href="/service/table?page=${currentPage + 1}"
+                                                   aria-label="Next">
                                                     <span aria-hidden="true">Sau &raquo;</span>
                                                 </a>
                                             </li>
@@ -190,13 +194,11 @@
                     </section>
 
 
-
                 </div>
             </div>
             <!-- end: page -->
         </section>
     </div>
-
 
 
 </section>
