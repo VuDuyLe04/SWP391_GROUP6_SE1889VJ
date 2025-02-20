@@ -103,7 +103,7 @@
                                 <div class="col-md-3">
                                     <form method="GET" action="/customer/search" class="form-inline" style="margin-bottom: 20px;">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="name" placeholder="Search by name" value="${param.name}"  required pattern="[A-Za-z0-9 ]{1,50}" title="Chỉ cho phép chữ cái, số và tối đa 50 ký tự"/>
+                                            <input type="text" class="form-control" name="name" placeholder="Search by name" value="${param.name}" />
                                             <span class="input-group-btn">
                         <button class="btn btn-primary" type="submit">Search</button>
                     </span>
@@ -114,7 +114,7 @@
                                     <!-- Form tìm kiếm theo số điện thoại -->
                                     <form method="GET" action="/customer/search" class="form-inline">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="phone" placeholder="Search by phone" value="${param.phone}" />
+                                            <input type="number" class="form-control" name="phone" placeholder="Search by phone" value="${param.phone}" />
                                             <span class="input-group-btn">
                     <button class="btn btn-primary" type="submit">Search</button>
                 </span>
@@ -132,7 +132,7 @@
                                         <th>Số thứ tự</th>
                                         <th>Tên</th>
                                         <th class="text-right">Số điện thoại</th>
-                                        <th class="text-right">Địa chỉ</th>
+
                                         <th class="text-center">Tiền nợ</th>
                                         <th class="text-right">Cửa hàng</th>
                                         <th class="text-right">Hoạt động</th>
@@ -145,10 +145,11 @@
                                             <td>${status.index + 1}</td>
                                         <td>${customer.name}</td>
                                         <td class="text-right">${customer.phone}</td>
-                                        <td class="text-right">${customer.address}</td>
+
                                             <td class="text-center">${customer.balance}</td>
                                             <td class="text-right">${customer.store.name}</td>
                                         <td class="text-right">
+                                            <a href="/customer/detail/${customer.id}" class="btn btn-primary">Xem chi tiết</a>
                                             <a href="/customer/update/${customer.id}" class="btn btn-primary">Cập nhật</a>
                                             <a href="#" class="btn btn-primary">Nợ</a>
                                         </td>
