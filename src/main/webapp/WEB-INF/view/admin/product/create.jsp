@@ -110,7 +110,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputImage">Hình ảnh</label>
                                     <div class="col-md-6">
-                                        <form:input path="image" class="form-control" id="inputImage" type="text"/>
+                                        <form:input path="image" class="form-control" id="inputImage" type="text" readonly="true"/>
                                     </div>
                                 </div>
 
@@ -128,17 +128,11 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputStorage">Kho</label>
-                                    <div class="col-md-6">
-                                        <form:input path="storage" type="text"  class="form-control" id="inputStorage"/>
-                                    </div>
-                                </div>
 
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputQuantity">Số lượng trong kho</label>
                                     <div class="col-md-6">
-                                        <form:input path="totalQuantity" type="number"  class="form-control" id="inputQuantity"/>
+                                        <form:input path="totalQuantity" type="number"  class="form-control" id="inputQuantity" readonly="true"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -147,15 +141,41 @@
                                         <form:input path="description" type="text"  class="form-control" id="inputDescription"/>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="inputDescription">Cửa hàng</label>
+                                    <div class="col-md-6">
+                                        <form:select path="store.id" cssClass="form-control" id="inputStore" onchange="filterWarehouses()">
+                                            <option value="">-- Chọn cửa hàng --</option>
+                                            <c:forEach items="${listStore}" var="storeIt">
+                                                <form:option value="${storeIt.id}">
+                                                    ${storeIt.name}
+                                                </form:option>
+                                            </c:forEach>
+                                        </form:select>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="warehouseGroup" style="display: none;">
+                                    <label class="col-md-3 control-label" for="inputWarehouse">Kho hàng</label>
+                                    <div class="col-md-6">
+                                        <form:select path="warehouse.id" class="form-control" id="inputWarehouse">
+                                            <option value="">-- Chọn kho hàng --</option>
+                                            <c:forEach items="${wareHouses}" var="warehouse">
+                                                <form:option value="${warehouse.id}" data-store-id="${warehouse.store.id}">
+                                                    ${warehouse.name}
+                                                </form:option>
+                                            </c:forEach>
+                                        </form:select>
+                                    </div>
+                                </div>
                                 <!-- Nút Create -->
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-3">
                                         <button type="submit" class="btn btn-primary">Tạo mới</button>
+                                        <button type="button" class="btn btn-danger" onclick="cancelAction()">Hủy</button>
                                     </div>
                                 </div>
-                            </form:form>
 
+                            </form:form>
                         </div>
                     </section>
 
@@ -174,6 +194,36 @@
 
 </section>
 
+<script>
+    function filterWarehouses() {
+        var storeSelect = document.getElementById("inputStore");
+        var warehouseSelect = document.getElementById("inputWarehouse");
+        var warehouseGroup = document.getElementById("warehouseGroup");
+
+        var selectedStoreId = storeSelect.value;
+
+        if (!selectedStoreId) {
+            warehouseGroup.style.display = "none";
+            return;
+        }
+
+        warehouseGroup.style.display = "block";
+        var options = warehouseSelect.options;
+        for (var i = 0; i < options.length; i++) {
+            var storeId = options[i].getAttribute("data-store-id");
+            if (storeId === selectedStoreId || options[i].value === "") {
+                options[i].style.display = "block";
+            } else {
+                options[i].style.display = "none";
+            }
+        }
+
+        warehouseSelect.value = "";
+    }
+    function cancelAction() {
+        window.history.back();
+    }
+</script>
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>

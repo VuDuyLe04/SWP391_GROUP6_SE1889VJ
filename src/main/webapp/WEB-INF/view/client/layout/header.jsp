@@ -112,18 +112,18 @@
                             <ul>
 
                                 <c:set var="hasStore" value="false"/>
-                                <c:forEach items="${sessionScope.user.userStores}" var="userStore">
+                                <c:forEach items="${sessionScope.user.userStores}" var="userStore" varStatus="status">
                                     <c:if test="${userStore.accessStoreStatus == 'ACCESSED'}">
                                         <c:set var="hasStore" value="true"/>
                                         <li>
-                                            <form id="storeForm" method="post" action="/storesession">
+                                            <!-- Sử dụng id động với chỉ số index -->
+                                            <form id="storeForm-${status.index}" method="post" action="/storesession">
                                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                                 <input type="hidden" value="${userStore.store.id}" name="storeId">
-                                                <a href="#" onclick="document.getElementById('storeForm').submit(); return false;">${userStore.store.name}</a>
+                                                <a href="#" onclick="document.getElementById('storeForm-${status.index}').submit(); return false;">
+                                                        ${userStore.store.name}
+                                                </a>
                                             </form>
-
-
-
                                         </li>
                                     </c:if>
                                 </c:forEach>

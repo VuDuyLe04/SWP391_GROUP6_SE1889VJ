@@ -105,7 +105,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputImage">Hình ảnh</label>
                                     <div class="col-md-6">
-                                        <form:input path="image" class="form-control" id="inputImage" type="text"/>
+                                        <form:input path="image" class="form-control" id="inputImage" type="text" readonly="true"/>
                                     </div>
                                 </div>
 
@@ -124,16 +124,20 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputStorage">kho</label>
+                                    <label class="col-md-3 control-label" for="inputStorage">Trạng thái</label>
                                     <div class="col-md-6">
-                                        <form:input path="storage" type="text"  class="form-control" id="inputStorage"/>
+                                        <form:select path="storage" class="form-control" id="inputStorage">
+                                            <form:option value="true">Hoạt động</form:option>
+                                            <form:option value="false">Lưu trữ</form:option>
+                                        </form:select>
                                     </div>
                                 </div>
+
 
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputQuantity">Số lượng trong kho</label>
                                     <div class="col-md-6">
-                                        <form:input path="totalQuantity" type="number"  class="form-control" id="inputQuantity"/>
+                                        <form:input path="totalQuantity" type="number"  class="form-control" id="inputQuantity" readonly="true"/>
                                     </div>
                                 </div>
                                 <div class="form-group">

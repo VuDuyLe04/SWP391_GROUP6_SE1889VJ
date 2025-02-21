@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
+import com.se1889_jv.swp391.swpstart.util.Utility;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
@@ -28,7 +29,9 @@ public class User {
     private String phone;
     @NotBlank
     private String password;
+    @NotBlank(message = "Tên không được để trống")
     private String name;
+
     @CreationTimestamp
     @Column(updatable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
@@ -53,7 +56,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<UserStore> userStores;
-public void addUserStore() {
+    public void addUserStore() {
     User user = new User();
     user.getUserStores();
 }

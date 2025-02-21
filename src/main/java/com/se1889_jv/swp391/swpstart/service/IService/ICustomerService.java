@@ -15,16 +15,31 @@ public interface ICustomerService {
     Customer getCustomerById(long id);
     void updateCustomer(Customer customer);
     public List<Customer> getAllCustomers();
-    public default List<Customer> searchCustomersByName(String name) {
+
+
+    //Search owner
+    public default Page<Customer> searchCustomersByNameRoleOwner(String name ,List<Store> stores, Pageable pageable) {
 
         CustomerRepository customerRepository = null;
-        return customerRepository.findByNameContainingIgnoreCase(name);
+        return customerRepository.findByNameContainingIgnoreCaseAndStoreIn(name,stores, pageable);
     }
-    public default List<Customer> searchCustomersByPhone(String phone) {
+    public default Page<Customer> searchCustomersByPhoneRoleOwner(String phone,List<Store> stores, Pageable pageable) {
 
         CustomerRepository customerRepository = null;
-        return customerRepository.findByPhoneContainingIgnoreCase(phone);
+        return customerRepository.findByPhoneContainingIgnoreCaseAndStoreIn(phone,stores, pageable);
     }
+    //Search staff
+    public default Page<Customer> searchCustomersByNameRoleStaff(String name ,Store store, Pageable pageable) {
+
+        CustomerRepository customerRepository = null;
+        return customerRepository.findByNameContainingIgnoreCaseAndStore(name,store, pageable);
+    }
+    public default Page<Customer> searchCustomersByPhoneRoleStaff(String phone,Store store, Pageable pageable) {
+
+        CustomerRepository customerRepository = null;
+        return customerRepository.findByPhoneContainingIgnoreCaseAndStore(phone,store, pageable);
+    }
+
 
     //Lấy tất cẩ customer trong tất cả các cửa hàng của Owner
     Page<Customer> getAllCustomersRoleOwner(List<Store> stores,Pageable pageable);
@@ -33,6 +48,6 @@ public interface ICustomerService {
 
     List<Customer> getCustomersByStoreId(Long storeId);
     Customer getCustomerByNameAndPhone(String infor);
-
     boolean checkCustomerExistsInStoreByPhone(String phone, Store store);
+    boolean existsCustomerByNameAndPhone(String infor);
 }

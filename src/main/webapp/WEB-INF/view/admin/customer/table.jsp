@@ -96,7 +96,7 @@
         border-radius: 5px;
         text-decoration: none;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;">Create New Customer</a>
+        transition: all 0.3s ease;">Tạo khách hàng mới</a>
                             </div>
 
                             <div class="row mb-3">
@@ -129,7 +129,7 @@
                                 <table class="table table-bordered table-striped table-condensed mb-none">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>Số thứ tự</th>
                                         <th>Tên</th>
                                         <th class="text-right">Số điện thoại</th>
                                         <th class="text-right">Địa chỉ</th>
@@ -140,9 +140,9 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${listCustomer}" var="customer">
+                                    <c:forEach items="${listCustomer}" var="customer" varStatus="status">
                                         <tr>
-                                        <td>${customer.id}</td>
+                                            <td>${status.index + 1}</td>
                                         <td>${customer.name}</td>
                                         <td class="text-right">${customer.phone}</td>
                                         <td class="text-right">${customer.address}</td>

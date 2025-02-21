@@ -1,7 +1,13 @@
 package com.se1889_jv.swp391.swpstart.controller.admin;
 
 import com.se1889_jv.swp391.swpstart.domain.Product;
+import com.se1889_jv.swp391.swpstart.domain.Store;
+import com.se1889_jv.swp391.swpstart.domain.User;
+import com.se1889_jv.swp391.swpstart.domain.WareHouse;
 import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.WareHouseService;
+import com.se1889_jv.swp391.swpstart.util.Utility;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -21,33 +27,61 @@ ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private WareHouseService wareHouseService;
     @GetMapping("/product")
     public String getListProductPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "unitPrice") String sort,
             @RequestParam(defaultValue = "asc") String order,
-            Model model) {
+            @RequestParam(defaultValue = "0") String store,
+            Model model,
+            HttpSession session) {
+        User user =(User) session.getAttribute("user");
         Sort.Direction direction = order.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, 5, Sort.by(direction, sort));
-        Page<Product> productPage = productService.getAllProducts(pageable);
-        model.addAttribute("listProduct", productPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", productPage.getTotalPages());
-        model.addAttribute("sort", sort);
-        model.addAttribute("order", order);
+        if(user != null) {
+            List<Store> stores = Utility.getListStoreOfOwner(user);
+            Page<Product> productPage;
+            if("0".equals(store)) {
+                productPage = productService.getAllProducts(pageable);
+            } else {
+                Long storeId = Long.parseLong(store);
+                productPage = productService.getProductByStoreId(storeId, pageable);
+            }
+            model.addAttribute("listProduct", productPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", productPage.getTotalPages());
+            model.addAttribute("sort", sort);
+            model.addAttribute("order", order);
+            model.addAttribute("productPage", productPage);
+            model.addAttribute("stores", stores);
+            model.addAttribute("store", store);
+            return "admin/product/table";
+        }
+        return "redirect:/access-deny";
 
-        return "admin/product/table";
     }
 
 
-    @GetMapping("/product/create")
-    public String getCreateProductPage(Model model) {
+    @GetMapping("/product/createProduct")
+    public String getCreateProductPage(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        List<Store> stores = Utility.getListStoreOfOwner(user);
+        List<WareHouse> wareHouses = wareHouseService.getAllWareHouseByListStore(stores);
         model.addAttribute("product", new Product());
+        model.addAttribute("listStore", stores);
+        model.addAttribute("wareHouses", wareHouses);
         return "admin/product/create";
     }
 
     @PostMapping("/product/create")
-    public String createProduct(Model model, @ModelAttribute("product") Product product) {
+    public String createProduct(@ModelAttribute("product") Product product) {
         productService.saveProduct(product);
         return "redirect:/product";
     }
@@ -75,7 +109,7 @@ ProductController {
     @PostMapping("/product/update")
     public String updateProduct(@ModelAttribute("product") Product product, RedirectAttributes redirectAttributes) {
         try {
-            productService.saveProduct(product);
+            productService.updateProduct(product);
             redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error updating product: " + e.getMessage());
@@ -84,16 +118,36 @@ ProductController {
     }
 
     @GetMapping("/product/search")
-    public String searchProduct(@RequestParam("name") String name, Model model) {
-        List<Product> products;
-        if (name != null && !name.isEmpty()) {
-            products = productService.searchProductsByName(name);
-        } else {
-            products = productService.getAllProducts();
+    public String searchProduct(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "3") int size,
+            @RequestParam(value = "sort", defaultValue = "name") String sort,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        // Nếu name không có giá trị -> Redirect về trang /product
+        if (name == null || name.trim().isEmpty()) {
+            return "redirect:/product?page=" + page + "&size=" + size + "&sort=" + sort + "&direction=" + direction;
         }
-        model.addAttribute("listProduct", products);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort));
+        Page<Product> productPage = productService.searchProductsByName(name, pageable);
+
+        model.addAttribute("listProduct", productPage.getContent());
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("sort", sort);
+        model.addAttribute("direction", direction);
+        model.addAttribute("name", name);
+
         return "admin/product/table";
     }
+
+
+
 
     @GetMapping("/product/view/{id}")
     public String viewProduct(@PathVariable("id") Long id, Model model) {
