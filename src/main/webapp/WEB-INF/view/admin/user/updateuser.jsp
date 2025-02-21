@@ -474,7 +474,14 @@
 
         // Số điện thoại hợp lệ
         phoneError.style.display = "none";
-        window.location.href = "checkphone?updatedPhone=" + phone + "&id=" + id;
+        // Tạo URL với các tham số
+        const url = new URL("checkphone", window.location.origin);
+        url.searchParams.append("updatedPhone", phone);
+        url.searchParams.append("id", id);
+
+        // Chuyển hướng đến URL mới
+        window.location.href = url.toString();
+
         return true;
     }
 

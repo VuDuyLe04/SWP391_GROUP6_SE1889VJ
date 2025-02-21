@@ -49,7 +49,7 @@ public class UserController {
         Page<User> users;
 
         if (input != null && !input.isEmpty()) {
-            users = userService.getUsersBySearch(input, input, pageable);
+            users = userService.getUsersBySearch(input.trim(), input.trim(), pageable);
         } else {
             long roleIdValue = "-1".equals(roleId) ? -1 : Long.parseLong(roleId);
             boolean isActive = "1".equals(active);
@@ -80,7 +80,7 @@ public class UserController {
                              @RequestParam(value="id",required = false) String id,
                              Model model) {
         String error = null;
-        String phone = updatedPhone != null ? updatedPhone : createdPhone;
+        String phone = (updatedPhone != null ? updatedPhone : createdPhone).trim();
 
         if (phone != null) {
             User existingUser = userService.getUserByPhone(phone);
@@ -106,32 +106,53 @@ public class UserController {
         }
     }
     @GetMapping("/createuser")
-    public String createUser(@RequestParam(value = "phone",required = false) String phone,
-                             @RequestParam(value = "password",required = false) String password,
-                             @RequestParam(value = "name",required = false) String name,
+    public String createUser(@RequestParam(value = "phone", required = false) String phone,
+                             @RequestParam(value = "password", required = false) String password,
+                             @RequestParam(value = "name", required = false) String name,
                              @RequestParam(value = "active", defaultValue = "false") String active,
                              Model model) {
-        if(phone !=null){
-        User sessionUser = Utility.getUserInSession();
-        User user = new User();
-        user.setPhone(phone);
-        user.setPassword(passwordEncoder.encode(password));
+        if (phone != null && password != null && name != null) {
+            // Kiểm tra định dạng số điện thoại (10 chữ số) và xem số điện thoại đã tồn tại chưa
+            if (!phone.matches("^[0-9]{10}$")) {
+                model.addAttribute("error", "Số điện thoại không hợp lệ.");
+                return "admin/user/createuser";
+            }
+            if (userService.getUserByPhone(phone) != null) {
+                model.addAttribute("error", "Số điện thoại đã tồn tại.");
+                return "admin/user/createuser";
+            }
 
-        // Định dạng lại name
-        String formattedName = Arrays.stream(name.trim().toLowerCase().split("\\s+"))
-                .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
-                .collect(Collectors.joining(" "));
-        user.setName(formattedName);
+            // Kiểm tra định dạng mật khẩu
+            if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
+                model.addAttribute("error", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
+                return "admin/user/createuser";
+            }
 
-        user.setActive(Boolean.parseBoolean(active));
-        user.setCreatedBy(sessionUser.getName());
-        user.setRole(roleService.getRole(2L));
-        user.setUserStores(null);
-        userService.createUser(user);
+            User sessionUser = Utility.getUserInSession();
+            User user = new User();
+            user.setPhone(phone);
+            user.setPassword(passwordEncoder.encode(password));
 
-        if (userService.getUserByPhone(phone) != null) {
-            model.addAttribute("success", "Tạo người dùng thành công");
-        }
+            // Định dạng lại tên (chữ cái đầu viết hoa)
+            String formattedName = Arrays.stream(name.trim().toLowerCase().split("\\s+"))
+                    .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
+                    .collect(Collectors.joining(" "));
+            user.setName(formattedName);
+
+            user.setActive(Boolean.parseBoolean(active));
+            user.setCreatedBy(sessionUser.getName());
+            user.setRole(roleService.getRole(2L));
+            user.setUserStores(null);
+
+            // Kiểm tra xem tạo user có thành công không
+            boolean isCreated = userService.createUser(user)!=null;
+            if (isCreated) {
+                model.addAttribute("success", "Tạo người dùng thành công.");
+            } else {
+                model.addAttribute("error", "Không thể tạo người dùng, vui lòng thử lại.");
+            }
+        } else{
+
         }
 
         return "admin/user/createuser";
@@ -147,12 +168,25 @@ public class UserController {
                              Model model){
         User user = new User();
 
-            user = userService.findById(Long.parseLong(id));
-        if(phone != null){
-            user.setPhone(phone);
-//            user.setPassword(password);
-            user.setName(name);
-            user.setActive(active);
+        user = userService.findById(Long.parseLong(id));
+
+        if(phone != null && phone.matches("^[0-9]{10}$")  && name!=null) {
+
+            if(phone == user.getPhone()) {
+
+                user.setName(name);
+                user.setActive(active);
+
+            }
+            else if(userService.getUserByPhone(phone) != null) {
+
+                user.setPhone(phone);
+
+                user.setName(name);
+
+                user.setActive(active);
+
+            }
 
             userService.createUser(user);
             if(user.getPhone().equals(phone)){
