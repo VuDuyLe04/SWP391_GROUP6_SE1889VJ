@@ -105,7 +105,7 @@
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="name" placeholder="Tìm kiếm bằng" value="${param.name}" />
                                             <span class="input-group-btn">
-                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                        <button class="btn btn-primary" type="submit">Tìm</button>
                     </span>
                                         </div>
                                     </form>
@@ -116,7 +116,7 @@
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="phone" placeholder="Tìm kiếm bằng số điện thoại" value="${param.phone}" />
                                             <span class="input-group-btn">
-                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                    <button class="btn btn-primary" type="submit">Tìm</button>
                 </span>
                                         </div>
                                     </form>
@@ -132,7 +132,7 @@
                                         <th>Số thứ tự</th>
                                         <th>Tên</th>
                                         <th class="text-right">Số điện thoại</th>
-                                        <th class="text-right">Địa chỉ</th>
+
                                         <th class="text-center">Tiền nợ</th>
                                         <th class="text-right">Cửa hàng</th>
                                         <th class="text-right">Hoạt động</th>
@@ -145,10 +145,11 @@
                                             <td>${status.index + 1}</td>
                                         <td>${customer.name}</td>
                                         <td class="text-right">${customer.phone}</td>
-                                        <td class="text-right">${customer.address}</td>
+
                                             <td class="text-center">${customer.balance}</td>
                                             <td class="text-right">${customer.store.name}</td>
                                         <td class="text-right">
+                                            <a href="/customer/detail/${customer.id}" class="btn btn-primary">Xem chi tiết</a>
                                             <a href="/customer/update/${customer.id}" class="btn btn-primary">Cập nhật</a>
                                             <a href="#" class="btn btn-primary">Nợ</a>
                                         </td>
