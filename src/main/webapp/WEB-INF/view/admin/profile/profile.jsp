@@ -110,10 +110,12 @@
                                         <fieldset>
                                             <form:hidden path="id" />
                                             <form:hidden path="password" />
+                                            <form:hidden path="phone"/>
+                                            <form:hidden path="balance"/>
                                             <div class="form-group">
                                                 <label class="col-md-3 control-label" for="profileFirstName">Số điện thoại</label>
                                                 <div class="col-md-8">
-                                                    <form:input path="phone" class="form-control" id="profileFirstName" readonly="true"/>
+                                                    <input name="phone" class="form-control" id="profileFirstName" readonly value="${user.phone}"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -126,7 +128,7 @@
                                             <div class="form-group">
                                                 <label class="col-md-3 control-label" for="profileCompany">Số dư</label>
                                                 <div class="col-md-8">
-                                                    <form:input path="balance" class="form-control" id="profileCompany" readonly="true"/>
+                                                    <input class="form-control" id="profileCompany" readonly value="${user.balance}"/>
                                                 </div>
                                             </div>
 
