@@ -100,6 +100,11 @@
                                                  cssClass="invalid-feedback" cssStyle="color: red"/>
                                 </c:set>
 
+<%--                                <c:set var="errorBalance">--%>
+<%--                                    <form:errors path="balance"--%>
+<%--                                                 cssClass="invalid-feedback" cssStyle="color: red"/>--%>
+<%--                                </c:set>--%>
+
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" >Tên</label>
                                     <div class="col-md-6">
@@ -123,12 +128,14 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputHelpText">Tiền nợ</label>
-                                    <div class="col-md-6">
-                                        <form:input path="balance" class="form-control" id="inputHelpText" readonly="true" />
-                                    </div>
-                                </div>
+<%--                                <div class="form-group">--%>
+<%--                                    <label class="col-md-3 control-label" for="inputHelpText">Tiền nợ</label>--%>
+<%--                                    <div class="col-md-6">--%>
+<%--                                        <form:input path="balance" class="form-control ${not empty errorBalance ? 'is-invalid' : ''}" id="inputHelpText" readonly="true"/>--%>
+<%--                                        ${errorBalance}--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+
                                 <c:if test="${sessionScope.user.role.name == 'STAFF'}">
                                     <div class="form-group">
                                         <label class="col-md-3 control-label" for="inputHelpText">Cửa hàng</label>

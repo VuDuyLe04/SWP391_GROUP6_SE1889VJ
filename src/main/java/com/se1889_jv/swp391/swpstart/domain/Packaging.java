@@ -1,6 +1,9 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,8 +21,13 @@ public class Packaging {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotBlank
     private String packageType;
+    @NotNull
+    @Min(0)
     private double quantityPerPackage;
+    @NotNull
+    @Min(0)
     private double liftCost;
     private Instant createdAt;
     private Instant updatedAt;
@@ -55,5 +63,4 @@ public class Packaging {
                 .withZone(ZoneId.of("Asia/Ho_Chi_Minh"));
         return formatter.format(instant);
     }
-
 }

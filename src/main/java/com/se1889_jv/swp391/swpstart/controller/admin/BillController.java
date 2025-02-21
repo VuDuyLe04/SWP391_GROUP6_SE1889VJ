@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +39,13 @@ public class BillController {
     private UserStoreService userStoreService;
 
     @PostMapping("/createbill")
-    public String createBill(HttpSession session, Model model, BillDTO billDTO){
+    public String createBill(HttpSession session, Model model, BillDTO billDTO, RedirectAttributes redirectAttributes){
         User user = (User) session.getAttribute("user");
+        if(billDTO.getBillDetails() == null ){
+            redirectAttributes.addFlashAttribute("errorList", "oang");
+            return "redirect:/homesale/1";
+        }
+
         Bill bill = billService.createBill(billDTO);
         bill.setCreatedBy(user.getName());
 
@@ -55,11 +61,15 @@ public class BillController {
         return "admin/sale/viewbill";
     }
 
-
-    @GetMapping("/sale")
-    public String sale(HttpSession session, Model model){
-        return "admin/sale/sale";
+    @PostMapping("/createBillDetail")
+    public String createBillDetail(HttpSession session, Model model){
+        return "";
     }
+
+//    @GetMapping("/sale")
+//    public String sale(HttpSession session, Model model){
+//        return "admin/sale/sale";
+//    }
 
 
 
@@ -78,7 +88,6 @@ public class BillController {
                 List<List<Packaging>> packagingList = new ArrayList<>();
                 List<WareHouse> wareHouseList = new ArrayList<>();
                 List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
-                System.out.println(customerList);
                 for(Product product : productList){
                     packagingList.add(packagingService.getAllPackagingForQuantityProduct(product.getTotalQuantity(), storeId));
                     wareHouseList.add(wareHouseService.getWareHouseById(product.getWarehouse().getId()));
@@ -107,6 +116,49 @@ public class BillController {
         }
         session.setAttribute("store",store);
         return "admin/sale/homesale";
+    }
+    @GetMapping("/saleproduct/{id}")
+    public String sale(@PathVariable(name = "id") long storeId,HttpServletRequest request, Model model){
+        HttpSession session = request.getSession(false);
+
+        User user = (User) session.getAttribute("user");
+
+        if( user != null){
+            Store store = storeService.findStoreById(storeId);
+            if(store != null){
+                List<Product> productList = productService.getAllProductsByStoreIdAndIsStorage(storeId);
+                List<String> categoryList = productService.getAllCategories();
+                List<List<Packaging>> packagingList = new ArrayList<>();
+                List<WareHouse> wareHouseList = new ArrayList<>();
+                List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
+                for(Product product : productList){
+                    packagingList.add(packagingService.getAllPackagingForQuantityProduct(product.getTotalQuantity(), storeId));
+                    wareHouseList.add(wareHouseService.getWareHouseById(product.getWarehouse().getId()));
+                }
+                model.addAttribute("warehouse", wareHouseList);
+                model.addAttribute("productList", productList);
+                model.addAttribute("categoryList", categoryList);
+                model.addAttribute("packagingList", packagingList);
+                model.addAttribute("user", user);
+                model.addAttribute("storeId", storeId);
+                model.addAttribute("customerList", customerList);
+            } else {
+                return "redirect:/access-deny";
+            }
+        } else {
+            return "redirect:/access-deny";
+        }
+
+
+        Store store = this.storeService.findStoreById(storeId);
+
+        UserStore userStore = this.userStoreService.findUserStoreByUserAndStore(user,store );
+
+        if (userStore == null || userStore.getAccessStoreStatus().equals("ACCESSDENY")) {
+            return "redirect:/access-deny";
+        }
+        session.setAttribute("store",store);
+        return "admin/sale/saleproduct";
     }
 
 }

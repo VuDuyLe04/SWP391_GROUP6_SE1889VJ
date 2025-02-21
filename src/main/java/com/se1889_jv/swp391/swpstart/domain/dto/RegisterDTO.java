@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegisterDTO {
-    @Size(min = 3, message = "Tên phải có tối thiểu 3 ký tự")
+    @Size(min = 2, message = "Tên phải có tối thiểu 2 ký tự")
     private String name;
     private String phone;
     @NotBlank(message = "Không được để trống")
