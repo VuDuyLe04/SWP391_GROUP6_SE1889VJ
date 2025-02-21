@@ -112,7 +112,7 @@ public class UserController {
                              @RequestParam(value = "active", defaultValue = "false") String active,
                              Model model) {
         if (phone != null && password != null && name != null) {
-            // Kiểm tra định dạng số điện thoại (10 chữ số) và xem số điện thoại đã tồn tại chưa
+
             if (!phone.matches("^[0-9]{10}$")) {
                 model.addAttribute("error", "Số điện thoại không hợp lệ.");
                 return "admin/user/createuser";
@@ -125,6 +125,10 @@ public class UserController {
             // Kiểm tra định dạng mật khẩu
             if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
                 model.addAttribute("error", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
+                return "admin/user/createuser";
+            }
+            if (!name.matches("^[\\p{L}]+([\\p{L}'\\s-]*[\\p{L}])?$")) {
+                model.addAttribute("error", "Tên không được chứa số và các kí tự đặc biệt! ");
                 return "admin/user/createuser";
             }
 
@@ -167,27 +171,17 @@ public class UserController {
                              @RequestParam(value="active",defaultValue = "false") boolean active,
                              Model model){
         User user = new User();
-
         user = userService.findById(Long.parseLong(id));
-
         if(phone != null && phone.matches("^[0-9]{10}$")  && name!=null) {
-
             if(phone == user.getPhone()) {
-
                 user.setName(name);
                 user.setActive(active);
-
             }
             else if(userService.getUserByPhone(phone) != null) {
-
                 user.setPhone(phone);
-
                 user.setName(name);
-
                 user.setActive(active);
-
             }
-
             userService.createUser(user);
             if(user.getPhone().equals(phone)){
                 model.addAttribute("success","Cập nhật người dùng thành công!");
