@@ -459,10 +459,9 @@
         const button = document.getElementById("submitBtn");
 
         // Biểu thức chính quy kiểm tra tên hợp lệ
-        const nameRegex = /^[\p{L}]+([\p{L} '-]*[\p{L}])?$/u;
-
-        if (name.length > 0 && !nameRegex.test(name)) {
-            nameError.textContent = "Tên không hợp lệ. Vui lòng nhập lại!";
+        const nameRegex = /^[a-zA-Z\s]+$/;
+        if (name.length > 0 && !nameRegex.test(name.trim())) {
+            nameError.textContent = "Tên không đuợc chứa số và các kí tự đặc biệt!";
             button.disabled = true;
         } else {
             nameError.textContent = "";

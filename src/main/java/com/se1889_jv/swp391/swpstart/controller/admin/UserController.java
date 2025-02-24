@@ -127,7 +127,7 @@ public class UserController {
                 model.addAttribute("error", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
                 return "admin/user/createuser";
             }
-            if (!name.matches("^[\\p{L}]+([\\p{L}'\\s-]*[\\p{L}])?$")) {
+            if (!name.matches("^[a-zA-Z\s]+$")) {
                 model.addAttribute("error", "Tên không được chứa số và các kí tự đặc biệt! ");
                 return "admin/user/createuser";
             }
@@ -172,16 +172,10 @@ public class UserController {
                              Model model){
         User user = new User();
         user = userService.findById(Long.parseLong(id));
-        if(phone != null && phone.matches("^[0-9]{10}$")  && name!=null) {
-            if(phone == user.getPhone()) {
-                user.setName(name);
-                user.setActive(active);
-            }
-            else if(userService.getUserByPhone(phone) != null) {
-                user.setPhone(phone);
-                user.setName(name);
-                user.setActive(active);
-            }
+        if(phone != null && phone.matches("^[0-9]{10}$")  && name!=null && name.matches("^[a-zA-Z\s]+$")) {
+            if(userService.getUserByPhone(phone) == null)  user.setPhone(phone);
+            user.setName(name);
+            user.setActive(active);
             userService.createUser(user);
             if(user.getPhone().equals(phone)){
                 model.addAttribute("success","Cập nhật người dùng thành công!");
