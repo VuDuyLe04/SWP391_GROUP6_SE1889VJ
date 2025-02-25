@@ -8,10 +8,13 @@ import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.WareHouseService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
@@ -46,7 +49,7 @@ ProductController {
             if("0".equals(store)) {
                 productPage = productService.getAllProducts(pageable);
             } else {
-                Long storeId = Long.parseLong(store);
+                Long storeId =  Long.parseLong(store);
                 productPage = productService.getProductByStoreId(storeId, pageable);
             }
             model.addAttribute("listProduct", productPage.getContent());
@@ -71,7 +74,6 @@ ProductController {
         if (user == null) {
             return "redirect:/login";
         }
-
         List<Store> stores = Utility.getListStoreOfOwner(user);
         List<WareHouse> wareHouses = wareHouseService.getAllWareHouseByListStore(stores);
         model.addAttribute("product", new Product());
@@ -81,10 +83,26 @@ ProductController {
     }
 
     @PostMapping("/product/create")
-    public String createProduct(@ModelAttribute("product") Product product) {
+    public String createProduct(
+            @Valid @ModelAttribute("product") Product product,
+            BindingResult result,
+            Model model,
+            HttpSession session
+    ) {
+        if (result.hasErrors()) {
+
+            User user = (User) session.getAttribute("user");
+            List<Store> stores = Utility.getListStoreOfOwner(user);
+            List<WareHouse> wareHouses = wareHouseService.getAllWareHouseByListStore(stores);
+
+            model.addAttribute("listStore", stores);
+            model.addAttribute("wareHouses", wareHouses);
+            return "admin/product/create";
+        }
         productService.saveProduct(product);
         return "redirect:/product";
     }
+
 
 
 
@@ -106,16 +124,26 @@ ProductController {
         return "admin/product/update";
     }
 
+
     @PostMapping("/product/update")
-    public String updateProduct(@ModelAttribute("product") Product product, RedirectAttributes redirectAttributes) {
+    public String updateProduct(@ModelAttribute("product") @Valid Product product,
+                                BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("product", product); // Giữ lại thông tin đã nhập
+            return "admin/product/update"; // Quay lại trang cập nhật với thông báo lỗi
+        }
+
         try {
             productService.updateProduct(product);
-            redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully.");
+            model.addAttribute("successMessage", "Cập nhật sản phẩm thành công.");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error updating product: " + e.getMessage());
+            model.addAttribute("errorMessage", "Lỗi khi cập nhật sản phẩm: " + e.getMessage());
         }
         return "redirect:/product";
     }
+
+
+
 
     @GetMapping("/product/search")
     public String searchProduct(
