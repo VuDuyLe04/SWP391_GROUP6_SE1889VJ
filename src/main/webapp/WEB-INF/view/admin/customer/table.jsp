@@ -9,32 +9,33 @@
     <meta charset="UTF-8">
 
     <title>Danh sách người dùng</title>
-    <meta name="keywords" content="HTML5 Admin Template" />
+    <meta name="keywords" content="HTML5 Admin Template"/>
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
 
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
     <!-- Web Fonts  -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light"
+          rel="stylesheet" type="text/css">
 
     <!-- Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css"/>
 
     <!-- Specific Page Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css"/>
 
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme.css" />
+    <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme.css"/>
 
     <!-- Skin CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/stylesheets/skins/default.css" />
+    <link rel="stylesheet" href="/client/auth/assets/stylesheets/skins/default.css"/>
 
     <!-- Theme Custom CSS -->
     <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme-custom.css">
@@ -48,13 +49,13 @@
 <section class="body">
 
     <!-- start: header -->
-    <jsp:include page="../layout/header.jsp" />
+    <jsp:include page="../layout/header.jsp"/>
 
     <!-- end: header -->
 
     <div class="inner-wrapper">
         <!-- start: sidebar -->
-        <jsp:include page="../layout/sidebar.jsp" />
+        <jsp:include page="../layout/sidebar.jsp"/>
         <!-- end: sidebar -->
 
         <section role="main" class="content-body">
@@ -76,14 +77,13 @@
             </header>
 
 
-
             <!-- start: page -->
             <div class="row">
                 <div class="col-lg-12">
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="panel-actions">
-                                <a href="/customer/create" class="btn btn-success" style="display: inline-flex; /* Sử dụng flexbox để căn giữa */
+                                <a href="/customer/create" class="btn btn-success" style="display: inline-flex;
         justify-content: center;
         align-items: center;
         width: 120px;
@@ -101,24 +101,29 @@
 
                             <div class="row mb-3">
                                 <div class="col-md-3">
-                                    <form method="GET" action="/customer/search" class="form-inline" style="margin-bottom: 20px;">
+                                    <form method="GET" action="/customer/search" class="form-inline"
+                                          style="margin-bottom: 20px;">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="name" placeholder="Tìm kiếm bằng" value="${param.name}" />
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="Tìm kiếm bằng tên" value="${param.name}"/>
                                             <span class="input-group-btn">
                         <button class="btn btn-primary" type="submit">Tìm</button>
                     </span>
                                         </div>
+
                                     </form>
                                 </div>
                                 <div class="col-md-3">
                                     <!-- Form tìm kiếm theo số điện thoại -->
                                     <form method="GET" action="/customer/search" class="form-inline">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="phone" placeholder="Tìm kiếm bằng số điện thoại" value="${param.phone}" />
+                                            <input type="text" class="form-control" name="phone"
+                                                   placeholder="Tìm kiếm bằng số điện thoại" value="${param.phone}"/>
                                             <span class="input-group-btn">
                     <button class="btn btn-primary" type="submit">Tìm</button>
                 </span>
                                         </div>
+
                                     </form>
                                 </div>
                             </div>
@@ -143,16 +148,18 @@
                                     <c:forEach items="${listCustomer}" var="customer" varStatus="status">
                                         <tr>
                                             <td>${status.index + 1}</td>
-                                        <td>${customer.name}</td>
-                                        <td class="text-right">${customer.phone}</td>
+                                            <td>${customer.name}</td>
+                                            <td class="text-right">${customer.phone}</td>
 
                                             <td class="text-center">${customer.balance}</td>
                                             <td class="text-right">${customer.store.name}</td>
-                                        <td class="text-right">
-                                            <a href="/customer/detail/${customer.id}" class="btn btn-primary">Xem chi tiết</a>
-                                            <a href="/customer/update/${customer.id}" class="btn btn-primary">Cập nhật</a>
-                                            <a href="#" class="btn btn-primary">Nợ</a>
-                                        </td>
+                                            <td class="text-right">
+                                                <a href="/customer/detail/${customer.id}" class="btn btn-primary">Xem
+                                                    chi tiết</a>
+                                                <a href="/customer/update/${customer.id}" class="btn btn-primary">Cập
+                                                    nhật</a>
+                                                <a href="#" class="btn btn-primary">Nợ</a>
+                                            </td>
                                         </tr>
                                     </c:forEach>
 
@@ -163,22 +170,30 @@
                                     <ul class="pagination justify-content-center">
                                         <c:if test="${currentPage > 0}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customer?page=${currentPage - 1}" aria-label="Previous">
-                                                    <span aria-hidden="true">&laquo; Trước</span>
+                                                <a class="page-link" href="/customer/search?page=${currentPage - 1}
+    <c:if test="${not empty param.name}">&name=${param.name}</c:if>
+    <c:if test="${not empty param.phone}">&phone=${param.phone}</c:if>">
+                                                    &laquo; Trước
                                                 </a>
                                             </li>
                                         </c:if>
                                         <c:if test="${totalPages > 0}">
                                             <c:forEach begin="0" end="${totalPages - 1}" var="i">
                                                 <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                    <a class="page-link" href="/customer?page=${i}">${i + 1}</a>
+                                                    <a class="page-link" href="/customer/search?page=${i}
+    <c:if test="${not empty param.name}">&name=${param.name}</c:if>
+    <c:if test="${not empty param.phone}">&phone=${param.phone}</c:if>">
+                                                            ${i + 1}
+                                                    </a>
                                                 </li>
                                             </c:forEach>
                                         </c:if>
                                         <c:if test="${currentPage < totalPages - 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customer?page=${currentPage + 1}" aria-label="Next">
-                                                    <span aria-hidden="true">Sau &raquo;</span>
+                                                <a class="page-link" href="/customer/search?page=${currentPage + 1}
+    <c:if test="${not empty param.name}">&name=${param.name}</c:if>
+    <c:if test="${not empty param.phone}">&phone=${param.phone}</c:if>">
+                                                    Sau &raquo;
                                                 </a>
                                             </li>
                                         </c:if>
@@ -191,7 +206,6 @@
                     </section>
 
 
-
                 </div>
             </div>
             <!-- end: page -->
@@ -199,10 +213,8 @@
     </div>
 
 
-
 </section>
 
-<!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
 <script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
