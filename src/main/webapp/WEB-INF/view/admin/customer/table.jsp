@@ -168,37 +168,44 @@
                                 </table>
                                 <div class="pagination-container text-center mt-3">
                                     <ul class="pagination justify-content-center">
+                                        <!-- Xây dựng query giữ lại thông tin tìm kiếm -->
+                                        <c:set var="searchQuery" value="" />
+                                        <c:if test="${not empty param.name}">
+                                            <c:set var="searchQuery" value="${searchQuery}&name=${param.name}" />
+                                        </c:if>
+                                        <c:if test="${not empty param.phone}">
+                                            <c:set var="searchQuery" value="${searchQuery}&phone=${param.phone}" />
+                                        </c:if>
+
+                                        <!-- Nút "Previous" -->
                                         <c:if test="${currentPage > 0}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customer/search?page=${currentPage - 1}
-    <c:if test="${not empty param.name}">&name=${param.name}</c:if>
-    <c:if test="${not empty param.phone}">&phone=${param.phone}</c:if>">
-                                                    &laquo; Trước
+                                                <a class="page-link" href="/customer/search?page=${currentPage - 1}${searchQuery}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo; Trước</span>
                                                 </a>
                                             </li>
                                         </c:if>
+
+                                        <!-- Hiển thị danh sách trang -->
                                         <c:if test="${totalPages > 0}">
                                             <c:forEach begin="0" end="${totalPages - 1}" var="i">
                                                 <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                    <a class="page-link" href="/customer/search?page=${i}
-    <c:if test="${not empty param.name}">&name=${param.name}</c:if>
-    <c:if test="${not empty param.phone}">&phone=${param.phone}</c:if>">
-                                                            ${i + 1}
-                                                    </a>
+                                                    <a class="page-link" href="/customer/search?page=${i}${searchQuery}">${i + 1}</a>
                                                 </li>
                                             </c:forEach>
                                         </c:if>
+
+                                        <!-- Nút "Next" -->
                                         <c:if test="${currentPage < totalPages - 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customer/search?page=${currentPage + 1}
-    <c:if test="${not empty param.name}">&name=${param.name}</c:if>
-    <c:if test="${not empty param.phone}">&phone=${param.phone}</c:if>">
-                                                    Sau &raquo;
+                                                <a class="page-link" href="/customer/search?page=${currentPage + 1}${searchQuery}" aria-label="Next">
+                                                    <span aria-hidden="true">Sau &raquo;</span>
                                                 </a>
                                             </li>
                                         </c:if>
                                     </ul>
                                 </div>
+
                             </div>
                         </div>
 
