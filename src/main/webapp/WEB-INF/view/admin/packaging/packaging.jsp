@@ -535,15 +535,74 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var errorModal = "<c:out value='${errorModal}'/>";
+
         if (errorModal === "true") {
-            setTimeout(function () {
-                const modalAddPackage = document.getElementById("addPack");
-                if (modalAddPackage) {
-                    modalAddPackage.style.display = "block";
+            let packageTypeInput = document.getElementById("add-input-pack");
+            let liftCostInput = document.querySelector("input[name='liftCostDTO']");
+            let quantityPerPackageInput = document.querySelector("input[name='quantityPerPackageDTO']");
+            let storeInput = document.getElementById("store-option");
+
+            let hasError = false;
+            function validateInput(input, errorId, message) {
+                let errorElement = document.getElementById(errorId);
+                if (!input.value.trim()) {
+                    hasError = true;
+                    if (!errorElement) {
+                        errorElement = document.createElement("span");
+                        errorElement.id = errorId;
+                        errorElement.className = "text-danger";
+                        input.parentNode.appendChild(errorElement);
+                    }
+                    errorElement.textContent = message;
+                    return false;
+                } else {
+                    if (errorElement) {
+                        errorElement.textContent = "";
+                    }
+                    return true;
                 }
-            }, 1000);
+            }
+
+            function validatePositiveNumber(input, errorId, message) {
+                let errorElement = document.getElementById(errorId);
+                let value = parseFloat(input.value);
+                if (!isNaN(value) && value < 0) {
+                    hasError = true;
+                    if (!errorElement) {
+                        errorElement = document.createElement("span");
+                        errorElement.id = errorId;
+                        errorElement.className = "text-danger";
+                        input.parentNode.appendChild(errorElement);
+                    }
+                    errorElement.textContent = message;
+                } else {
+                    if (errorElement) {
+                        errorElement.textContent = "";
+                    }
+                }
+            }
+            validateInput(packageTypeInput, "error-packageType", "Loại gói không được để trống!");
+            if (validateInput(liftCostInput, "error-liftCost", "Giá bốc vác không được để trống!")) {
+                validatePositiveNumber(liftCostInput, "error-liftCost-negative", "Giá bốc vác không được là số âm!");
+            }
+
+            if (validateInput(quantityPerPackageInput, "error-quantityPerPackage", "Số lượng gạo/gói không được để trống!")) {
+                validatePositiveNumber(quantityPerPackageInput, "error-quantityPerPackage-negative", "Số lượng gạo/gói không được là số âm!");
+            }
+
+            validateInput(storeInput, "error-store", "Vui lòng chọn cửa hàng!");
+
+            if (hasError) {
+                setTimeout(function () {
+                    const modalAddPackage = document.getElementById("addPack");
+                    if (modalAddPackage) {
+                        modalAddPackage.style.display = "block";
+                    }
+                }, 500);
+            }
         }
     });
+
     document.addEventListener("DOMContentLoaded", function () {
         const viewButtons = document.querySelectorAll(".view-modal");
         const closeButtons = document.querySelectorAll(".close");

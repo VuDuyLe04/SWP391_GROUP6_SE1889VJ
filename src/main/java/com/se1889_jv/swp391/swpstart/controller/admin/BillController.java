@@ -29,7 +29,7 @@ public class BillController {
     @Autowired
     private StoreService storeService;
     @Autowired
-    private BillDetailService billDetailService;
+    BillDetailService billDetailService;
     @Autowired
     private CustomerService customerService;
     @Autowired
@@ -117,6 +117,9 @@ public class BillController {
         session.setAttribute("store",store);
         return "admin/sale/homesale";
     }
+
+
+
     @GetMapping("/saleproduct/{id}")
     public String sale(@PathVariable(name = "id") long storeId,HttpServletRequest request, Model model){
         HttpSession session = request.getSession(false);
@@ -142,6 +145,7 @@ public class BillController {
                 model.addAttribute("user", user);
                 model.addAttribute("storeId", storeId);
                 model.addAttribute("customerList", customerList);
+
             } else {
                 return "redirect:/access-deny";
             }

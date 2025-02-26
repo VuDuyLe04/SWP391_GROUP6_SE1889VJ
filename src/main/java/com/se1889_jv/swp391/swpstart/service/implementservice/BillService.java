@@ -43,8 +43,12 @@ public class BillService implements IBillService {
                 Customer cus = customerService.createCustomer(customer, storeService.findStoreById(billDTO.getStoreId()));
                 bill.setCustomer(cus);
             }
-
         }
+        return billRepository.save(bill);
+    }
+
+    @Override
+    public Bill createBillForFirstDetail(Bill bill) {
         return billRepository.save(bill);
     }
 }

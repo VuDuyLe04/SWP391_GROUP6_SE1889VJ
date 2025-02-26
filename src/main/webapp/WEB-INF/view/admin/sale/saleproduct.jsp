@@ -320,7 +320,7 @@
                                     <img src="/asset/img/anh1.jpg" alt="" width="50px" height="50px" />
                                     <p><strong>Danh mục:</strong> ${product.category}</p>
                                     <p><strong>Mô tả:</strong> ${product.description}</p>
-                                    <p><strong>Giá:</strong> ${product.unitPrice}</p>
+                                    <p id="listedPrice"><strong>Giá:</strong> ${product.unitPrice}</p>
                                     <p id="quantity-product"><strong>Số lượng:</strong> ${product.totalQuantity} kg</p>
                                     <p><strong>Vị trí:</strong> ${warehouse[status.index].name}</p>
                                 </div>
@@ -345,7 +345,10 @@
                                         <label class="form-label">Số lượng:</label>
                                         <input type="number" class="form-control quantity-input" name="quantity" min="1" value="1" data-quantity="${product.totalQuantity}">
                                     </div>
-
+                                    <div class="mb-3">
+                                        <label class="form-label" hidden="hidden">Hidden</label>
+                                        <input type="number" class="form-control listed-input" name="hide" min="1" value="${product.unitPrice}" data-listed="${product.unitPrice}">
+                                    </div>
                                     <!-- Đóng gói -->
                                     <div class="mb-3">
                                         <label class="form-label">Loại đóng gói:</label>
@@ -360,7 +363,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Giảm giá:</label>
                                         <select class="form-control" name="discount">
-                                            <option value="">Chọn giảm giá</option>
+
                                             <option value="0">Không Giảm</option>
                                             <option value="100">Giảm 100đ</option>
                                             <option value="200">Giảm 200đ</option>
@@ -369,7 +372,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                    <button type="button" class="btn btn-primary">Xác nhận</button>
+                                    <button type="button" class="btn btn-primary add-bill-detail">Xác nhận</button>
                                 </div>
                             </div>
                         </div>
@@ -382,27 +385,27 @@
         <!-- Right Panel - Bill -->
         <div class="col-md-4">
             <div class="bill-section">
+                <div hidden="hidden" id="storeId">${storeId}</div>
                 <div class="bill-header">
                     <h4>Hóa đơn #1234</h4>
                     <span class="text-muted">10:55 01/10/2022</span>
                 </div>
 
 
-
                 <div class="bill-items">
                     <!-- Mẫu item trong bill -->
-                    <div class="bill-item">
-                        <div>
-                            <h6 class="mb-0">Tên sản phẩm</h6>
-                            <small class="text-muted">Loại: Standard</small>
-                        </div>
-                        <div>2 x 100,000đ</div>
-                        <div>Giảm: 10,000đ</div>
-                        <div class="text-end">190,000đ</div>
-                        <button class="btn btn-danger btn-sm">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
+<%--                    <div class="bill-item">--%>
+<%--                        <div>--%>
+<%--                            <h6 class="mb-0">Tên sản phẩm</h6>--%>
+<%--                            <small class="text-muted">Loại: Standard</small>--%>
+<%--                        </div>--%>
+<%--                        <div>2 x 100,000đ</div>--%>
+<%--                        <div>Giảm: 10,000đ</div>--%>
+<%--                        <div class="text-end">190,000đ</div>--%>
+<%--                        <button class="btn btn-danger btn-sm">--%>
+<%--                            <i class="fas fa-times"></i>--%>
+<%--                        </button>--%>
+<%--                    </div>--%>
                 </div>
 
                 <div class="bill-summary">
@@ -578,6 +581,60 @@
             if (!suggestionBox.contains(event.target) && event.target !== searchInput) {
                 suggestionBox.style.display = "none";
             }
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".add-bill-detail").forEach(button => {
+            button.addEventListener("click", async function () {
+                let modal = this.closest(".modal");
+                let productId = modal.id.replace("productModal", "");
+                let quantity = modal.querySelector(".quantity-input").value;
+                let packagingId = modal.querySelector("select[name='packaging']").value;
+                let discount = modal.querySelector("select[name='discount']").value;
+                let listed = modal.querySelector('.listed-input').value;
+                let billId = localStorage.getItem("billId");
+                console.log("AFTER: ", billId);
+                const storeId = parseInt(document.getElementById("storeId").textContent);
+                try{
+                    if (!billId || billId === "undefined" || billId === "null") {
+                        let billData = await fetch("/hello/addBill?storeId="+encodeURIComponent(storeId)).then(res => res.json());
+                        if (!billData || billData.code !== 200) {
+                            alert("Không thể tạo hóa đơn. Vui lòng thử lại!");
+                            return;
+                        }
+                        console.log("Hóa đơn được tạo thành công:", billData);
+
+                        billId = String(billData.data.id);
+
+                        localStorage.setItem("billId", billId);
+
+                    }
+                    console.log("BEFORE: ", billId);
+                    console.log(billId)
+                    let requestData = {
+                        billId: billId,
+                        productId: productId,
+                        quantity: quantity,
+                        packagingId: packagingId,
+                        discount: discount,
+                        listedPrice: listed
+                    };
+                    console.log(requestData);
+                    let detailResponse = await fetch("/hello/addBillDetail", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(requestData)
+                    });
+                    let responseData = await detailResponse.json();
+                    console.log(responseData);
+
+                } catch (error){
+                    console.error(error)
+                }
+
+            });
         });
     });
 
