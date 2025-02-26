@@ -407,8 +407,10 @@
                                     name="name"
                                     placeholder="Nhập tên"
                                     value="${param.name != null ? param.name : ''}"
+                                    onblur="checkName()"
 
                             >
+
                             <p id="nameError"  style="color: red"></p>
 
                             <!-- Role-based Active Status -->
@@ -449,7 +451,7 @@
         const phoneError = document.getElementById("phoneError");
         const button = document.getElementById("submitBtn");
 
-        if (phone.length > 0 && !phoneRegex.test(phone)) {
+        if (phone.length > 0 && !phoneRegex.test(phone.trim())) {
             phoneError.textContent = "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số!";
             phoneError.style.display = "block";
             button.disabled = true;
@@ -491,7 +493,22 @@
             button.disabled = false;
         }
     }
+    function checkName() {
+        const name = document.getElementById("name").value.trim();
+        const nameError = document.getElementById("nameError");
+        const button = document.getElementById("submitBtn");
 
+        // Biểu thức chính quy kiểm tra tên hợp lệ
+        const nameRegex = /^[a-zA-Z\s]+$/;
+
+        if (name.length > 0 && !nameRegex.test(name.trim())) {
+            nameError.textContent = "Tên không đuợc chứa số và các kí tự đặc biệt! ";
+            button.disabled = true;
+        } else {
+            nameError.textContent = "";
+            button.disabled = false;
+        }
+    }
     document.getElementById("submitBtn").addEventListener("click", function(event) {
         let isValid = true;
 

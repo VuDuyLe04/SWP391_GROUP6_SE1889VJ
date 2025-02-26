@@ -375,41 +375,15 @@
                                     name="phone"
                                     placeholder="Nhập số điện thoại"
                                     value="${useru.phone != null ? useru.phone : ''}"
-<%--                                    onblur="checkPhone(this.value)"--%>
                                     onblur="checkPhone(this.value,'${useru.id}')"
                                     required
                             >
 
-<%--                            <p style="color: red">--%>
-<%--                                ${error}--%>
-<%--                            </p>--%>
-<%--                            <p id="phoneError" style="color:red; display: none"> </p>--%>
-<%--                            <!-- Password -->--%>
-<%--                            <label for="password">Mật khẩu:</label>--%>
-<%--                            <input--%>
-<%--                                    type="password"--%>
-<%--                                    id="password"--%>
-<%--                                    name="password"--%>
-<%--                                    placeholder="Nhập mật khẩu"--%>
+                            <p style="color: red">
+                                ${error}
+                            </p>
+                            <p id="phoneError" style="color:red; display: none"> </p>
 
-<%--                                    onblur="checkPassword()"--%>
-<%--                                    value="${useru.password != null ? useru.password : ''}"--%>
-<%--                                    required--%>
-<%--                            >--%>
-<%--                            <p id="passError" style="color: red" > </p>--%>
-<%--                            <label for="repassword">Nhập lại mật khẩu:</label>--%>
-<%--                            <input--%>
-<%--                                    type="password"--%>
-<%--                                    id="repassword"--%>
-<%--                                    name="repassword"--%>
-<%--                                    placeholder="Nhập lại mật khẩu"--%>
-<%--                                    onblur="checkPassword()"--%>
-<%--                                    value="${useru.password != null ? useru.password : ''}"--%>
-<%--                                    required--%>
-<%--                            >--%>
-                            <p id="repassError" style="color: red"></p>
-
-                            <!-- Name -->
                             <label for="name">Tên:</label>
                             <input
                                     type="text"
@@ -417,8 +391,11 @@
                                     name="name"
                                     placeholder="Nhập tên"
                                     value="${useru.name != null ? useru.name : ''}"
-                                    required
+                                    onblur="checkName()"
+
                             >
+                            
+                            <p id="nameError"  style="color: red"></p>
 
                             <!-- Role-based Active Status -->
                             <c:if test="${sessionScope.user.role.id == 1}">
@@ -441,7 +418,7 @@
                             </c:if>
                             <p style="color: limegreen">${success}</p>
                             <!-- Submit Button -->
-                            <button type="submit" >Xác nhận </button>
+                            <button id="submitBtn" type="submit" >Xác nhận </button>
 
                         </form>
 
@@ -460,69 +437,67 @@
         const phoneRegex = /^[0-9]{10}$/;
         const phoneError = document.getElementById("phoneError");
 
-        if (phone.trim() === "") {
-            phoneError.textContent = "Vui lòng nhập số điện thoại!";
-            phoneError.style.display = "block";
 
-        }
-
-        if (!phoneRegex.test(phone)) {
+        if (phone.length >0 && !phoneRegex.test(phone.trim())) {
             phoneError.textContent = "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số!";
             phoneError.style.display = "block";
+            return false;
 
         }
 
-        // Số điện thoại hợp lệ
         phoneError.style.display = "none";
-        // Tạo URL với các tham số
-        const url = new URL("checkphone", window.location.origin);
-        url.searchParams.append("updatedPhone", phone);
-        url.searchParams.append("id", id);
-
-        // Chuyển hướng đến URL mới
-        window.location.href = url.toString();
+        window.location.href = "checkphone?updatedPhone="+phone +"&id=" + id;
 
         return true;
     }
 
 
 
-    function checkPassword() {
-        const password = document.getElementById("password").value;
-        const repassword = document.getElementById("repassword").value;
+    function checkName() {
+        const name = document.getElementById("name").value.trim();
+        const nameError = document.getElementById("nameError");
+        const button = document.getElementById("submitBtn");
 
-        const passError = document.getElementById("passError");
-        const repassError = document.getElementById("repassError");
-
-        const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/;
-
-        // Check if password is empty
-        if (!password || password.trim() === "") {
-            passError.textContent = "Vui lòng nhập mật khẩu!";
-            return false;
-        } else if (!passRegex.test(password)) {
-            passError.textContent = "Mật khẩu không hợp lệ. Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!";
-            return false;
+        // Biểu thức chính quy kiểm tra tên hợp lệ
+        const nameRegex = /^[a-zA-Z\s]+$/;
+        if (name.length > 0 && !nameRegex.test(name.trim())) {
+            nameError.textContent = "Tên không đuợc chứa số và các kí tự đặc biệt!";
+            button.disabled = true;
         } else {
-            passError.textContent = "";
+            nameError.textContent = "";
+            button.disabled = false;
         }
-
-        // Check if repassword is empty
-        if (!repassword || repassword.trim() === "") {
-            repassError.textContent = "Vui lòng nhập lại mật khẩu!";
-            return false;
-        } else if (password !== repassword) {
-            repassError.textContent = "Mật khẩu không khớp. Xin vui lòng nhập lại!";
-            return false;
-        } else {
-            repassError.textContent = "";
-        }
-
-        return true;
     }
+    document.getElementById("submitBtn").addEventListener("click", function(event) {
+        let isValid = true;
+
+        // Lấy các giá trị từ input
+        let phone = document.getElementById("phone").value.trim();
+
+        let name = document.getElementById("name").value.trim();
+
+        // Xóa các thông báo lỗi cũ
+        document.getElementById("phoneError").style.display = "none";
 
 
+        // Kiểm tra số điện thoại
+        if (phone === "") {
+            document.getElementById("phoneError").innerText = "Vui lòng nhập số điện thoại!";
+            document.getElementById("phoneError").style.display = "block";
+            isValid = false;
+        }
 
+        //
+        if (name === "") {
+            document.getElementById("nameError").innerText = "Vui lòng nhập tên!";
+            isValid = false;
+        }
+
+        // Nếu có lỗi, ngăn form submit
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
 </script>
 
 
