@@ -156,7 +156,7 @@
                                         <form id="search-form" action="/product/search" method="GET" class="search nav-form">
                                             <div class="input-group input-search">
                                                 <input type="text" class="form-control" name="name"
-                                                       placeholder="Tìm theo tên đóng gói" value="${param.name}"  pattern="[a-zA-ZÀ-Ỹà-ỹ0-9 ]+" title="Chỉ nhập chữ cái và số">
+                                                       placeholder="Tìm theo tên đóng gói" value="${param.name}"  pattern="^(?!\s*$)[a-zA-ZÀ-Ỹà-ỹ0-9 ]+$" title="Chỉ nhập chữ cái và số">
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-primary" type="submit">
                                                         <i class="fa fa-search"></i>

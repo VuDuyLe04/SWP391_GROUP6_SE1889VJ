@@ -129,8 +129,8 @@ ProductController {
     public String updateProduct(@ModelAttribute("product") @Valid Product product,
                                 BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("product", product); // Giữ lại thông tin đã nhập
-            return "admin/product/update"; // Quay lại trang cập nhật với thông báo lỗi
+            model.addAttribute("product", product); // Giữ ttin
+            return "admin/product/update";
         }
 
         try {

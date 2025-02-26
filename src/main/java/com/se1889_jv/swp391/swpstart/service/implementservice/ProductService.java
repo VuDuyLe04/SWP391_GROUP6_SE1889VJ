@@ -61,7 +61,6 @@ public class ProductService implements IProductService {
     }
 
 
-
     @Override
     public Page<Product> getProductByStoreId(Long storeId, Pageable pageable) {
         return productRepository.findAllByStoreId(storeId, pageable);
@@ -86,6 +85,4 @@ public class ProductService implements IProductService {
             productRepository.save(productOptional.get());
         }
     }
-
-
 }
