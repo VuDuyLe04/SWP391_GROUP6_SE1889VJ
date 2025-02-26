@@ -188,6 +188,7 @@ public class CustomerController {
         }
 
 //        model.addAttribute("listCustomer", customers);
+
         return "admin/customer/table";
     }
 
