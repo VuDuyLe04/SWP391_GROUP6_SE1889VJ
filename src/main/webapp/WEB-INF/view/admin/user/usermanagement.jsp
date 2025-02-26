@@ -216,7 +216,14 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2><i class="fa fa-users mr-xs"></i> Quản lí người dùng</h2>
+                <h2><i class="fa fa-users mr-xs"></i>
+                    <c:if test="${sessionScope.user.role.id == 1}">
+                        Quản lí người dùng
+                </c:if>
+                    <c:if test="${sessionScope.user.role.id == 2}">
+                        Quản lí nhân viên
+                    </c:if>
+                </h2>
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
                         <li>
@@ -306,7 +313,12 @@
                                 <div class="col-sm-6">
                                     <div class="pull-right">
                                         <a href="createuser" class="btn btn-primary mb-xs mt-xs mr-xs">
-                                            <i class="fa fa-plus mr-xs"></i>Tạo chủ cửa hàng
+                                            <i class="fa fa-plus mr-xs"></i>  <c:if test="${sessionScope.user.role.id == 1}">
+                                            Tạo người dùng
+                                        </c:if>
+                                            <c:if test="${sessionScope.user.role.id == 2}">
+                                                Tạo nhân viên
+                                            </c:if>
                                         </a>
 
                                     </div>
