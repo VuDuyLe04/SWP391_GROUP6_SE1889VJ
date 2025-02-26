@@ -10,11 +10,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class ServiceService implements IServiceService {
     @Autowired
     private ServiceRepository serviceRepository;
+
+    @Override
+    public Service findServiceById(long id) {
+        Optional<Service> service = serviceRepository.findById(id);
+        if (service.isPresent()) {
+            return service.get();
+        }
+        return null;
+    }
 
     @Override
     public Service createService(Service service) {

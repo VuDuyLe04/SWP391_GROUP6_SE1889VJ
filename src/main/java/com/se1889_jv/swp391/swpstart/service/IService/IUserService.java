@@ -1,6 +1,7 @@
 package com.se1889_jv.swp391.swpstart.service.IService;
 
 import com.se1889_jv.swp391.swpstart.domain.Role;
+import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
 
 import com.se1889_jv.swp391.swpstart.domain.UserStore;
@@ -30,4 +31,6 @@ public interface IUserService {
     Page<User> getUsersByActive(boolean active, Pageable pageable);
 
     Page<User> getUsersByRoleIDAndActive(Long id, boolean active, Pageable pageable);
+
+    List<User> getAllUserByStoreIn(List<Store> store);
 }

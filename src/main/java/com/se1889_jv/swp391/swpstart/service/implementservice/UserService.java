@@ -46,6 +46,8 @@ public class UserService implements IUserService {
     @Autowired
     private  StoreRepository storeRepository;
 
+    @Autowired
+    private UserStoreService userStoreService;
 
 
     @Override
@@ -115,6 +117,12 @@ public class UserService implements IUserService {
     @Override
     public Page<User> getUsersByRoleIDAndActive(Long id, boolean active, Pageable pageable) {
         return this.userRepository.findUsersByRoleIdAndActive(id, active,pageable);
+    }
+
+    @Override
+    public List<User> getAllUserByStoreIn(List<Store> store) {
+        List<UserStore> userStores = this.userStoreService.getAllUserStoresByStoreIn(store);
+        return this.userRepository.findAllByUserStoresIn(userStores);
     }
 
 

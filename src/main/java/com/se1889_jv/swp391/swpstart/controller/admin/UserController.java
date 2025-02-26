@@ -167,27 +167,18 @@ public class UserController {
                              @RequestParam(value="active",defaultValue = "false") boolean active,
                              Model model){
         User user = new User();
-
         user = userService.findById(Long.parseLong(id));
 
         if(phone != null && phone.matches("^[0-9]{10}$")  && name!=null) {
-
             if(phone == user.getPhone()) {
-
                 user.setName(name);
                 user.setActive(active);
-
             }
             else if(userService.getUserByPhone(phone) != null) {
-
                 user.setPhone(phone);
-
                 user.setName(name);
-
                 user.setActive(active);
-
             }
-
             userService.createUser(user);
             if(user.getPhone().equals(phone)){
                 model.addAttribute("success","Cập nhật người dùng thành công!");
