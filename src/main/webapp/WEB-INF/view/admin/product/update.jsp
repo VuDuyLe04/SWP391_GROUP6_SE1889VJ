@@ -90,15 +90,24 @@
                             <h2 class="panel-title">Cập nhật</h2>
                         </header>
                         <div class="panel-body">
+
+<%--                            <c:if test="${not empty successMessage}">--%>
+<%--                                <div class="alert alert-success">${successMessage}</div>--%>
+<%--                            </c:if>--%>
+<%--                            <c:if test="${not empty errorMessage}">--%>
+<%--                                <div class="alert alert-danger">${errorMessage}</div>--%>
+<%--                            </c:if>--%>
+
                             <form:form method="post" modelAttribute="product" action="/product/update">
                                 <form:hidden path="id"/>
 
 
 
-                                <div class="form-group">
+                                <div class="form-group ">
                                     <label class="col-md-3 control-label" for="inputDefault">Tên gạo</label>
                                     <div class="col-md-6">
                                         <form:input path="name" type="text" class="form-control" id="inputDefault" />
+                                        <form:errors path="name" cssClass="text-danger"/>
                                     </div>
                                 </div>
 
@@ -106,6 +115,8 @@
                                     <label class="col-md-3 control-label" for="inputImage">Hình ảnh</label>
                                     <div class="col-md-6">
                                         <form:input path="image" class="form-control" id="inputImage" type="text" readonly="true"/>
+<%--                                        <form:errors path="image" cssClass="text-danger"/>--%>
+
                                     </div>
                                 </div>
 
@@ -113,13 +124,16 @@
                                     <label class="col-md-3 control-label" for="inputPrice">Giá gạo</label>
                                     <div class="col-md-6">
                                         <form:input path="unitPrice" type="number" id="inputPrice" class="form-control"/>
+                                        <form:errors path="unitPrice" cssClass="text-danger"/>
+
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputCategory">Loại gạo</label>
+                                    <label class="col-md-3 control-label">Loại gạo</label>
                                     <div class="col-md-6">
-                                        <form:input path="category" type="text"  class="form-control" id="inputCategory"/>
+                                        <form:input path="category" type="text" class="form-control"/>
+                                        <form:errors path="category" cssClass="text-danger"/>
                                     </div>
                                 </div>
 
@@ -144,6 +158,8 @@
                                     <label class="col-md-3 control-label" for="inputDescription">Mô tả</label>
                                     <div class="col-md-6">
                                         <form:input path="description" type="text"  class="form-control" id="inputDescription"/>
+                                        <form:errors path="description" cssClass="text-danger"/>
+
                                     </div>
                                 </div>
 
