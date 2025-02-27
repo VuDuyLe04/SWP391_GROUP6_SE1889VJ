@@ -105,7 +105,9 @@ public class UserController {
             return "admin/user/createuser";
         }
     }
-    @GetMapping("/createuser")
+
+
+    @RequestMapping(value = "/createuser", method = {RequestMethod.GET, RequestMethod.POST})
     public String createUser(@RequestParam(value = "phone", required = false) String phone,
                              @RequestParam(value = "password", required = false) String password,
                              @RequestParam(value = "name", required = false) String name,

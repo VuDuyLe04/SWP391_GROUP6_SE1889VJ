@@ -358,7 +358,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <section class="panel panel-featured panel-featured-primary">
-                        <form action="createuser" >
+                        <form action="/createuser" method="post" >
                             <!-- Phone -->
                             <label for="phone">Số điện thoại:</label>
                             <input

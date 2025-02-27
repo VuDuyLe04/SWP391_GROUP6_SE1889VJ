@@ -305,7 +305,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <a href="createuser" class="btn btn-primary mb-xs mt-xs mr-xs">
+                                        <a href="/createuser" class="btn btn-primary mb-xs mt-xs mr-xs">
                                             <i class="fa fa-plus mr-xs"></i>Tạo chủ cửa hàng
                                         </a>
 
