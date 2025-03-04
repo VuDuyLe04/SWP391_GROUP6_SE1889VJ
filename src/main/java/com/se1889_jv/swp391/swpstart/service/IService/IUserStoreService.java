@@ -9,7 +9,7 @@ import java.util.List;
 public interface IUserStoreService {
 
     UserStore findUserStore(long userId);
-
+    UserStore saveUserStore(UserStore userStore);
     UserStore findUserStoreByUserAndStore(User user, Store store);
     List<UserStore> getAllUserStoresByUserId(long userId);
 }

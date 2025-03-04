@@ -30,4 +30,9 @@ public class UserStoreService implements IUserStoreService {
     public UserStore findUserStore(long userId) {
         return null;
     }
+
+    @Override
+    public UserStore saveUserStore(UserStore userStore) {
+       return userStoreRepository.save(userStore);
+    }
 }

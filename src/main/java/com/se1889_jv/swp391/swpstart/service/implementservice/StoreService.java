@@ -4,6 +4,8 @@ import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.repository.StoreRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,5 +29,15 @@ public class StoreService implements IStoreService {
     @Override
     public List<Store> getAllStores() {
         return storeRepository.findAll();
+    }
+
+    @Override
+    public Store saveStore(Store store) {
+        return storeRepository.save(store);
+    }
+
+    @Override
+    public Page<Store> findStoresByCreatedBy(String createdBy, Pageable pageable) {
+        return storeRepository.findStoreByCreatedBy(createdBy, pageable);
     }
 }
