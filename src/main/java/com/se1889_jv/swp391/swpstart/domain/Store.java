@@ -1,6 +1,7 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.se1889_jv.swp391.swpstart.util.RequestUtils;
 import com.se1889_jv.swp391.swpstart.util.constant.StatusStoreEnum;
 import jakarta.persistence.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -68,20 +69,36 @@ public class Store {
     private List<Packaging> packagings;
     @PrePersist
     public void handleBeforeCreate() {
-        HttpServletRequest request = null;
-        HttpSession session = request.getSession(false);
-        this.createdBy = (String) session.getAttribute("name");
+        HttpServletRequest request = RequestUtils.getCurrentHttpRequest();
+        if (request != null) {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                this.createdBy = (String) session.getAttribute("name");
+            } else {
+                this.createdBy = "Unknown";
+            }
+        } else {
+            this.createdBy = "Unknown";
+        }
         this.createdAt = Instant.now();
     }
 
     @PreUpdate
     public void handleBeforeUpdate() {
-        HttpServletRequest request = null;
-        HttpSession session = request.getSession(false);
-        this.updatedBy = (String) session.getAttribute("name");
+        HttpServletRequest request = RequestUtils.getCurrentHttpRequest();
+        if (request != null) {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                this.updatedBy = (String) session.getAttribute("name");
+            } else {
+                this.updatedBy = "Unknown";
+            }
+        } else {
+            this.updatedBy = "Unknown";
+        }
         this.updatedAt = Instant.now();
     }
-    public Date getCreatedAtAsDate() {
+     Date getCreatedAtAsDate() {
         return createdAt != null ? Date.from(createdAt) : null;
     }
 

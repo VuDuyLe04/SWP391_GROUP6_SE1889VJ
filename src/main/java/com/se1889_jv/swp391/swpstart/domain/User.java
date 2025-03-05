@@ -86,13 +86,13 @@ public class User {
                 .withZone(ZoneId.of("Asia/Ho_Chi_Minh"));
         return formatter.format(instant);
     }
-    public List<Store> getAllStores() {
-        List<Store> stores = new ArrayList<>();
-        for (UserStore userStore : userStores) {
-            stores.add(userStore.getStore());
-        }
-        return stores;
-    }
+//    public List<Store> getAllStores() {
+//        List<Store> stores = new ArrayList<>();
+//        for (UserStore userStore : userStores) {
+//            stores.add(userStore.getStore());
+//        }
+//        return stores;
+//    }
 
 
 }

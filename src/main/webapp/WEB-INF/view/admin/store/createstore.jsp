@@ -341,14 +341,14 @@
 
                                 <div class="form-group">
                                     <label >Tên cửa hàng: </label>
-                                    <form:input id="add-input-pack"  type="text" class="form-control" path="name" onblur="checkName(this.value)"/>
+                                    <form:input id="add-input-pack"  type="text" class="form-control" path="name" value="${storeDTOError.name}" onblur="checkName(this.value)"/>
                                     <form:errors path="name" class="text-danger"/>
                                 </div>
-
+${nameError}
                             <p id="nameError"  style="color: red"></p>
                             <div class="form-group">
                                 <label >Địa chỉ: </label>
-                                <form:input id="add-input-pack"  type="text" class="form-control" path="address" onblur="checkName(this.value)" />
+                                <form:input id="add-input-pack"  type="text" class="form-control" path="address"  value="${storeDTOError.address}"  onblur="checkName(this.value)" />
                                 <form:errors path="address" class="text-danger"/>
                             </div>
 
@@ -367,7 +367,7 @@
 
                             <%--                                <form:hidden path=""/>--%>
                             <button  id="submitBtn" type="submit" ${success != null || error != null ? 'disabled' : ''}>Tạo </button>
-
+                                ${success}
                         </form:form>
 
                     </section>
@@ -387,13 +387,8 @@
             nameError.textContent = "Tên cửa hàng không được vượt quá 100 ký tự";
             nameError.style.display = "block";
             button.disabled = true;
-        } else {
-            nameError.style.display = "none";
-            button.disabled = false;
-            if (name.length > 0 && name.length <=100) {
-                window.location.href = "createstore?name=" + name.trim();
-            }
         }
+
     }
 
     function checkAddress(address) {
