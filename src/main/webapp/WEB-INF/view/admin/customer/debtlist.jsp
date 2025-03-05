@@ -16,7 +16,7 @@
         <jsp:include page="../layout/sidebar.jsp"/>
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Danh sách nợ của khách hàng</h2>
+                <h2>Danh sách nợ của ${customer.name}</h2>
             </header>
 
             <div class="row">
@@ -24,12 +24,32 @@
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="panel-actions">
-                                <a href="/dept/create" class="btn btn-success">Thêm mới</a>
+                                <a href="/customer/debtlist" class="btn btn-success" style="display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 120px;
+        height: 40px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #ffffff;
+        background: linear-gradient(90deg, #0093DD, #007ACC);
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;">Tạo phiếu nợ</a>
                             </div>
-                            <form method="GET" action="/dept/search" class="form-inline">
-                                <input type="text" class="form-control" name="keyword" placeholder="Tìm kiếm..." value="${param.keyword}"/>
-                                <button class="btn btn-primary" type="submit">Tìm</button>
-                            </form>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <form method="GET" action="/customer/search" class="form-inline"
+                                          style="margin-bottom: 20px;">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="Tìm kiếm " value="${param.name}"/>
+                                            <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit"style="background-color: #0099E6; border-color: #0099E6; color: white;"style="background-color: #0099E6; border-color: #0099E6; color: white;">Tìm</button>
+                    </span>
+                                        </div>
                         </header>
                         <div class="panel-body">
                             <table class="table table-bordered table-striped">
@@ -38,6 +58,7 @@
 
                                     <th>Mã nợ</th>
                                     <th>Số tiền</th>
+                                    <th>Loại nợ</th>
                                     <th>Lý do</th>
                                     <th>Ngày tạo</th>
                                     <th>Người tạo</th>
@@ -50,6 +71,7 @@
                                         <td>${status.index + 1}</td>
                                         <td>${dept.id}</td>
                                         <td>${dept.debtAmount}</td>
+                                        <td th:text="${debt.debtType}"></td>
                                         <td>${dept.debtReason}</td>
                                         <td>${dept.createdAt}</td>
                                         <td>${dept.createdBy}</td>
@@ -58,21 +80,7 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
-                            <div class="pagination-container text-center">
-                                <ul class="pagination">
-                                    <c:if test="${currentPage > 0}">
-                                        <li><a href="/dept/search?page=${currentPage - 1}">&laquo; Trước</a></li>
-                                    </c:if>
-                                    <c:forEach begin="0" end="${totalPages - 1}" var="i">
-                                        <li class="${i == currentPage ? 'active' : ''}">
-                                            <a href="/dept/search?page=${i}">${i + 1}</a>
-                                        </li>
-                                    </c:forEach>
-                                    <c:if test="${currentPage < totalPages - 1}">
-                                        <li><a href="/dept/search?page=${currentPage + 1}">Sau &raquo;</a></li>
-                                    </c:if>
-                                </ul>
-                            </div>
+                            <a href="/customer" class="btn btn-primary" style="background-color: #0099E6; border-color: #0099E6; color: white;">Quay lại danh sách</a>
                         </div>
                     </section>
                 </div>

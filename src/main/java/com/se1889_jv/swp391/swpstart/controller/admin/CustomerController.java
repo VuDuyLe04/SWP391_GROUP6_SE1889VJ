@@ -2,10 +2,12 @@ package com.se1889_jv.swp391.swpstart.controller.admin;
 
 
 import com.se1889_jv.swp391.swpstart.domain.Customer;
+import com.se1889_jv.swp391.swpstart.domain.DebtReceipt;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import com.se1889_jv.swp391.swpstart.service.implementservice.CustomerService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.DebtReceiptService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.validation.Valid;
@@ -28,6 +30,8 @@ public class CustomerController {
     private CustomerRepository customerRepository;
     @Autowired
     private StoreService storeService;
+    @Autowired
+    private DebtReceiptService debtReceiptService;
     @GetMapping("/customer/create")
     public String getCreateCustomerPage(Model model) {
         model.addAttribute("customer", new Customer());
@@ -95,22 +99,6 @@ public class CustomerController {
         model.addAttribute("customer", customer);
         return "admin/customer/customerdetail";
     }
-
-    //    @GetMapping("/customer")
-//    public String getCustomerTable(Model model ) {
-//        Store store = Utility.getStoreInSession();
-//        User user = Utility.getUserInSession();
-//        if (user.getRole().getName().equals("STAFF")) {
-//            if (store == null) {
-//                return "redirect:/dashboard";
-//            }
-//        }
-//
-//
-//        model.addAttribute("listCustomer", this.customerService.getAllCustomers(store));
-//        return "admin/customer/table";
-//    }
-
 
     @GetMapping("/customer/update/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
@@ -227,5 +215,17 @@ public class CustomerController {
         return "admin/customer/table";
     }
 
+    @GetMapping("/customer/debt-history/{id}")
+    public String getCustomerDebts(@PathVariable("id") long customerId, Model model) {
+        Customer customer = customerService.getCustomerById(customerId);
+        if (customer == null) {
+            return "redirect:/customer";
+        }
 
+        List<DebtReceipt> debts = debtReceiptService.getDebtsByCustomer(customer);
+        model.addAttribute("customer", customer);
+        model.addAttribute("debts", debts);
+
+        return "admin/customer/debtlist"; // Trang hiển thị lịch sử công nợ
+    }
 }
