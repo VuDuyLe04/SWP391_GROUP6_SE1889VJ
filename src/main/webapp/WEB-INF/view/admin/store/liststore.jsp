@@ -308,6 +308,16 @@
                             </div>
 
                             <div class="table-responsive">
+                                <c:if test="${searchMessage != null}">
+                                    <div class="alert alert-info">
+                                        <i class="fa fa-info-circle mr-xs"></i> ${searchMessage}
+                                    </div>
+                                </c:if>
+                                <c:if test="${errorMessage != null}">
+                                    <div class="alert alert-danger">
+                                        <i class="fa fa-exclamation-circle mr-xs"></i> ${errorMessage}
+                                    </div>
+                                </c:if>
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
                                     <tr>
@@ -319,21 +329,18 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:if test="${storePage != null }">
-                                    <c:forEach var="s" items="${storePage.content}" varStatus="status">
-                                        <tr>
+                                    <c:if test="${storePage.content != null }">
+                                        <c:forEach var="s" items="${storePage.content}" varStatus="status">
+                                            <tr>
                                             <td>${status.index + 1}</td>
                                             <td><strong>${s.name}</strong></td>
-                                            <td>${s.address}
-                                            </td>
+                                            <td>${s.address}</td>
                                                 <td>
-                <span class="label ${s.status == 'ACTIVE' ? 'label-success' : 'label-danger'} label-sm status-label">
-                    <i class="fa ${u.active == 'INACTIVE' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
-                    ${u.active == "ACTIVE" ? "Active" : "Inactive"}
-                </span>
+                                                <span class="label ${s.status == 'ACTIVE' ? 'label-success' : 'label-danger'} label-sm status-label">
+                                                   <i class="fa ${u.active == 'INACTIVE' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
+                                                   ${u.active == "ACTIVE" ? "Active" : "Inactive"}
+                                                   </span>
                                                 </td>
-
-
                                             <td>
                                                 <button
                                                         class="btn btn-default btn-sm mr-xs view-button"
@@ -355,39 +362,30 @@
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
                                             </td>
-                                        </tr>
-                                    </c:forEach>
-
+                                            </tr>
+                                        </c:forEach>
+                                    </c:if>
                                     </tbody>
                                 </table>
-
+                                <c:if test="${storePage.content != null }">
                                 <c:set var="c" value="${storePage.number}"></c:set>
                                 <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
                                         <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
                                     </li>
-
                                     <c:forEach begin="0" end="${storePage.totalPages - 1}" var="i">
                                         <c:if test="${i >= c - 1 && i <= c + 1}">
-                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a>
-
-
-                                            </li>
+                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a></li>
                                         </c:if>
                                         <c:if test="${i == c- 2 || i == c+ 2}">
                                             <li><span>...</span></li>
                                         </c:if>
                                     </c:forEach>
-                                    </c:if>
-
-
-
                                     <li class="page-item ${c== storePage.totalPages -1?'disabled':''} ">
                                         <a class="page-link" href="usermanagement?page=${c== storePage.totalPages -1? storePage.totalPages -1: (c + 1)}&input=${input}&active=${active}&role=${roleId}">Sau</a>
                                     </li>
-
                                 </ul>
-
+                                </c:if>
                             </div>
 
                         </div>

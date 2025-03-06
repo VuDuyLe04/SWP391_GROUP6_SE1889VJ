@@ -97,25 +97,24 @@ public class StoreController {
         Pageable pageable = PageRequest.of(Integer.parseInt(page), 5, sort);
         User user = Utility.getUserInSession();
         String userId = String.valueOf(user.getId());
-        Page<Store> stores = storeService.findStoresByCreatedBy(userId, pageable);
+        Page<Store> stores;
 
-        if (input != null && !input.isEmpty()) {
-            stores = storeService.findStoresbyNameOrAddressOfOwner(userId,input,userId,input,pageable);
+        try {
+            if (input != null && !input.isEmpty()) {
+                stores = storeService.findStoresbyNameOrAddressOfOwner(userId, input, userId, input, pageable);
+                if (stores.isEmpty()) {
+                    // Nếu không tìm thấy kết quả, lấy tất cả stores và thêm thông báo
+                    stores = storeService.findStoresByCreatedBy(userId, pageable);
+                    model.addAttribute("searchMessage", "Không tìm thấy cửa hàng phù hợp với từ khóa: " + input);
+                }
+            } else {
+                stores = storeService.findStoresByCreatedBy(userId, pageable);
+            }
+        } catch (Exception e) {
+            // Xử lý lỗi nếu có
+            stores = storeService.findStoresByCreatedBy(userId, pageable);
+            model.addAttribute("errorMessage", "Đã xảy ra lỗi khi tìm kiếm. Vui lòng thử lại!");
         }
-//        } else {
-//            long roleIdValue = "-1".equals(roleId) ? -1 : Long.parseLong(roleId);
-//            boolean isActive = "1".equals(active);
-//
-//            if (roleIdValue != -1 && "-1".equals(active)) {
-//                users = userService.getUsersbyRoleID(roleIdValue, pageable);
-//            } else if (roleIdValue == -1 && !"-1".equals(active)) {
-//                users = userService.getUsersByActive(isActive, pageable);
-//            } else if (roleIdValue != -1 && !"-1".equals(active)) {
-//                users = userService.getUsersByRoleIDAndActive(roleIdValue, isActive, pageable);
-//            } else {
-//                users = userService.getAll(pageable);
-//            }
-//        }
 
         model.addAttribute("input", input != null ? input : "");
         model.addAttribute("active", active);
