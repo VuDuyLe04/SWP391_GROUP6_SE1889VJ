@@ -2,6 +2,7 @@ package com.se1889_jv.swp391.swpstart.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.se1889_jv.swp391.swpstart.util.RequestUtils;
+import com.se1889_jv.swp391.swpstart.util.Utility;
 import com.se1889_jv.swp391.swpstart.util.constant.StatusStoreEnum;
 import jakarta.persistence.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -73,7 +74,8 @@ public class Store {
         if (request != null) {
             HttpSession session = request.getSession(false);
             if (session != null) {
-                this.createdBy = (String) session.getAttribute("name");
+                String userId = String.valueOf(Utility.getUserInSession().getId());
+                this.createdBy = userId;
             } else {
                 this.createdBy = "Unknown";
             }
@@ -89,7 +91,9 @@ public class Store {
         if (request != null) {
             HttpSession session = request.getSession(false);
             if (session != null) {
-                this.updatedBy = (String) session.getAttribute("name");
+                String userId = String.valueOf(Utility.getUserInSession().getId());
+                this.updatedBy = userId;
+
             } else {
                 this.updatedBy = "Unknown";
             }

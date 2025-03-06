@@ -14,4 +14,7 @@ public interface IStoreService {
     Page<Store> findStoresByCreatedBy(String createdBy, Pageable pageable);
 
 
+    Page<Store> findStoresbyNameOrAddressOfOwner(String createdBy, String name, String createdBy2, String address, Pageable pageable);
+
+
 }

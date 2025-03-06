@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.domain.dto;
 
+import com.se1889_jv.swp391.swpstart.util.StringUtils;
 import com.se1889_jv.swp391.swpstart.util.constant.StatusStoreEnum;
 import com.se1889_jv.swp391.swpstart.util.validator.annotation.ValidEnum;
 import jakarta.validation.constraints.NotBlank;
@@ -24,5 +25,11 @@ public class StoreDTO {
 
     public StatusStoreEnum getStatusEnum() {
         return StatusStoreEnum.valueOf(status.toUpperCase());
+    }
+    public String getName(){
+        return StringUtils.formatName(name);
+    }
+    public String getAddress(){
+        return StringUtils.formatName(address);
     }
 }

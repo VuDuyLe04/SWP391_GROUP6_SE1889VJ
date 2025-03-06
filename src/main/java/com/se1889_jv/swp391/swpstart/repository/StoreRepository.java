@@ -13,5 +13,10 @@ import java.util.Optional;
 
 @Repository
 public interface StoreRepository extends JpaRepository<Store, Long>, JpaSpecificationExecutor<Product> {
-    Page<Store> findStoreByCreatedBy(String createdBy, Pageable pageable);
+    Page<Store> findByCreatedBy(String createdBy, Pageable pageable);
+    Page<Store> findByCreatedByAndNameContainingOrCreatedByAndAddressContaining(
+            String createdBy, String name,
+            String createdBy2, String address,
+            Pageable pageable);
+
 }

@@ -15,6 +15,10 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -74,6 +78,52 @@ public class StoreController {
             model.addAttribute("success", "Tạo cửa hàng thành công!");
         }
         return "admin/store/createstore";
+    }
+//    @GetMapping(value ="/stores")
+//    public String listStores(Model model) {
+//User user = Utility.getUserInSession();
+//
+//
+//
+//    }
+
+    @GetMapping("/stores")
+    public String listStores(@RequestParam(value = "input", required = false) String input,
+                             @RequestParam(value = "role", required = false, defaultValue = "-1") String roleId,
+                             @RequestParam(value = "active", required = false, defaultValue = "-1") String active,
+                             @RequestParam(value = "page", required = false, defaultValue = "0") String page,
+                             Model model) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "name");
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), 5, sort);
+        User user = Utility.getUserInSession();
+        String userId = String.valueOf(user.getId());
+        Page<Store> stores = storeService.findStoresByCreatedBy(userId, pageable);
+
+        if (input != null && !input.isEmpty()) {
+            stores = storeService.findStoresbyNameOrAddressOfOwner(userId,input,userId,input,pageable);
+        }
+//        } else {
+//            long roleIdValue = "-1".equals(roleId) ? -1 : Long.parseLong(roleId);
+//            boolean isActive = "1".equals(active);
+//
+//            if (roleIdValue != -1 && "-1".equals(active)) {
+//                users = userService.getUsersbyRoleID(roleIdValue, pageable);
+//            } else if (roleIdValue == -1 && !"-1".equals(active)) {
+//                users = userService.getUsersByActive(isActive, pageable);
+//            } else if (roleIdValue != -1 && !"-1".equals(active)) {
+//                users = userService.getUsersByRoleIDAndActive(roleIdValue, isActive, pageable);
+//            } else {
+//                users = userService.getAll(pageable);
+//            }
+//        }
+
+        model.addAttribute("input", input != null ? input : "");
+        model.addAttribute("active", active);
+        model.addAttribute("roleId", roleId);
+        model.addAttribute("storePage", stores);
+//        model.addAttribute("roles", roleService.getAllRoles());
+
+        return "admin/store/liststore";
     }
 
 }
