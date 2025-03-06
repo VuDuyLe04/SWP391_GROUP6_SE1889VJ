@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface UserStoreRepository extends JpaRepository<UserStore, Long> {
     List<UserStore> findAllByUserId(Long userId);
-
+    List<UserStore>  findUserStoreByUserId(Long userId);
     UserStore findByUserAndStore(User user, Store store);
 
 }
