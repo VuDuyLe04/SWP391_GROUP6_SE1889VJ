@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IDebtReceiptService {
     List<DebtReceipt> getDebtsByCustomer(Customer customer);
+
 }

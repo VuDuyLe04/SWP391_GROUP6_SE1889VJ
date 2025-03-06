@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface DebtReceiptRepository extends JpaRepository<DebtReceipt, Long> {
+
     List<DebtReceipt> findByCustomer(Customer customer);
 }
