@@ -287,38 +287,18 @@
                         <div class="panel-body">
                             <div class="row mb-md">
                                 <div class="col-sm-6">
-<%--                                    <form action="" method="get" class="form-inline">--%>
-<%--                                        <c:if test="${sessionScope.user.role.id == 1}">--%>
-<%--                                            <div class="form-group mr-md">--%>
-<%--                                                <div class="input-group">--%>
-<%--                                                    <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>--%>
-<%--                                                    <select id="role" name="role" class="form-control">--%>
-<%--                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >Các vai trò</option>--%>
-<%--                                                        <c:forEach items="${roles}" var="r">--%>
-<%--                                                        <option ${roleId == r.id ? "selected" : ""} value="${r.id}">--%>
-<%--                                                            <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>--%>
-<%--                                                            <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>--%>
-<%--                                                            <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>--%>
 
-<%--                                                            </c:forEach>--%>
+                                                <div class="input-group">
 
-<%--                                                    </select>--%>
-<%--                                                </div>--%>
-<%--                                            </div>--%>
-<%--                                            <div class="form-group mr-md">--%>
-<%--                                                <div class="input-group">--%>
-<%--                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>--%>
-<%--                                                    <select id="active" name="active" class="form-control">--%>
-<%--                                                        <option ${active == -1 ? "selected" : ""} value="-1">Các trạng thái</option>--%>
-<%--                                                        <option ${active == 1 ? "selected" : ""} value="1">Hoạt động</option>--%>
-<%--                                                        <option ${active == 0 ? "selected" : ""} value="0">Bị cấm</option>--%>
-<%--                                                    </select>--%>
-<%--                                                </div>--%>
-<%--                                            </div>--%>
-<%--                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>--%>
-<%--                                        </c:if>--%>
-<%--                                        --%>
-<%--                                    </form>--%>
+                                                    <select id="status" name="status" class="form-control" onchange="filterByStatus(this.value)">
+                                                        <option ${status == "ALL" ? "selected" : ""} value="ALL">Các trạng thái</option>
+                                                        <option ${status == "ACTIVE" ? "selected" : ""} value="ACTIVE">Hoạt động</option>
+                                                        <option ${status == "INACTIVE" ? "selected" : ""} value="INACTIVE">Không hoạt động</option>
+                                                    </select>
+
+                                                </div>
+
+
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
@@ -381,7 +361,7 @@
                                                     <i class="fa fa-eye"></i>
                                                 </button>
 
-                                                <a href="updateuser?id=${u.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
+                                                <a href="updatestore?id=${s.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
                                             </td>
@@ -394,18 +374,18 @@
                                 <c:set var="c" value="${storePage.number}"></c:set>
                                 <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
-                                        <a class="page-link" href="stores?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
+                                        <a class="page-link" href="stores?page=${c==0 ? 0 : (c - 1)}&input=${input}&status=${status}&role=${roleId}">Trước</a>
                                     </li>
                                     <c:forEach begin="0" end="${storePage.totalPages - 1}" var="i">
                                         <c:if test="${i >= c - 1 && i <= c + 1}">
-                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="stores?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a></li>
+                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="stores?page=${i}&input=${input != null ? input : ''}&status=${status != null ? status : 'ALL'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a></li>
                                         </c:if>
                                         <c:if test="${i == c- 2 || i == c+ 2}">
                                             <li><span>...</span></li>
                                         </c:if>
                                     </c:forEach>
                                     <li class="page-item ${c== storePage.totalPages -1?'disabled':''} ">
-                                        <a class="page-link" href="stores?page=${c== storePage.totalPages -1? storePage.totalPages -1: (c + 1)}&input=${input}&active=${active}&role=${roleId}">Sau</a>
+                                        <a class="page-link" href="stores?page=${c== storePage.totalPages -1? storePage.totalPages -1: (c + 1)}&input=${input}&status=${status}&role=${roleId}">Sau</a>
                                     </li>
                                 </ul>
                                 </c:if>
@@ -498,9 +478,8 @@
             const name = $(this).data("name");
             const address = $(this).data("address");
             const status = $(this).data("status");
-            const createdAt = $(this).data("data-createdAt");
-            const updatedAt = $(this).data("data-updatedAt");
-
+            const createdAt = $(this).attr('data-createdAt');
+            const updatedAt = $(this).attr('data-updatedAt')
             // Xử lý các giá trị số liệu
             const totalCustomers = $(this).data("totalCustomers") || 0;
             const totalWarehouses = $(this).data("totalWarehouses") || 0;
@@ -527,6 +506,20 @@
             document.getElementById("search-form").submit();
         }
     });
+    function filterByStatus(value) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('status', value); // Luôn cập nhật giá trị status
+
+        const input = url.searchParams.get('input'); // Lấy input từ URL (nếu có)
+        if (input !== null && input.trim() !== '') {
+            url.searchParams.set('input', input); // Giữ nguyên input nếu có
+        } else {
+            url.searchParams.delete('input'); // Nếu input rỗng/null thì xóa khỏi URL
+        }
+
+        window.location.href = url.toString(); // Điều hướng đến URL mới
+    }
+
 </script>
 
 

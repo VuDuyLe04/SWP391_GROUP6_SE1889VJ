@@ -3,6 +3,7 @@ package com.se1889_jv.swp391.swpstart.service.implementservice;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.repository.StoreRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IStoreService;
+import com.se1889_jv.swp391.swpstart.util.constant.StatusStoreEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +42,10 @@ public class StoreService implements IStoreService {
         return storeRepository.findByCreatedBy(createdBy, pageable);
     }
 
+    @Override
+    public Page<Store> findStoresByStatus(StatusStoreEnum status, String createdBy, Pageable pageable) {
+        return storeRepository.findByStatusAndCreatedBy(status,createdBy, pageable);
+    }
 
 
     @Override
@@ -48,7 +53,12 @@ public class StoreService implements IStoreService {
         return storeRepository.findByCreatedByAndNameContainingOrCreatedByAndAddressContaining(createdBy,name,createdBy2,address, pageable);
     }
 
-
+    @Override
+    public Page<Store> findStoresByStatusAndNameOrAdress(String createdBy, StatusStoreEnum status, String name, String createdBy2,
+                                                         StatusStoreEnum status2, String address, Pageable pageable) {
+        return storeRepository.findByCreatedByAndStatusAndNameContainingOrCreatedByAndStatusAndAddressContaining(createdBy, status, name, createdBy2,
+                status2, address, pageable);
+    }
 
 
 }

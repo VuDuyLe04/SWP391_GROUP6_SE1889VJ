@@ -22,10 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -79,18 +76,10 @@ public class StoreController {
         }
         return "admin/store/createstore";
     }
-//    @GetMapping(value ="/stores")
-//    public String listStores(Model model) {
-//User user = Utility.getUserInSession();
-//
-//
-//
-//    }
-
     @GetMapping("/stores")
     public String listStores(@RequestParam(value = "input", required = false) String input,
                              @RequestParam(value = "role", required = false, defaultValue = "-1") String roleId,
-                             @RequestParam(value = "active", required = false, defaultValue = "-1") String active,
+                             @RequestParam(value = "status", required = false, defaultValue = "ALL") String status,
                              @RequestParam(value = "page", required = false, defaultValue = "0") String page,
                              Model model) {
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
@@ -98,7 +87,6 @@ public class StoreController {
         User user = Utility.getUserInSession();
         String userId = String.valueOf(user.getId());
         Page<Store> stores;
-
         try {
             if (input != null && !input.isEmpty()) {
                 stores = storeService.findStoresbyNameOrAddressOfOwner(userId, input, userId, input, pageable);
@@ -107,8 +95,17 @@ public class StoreController {
                     stores = storeService.findStoresByCreatedBy(userId, pageable);
                     model.addAttribute("searchMessage", "Không tìm thấy cửa hàng phù hợp với từ khóa: " + input);
                 }
-            } else {
-                stores = storeService.findStoresByCreatedBy(userId, pageable);
+                else if (status != null && !status.isEmpty() && (status.equals("ACTIVE") || status.equals("INACTIVE"))){
+                    stores = storeService.findStoresByStatusAndNameOrAdress(userId,StatusStoreEnum.valueOf(status),
+                            input,userId,StatusStoreEnum.valueOf(status),input,pageable);
+                }
+
+            }
+            else {
+                if ( status != null && !status.isEmpty() && (status.equals("ACTIVE") || status.equals("INACTIVE"))) {
+                    stores = storeService.findStoresByStatus(StatusStoreEnum.valueOf(status),userId,pageable);
+                }
+                else stores = storeService.findStoresByCreatedBy(userId, pageable);
             }
         } catch (Exception e) {
             // Xử lý lỗi nếu có
@@ -116,13 +113,23 @@ public class StoreController {
             model.addAttribute("errorMessage", "Đã xảy ra lỗi khi tìm kiếm. Vui lòng thử lại!");
         }
 
+
         model.addAttribute("input", input != null ? input : "");
-        model.addAttribute("active", active);
+        model.addAttribute("status", status != null ? status : "");
         model.addAttribute("roleId", roleId);
         model.addAttribute("storePage", stores);
 //        model.addAttribute("roles", roleService.getAllRoles());
 
         return "admin/store/liststore";
     }
+    @RequestMapping(value = "updatestore", method = {RequestMethod.GET, RequestMethod.POST})
+    public String updateStore(@RequestParam(value = "id",required = false) Long id
+    , Model model) {
+        if(id != null) {
+            model.addAttribute("storeDTO", modelMapper.map(storeService.findStoreById(id), StoreDTO.class));
+        }
+        return "updatestore"; // Trả về tên trang JSP hoặc xử lý logic khác
+    }
+
 
 }
