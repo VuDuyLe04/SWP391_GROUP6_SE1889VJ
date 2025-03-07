@@ -295,6 +295,11 @@
                                                         <option ${status == "ACTIVE" ? "selected" : ""} value="ACTIVE">Hoạt động</option>
                                                         <option ${status == "INACTIVE" ? "selected" : ""} value="INACTIVE">Không hoạt động</option>
                                                     </select>
+                                                    <select id="sort" name="sort" class="form-control" onchange="sortByCreatedAt(this.value)">
+                                                        <option ${status == "normal" ? "selected" : ""} value="normal">Thời gian tạo</option>
+                                                        <option ${status == "desc" ? "selected" : ""} value="desc">Mới nhất</option>
+                                                        <option ${status == "asc" ? "selected" : ""} value="asc">Cũ nhất</option>
+                                                    </select>
 
                                                 </div>
 
@@ -374,18 +379,18 @@
                                 <c:set var="c" value="${storePage.number}"></c:set>
                                 <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
-                                        <a class="page-link" href="stores?page=${c==0 ? 0 : (c - 1)}&input=${input}&status=${status}&role=${roleId}">Trước</a>
+                                        <a class="page-link" href="stores?page=${c==0 ? 0 : (c - 1)}&input=${input}&sort=${sort}&role=${roleId}">Trước</a>
                                     </li>
                                     <c:forEach begin="0" end="${storePage.totalPages - 1}" var="i">
                                         <c:if test="${i >= c - 1 && i <= c + 1}">
-                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="stores?page=${i}&input=${input != null ? input : ''}&status=${status != null ? status : 'ALL'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a></li>
+                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="stores?page=${i}&input=${input != null ? input : ''}&sort=${sort != null ? sort : 'normal'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a></li>
                                         </c:if>
                                         <c:if test="${i == c- 2 || i == c+ 2}">
                                             <li><span>...</span></li>
                                         </c:if>
                                     </c:forEach>
                                     <li class="page-item ${c== storePage.totalPages -1?'disabled':''} ">
-                                        <a class="page-link" href="stores?page=${c== storePage.totalPages -1? storePage.totalPages -1: (c + 1)}&input=${input}&status=${status}&role=${roleId}">Sau</a>
+                                        <a class="page-link" href="stores?page=${c== storePage.totalPages -1? storePage.totalPages -1: (c + 1)}&input=${input}&sort=${sort}&role=${roleId}">Sau</a>
                                     </li>
                                 </ul>
                                 </c:if>
@@ -509,6 +514,19 @@
     function filterByStatus(value) {
         const url = new URL(window.location.href);
         url.searchParams.set('status', value); // Luôn cập nhật giá trị status
+
+        const input = url.searchParams.get('input'); // Lấy input từ URL (nếu có)
+        if (input !== null && input.trim() !== '') {
+            url.searchParams.set('input', input); // Giữ nguyên input nếu có
+        } else {
+            url.searchParams.delete('input'); // Nếu input rỗng/null thì xóa khỏi URL
+        }
+
+        window.location.href = url.toString(); // Điều hướng đến URL mới
+    }
+    function sortByCreatedAt(value) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('sort', value); // Luôn cập nhật giá trị status
 
         const input = url.searchParams.get('input'); // Lấy input từ URL (nếu có)
         if (input !== null && input.trim() !== '') {

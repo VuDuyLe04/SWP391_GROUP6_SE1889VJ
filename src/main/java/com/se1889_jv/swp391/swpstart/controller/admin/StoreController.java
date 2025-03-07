@@ -78,12 +78,22 @@ public class StoreController {
     }
     @GetMapping("/stores")
     public String listStores(@RequestParam(value = "input", required = false) String input,
-                             @RequestParam(value = "role", required = false, defaultValue = "-1") String roleId,
+                             @RequestParam(value = "sort", required = false, defaultValue = "normal") String sortcreatedAt,
                              @RequestParam(value = "status", required = false, defaultValue = "ALL") String status,
                              @RequestParam(value = "page", required = false, defaultValue = "0") String page,
                              Model model) {
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
         Pageable pageable = PageRequest.of(Integer.parseInt(page), 5, sort);
+        if (sortcreatedAt != null && sortcreatedAt.trim().length() > 0){
+            if(sortcreatedAt.equals("asc")){
+                 sort = Sort.by(Sort.Direction.ASC, "createdAt");
+                 pageable = PageRequest.of(Integer.parseInt(page), 5, sort);
+            }
+            else if(sortcreatedAt.equals("desc")){
+                sort = Sort.by(Sort.Direction.DESC, "createdAt");
+                pageable = PageRequest.of(Integer.parseInt(page), 5, sort);
+            }
+        }
         User user = Utility.getUserInSession();
         String userId = String.valueOf(user.getId());
         Page<Store> stores;
@@ -99,7 +109,6 @@ public class StoreController {
                     stores = storeService.findStoresByStatusAndNameOrAdress(userId,StatusStoreEnum.valueOf(status),
                             input,userId,StatusStoreEnum.valueOf(status),input,pageable);
                 }
-
             }
             else {
                 if ( status != null && !status.isEmpty() && (status.equals("ACTIVE") || status.equals("INACTIVE"))) {
@@ -112,11 +121,9 @@ public class StoreController {
             stores = storeService.findStoresByCreatedBy(userId, pageable);
             model.addAttribute("errorMessage", "Đã xảy ra lỗi khi tìm kiếm. Vui lòng thử lại!");
         }
-
-
         model.addAttribute("input", input != null ? input : "");
         model.addAttribute("status", status != null ? status : "");
-        model.addAttribute("roleId", roleId);
+        model.addAttribute("sort", sortcreatedAt != null ? sortcreatedAt : "");
         model.addAttribute("storePage", stores);
 //        model.addAttribute("roles", roleService.getAllRoles());
 
