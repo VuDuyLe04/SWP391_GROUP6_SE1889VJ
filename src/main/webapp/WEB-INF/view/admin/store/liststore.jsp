@@ -116,88 +116,111 @@
         }
 
         .modal-dialog {
-            display: inline-block;
-            text-align: left;
-            vertical-align: middle;
-            max-width: 800px !important;
-            width: 95% !important;
-            margin: 0 auto !important;
-            transform: translate(0, -25%) !important;
+            max-width: 650px;  /* Giảm chiều rộng tổng thể của modal */
+            margin: 1.75rem auto;
         }
 
         .modal-content {
             border: none;
-            border-radius: 4px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            height: auto !important;
-            max-height: 500px !important;
-        }
-
-        .modal-body {
-            padding: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
-        .user-info {
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        .info-group {
-            width: calc(50% - 10px);
-            margin-bottom: 12px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-        }
-
-        .info-group label {
-            width: 120px;
-            font-size: 14px;
-            margin-bottom: 0;
-            white-space: nowrap;
-        }
-
-        .info-value {
-            font-size: 14px;
-            flex: 1;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
         }
 
         .modal-header {
-            background: #0088cc;
+            background: linear-gradient(135deg, #0088cc 0%, #004466 100%);
             color: white;
-            border-radius: 4px 4px 0 0;
-            padding: 10px 15px;
-            height: 50px;
-        }
-
-        .modal-header .close {
-            display: none !important;
+            border-radius: 15px 15px 0 0;
+            padding: 1.5rem;
+            border: none;
         }
 
         .modal-title {
-            font-size: 14px;
-            margin: 0;
+            font-size: 2rem !important;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 1.5rem;  /* Giảm padding của modal body */
+            background: #f8f9fa;
+        }
+
+        .store-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .info-group {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 1rem;  /* Giảm padding của các info group */
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .info-group label {
+            min-width: 180px;
+            font-size: 1.3rem;
+            color: #444;
+            font-weight: 500;
+            padding-left: 20px;
+        }
+
+        .info-value {
+            flex: 1;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            padding-left: 20px;
+        }
+
+        /* Stats section */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 0.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 0.8rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin: 0.3rem 0;
+        }
+
+        .stat-card .stat-label {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 500;
         }
 
         .modal-footer {
-            padding: 10px 15px;
-            border-top: 1px solid #dee2e6;
             background: #f8f9fa;
-            border-radius: 0 0 4px 4px;
-            height: 50px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            border-radius: 0 0 15px 15px;
+            padding: 1rem 1.5rem;
         }
 
-        .modal-footer .btn {
-            padding: 5px 15px;
-            font-size: 14px;
+        .modal-footer .btn-primary {
+            font-size: 1.2rem;
+            padding: 0.8rem 2rem;
         }
     </style>
 </head>
@@ -399,64 +422,64 @@
 
 
 <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="margin-top:330px">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="userModalLabel">
-                    <i class="fa fa-user-circle mr-xs"></i> Thông tin chi tiết
+                    Chi tiết cửa hàng
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+                <!-- Thông tin cơ bản -->
                 <div class="store-info">
                     <div class="info-group">
-                        <label><i class="fa fa-user mr-xs"></i> Tên cửa hàng:</label>
-                        <span id="modal-name" class="info-value"></span>
+                        <label>Tên cửa hàng:</label>
+                        <div class="info-value" id="modal-name"></div>
                     </div>
                     <div class="info-group">
-                        <label><i class="fa fa-map-marker mr-xs"></i> Địa chỉ:</label>
-                        <span id="modal-address" class="info-value"></span>
+                        <label>Địa chỉ:</label>
+                        <div class="info-value" id="modal-address"></div>
                     </div>
                     <div class="info-group">
-                        <label><i class="fa fa-check-circle mr-xs"></i> Trạng thái:</label>
-                        <span id="modal-status" class="info-value"></span>
+                        <label>Trạng thái:</label>
+                        <div class="info-value" id="modal-status"></div>
                     </div>
                     <div class="info-group">
-                        <label><i class="fa fa-calendar mr-xs"></i> Tạo ngày:</label>
-                        <span id="modal-createdAt" class="info-value"></span>
-                    </div>
-
-                    <div class="info-group">
-                        <label><i class="fa fa-calendar-plus-o mr-xs"></i> Cập nhật ngày:</label>
-                        <span id="modal-updatedAt" class="info-value"></span>
-                    </div>
-
-                    <!-- Thông tin bổ sung -->
-                    <div class="info-group">
-                        <label><i class="fa fa-users mr-xs"></i> Tổng khách hàng:</label>
-                        <span id="modal-totalCustomers" class="info-value"></span>
+                        <label>Ngày tạo:</label>
+                        <div class="info-value" id="modal-createdAt"></div>
                     </div>
                     <div class="info-group">
-                        <label><i class="fa fa-home mr-xs"></i> Tổng kho hàng:</label>
-                        <span id="modal-totalWarehouses" class="info-value"></span>
-                    </div>
-                    <div class="info-group">
-                        <label><i class="fa fa-cubes mr-xs"></i> Tổng sản phẩm:</label>
-                        <span id="modal-totalProducts" class="info-value"></span>
-                    </div>
-                    <div class="info-group">
-                        <label><i class="fa fa-user-circle mr-xs"></i> Tổng nhân viên:</label>
-                        <span id="modal-totalUserStores" class="info-value"></span>
+                        <label>Cập nhật cuối:</label>
+                        <div class="info-value" id="modal-updatedAt"></div>
                     </div>
                 </div>
 
-
+                <!-- Thống kê -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value" id="modal-totalCustomers">0</div>
+                        <div class="stat-label">Khách hàng</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="modal-totalWarehouses">0</div>
+                        <div class="stat-label">Kho hàng</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="modal-totalProducts">0</div>
+                        <div class="stat-label">Sản phẩm</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="modal-totalUserStores">0</div>
+                        <div class="stat-label">Nhân viên</div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">
-                    <i class="fa fa-times mr-xs"></i>Đóng
+                    Đóng
                 </button>
             </div>
         </div>
@@ -476,22 +499,19 @@
             const address = $(this).data("address");
             const status = $(this).data("status");
             const createdAt = $(this).data("data-createdAt");
-            const createdBy = $(this).data("createdBy");
             const updatedAt = $(this).data("data-updatedAt");
-            const updatedBy = $(this).data("updatedBy");
 
-            const totalCustomers = $(this).data("totalCustomers");
-            const totalWarehouses = $(this).data("totalWarehouses");
-            const totalProducts = $(this).data("totalProducts");
-            const totalUserStores = $(this).data("totalUserStores");
+            // Xử lý các giá trị số liệu
+            const totalCustomers = $(this).data("totalCustomers") || 0;
+            const totalWarehouses = $(this).data("totalWarehouses") || 0;
+            const totalProducts = $(this).data("totalProducts") || 0;
+            const totalUserStores = $(this).data("totalUserStores") || 0;
 
             $("#modal-name").text(name);
             $("#modal-address").text(address);
             $("#modal-status").text(status);
-            $("#modal-createdAt").text(createdAt);
-            $("#modal-createdBy").text(createdBy);
-            $("#modal-updatedAt").text(updatedAt);
-            $("#modal-updatedBy").text(updatedBy);
+            $("#modal-createdAt").text(createdAt || "Chưa có thông tin");
+            $("#modal-updatedAt").text(updatedAt || "Chưa có thông tin");
 
             $("#modal-totalCustomers").text(totalCustomers);
             $("#modal-totalWarehouses").text(totalWarehouses);
