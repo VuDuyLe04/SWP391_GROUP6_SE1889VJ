@@ -299,7 +299,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <a href="createuser" class="btn btn-primary mb-xs mt-xs mr-xs">
+                                        <a href="createstore" class="btn btn-primary mb-xs mt-xs mr-xs">
                                             <i class="fa fa-plus mr-xs"></i> Tạo cửa hàng
                                         </a>
 
@@ -337,27 +337,27 @@
                                             <td>${s.address}</td>
                                                 <td>
                                                 <span class="label ${s.status == 'ACTIVE' ? 'label-success' : 'label-danger'} label-sm status-label">
-                                                   <i class="fa ${u.active == 'INACTIVE' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
-                                                   ${u.active == "ACTIVE" ? "Active" : "Inactive"}
+                                                   <i class="fa ${s.status == 'INACTIVE' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
+                                                   ${s.status == "ACTIVE" ? "Active" : "Inactive"}
                                                    </span>
                                                 </td>
                                             <td>
-                                                <button
-                                                        class="btn btn-default btn-sm mr-xs view-button"
+                                                <button class="btn btn-default btn-sm mr-xs view-button"
                                                         title="Xem"
-<%--                                                        data-name="${u.name}"--%>
-<%--                                                        data-phone="${u.phone}"--%>
-<%--                                                        data-role="${u.role.name}"--%>
-<%--                                                        data-status="${u.active == 'true' ? 'Active' : 'Banned'}"--%>
-<%--                                                        data-createdAt="${u.createdAtFormatted}"--%>
-<%--                                                        data-createdBy = "${u.createdBy}"--%>
-<%--                                                        data-updatedAt="${u.updatedAtFormatted}"--%>
-<%--                                                        data-updatedBy = "${u.updatedBy}"--%>
-<%--                                                        data-userStores = "${u.userStores}"--%>
-                                                >
-
+                                                        data-name="${s.name}"
+                                                        data-address="${s.address}"
+                                                        data-status="${s.status == 'ACTIVE' ? 'Hoạt động' : 'Không hoạt động'}"
+                                                        data-createdAt="${s.createdAtFormatted}"
+                                                        data-createdBy="${s.createdBy}"
+                                                        data-updatedAt="${s.updatedAtFormatted}"
+                                                        data-updatedBy="${s.updatedBy}"
+                                                        data-totalCustomers="${s.customers.size()}"
+                                                        data-totalWarehouses="${s.wareHouses.size()}"
+                                                        data-totalProducts="${s.products.size()}"
+                                                        data-totalUserStores="${s.userStores.size()-1}">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
+
                                                 <a href="updateuser?id=${u.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
@@ -371,18 +371,18 @@
                                 <c:set var="c" value="${storePage.number}"></c:set>
                                 <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
-                                        <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
+                                        <a class="page-link" href="stores?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
                                     </li>
                                     <c:forEach begin="0" end="${storePage.totalPages - 1}" var="i">
                                         <c:if test="${i >= c - 1 && i <= c + 1}">
-                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a></li>
+                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="stores?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a></li>
                                         </c:if>
                                         <c:if test="${i == c- 2 || i == c+ 2}">
                                             <li><span>...</span></li>
                                         </c:if>
                                     </c:forEach>
                                     <li class="page-item ${c== storePage.totalPages -1?'disabled':''} ">
-                                        <a class="page-link" href="usermanagement?page=${c== storePage.totalPages -1? storePage.totalPages -1: (c + 1)}&input=${input}&active=${active}&role=${roleId}">Sau</a>
+                                        <a class="page-link" href="stores?page=${c== storePage.totalPages -1? storePage.totalPages -1: (c + 1)}&input=${input}&active=${active}&role=${roleId}">Sau</a>
                                     </li>
                                 </ul>
                                 </c:if>
@@ -410,18 +410,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="user-info">
+                <div class="store-info">
                     <div class="info-group">
-                        <label><i class="fa fa-user mr-xs"></i> Tên:</label>
+                        <label><i class="fa fa-user mr-xs"></i> Tên cửa hàng:</label>
                         <span id="modal-name" class="info-value"></span>
                     </div>
                     <div class="info-group">
-                        <label><i class="fa fa-phone mr-xs"></i> Số điện thoại:</label>
-                        <span id="modal-phone" class="info-value"></span>
-                    </div>
-                    <div class="info-group">
-                        <label><i class="fa fa-users mr-xs"></i> Vai trò:</label>
-                        <span id="modal-role" class="info-value"></span>
+                        <label><i class="fa fa-map-marker mr-xs"></i> Địa chỉ:</label>
+                        <span id="modal-address" class="info-value"></span>
                     </div>
                     <div class="info-group">
                         <label><i class="fa fa-check-circle mr-xs"></i> Trạng thái:</label>
@@ -431,19 +427,32 @@
                         <label><i class="fa fa-calendar mr-xs"></i> Tạo ngày:</label>
                         <span id="modal-createdAt" class="info-value"></span>
                     </div>
-                    <div class="info-group">
-                        <label><i class="fa fa-user-plus mr-xs"></i> Tạo bởi:</label>
-                        <span id="modal-createdBy" class="info-value"></span>
-                    </div>
+
                     <div class="info-group">
                         <label><i class="fa fa-calendar-plus-o mr-xs"></i> Cập nhật ngày:</label>
                         <span id="modal-updatedAt" class="info-value"></span>
                     </div>
+
+                    <!-- Thông tin bổ sung -->
                     <div class="info-group">
-                        <label><i class="fa fa-user-plus mr-xs"></i> Cập nhật bởi:</label>
-                        <span id="modal-updatedBy" class="info-value"></span>
+                        <label><i class="fa fa-users mr-xs"></i> Tổng khách hàng:</label>
+                        <span id="modal-totalCustomers" class="info-value"></span>
+                    </div>
+                    <div class="info-group">
+                        <label><i class="fa fa-home mr-xs"></i> Tổng kho hàng:</label>
+                        <span id="modal-totalWarehouses" class="info-value"></span>
+                    </div>
+                    <div class="info-group">
+                        <label><i class="fa fa-cubes mr-xs"></i> Tổng sản phẩm:</label>
+                        <span id="modal-totalProducts" class="info-value"></span>
+                    </div>
+                    <div class="info-group">
+                        <label><i class="fa fa-user-circle mr-xs"></i> Tổng nhân viên:</label>
+                        <span id="modal-totalUserStores" class="info-value"></span>
                     </div>
                 </div>
+
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">
@@ -463,33 +472,31 @@
 <script>
     $(document).ready(function() {
         $('.view-button').on('click', function() {
-            const name = $(this).data('name');
-            const phone = $(this).data('phone');
-            let role = $(this).data('role');
-            if(role === "ADMIN") role = "Quản trị viên";
-            else if(role === "OWNER") role = "Chủ cửa hàng";
-            else role = "Nhân viên";
+            const name = $(this).data("name");
+            const address = $(this).data("address");
+            const status = $(this).data("status");
+            const createdAt = $(this).data("data-createdAt");
+            const createdBy = $(this).data("createdBy");
+            const updatedAt = $(this).data("data-updatedAt");
+            const updatedBy = $(this).data("updatedBy");
 
-            const createdAt = $(this).attr('data-createdAt');
-            const updatedAt = $(this).attr('data-updatedAt');
+            const totalCustomers = $(this).data("totalCustomers");
+            const totalWarehouses = $(this).data("totalWarehouses");
+            const totalProducts = $(this).data("totalProducts");
+            const totalUserStores = $(this).data("totalUserStores");
 
+            $("#modal-name").text(name);
+            $("#modal-address").text(address);
+            $("#modal-status").text(status);
+            $("#modal-createdAt").text(createdAt);
+            $("#modal-createdBy").text(createdBy);
+            $("#modal-updatedAt").text(updatedAt);
+            $("#modal-updatedBy").text(updatedBy);
 
-            const status = $(this).data('status');
-            //   const createdAt = $(this).data('createdAt');
-            const createdBy = $(this).data('createdBy');
-            //  const updatedAt = $(this).data('updatedAt');
-            const updatedBy = $(this).data('updatedBy');
-            const userStores = $(this).data('userStores');
-
-            $('#modal-name').text(name);
-            $('#modal-phone').text(phone);
-            $('#modal-role').text(role);
-            $('#modal-status').text(status);
-            $('#modal-createdAt').text(createdAt);
-            $('#modal-createdBy').text(createdBy);
-            $('#modal-updatedAt').text(updatedAt);
-            $('#modal-updatedBy').text(updatedBy);
-
+            $("#modal-totalCustomers").text(totalCustomers);
+            $("#modal-totalWarehouses").text(totalWarehouses);
+            $("#modal-totalProducts").text(totalProducts);
+            $("#modal-totalUserStores").text(totalUserStores);
 
             $('#userModal').modal('show');
         });

@@ -54,7 +54,7 @@
         <section role="main" class="content-body">
             <header class="page-header">
                 <h2>
-                    <a href="/storemangement" style="color: inherit; text-decoration: none;">
+                    <a href="/stores" style="color: inherit; text-decoration: none;">
                         <i class="fa fa-arrow-left mr-xs" style="cursor: pointer;"></i>
                     </a>
                     Tạo mới cửa hàng
