@@ -285,37 +285,54 @@
                         </header>
 
                         <div class="panel-body">
-                            <div class="row mb-md">
-                                <div class="col-sm-6">
-
-                                                <div class="input-group">
-
-                                                    <select id="status" name="status" class="form-control" onchange="filterByStatus(this.value)">
-                                                        <option ${status == "ALL" ? "selected" : ""} value="ALL">Các trạng thái</option>
-                                                        <option ${status == "ACTIVE" ? "selected" : ""} value="ACTIVE">Hoạt động</option>
-                                                        <option ${status == "INACTIVE" ? "selected" : ""} value="INACTIVE">Không hoạt động</option>
-                                                    </select>
-                                                    <select id="sort" name="sort" class="form-control" onchange="sortByCreatedAt(this.value)">
-                                                        <option ${status == "normal" ? "selected" : ""} value="normal">Thời gian tạo</option>
-                                                        <option ${status == "desc" ? "selected" : ""} value="desc">Mới nhất</option>
-                                                        <option ${status == "asc" ? "selected" : ""} value="asc">Cũ nhất</option>
-                                                    </select>
-
-                                                </div>
-
-
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="pull-right">
-                                        <a href="createstore" class="btn btn-primary mb-xs mt-xs mr-xs">
-                                            <i class="fa fa-plus mr-xs"></i> Tạo cửa hàng
-                                        </a>
-
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <!-- Filter Section with Create Store Button -->
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                        <div style="display: flex; align-items: center; gap: 30px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <label style="min-width: 70px; margin-bottom: 0; color: #444; font-weight: 500;">Trạng thái:</label>
+                                                <select id="status" name="status" class="form-control" onchange="filterByStatus(this.value)" style="width: 150px;">
+                                                    <option ${status == "ALL" ? "selected" : ""} value="ALL">Tất cả</option>
+                                                    <option ${status == "ACTIVE" ? "selected" : ""} value="ACTIVE">Hoạt động</option>
+                                                    <option ${status == "INACTIVE" ? "selected" : ""} value="INACTIVE">Không hoạt động</option>
+                                                </select>
+                                            </div>
+                                            <div style="display: flex; align-items: center;">
+                                                <label style="min-width: 70px; margin-bottom: 0; color: #444; font-weight: 500;">Sắp xếp:</label>
+                                                <select id="sort" name="sort" class="form-control" onchange="sortByCreatedAt(this.value)" style="width: 150px;">
+                                                    <option ${sort == "normal" ? "selected" : ""} value="normal">Mặc định</option>
+                                                    <option ${sort == "desc" ? "selected" : ""} value="desc">Mới nhất</option>
+                                                    <option ${sort == "asc" ? "selected" : ""} value="asc">Cũ nhất</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="createstore" class="btn btn-primary" style="padding: 6px 15px;">
+                                                <i class="fa fa-plus mr-xs"></i> Tạo cửa hàng
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
+                            
                             <div class="table-responsive">
+                                <!-- Total Store Info Section -->
+                                <div style="display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 8px;">
+                                    <div style="display: flex; align-items: center;">
+                                        <i class="fa fa-building mr-xs" style="color: #0088cc; font-size: 11px;"></i>
+                                        <span style="font-weight: 400; color: #666; font-size: 11px;">Tổng số: 
+                                            <span style="color: #0088cc; font-weight: 500;">${storePage.totalElements}</span> cửa hàng
+                                        </span>
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <i class="fa fa-file mr-xs" style="color: #0088cc; font-size: 11px;"></i>
+                                        <span style="font-weight: 400; color: #666; font-size: 11px;">Trang: 
+                                            <span style="color: #0088cc; font-weight: 500;">${storePage.number + 1}/${storePage.totalPages}</span>
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <c:if test="${searchMessage != null}">
                                     <div class="alert alert-info">
                                         <i class="fa fa-info-circle mr-xs"></i> ${searchMessage}
