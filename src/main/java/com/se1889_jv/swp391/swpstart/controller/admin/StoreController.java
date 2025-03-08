@@ -59,7 +59,7 @@ public class StoreController {
         List<Store> stores = Utility.getListStoreOfOwner(user1);
         for(Store store : stores) {
             if (store.getName().equalsIgnoreCase(storeDTO.getName())) {
-                model.addAttribute("storeDTOError", storeDTO);
+                model.addAttribute("StoreDTO", storeDTO);
                 model.addAttribute("nameError", "Tên cửa hàng đã tồn tại!");
                 return "admin/store/createstore";
             }
@@ -129,13 +129,41 @@ public class StoreController {
 
         return "admin/store/liststore";
     }
-    @RequestMapping(value = "updatestore", method = {RequestMethod.GET, RequestMethod.POST})
-    public String updateStore(@RequestParam(value = "id",required = false) Long id
-    , Model model) {
-        if(id != null) {
-            model.addAttribute("storeDTO", modelMapper.map(storeService.findStoreById(id), StoreDTO.class));
+    @GetMapping(value="/updatestore/{id}")
+    public String updateStore(@PathVariable String id, Model model) {
+        Store store = storeService.findStoreById(Long.parseLong(id));
+        StoreDTO storeDTO = modelMapper.map(store, StoreDTO.class);
+        model.addAttribute("StoreDTO", storeDTO);
+        return "admin/store/updatestore";
+    }
+    @PostMapping(value = "/updatestore")
+    public String handleupdateStore(@Valid @ModelAttribute("StoreDTO") StoreDTO storeDTO,
+                                    BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                                    HttpSession session, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "admin/store/updatestore";
         }
-        return "updatestore"; // Trả về tên trang JSP hoặc xử lý logic khác
+        if (storeDTO.getId() == null) {
+            model.addAttribute("error", "ID cửa hàng không hợp lệ!");
+            return "admin/store/updatestore";
+        }
+
+        Store store = storeService.findByName(storeDTO.getName());
+        if(store != null && store.getId() != storeDTO.getId()) {
+            model.addAttribute("StoreDTO", storeDTO);
+            model.addAttribute("nameError", "Tên cửa hàng đã tồn tại!");
+            return "admin/store/updatestore";
+        }
+        store = storeService.findStoreById(storeDTO.getId());
+        store.setName(storeDTO.getName());
+        store.setAddress(storeDTO.getAddress());
+        store.setStatus(StatusStoreEnum.valueOf(storeDTO.getStatus()));
+         Store savedStore = storeService.saveStore(store);
+        if(savedStore != null) {
+            model.addAttribute("success", "Chỉnh sửa cửa hàng thành công!");
+        }
+
+        return "admin/store/updatestore";
     }
 
 

@@ -385,7 +385,7 @@
                                                     <i class="fa fa-eye"></i>
                                                 </button>
 
-                                                <a href="updatestore?id=${s.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
+                                                <a href="/updatestore/${s.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
                                             </td>

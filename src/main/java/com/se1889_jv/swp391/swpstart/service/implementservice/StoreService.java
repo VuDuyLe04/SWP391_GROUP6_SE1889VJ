@@ -60,5 +60,10 @@ public class StoreService implements IStoreService {
                 status2, address, pageable);
     }
 
+    @Override
+    public Store findByName(String name) {
+        return  storeRepository.findByName(name);
+    }
+
 
 }

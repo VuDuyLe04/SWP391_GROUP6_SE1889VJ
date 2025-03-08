@@ -24,5 +24,5 @@ public interface StoreRepository extends JpaRepository<Store, Long>, JpaSpecific
             String createdBy2, StatusStoreEnum status2, String address,
             Pageable pageable);
     Page<Store> findByStatusAndCreatedBy(StatusStoreEnum status,String createdBy, Pageable pageable);
-
+    Store findByName(String name);
 }

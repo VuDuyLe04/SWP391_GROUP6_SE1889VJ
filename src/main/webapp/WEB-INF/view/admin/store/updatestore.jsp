@@ -57,7 +57,7 @@
                     <a href="/stores" style="color: inherit; text-decoration: none;">
                         <i class="fa fa-arrow-left mr-xs" style="cursor: pointer;"></i>
                     </a>
-                    Tạo mới cửa hàng
+                    Chỉnh sửa cửa hàng
                 </h2>
 
                 <div class="right-wrapper pull-right">
@@ -83,12 +83,14 @@
                             <h2 class="panel-title">Chỉnh sửa cửa hàng</h2>
                         </header>
                         <div class="panel-body">
-                            <form:form id="add-form" action="/createstore" method="post" modelAttribute="StoreDTO" class="form-horizontal form-bordered">
-                                
+                            <form:form id="add-form" action="/updatestore" method="post" modelAttribute="StoreDTO" class="form-horizontal form-bordered">
+                                <form:input path="id" type="hidden" />
+
+
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Tên cửa hàng</label>
                                     <div class="col-md-6">
-                                        <form:input path="name" class="form-control" value="${storeDTOError.name}" onblur="checkName(this.value)"/>
+                                        <form:input path="name" class="form-control" onblur="checkName(this.value)"/>
                                         <form:errors path="name" cssClass="text-danger"/>
                                         <span class="text-danger">${nameError}</span>
                                         <span class="text-danger" id="nameError"></span>
@@ -98,7 +100,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Địa chỉ</label>
                                     <div class="col-md-6">
-                                        <form:input path="address" class="form-control" value="${storeDTOError.address}" onblur="checkAddress(this.value)"/>
+                                        <form:input path="address" class="form-control" onblur="checkAddress(this.value)"/>
                                         <form:errors path="address" cssClass="text-danger"/>
                                         <span class="text-danger" id="addressError"></span>
                                     </div>
@@ -117,8 +119,8 @@
 
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-3">
-                                        <button type="submit" class="btn btn-primary" id="submitBtn" ${success != null || error != null ? 'disabled' : ''}>
-                                            Tạo cửa hàng
+                                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                                            Lưu
                                         </button>
                                     </div>
                                 </div>
