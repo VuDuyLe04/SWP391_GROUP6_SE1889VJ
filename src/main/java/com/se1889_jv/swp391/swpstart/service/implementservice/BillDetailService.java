@@ -9,11 +9,15 @@ import com.se1889_jv.swp391.swpstart.domain.Product;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDetailRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDetailResponse;
+import com.se1889_jv.swp391.swpstart.exception.AppException;
+import com.se1889_jv.swp391.swpstart.exception.ErrorException;
 import com.se1889_jv.swp391.swpstart.repository.BillDetailRepository;
 import com.se1889_jv.swp391.swpstart.repository.BillRepository;
+import com.se1889_jv.swp391.swpstart.repository.ProductRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IBillDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BillDetailService implements IBillDetailService {
@@ -25,12 +29,15 @@ public class BillDetailService implements IBillDetailService {
     private BillDetailRepository billDetailRepository;
     @Autowired
     private BillRepository billRepository;
+    @Autowired
+    private ProductRepository productRepository;
     @Override
+    @Transactional
     public BillDetail createBillDetail(BillDetail bd, Bill bill, Long productId) {
 
         Product p = productService.getProductById(productId);
         if (p == null) {
-            throw new RuntimeException("Product not found with ID: " + productId);
+            throw new AppException(ErrorException.PRODUCT_NOT_FOUND);
         }
         BillDetail billDetail = new BillDetail();
         billDetail.setQuantity(bd.getQuantity());
@@ -80,17 +87,22 @@ public class BillDetailService implements IBillDetailService {
         return result;
     }
     @Override
+    @Transactional
     public BillDetailResponse createBillDetail2(BillDetailRequest request) {
         Product p = productService.getProductById(request.getProductId());
         Packaging packaging = packagingService.getPackagingById(request.getPackagingId());
 
         if (p == null) {
-            throw new RuntimeException("Product not found with ID: " + request.getProductId());
+            throw new AppException(ErrorException.PRODUCT_NOT_FOUND);
         }
         if (!p.isStorage()) {
-            throw new RuntimeException("Product is storage");
+            throw new AppException(ErrorException.PRODUCT_IS_STORAGE);
         }
-
+        if (p.getTotalQuantity() < request.getQuantity()) {
+            throw new AppException(ErrorException.NOT_ENOUGH_QUANTITY);
+        }
+        p.setTotalQuantity(p.getTotalQuantity() - request.getQuantity());
+        productRepository.save(p);
         BillDetail billDetail = new BillDetail();
         billDetail.setQuantity(request.getQuantity());
         billDetail.setListedPrice(request.getListedPrice());
@@ -113,7 +125,6 @@ public class BillDetailService implements IBillDetailService {
         // Chuyển đổi từ BillDetail sang BillDetailResponse
         BillDetailResponse response = new BillDetailResponse(savedBillDetail);
 
-        // Log JSON (bỏ `createdAt`)
         try {
             System.out.println(new ObjectMapper().writeValueAsString(response));
         } catch (JsonProcessingException e) {

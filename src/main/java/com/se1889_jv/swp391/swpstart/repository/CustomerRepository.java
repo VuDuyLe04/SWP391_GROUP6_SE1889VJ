@@ -33,4 +33,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     //check khách hàng tồn tại trong cửa hàng
     boolean existsByPhoneAndStore(String phone, Store store);
     boolean existsCustomerByNameAndPhone(String name, String phone);
+    Page<Customer> findAllByPhoneContainingAndStore(String phone,Store store, Pageable pageable);
 }

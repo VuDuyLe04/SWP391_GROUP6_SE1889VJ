@@ -17,9 +17,10 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     @Query("SELECT DISTINCT p.category FROM Product p")
     List<String> findDistinctCategories();
 
-    List<Product> findAllByStoreIdAndStorageIsTrue(Long storeId);
+    Page<Product> findAllByStoreIdAndStorageIsTrue(Long storeId, Pageable pageable);
 
     List<Product> findByNameContainingIgnoreCase(String name);
     Page<Product> findAllByStoreId(Long storeId, Pageable pageable);
     Page<Product> findAllByNameContainingIgnoreCase(String input, Pageable pageable);
+    Page<Product> findAllByStoreIdAndNameContainingIgnoreCase(Long storeId, String name, Pageable pageable);
 }

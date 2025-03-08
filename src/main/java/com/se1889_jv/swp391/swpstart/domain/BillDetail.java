@@ -41,10 +41,12 @@ public class BillDetail {
     private String createdBy;
     @ManyToOne
     @JoinColumn(name = "package_id")
+    @JsonBackReference
     private Packaging packaging;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
 
     @ManyToOne

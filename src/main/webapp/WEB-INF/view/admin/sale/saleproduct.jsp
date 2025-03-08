@@ -9,245 +9,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POS System</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/client/homepage/assets/css/sale.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        :root {
-            --primary-color: #4F46E5;
-            --secondary-color: #F9FAFB;
-            --success-color: #059669;
-            --danger-color: #DC2626;
-            --warning-color: #D97706;
-            --info-color: #2563EB;
-        }
 
-        body {
-            background: #F3F4F6;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .top-bar {
-            background: #fff;
-            padding: 1rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .search-container {
-            position: relative;
-        }
-
-        .search-input {
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            border: 1px solid #E5E7EB;
-            border-radius: 0.5rem;
-            width: 100%;
-            transition: all 0.3s;
-        }
-
-        .search-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
-            outline: none;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9CA3AF;
-        }
-
-        .filter-section {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .filter-select {
-            padding: 0.5rem;
-            border: 1px solid #E5E7EB;
-            border-radius: 0.5rem;
-            background: white;
-            min-width: 150px;
-        }
-
-        .checkbox-group {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .custom-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-            padding: 1rem;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .product-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 150px;
-            background: #F3F4F6;
-            border-radius: 0.375rem;
-            margin-bottom: 1rem;
-        }
-
-        .bill-section {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            height: calc(100vh - 2rem);
-            margin: 1rem;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .bill-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #E5E7EB;
-        }
-
-        .bill-items {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .bill-item {
-            display: grid;
-            grid-template-columns: 3fr 2fr 2fr 2fr 1fr;
-            gap: 1rem;
-            padding: 0.75rem;
-            border-bottom: 1px solid #E5E7EB;
-            align-items: center;
-        }
-
-        .bill-summary {
-            margin-top: auto;
-            padding-top: 1rem;
-            border-top: 1px solid #E5E7EB;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal {
-            background: rgba(0,0,0,0.5);
-        }
-
-        .modal-content {
-            border-radius: 0.5rem;
-            border: none;
-        }
-
-        .custom-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            border: none;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-        }
-
-        .btn-primary:hover {
-            background: #4338CA;
-        }
-
-        .btn-success {
-            background: var(--success-color);
-        }
-
-        .btn-success:hover {
-            background: #047857;
-        }
-
-        .customer-search {
-            position: relative;
-        }
-
-        .suggestion-box {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #E5E7EB;
-            border-radius: 0.375rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-
-        .suggestion-item {
-            padding: 0.75rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .suggestion-item:hover {
-            background: #F3F4F6;
-        }
-
-        .payment-button {
-            background: var(--success-color);
-            color: white;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            border: none;
-            font-weight: 600;
-            width: 100%;
-            margin-top: 1rem;
-            transition: all 0.3s;
-        }
-
-        .payment-button:hover {
-            background: #047857;
-        }
-
-        /* Thêm animation */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .animated {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        .hidden {
-            display: none !important;
-        }
     </style>
 </head>
 <body>
+<!-- Thêm vào ngay trước bill-section -->
+<div class="tab-container">
+    <div class="tab-list">
+        <div class="tab active" data-tab-id="1">
+            <span>Hóa đơn #1</span>
+            <button class="tab-close">&times;</button>
+        </div>
+        <button class="tab-add-btn">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+</div>
 <div class="container-fluid">
     <div class="row">
         <!-- Left Panel - Products -->
@@ -271,115 +53,121 @@
                                     <option value="${cate}">${cate}</option>
                                 </c:forEach>
                             </select>
-                            <select class="filter-select" id="sortSelect">
-                                <option value="asc">Giá tăng dần</option>
-                                <option value="desc">Giá giảm dần</option>
-                            </select>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            Thông báo từ hệ thống!
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
                 </div>
             </div>
 
             <div class="product-grid" id="product-list">
                 <!-- Mẫu sản phẩm -->
-                <c:forEach var="product" items="${productList}" varStatus="status">
-                    <div class="product-card product" data-id="${product.id}" data-name="${product.name}" data-price="${product.unitPrice}" data-category="${product.category}">
-                        <div class="product-image"></div>
-                        <div>
-                            <h5 class="product-name">${product.name}</h5>
-                            <p class="text-primary">${product.unitPrice}đ</p>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <!-- Nút mở modal xem chi tiết -->
-                            <button class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#viewProductModal${product.id}">
-                                Chi tiết
-                            </button>
-                            <!-- Nút mở modal thêm vào đơn -->
-                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#productModal${product.id}">
-                                Thêm vào đơn
-                            </button>
-                        </div>
-                    </div>
-                </c:forEach>
+<%--&lt;%&ndash;                <c:forEach var="product" items="${productList}" varStatus="status">&ndash;%&gt;--%>
+<%--                    <div class="product-card product" data-id="${product.id}" data-name="${product.name}" data-price="${product.unitPrice}" data-category="${product.category}">--%>
+<%--                        <div class="product-image"></div>--%>
+<%--                        <div>--%>
+<%--                            <h5 class="product-name">${product.name}</h5>--%>
+<%--                            <p class="text-primary">${product.unitPrice}đ</p>--%>
+<%--                        </div>--%>
+<%--                        <div class="d-flex gap-2">--%>
+<%--                            <!-- Nút mở modal xem chi tiết -->--%>
+<%--                            <button class="btn btn-info btn-sm" data-bs-toggle="modal"--%>
+<%--                                    data-bs-target="#viewProductModal${product.id}">--%>
+<%--                                Chi tiết--%>
+<%--                            </button>--%>
+<%--                            <!-- Nút mở modal thêm vào đơn -->--%>
+<%--                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"--%>
+<%--                                    data-bs-target="#productModal${product.id}">--%>
+<%--                                Thêm vào đơn--%>
+<%--                            </button>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--&lt;%&ndash;                </c:forEach>&ndash;%&gt;--%>
             </div>
 
             <!-- Container chứa tất cả modal -->
             <div id="modal-container">
-                <c:forEach var="product" items="${productList}" varStatus="status">
-                    <!-- Modal Xem Chi Tiết -->
-                    <div class="modal fade con-detail" id="viewProductModal${product.id}" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Thông tin sản phẩm: ${product.name}</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <img src="/asset/img/anh1.jpg" alt="" width="50px" height="50px" />
-                                    <p><strong>Danh mục:</strong> ${product.category}</p>
-                                    <p><strong>Mô tả:</strong> ${product.description}</p>
-                                    <p id="listedPrice"><strong>Giá:</strong> ${product.unitPrice}</p>
-                                    <p id="quantity-product"><strong>Số lượng:</strong> ${product.totalQuantity} kg</p>
-                                    <p><strong>Vị trí:</strong> ${warehouse[status.index].name}</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<%--                <c:forEach var="product" items="${productList}" varStatus="status">--%>
+<%--                    <!-- Modal Xem Chi Tiết -->--%>
+<%--                    <div class="modal fade con-detail" id="viewProductModal${product.id}" tabindex="-1" aria-hidden="true">--%>
+<%--                        <div class="modal-dialog">--%>
+<%--                            <div class="modal-content">--%>
+<%--                                <div class="modal-header">--%>
+<%--                                    <h5 class="modal-title">Thông tin sản phẩm: ${product.name}</h5>--%>
+<%--                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--%>
+<%--                                </div>--%>
+<%--                                <div class="modal-body">--%>
+<%--                                    <img src="/asset/img/anh1.jpg" alt="" width="50px" height="50px" />--%>
+<%--                                    <p><strong>Danh mục:</strong> ${product.category}</p>--%>
+<%--                                    <p><strong>Mô tả:</strong> ${product.description}</p>--%>
+<%--                                    <p id="listedPrice"><strong>Giá:</strong> ${product.unitPrice}</p>--%>
+<%--                                    <p id="quantity-product"><strong>Số lượng:</strong> ${product.totalQuantity} kg</p>--%>
+<%--                                    <p><strong>Vị trí:</strong> ${warehouse[status.index].name}</p>--%>
+<%--                                </div>--%>
+<%--                                <div class="modal-footer">--%>
+<%--                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
 
-                    <!-- Modal Thêm vào đơn -->
-                    <div class="modal fade con-add" id="productModal${product.id}" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">${product.name}</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <!-- Số lượng -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Số lượng:</label>
-                                        <input type="number" class="form-control quantity-input" name="quantity" min="1" value="1" data-quantity="${product.totalQuantity}">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label" hidden="hidden">Hidden</label>
-                                        <input type="number" class="form-control listed-input" name="hide" min="1" value="${product.unitPrice}" data-listed="${product.unitPrice}">
-                                    </div>
-                                    <!-- Đóng gói -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Loại đóng gói:</label>
-                                        <select class="form-control" name="packaging" id="select-pack">
-                                            <c:forEach var="pack" items="${packagingList[status.index]}">
-                                                <option value="${pack.id}" data-additional="${pack.quantityPerPackage}" data-liftcost="${pack.liftCost}">${pack.packageType}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
+<%--                    <!-- Modal Thêm vào đơn -->--%>
+<%--                    <div class="modal fade con-add" id="productModal${product.id}" tabindex="-1" aria-hidden="true">--%>
+<%--                        <div class="modal-dialog">--%>
+<%--                            <div class="modal-content">--%>
+<%--                                <div class="modal-header">--%>
+<%--                                    <h5 class="modal-title">${product.name}</h5>--%>
+<%--                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--%>
+<%--                                </div>--%>
+<%--                                <div class="modal-body">--%>
+<%--                                    <!-- Số lượng -->--%>
+<%--                                    <div class="mb-3">--%>
+<%--                                        <label class="form-label">Số lượng:</label>--%>
+<%--                                        <input type="number" class="form-control quantity-input" name="quantity" min="1" value="1" data-quantity="${product.totalQuantity}">--%>
+<%--                                    </div>--%>
+<%--                                    <div class="mb-3">--%>
+<%--                                        <label class="form-label" hidden="hidden">Hidden</label>--%>
+<%--                                        <input type="number" class="form-control listed-input" name="hide" min="1" value="${product.unitPrice}" data-listed="${product.unitPrice}">--%>
+<%--                                    </div>--%>
+<%--                                    <!-- Đóng gói -->--%>
+<%--                                    <div class="mb-3">--%>
+<%--                                        <label class="form-label">Loại đóng gói:</label>--%>
+<%--                                        <select class="form-control" name="packaging" id="select-pack">--%>
+<%--                                            <c:forEach var="pack" items="${packagingList[status.index]}">--%>
+<%--                                                <option value="${pack.id}" data-additional="${pack.quantityPerPackage}" data-liftcost="${pack.liftCost}">${pack.packageType}</option>--%>
+<%--                                            </c:forEach>--%>
+<%--                                        </select>--%>
+<%--                                    </div>--%>
 
-                                    <!-- Giảm giá -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Giảm giá:</label>
-                                        <select class="form-control" name="discount">
+<%--                                    <!-- Giảm giá -->--%>
+<%--                                    <div class="mb-3">--%>
+<%--                                        <label class="form-label">Giảm giá:</label>--%>
+<%--                                        <select class="form-control" name="discount">--%>
 
-                                            <option value="0">Không Giảm</option>
-                                            <option value="100">Giảm 100đ</option>
-                                            <option value="200">Giảm 200đ</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                    <button type="button" class="btn btn-primary add-bill-detail">Xác nhận</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </c:forEach>
+<%--                                            <option value="0">Không Giảm</option>--%>
+<%--                                            <option value="100">Giảm 100đ</option>--%>
+<%--                                            <option value="200">Giảm 200đ</option>--%>
+<%--                                        </select>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+<%--                                <div class="modal-footer">--%>
+<%--                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>--%>
+<%--                                    <button type="button" class="btn btn-primary add-bill-detail">Xác nhận</button>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </c:forEach>--%>
             </div>
-            
+
         </div>
 
         <!-- Right Panel - Bill -->
@@ -433,6 +221,38 @@
                     </div>
                     <textarea class="form-control mt-3" rows="2" placeholder="Ghi chú đơn hàng..."></textarea>
 
+                    <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="customerModalLabel">Thông tin khách hàng</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="customer-name" class="form-label">Tên khách hàng</label>
+                                        <input name="cusName" type="text" class="form-control" id="customer-name" placeholder="Nhập tên khách hàng">
+                                        <div id="name-error" class="error-message text-danger" hidden="hidden">Không được để trống tên!</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="customer-phone" class="form-label">Số điện thoại</label>
+                                        <input name="cusPhone" type="text" class="form-control" id="customer-phone"
+                                               placeholder="Nhập số điện thoại">
+                                        <div id="phone-error" class="error-message text-danger" hidden="hidden">Số điện thoại không hợp lệ. Vui lòng nhập lại!</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="customer-address" class="form-label">Địa chỉ</label>
+                                        <textarea name="cusAddress" class="form-control" id="customer-address" rows="2" placeholder="Nhập địa chỉ"></textarea>
+                                        <div id="address-error" class="error-message text-danger" hidden="hidden">Không được để trống địa chỉ</div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div  class="btn btn-secondary" data-bs-dismiss="modal">Đóng</div>
+                                    <div  class="btn btn-success" id="save-customer-button">Lưu thông tin khách hàng</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <button class="payment-button">
                         THANH TOÁN
                     </button>
@@ -441,202 +261,98 @@
         </div>
     </div>
 </div>
+<script src="${pageContext.request.contextPath}/client/homepage/assets/js/sale.js"></script>
+<script src="${pageContext.request.contextPath}/client/homepage/assets/js/addsale.js"></script>
+<script src="${pageContext.request.contextPath}/client/homepage/assets/js/renderdata.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>--%>
 <script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const storeId = "<%= request.getAttribute("storeId") %>";
+        if (storeId && storeId !== "null") {
+            loadProducts(storeId);
+            console.log(storeId);
+        } else {
+            console.error("Store ID không hợp lệ!");
+        }
+    });
+
+    const searchInputKey = document.getElementById("searchInput");
+    const searchButton = document.getElementById("searchBut");
+    searchButton.addEventListener("click", function () {
+        const storeId = "<%= request.getAttribute("storeId") %>";
+        const keyword = searchInput.value.trim();
+            if (keyword) {
+                searchProducts(keyword, storeId);
+            } else {
+                console.warn("Vui lòng nhập từ khóa tìm kiếm.");
+            }
+    });
+
+    <%--const customerList = [--%>
+    <%--    <%--%>
+    <%--        for (int i = 0; i < ((List<Customer>) request.getAttribute("customerList")).size(); i++) {--%>
+    <%--            Customer customer = ((List<Customer>) request.getAttribute("customerList")).get(i);--%>
+    <%--            out.print("{");--%>
+    <%--            out.print("\"id\": \"" + customer.getId() + "\",");--%>
+    <%--            out.print("\"name\": \"" + customer.getName() + "\",");--%>
+    <%--            out.print("\"phone\": \"" + customer.getPhone() + "\"");--%>
+    <%--            out.print("}");--%>
+    <%--            if (i < ((List<Customer>) request.getAttribute("customerList")).size() - 1) {--%>
+    <%--                out.print(",");--%>
+    <%--            }--%>
+    <%--        }--%>
+    <%--    %>--%>
+    <%--];--%>
+    // console.log(customerList);
+
+    // document.getElementById('add-customer-btn').addEventListener('click', function() {
+    //
+    //     document.getElementById('suggestion-box').style.display = 'none';
+    //     document.getElementById('customer-form').style.display = 'block';
+    // });
     // document.addEventListener("DOMContentLoaded", function () {
-    //     document.querySelectorAll("[id^='viewProductModal']").forEach(modal => {
-    //         let modalInstance = new bootstrap.Modal(modal);
-    //         modal.addEventListener("show.bs.modal", function () {
-    //             modalInstance.show();
-    //         });
-    //     });
+    //     const searchInput = document.getElementById("search-phone");
+    //     const suggestionBox = document.getElementById("suggestion-box");
     //
-    //     document.querySelectorAll("[id^='productModal']").forEach(modal => {
-    //         let modalInstance = new bootstrap.Modal(modal);
-    //         modal.addEventListener("show.bs.modal", function () {
-    //             modalInstance.show();
-    //         });
-    //     });
+    //     searchInput.addEventListener("input", function () {
+    //         const query = searchInput.value.trim().toLowerCase();
+    //         suggestionBox.innerHTML = "";
     //
+    //         if (query.length > 0) {
+    //             const suggestions = customerList.filter(customer =>
+    //                 customer.phone.toLowerCase().includes(query)
+    //             );
+    //
+    //             if (suggestions.length > 0) {
+    //                 suggestionBox.style.display = "block";
+    //                 suggestions.forEach(cust => {
+    //                     const suggestionItem = document.createElement("div");
+    //                     suggestionItem.className = "suggestion-item";
+    //                     suggestionItem.textContent = cust.name + ' - ' +cust.phone;
+    //                     suggestionItem.addEventListener("click", function () {
+    //                         searchInput.value = cust.name + ' - ' +cust.phone;
+    //                         suggestionBox.style.display = "none";
+    //                     });
+    //                     suggestionBox.appendChild(suggestionItem);
+    //                 });
+    //             } else {
+    //                 suggestionBox.style.display = "none";
+    //             }
+    //         } else {
+    //             suggestionBox.style.display = "none";
+    //         }
+    //     });
+
+    //     document.addEventListener("click", function (event) {
+    //         if (!suggestionBox.contains(event.target) && event.target !== searchInput) {
+    //             suggestionBox.style.display = "none";
+    //         }
+    //     });
     // });
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const products = document.querySelectorAll('.product');
-        const searchInput = document.getElementById("searchInput");
-        const searchButton = document.getElementById("searchBut");
-        const modals = document.querySelectorAll('.con-add');
-        const modals2 = document.getElementById('con-detail');
-        console.log(modals)
-        searchButton.addEventListener('click', () => {
-            const searchValue = searchInput.value.toLowerCase();
-            if(searchValue.length !== 0 ){
-                products.forEach(product => {
-
-                    const productName = product.querySelector(".product-name").textContent.toLowerCase();
-                    if (productName.includes(searchValue)) {
-                        product.classList.remove("hidden");
-                    } else {
-                        product.classList.add("hidden");
-                    }
-                });
-                searchInput.value = '';
-            } else {
-                products.forEach(product => {
-                    product.classList.remove('hidden');
-                })
-            }
-
-        })
-        document.getElementById('sortSelect').addEventListener('change', function () {
-            const sortOrder = this.value;
-            const productList = document.getElementById('product-list');
-            const products = Array.from(productList.getElementsByClassName('product-card'));
-
-            products.sort((a, b) => {
-                const priceA = parseFloat(a.getAttribute('data-price'));
-                const priceB = parseFloat(b.getAttribute('data-price'));
-                return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
-            });
-
-            productList.innerHTML = '';
-            products.forEach(product => {
-                productList.appendChild(product);
-            });
-        });
-
-
-
-        const categorySelect = document.getElementById("categorySelect");
-        categorySelect.addEventListener("change", () => {
-            const selectedCategory = categorySelect.value.toLowerCase();
-            products.forEach(product => {
-                const productCategory = product.getAttribute("data-category").toLowerCase();
-                if (selectedCategory === "all" || productCategory === selectedCategory) {
-                    product.classList.remove("hidden");
-                } else {
-                    product.classList.add("hidden");
-                }
-            });
-        });
-    })
-
-
-    const customerList = [
-        <%
-            for (int i = 0; i < ((List<Customer>) request.getAttribute("customerList")).size(); i++) {
-                Customer customer = ((List<Customer>) request.getAttribute("customerList")).get(i);
-                out.print("{");
-                out.print("\"id\": \"" + customer.getId() + "\",");
-                out.print("\"name\": \"" + customer.getName() + "\",");
-                out.print("\"phone\": \"" + customer.getPhone() + "\"");
-                out.print("}");
-                if (i < ((List<Customer>) request.getAttribute("customerList")).size() - 1) {
-                    out.print(",");
-                }
-            }
-        %>
-    ];
-    console.log(customerList);
-
-    document.getElementById('add-customer-btn').addEventListener('click', function() {
-
-        document.getElementById('suggestion-box').style.display = 'none';
-        document.getElementById('customer-form').style.display = 'block';
-    });
-    document.addEventListener("DOMContentLoaded", function () {
-        const searchInput = document.getElementById("search-phone");
-        const suggestionBox = document.getElementById("suggestion-box");
-
-        searchInput.addEventListener("input", function () {
-            const query = searchInput.value.trim().toLowerCase();
-            suggestionBox.innerHTML = "";
-
-            if (query.length > 0) {
-                const suggestions = customerList.filter(customer =>
-                    customer.phone.toLowerCase().includes(query)
-                );
-
-                if (suggestions.length > 0) {
-                    suggestionBox.style.display = "block";
-                    suggestions.forEach(cust => {
-                        const suggestionItem = document.createElement("div");
-                        suggestionItem.className = "suggestion-item";
-                        suggestionItem.textContent = cust.name + ' - ' +cust.phone;
-                        suggestionItem.addEventListener("click", function () {
-                            searchInput.value = cust.name + ' - ' +cust.phone;
-                            suggestionBox.style.display = "none";
-                        });
-                        suggestionBox.appendChild(suggestionItem);
-                    });
-                } else {
-                    suggestionBox.style.display = "none";
-                }
-            } else {
-                suggestionBox.style.display = "none";
-            }
-        });
-
-        document.addEventListener("click", function (event) {
-            if (!suggestionBox.contains(event.target) && event.target !== searchInput) {
-                suggestionBox.style.display = "none";
-            }
-        });
-    });
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".add-bill-detail").forEach(button => {
-            button.addEventListener("click", async function () {
-                let modal = this.closest(".modal");
-                let productId = modal.id.replace("productModal", "");
-                let quantity = modal.querySelector(".quantity-input").value;
-                let packagingId = modal.querySelector("select[name='packaging']").value;
-                let discount = modal.querySelector("select[name='discount']").value;
-                let listed = modal.querySelector('.listed-input').value;
-                let billId = localStorage.getItem("billId");
-                console.log("AFTER: ", billId);
-                const storeId = parseInt(document.getElementById("storeId").textContent);
-                try{
-                    if (!billId || billId === "undefined" || billId === "null") {
-                        let billData = await fetch("/hello/addBill?storeId="+encodeURIComponent(storeId)).then(res => res.json());
-                        if (!billData || billData.code !== 200) {
-                            alert("Không thể tạo hóa đơn. Vui lòng thử lại!");
-                            return;
-                        }
-                        console.log("Hóa đơn được tạo thành công:", billData);
-
-                        billId = String(billData.data.id);
-
-                        localStorage.setItem("billId", billId);
-
-                    }
-                    console.log("BEFORE: ", billId);
-                    console.log(billId)
-                    let requestData = {
-                        billId: billId,
-                        productId: productId,
-                        quantity: quantity,
-                        packagingId: packagingId,
-                        discount: discount,
-                        listedPrice: listed
-                    };
-                    console.log(requestData);
-                    let detailResponse = await fetch("/hello/addBillDetail", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(requestData)
-                    });
-                    let responseData = await detailResponse.json();
-                    console.log(responseData);
-
-                } catch (error){
-                    console.error(error)
-                }
-
-            });
-        });
-    });
 
 </script>
 </body>

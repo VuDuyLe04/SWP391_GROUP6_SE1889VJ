@@ -1,6 +1,7 @@
 package com.se1889_jv.swp391.swpstart.service.IService;
 
 import com.se1889_jv.swp391.swpstart.domain.Product;
+import com.se1889_jv.swp391.swpstart.domain.dto.ProductResponse;
 import com.se1889_jv.swp391.swpstart.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +11,7 @@ import java.util.List;
 public interface IProductService {
     public List<Product> getAllProducts();
     public List<String> getAllCategories();
-    public List<Product> getAllProductsByStoreIdAndIsStorage(Long storeId);
+    public List<Product> getAllProductsByStoreIdAndIsStorage(Long storeId, Pageable pageable);
     public Product getProductById(Long id);
     Product saveProduct(Product product);
     void deleteById(Long id);
@@ -20,4 +21,5 @@ public interface IProductService {
 
     Page<Product> getAllProducts(Pageable pageable);
     void updateProduct(Product product);
+    List<ProductResponse> getProductBySearchKeyword(String keyword, Pageable pageable, Long storeId);
 }
