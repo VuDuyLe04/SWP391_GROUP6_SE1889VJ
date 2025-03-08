@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.domain.dto;
 
+import com.se1889_jv.swp391.swpstart.util.StringUtils;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -29,4 +30,8 @@ public class StaffDTO {
     private String password;
 
     private Long storeId;
+    public String getName(){
+        return StringUtils.formatName(name);
+    }
+
 }

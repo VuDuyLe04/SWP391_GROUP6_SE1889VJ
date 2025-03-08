@@ -452,7 +452,7 @@
                                                name="phone"
                                                placeholder="Nhập số điện thoại"
                                                onblur="checkPhone(this.value)">
-                                        <span class="text-danger" id="phoneError" style="display:none">Số điện thoại không hợp lệ. Xin vui lòng nhập lại!</span>
+                                        <span class="text-danger" id="phoneError" style="display:none">Số điện thoại không hợp lệ. Xin vui lòng nhập lại! ${phoneError}</span>
                                     </div>
                                 </div>
 
@@ -533,9 +533,7 @@
         } else {
             phoneError.style.display = "none";
             button.disabled = false;
-            if (phone.length > 0) {
-                window.location.href = "checkphone?createdPhone=" + phone;
-            }
+
         }
     }
 

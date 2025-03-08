@@ -4,10 +4,14 @@ package com.se1889_jv.swp391.swpstart.controller.admin;
 import com.se1889_jv.swp391.swpstart.domain.Role;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
+import com.se1889_jv.swp391.swpstart.domain.UserStore;
+import com.se1889_jv.swp391.swpstart.domain.dto.StaffDTO;
 import com.se1889_jv.swp391.swpstart.service.implementservice.RoleService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.UserStoreService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
+import com.se1889_jv.swp391.swpstart.util.constant.UserAccessStoreStatusEnum;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +42,7 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private UserStoreService userStoreService;
 
     @GetMapping("/usermanagement")
     public String getAllUser(@RequestParam(value = "input", required = false) String input,
@@ -267,6 +272,29 @@ public class UserController {
     public String createStaff(Model model){
        List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
        model.addAttribute("stores",storeList);
+        return "admin/user/createstaff";
+    }
+    @PostMapping("createstaff")
+public String handleCreateStaff(@Valid @ModelAttribute StaffDTO staffDTO, BindingResult bindingResult, Model model){
+        if(bindingResult.hasErrors()){
+            return "admin/user/createstaff";
+        }
+        if(userStoreService.getUserStoreByPhoneAndStore(staffDTO.getPhone(), staffDTO.getStoreId()) != null){
+            model.addAttribute("phoneError","Số điện thoại đã tồn tại trong cửa hàng!");
+            return "admin/user/createstaff";
+        }
+        User user = new User();
+        user.setName(staffDTO.getName());
+        user.setPhone(staffDTO.getPhone());
+        user.setPassword(passwordEncoder.encode(staffDTO.getPassword()));
+        User savedUser = userService.createUser(user);
+        UserStore userStore = new UserStore();
+        userStore.setUser(user);
+        userStore.setStore(storeService.findStoreById(staffDTO.getStoreId()));
+        userStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf("ACCESSED"));
+        if(userStoreService.saveUserStore(userStore)!=null){
+            model.addAttribute("success", "Tạo người dùng thành công!");
+        }
         return "admin/user/createstaff";
     }
 

@@ -7,7 +7,7 @@ import com.se1889_jv.swp391.swpstart.domain.UserStore;
 import java.util.List;
 
 public interface IUserStoreService {
-
+    UserStore getUserStoreByPhoneAndStore(String phone, Long storeId);
     UserStore findUserStore(long userId);
     UserStore saveUserStore(UserStore userStore);
     UserStore findUserStoreByUserAndStore(User user, Store store);
