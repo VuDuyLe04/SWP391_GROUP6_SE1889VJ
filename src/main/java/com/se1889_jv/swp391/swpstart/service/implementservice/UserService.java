@@ -6,6 +6,7 @@ import com.se1889_jv.swp391.swpstart.domain.UserStore;
 import com.se1889_jv.swp391.swpstart.repository.UserRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 
@@ -100,6 +101,19 @@ public class UserService implements IUserService {
         return this.userRepository.findUsersByNameContainingOrPhoneContaining(name,phone,pageable);
 
     }
+    @Override
+    public Page<User> findDistinctUsersByCreatedByAndByNameOrPhone(String createdBy, String input, Pageable pageable) {
+        // Lấy danh sách users theo createdBy
+        Page<User> users = this.findDistinctUsersByUserStores_Store_CreatedBy(createdBy, pageable);
+
+        // Lọc danh sách theo điều kiện name hoặc phone chứa input
+        List<User> filteredUsers = users.getContent().stream()
+                .filter(user -> user.getName().toLowerCase().contains(input) || user.getPhone().contains(input))
+                .collect(Collectors.toList());
+
+        // Chuyển danh sách đã lọc thành Page
+        return new PageImpl<>(filteredUsers, pageable, filteredUsers.size());
+    }
 
     @Override
     public Page<User> getUsersbyRoleID(Long id, Pageable pageable) {
@@ -134,5 +148,9 @@ public class UserService implements IUserService {
         }
         return this.userRepository.save(user1);
     }
+    @Override
+     public  Page<User> findDistinctUsersByUserStores_Store_CreatedBy(String createdBy, Pageable pageable){
+        return userRepository.findDistinctUsersByStoreCreatedBy( createdBy, pageable);
+    };
 
 }

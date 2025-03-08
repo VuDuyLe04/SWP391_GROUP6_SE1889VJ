@@ -22,9 +22,9 @@ public interface IUserService {
     User updateUser(User user);
 
     Page<User> getAll(Pageable pageable);
-
+    Page<User> findDistinctUsersByUserStores_Store_CreatedBy(String createdBy, Pageable pageable);
     Page<User> getUsersBySearch(String name, String phone, Pageable pageable);
-
+    Page<User> findDistinctUsersByCreatedByAndByNameOrPhone(String createdBy,String input, Pageable pageable);
     Page<User> getUsersbyRoleID(Long id, Pageable pageable);
 
     Page<User> getUsersByActive(boolean active, Pageable pageable);

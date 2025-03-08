@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,11 +19,16 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     User findByPhone(String phone);
     Page<User> findUsersByNameContainingOrPhoneContaining(String name, String phone, Pageable pageable);
     boolean existsByPhone(String phone);
-
-//    List<User> findByUserStore(List<UserStore> userStores);
-
-
-
+    @Query("SELECT u FROM User u " +
+            "WHERE u.id IN (" +
+            "   SELECT MIN(u2.id) FROM User u2 " +
+            "   JOIN UserStore us ON u2.id = us.user.id " +
+            "   JOIN Store s ON us.store.id = s.id " +
+            "   WHERE s.createdBy = :createdBy " +
+            "   GROUP BY u2.phone" +
+            ")")
+    Page<User> findDistinctUsersByStoreCreatedBy(@Param("createdBy") String createdBy, Pageable pageable);
+//    Page<User> findDistinctUsersByUserStores_Store_CreatedByAndByNameContainingOrPhoneContaining(String createdBy,String name,String phone, Pageable pageable);
     Page<User> findUsersByActive(boolean active, Pageable pageable);
     Page<User> findUsersByRoleId(Long roleId,Pageable pageable);
     Page<User> findUsersByRoleIdAndActive(Long roleId, boolean active, Pageable pageable);

@@ -39,10 +39,13 @@ public class UserController {
     StoreService storeService;
     @Autowired
     RoleService roleService;
+    @Autowired
+    UserStoreService userStoreService;
+
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    private UserStoreService userStoreService;
+
 
     @GetMapping("/usermanagement")
     public String getAllUser(@RequestParam(value = "input", required = false) String input,
@@ -52,30 +55,45 @@ public class UserController {
                              Model model) {
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
         Pageable pageable = PageRequest.of(Integer.parseInt(page), 5, sort);
-        Page<User> users;
-
-        if (input != null && !input.isEmpty()) {
-            users = userService.getUsersBySearch(input.trim(), input.trim(), pageable);
-        } else {
-            long roleIdValue = "-1".equals(roleId) ? -1 : Long.parseLong(roleId);
-            boolean isActive = "1".equals(active);
-
-            if (roleIdValue != -1 && "-1".equals(active)) {
-                users = userService.getUsersbyRoleID(roleIdValue, pageable);
-            } else if (roleIdValue == -1 && !"-1".equals(active)) {
-                users = userService.getUsersByActive(isActive, pageable);
-            } else if (roleIdValue != -1 && !"-1".equals(active)) {
-                users = userService.getUsersByRoleIDAndActive(roleIdValue, isActive, pageable);
+        Page<User> users = null;
+        User user = Utility.getUserInSession();
+        String userId = String.valueOf(user.getId());
+        if(user.getRole().getName().equals("ADMIN")){
+            if (input != null && !input.isEmpty()) {
+                users = userService.getUsersBySearch(input.trim(), input.trim(), pageable);
             } else {
-                users = userService.getAll(pageable);
+                long roleIdValue = "-1".equals(roleId) ? -1 : Long.parseLong(roleId);
+                boolean isActive = "1".equals(active);
+
+                if (roleIdValue != -1 && "-1".equals(active)) {
+                    users = userService.getUsersbyRoleID(roleIdValue, pageable);
+                } else if (roleIdValue == -1 && !"-1".equals(active)) {
+                    users = userService.getUsersByActive(isActive, pageable);
+                } else if (roleIdValue != -1 && !"-1".equals(active)) {
+                    users = userService.getUsersByRoleIDAndActive(roleIdValue, isActive, pageable);
+                } else {
+                    users = userService.getAll(pageable);
+                }
             }
+            model.addAttribute("active", active);
+            model.addAttribute("roleId", roleId);
+            model.addAttribute("roles", roleService.getAllRoles());
+
+        }
+        else if(user.getRole().getName().equals("OWNER")){
+            if (input != null && !input.isEmpty()) {
+                users = userService.findDistinctUsersByCreatedByAndByNameOrPhone(userId,input.trim(),pageable);
+            }
+            else
+                 users = userService.findDistinctUsersByUserStores_Store_CreatedBy(userId, pageable);
+
+
         }
 
+
+
         model.addAttribute("input", input != null ? input : "");
-        model.addAttribute("active", active);
-        model.addAttribute("roleId", roleId);
         model.addAttribute("userPage", users);
-        model.addAttribute("roles", roleService.getAllRoles());
 
         return "admin/user/usermanagement";
     }
@@ -269,32 +287,53 @@ public class UserController {
         return "redirect:/profile";
     }
     @GetMapping("/createstaff")
-    public String createStaff(Model model){
-       List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
-       model.addAttribute("stores",storeList);
+    public String createStaff(Model model) {
+        List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
+        model.addAttribute("stores", storeList);
+        model.addAttribute("StaffDTO", new StaffDTO());
         return "admin/user/createstaff";
     }
-    @PostMapping("createstaff")
-public String handleCreateStaff(@Valid @ModelAttribute StaffDTO staffDTO, BindingResult bindingResult, Model model){
-        if(bindingResult.hasErrors()){
+
+    @PostMapping("/createstaff")
+    public String handleCreateStaff(@Valid @ModelAttribute("StaffDTO") StaffDTO staffDTO, 
+                                  BindingResult bindingResult, 
+                                  Model model) {
+        if (bindingResult.hasErrors()) {
+            List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
+            model.addAttribute("stores", storeList);
             return "admin/user/createstaff";
         }
-        if(userStoreService.getUserStoreByPhoneAndStore(staffDTO.getPhone(), staffDTO.getStoreId()) != null){
-            model.addAttribute("phoneError","Số điện thoại đã tồn tại trong cửa hàng!");
+
+        if (userStoreService.getUserStoreByPhoneAndStore(staffDTO.getPhone(), staffDTO.getStoreId()) != null) {
+            List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
+            model.addAttribute("stores", storeList);
+            String storeName = storeService.findStoreById(staffDTO.getStoreId()).getName();
+            model.addAttribute("phoneError", "Số điện thoại đã tồn tại trong cửa hàng " + storeName + " !");
             return "admin/user/createstaff";
         }
-        User user = new User();
-        user.setName(staffDTO.getName());
-        user.setPhone(staffDTO.getPhone());
-        user.setPassword(passwordEncoder.encode(staffDTO.getPassword()));
-        User savedUser = userService.createUser(user);
-        UserStore userStore = new UserStore();
-        userStore.setUser(user);
-        userStore.setStore(storeService.findStoreById(staffDTO.getStoreId()));
-        userStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf("ACCESSED"));
-        if(userStoreService.saveUserStore(userStore)!=null){
-            model.addAttribute("success", "Tạo người dùng thành công!");
+
+        try {
+            User user = new User();
+            user.setName(staffDTO.getName());
+            user.setPhone(staffDTO.getPhone());
+            user.setPassword(passwordEncoder.encode(staffDTO.getPassword()));
+            user.setRole(roleService.getRole(3L));
+            User savedUser = userService.createUser(user);
+
+            UserStore userStore = new UserStore();
+            userStore.setUser(savedUser);
+            userStore.setStore(storeService.findStoreById(staffDTO.getStoreId()));
+            userStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf("ACCESSED"));
+            
+            if (userStoreService.saveUserStore(userStore) != null) {
+                model.addAttribute("success", "Tạo nhân viên thành công!");
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", "Có lỗi xảy ra khi tạo nhân viên: " + e.getMessage());
         }
+
+        List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
+        model.addAttribute("stores", storeList);
         return "admin/user/createstaff";
     }
 

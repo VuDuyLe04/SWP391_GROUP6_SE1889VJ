@@ -429,16 +429,16 @@
                             <h2 class="panel-title">Tạo nhân viên </h2>
                         </header>
                         <div class="panel-body">
-                            <form action="createstaff" class="form-horizontal form-bordered" method="post">
+                            <form:form action="/createstaff" method="post" modelAttribute="StaffDTO" class="form-horizontal form-bordered">
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Tên nhân viên</label>
                                     <div class="col-md-6">
-                                        <input type="text" 
+                                        <form:input path="name" 
                                                class="form-control"
                                                id="name"
-                                               name="name"
                                                placeholder="Nhập tên nhân viên"
-                                               onblur="checkName()">
+                                               onblur="checkName()"/>
+                                        <form:errors path="name" cssClass="text-danger"/>
                                         <span class="text-danger" id="nameError"></span>
                                     </div>
                                 </div>
@@ -446,25 +446,26 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Số điện thoại</label>
                                     <div class="col-md-6">
-                                        <input type="text"
+                                        <form:input path="phone"
                                                class="form-control"
                                                id="phone"
-                                               name="phone"
                                                placeholder="Nhập số điện thoại"
-                                               onblur="checkPhone(this.value)">
-                                        <span class="text-danger" id="phoneError" style="display:none">Số điện thoại không hợp lệ. Xin vui lòng nhập lại! ${phoneError}</span>
+                                               onblur="checkPhone(this.value)"/>
+                                        <form:errors path="phone" cssClass="text-danger"/>
+                                        <span class="text-danger" id="phoneError" style="display:none">Số điện thoại không hợp lệ. Xin vui lòng nhập lại!</span>
+                                        <span class="text-danger">${phoneError}</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Mật khẩu</label>
                                     <div class="col-md-6">
-                                        <input type="password"
+                                        <form:password path="password"
                                                class="form-control"
                                                id="password"
-                                               name="password"
                                                placeholder="Nhập mật khẩu"
-                                               onblur="checkPassword()">
+                                               onblur="checkPassword()"/>
+                                        <form:errors path="password" cssClass="text-danger"/>
                                         <span class="text-danger" id="passError"></span>
                                     </div>
                                 </div>
@@ -485,11 +486,10 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Chọn cửa hàng</label>
                                     <div class="col-md-6">
-                                        <select name="storeId" id="storeId" class="form-control">
-                                            <c:forEach items="${stores}" var="store">
-                                                <option value="${store.id}">${store.name}</option>
-                                            </c:forEach>
-                                        </select>
+                                        <form:select path="storeId" class="form-control">
+                                            <form:options items="${stores}" itemValue="id" itemLabel="name"/>
+                                        </form:select>
+                                        <form:errors path="storeId" cssClass="text-danger"/>
                                     </div>
                                 </div>
 
@@ -511,7 +511,7 @@
                                         </div>
                                     </div>
                                 </c:if>
-                            </form>
+                            </form:form>
                         </div>
                     </section>
                 </div>
