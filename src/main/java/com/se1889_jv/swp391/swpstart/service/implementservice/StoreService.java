@@ -38,6 +38,11 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    public List<Store> findStoresByCreatedBy(String createdBy) {
+        return storeRepository.findByCreatedBy(createdBy);
+    }
+
+    @Override
     public Page<Store> findStoresByCreatedBy(String createdBy, Pageable pageable) {
         return storeRepository.findByCreatedBy(createdBy, pageable);
     }

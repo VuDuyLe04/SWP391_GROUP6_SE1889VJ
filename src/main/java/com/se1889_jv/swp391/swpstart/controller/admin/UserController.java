@@ -2,6 +2,7 @@ package com.se1889_jv.swp391.swpstart.controller.admin;
 
 
 import com.se1889_jv.swp391.swpstart.domain.Role;
+import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.service.implementservice.RoleService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
@@ -73,10 +74,6 @@ public class UserController {
 
         return "admin/user/usermanagement";
     }
-//    @GetMapping("/staff")
-//    public String getStaff(){
-//        Utility
-//    }
 
     @GetMapping("/checkphone")
     public String checkPhone(@RequestParam(value="createdPhone",required = false) String createdPhone,
@@ -125,7 +122,6 @@ public class UserController {
                 model.addAttribute("error", "Số điện thoại đã tồn tại.");
                 return "admin/user/createuser";
             }
-
             // Kiểm tra định dạng mật khẩu
             if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
                 model.addAttribute("error", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
@@ -135,13 +131,10 @@ public class UserController {
                 model.addAttribute("error", "Tên không được chứa số và các kí tự đặc biệt! ");
                 return "admin/user/createuser";
             }
-
             User sessionUser = Utility.getUserInSession();
             User user = new User();
             user.setPhone(phone);
             user.setPassword(passwordEncoder.encode(password));
-
-            // Định dạng lại tên (chữ cái đầu viết hoa)
             String formattedName = Arrays.stream(name.trim().toLowerCase().split("\\s+"))
                     .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
                     .collect(Collectors.joining(" "));
@@ -151,8 +144,6 @@ public class UserController {
             user.setCreatedBy(sessionUser.getName());
             user.setRole(roleService.getRole(2L));
             user.setUserStores(null);
-
-            // Kiểm tra xem tạo user có thành công không
             boolean isCreated = userService.createUser(user)!=null;
             if (isCreated) {
                 model.addAttribute("success", "Tạo người dùng thành công.");
@@ -271,6 +262,12 @@ public class UserController {
         session.setAttribute("user", updateUser);
         session.setAttribute("message", "Cập nhật thông tin thành công");
         return "redirect:/profile";
+    }
+    @GetMapping("/createstaff")
+    public String createStaff(Model model){
+       List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
+       model.addAttribute("stores",storeList);
+        return "admin/user/createstaff";
     }
 
 }

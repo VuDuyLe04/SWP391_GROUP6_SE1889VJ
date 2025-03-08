@@ -12,6 +12,7 @@ public interface IStoreService {
     Store findStoreById(long id);
     List<Store> getAllStores();
     Store saveStore(Store store);
+    List<Store> findStoresByCreatedBy(String createdBy);
     Page<Store> findStoresByCreatedBy(String createdBy, Pageable pageable);
 //    Page<Store> findStoresByStatus(StatusStoreEnum status, Pageable pageable);
     public Page<Store> findStoresByStatus(StatusStoreEnum status, String createdBy, Pageable pageable) ;

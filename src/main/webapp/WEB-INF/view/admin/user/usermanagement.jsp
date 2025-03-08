@@ -312,14 +312,18 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <a href="createuser" class="btn btn-primary mb-xs mt-xs mr-xs">
-                                            <i class="fa fa-plus mr-xs"></i>  <c:if test="${sessionScope.user.role.id == 1}">
-                                            Tạo người dùng
-                                        </c:if>
-                                            <c:if test="${sessionScope.user.role.id == 2}">
-                                                Tạo nhân viên
+
+                                        <c:if test="${sessionScope.user.role.id == 1}">
+
+                                            <a href="createuser" class="btn btn-primary mb-xs mt-xs mr-xs">
+                                                <i class="fa fa-plus mr-xs"></i>Tạo chủ sở hữu
+                                            </a>
                                             </c:if>
-                                        </a>
+                                        <c:if test="${sessionScope.user.role.id == 2}">
+                                            <a href="createstaff" class="btn btn-primary mb-xs mt-xs mr-xs">
+                                                <i class="fa fa-plus mr-xs"></i>Tạo nhân viên
+                                            </a>
+                                        </c:if>
 
                                     </div>
                                 </div>
