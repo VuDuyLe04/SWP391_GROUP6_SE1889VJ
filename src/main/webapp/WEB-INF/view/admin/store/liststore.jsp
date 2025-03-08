@@ -355,10 +355,12 @@
                                     </thead>
                                     <tbody>
                                     <c:if test="${storePage.content != null }">
+
                                         <c:forEach var="s" items="${storePage.content}" varStatus="status">
                                             <tr>
-                                            <td>${status.index + 1}</td>
-                                            <td><strong>${s.name}</strong></td>
+                                                <td>${storePage.number * storePage.size + status.index + 1}</td>
+
+                                                <td><strong>${s.name}</strong></td>
                                             <td>${s.address}</td>
                                                 <td>
                                                 <span class="label ${s.status == 'ACTIVE' ? 'label-success' : 'label-danger'} label-sm status-label">
@@ -396,18 +398,18 @@
                                 <c:set var="c" value="${storePage.number}"></c:set>
                                 <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
-                                        <a class="page-link" href="stores?page=${c==0 ? 0 : (c - 1)}&input=${input}&sort=${sort}&role=${roleId}">Trước</a>
+                                        <a class="page-link" href="stores?page=${c==0 ? 0 : (c - 1)}&input=${input}&sort=${sort}&status=${status}">Trước</a>
                                     </li>
                                     <c:forEach begin="0" end="${storePage.totalPages - 1}" var="i">
                                         <c:if test="${i >= c - 1 && i <= c + 1}">
-                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="stores?page=${i}&input=${input != null ? input : ''}&sort=${sort != null ? sort : 'normal'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a></li>
+                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="stores?page=${i}&input=${input != null ? input : ''}&sort=${sort != null ? sort : 'normal'}&status=${status != null ? status : 'ALL'}">${i + 1}</a></li>
                                         </c:if>
                                         <c:if test="${i == c- 2 || i == c+ 2}">
                                             <li><span>...</span></li>
                                         </c:if>
                                     </c:forEach>
                                     <li class="page-item ${c== storePage.totalPages -1?'disabled':''} ">
-                                        <a class="page-link" href="stores?page=${c== storePage.totalPages -1? storePage.totalPages -1: (c + 1)}&input=${input}&sort=${sort}&role=${roleId}">Sau</a>
+                                        <a class="page-link" href="stores?page=${c== storePage.totalPages -1? storePage.totalPages -1: (c + 1)}&input=${input}&sort=${sort}&status=${status}">Sau</a>
                                     </li>
                                 </ul>
                                 </c:if>
@@ -529,7 +531,8 @@
         }
     });
     function filterByStatus(value) {
-        const url = new URL(window.location.href);
+        const url = new URL(window.location.href);//lay doi tuong url hien tai
+        url.searchParams.delete('page');
         url.searchParams.set('status', value); // Luôn cập nhật giá trị status
 
         const input = url.searchParams.get('input'); // Lấy input từ URL (nếu có)
@@ -544,7 +547,7 @@
     function sortByCreatedAt(value) {
         const url = new URL(window.location.href);
         url.searchParams.set('sort', value); // Luôn cập nhật giá trị status
-
+        url.searchParams.delete('page');
         const input = url.searchParams.get('input'); // Lấy input từ URL (nếu có)
         if (input !== null && input.trim() !== '') {
             url.searchParams.set('input', input); // Giữ nguyên input nếu có
