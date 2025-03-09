@@ -26,7 +26,7 @@ public interface IUserService {
     Page<User> getUsersBySearch(String name, String phone, Pageable pageable);
     Page<User> findDistinctUsersByCreatedByAndByNameOrPhone(String createdBy,String input, Pageable pageable);
     Page<User> getUsersbyRoleID(Long id, Pageable pageable);
-
+    Page<User> findDistinctUsersByCreatedByAndStore(String createdBy,Long storeId, Pageable pageable);
     Page<User> getUsersByActive(boolean active, Pageable pageable);
 
     Page<User> getUsersByRoleIDAndActive(Long id, boolean active, Pageable pageable);

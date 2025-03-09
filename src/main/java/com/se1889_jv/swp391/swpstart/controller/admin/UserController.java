@@ -52,6 +52,7 @@ public class UserController {
                              @RequestParam(value = "role", required = false, defaultValue = "-1") String roleId,
                              @RequestParam(value = "active", required = false, defaultValue = "-1") String active,
                              @RequestParam(value = "page", required = false, defaultValue = "0") String page,
+                             @RequestParam(value = "storeId", required = false, defaultValue = "-1") String storeId,
                              Model model) {
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
         Pageable pageable = PageRequest.of(Integer.parseInt(page), 5, sort);
@@ -81,8 +82,14 @@ public class UserController {
 
         }
         else if(user.getRole().getName().equals("OWNER")){
+            List<Store> stores = storeService.findStoresByCreatedBy(userId);
+            model.addAttribute("stores", stores);
             if (input != null && !input.isEmpty()) {
                 users = userService.findDistinctUsersByCreatedByAndByNameOrPhone(userId,input.trim(),pageable);
+            }
+            if(storeId != null && !storeId.isEmpty() && !storeId.equals("-1")){
+                users = userService.findDistinctUsersByCreatedByAndStore(userId, Long.valueOf(storeId), pageable);
+                model.addAttribute("storeId", storeId);
             }
             else
                  users = userService.findDistinctUsersByUserStores_Store_CreatedBy(userId, pageable);
@@ -93,7 +100,13 @@ public class UserController {
 
 
         model.addAttribute("input", input != null ? input : "");
-        model.addAttribute("userPage", users);
+        if(users == null || users.getContent().isEmpty()) {
+            model.addAttribute("emptyList", "Không có tài khoản nào được tìm thấy !");
+        }
+        else{
+            model.addAttribute("userPage", users);
+        }
+
 
         return "admin/user/usermanagement";
     }
@@ -327,6 +340,7 @@ public class UserController {
             user.setPhone(staffDTO.getPhone());
             user.setPassword(passwordEncoder.encode(staffDTO.getPassword()));
             user.setRole(roleService.getRole(3L));
+            user.setCreatedBy(userId);
             User savedUser = userService.createUser(user);
 
             UserStore userStore = new UserStore();

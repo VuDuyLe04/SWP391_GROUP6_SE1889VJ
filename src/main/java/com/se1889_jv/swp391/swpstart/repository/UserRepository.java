@@ -24,7 +24,9 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
             "   SELECT MIN(u2.id) FROM User u2 " +
             "   JOIN UserStore us ON u2.id = us.user.id " +
             "   JOIN Store s ON us.store.id = s.id " +
+            "   JOIN u2.role r " +  // Thêm join với bảng Role
             "   WHERE s.createdBy = :createdBy " +
+            "   AND r.name = 'STAFF' " +  // Lọc theo role name STAFF
             "   GROUP BY u2.phone" +
             ")")
     Page<User> findDistinctUsersByStoreCreatedBy(@Param("createdBy") String createdBy, Pageable pageable);

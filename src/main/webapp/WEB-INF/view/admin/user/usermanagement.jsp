@@ -299,14 +299,15 @@
                                             </div>
                                             <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>
                                         </c:if>
-<%--                                        <c:if test="${sessionScope.user.role.id == 2}">--%>
-<%--                                            <select id="store" name="store" class="form-control">--%>
-<%--                                                <option value="0">All Status</option>--%>
-<%--                                                <c:forEach items="${stores}" var="s">--%>
-<%--                                                    <option value="${s.id}">${s.name}</option>--%>
-<%--                                                </c:forEach>--%>
-<%--                                            </select>--%>
-<%--                                        </c:if>--%>
+                                        <c:if test="${sessionScope.user.role.id == 2}">
+                                            <select id="storeId" name="storeId" class="form-control" onchange="filterByStore(this.value)">
+                                            <option value="-1" ${storeId == -1 ? 'selected' : ''}>Tất cả cửa hàng</option>
+                                            <c:forEach items="${stores}" var="s">
+                                                <option value="${s.id}" ${storeId == s.id ? 'selected' : ''}>${s.name}</option>
+                                            </c:forEach>
+                                        </select>
+
+                                        </c:if>
 
                                     </form>
                                 </div>
@@ -343,6 +344,7 @@
                                             <th><i class="fa fa-cogs mr-xs"></i>Hành động</th>
                                         </tr>
                                     </thead>
+                                    ${emptyList}
                                     <tbody>
                                     <c:if test="${userPage != null }">
                                     <c:forEach var="u" items="${userPage.content}" varStatus="status">
@@ -394,16 +396,29 @@
 
                                     </tbody>
                                 </table>
-
+                                <c:if test="${not empty userPage}">
                                 <c:set var="c" value="${userPage.number}"></c:set>
                                 <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
-                                        <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
+
+                                        <c:if test="${sessionScope.user.role.id == 1}">
+                                            <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
+                                        </c:if>
+                                        <c:if test="${sessionScope.user.role.id == 2}">
+                                            <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&storeId=${storeId}">Trước</a>
+                                        </c:if>
                                     </li>
 
                                     <c:forEach begin="0" end="${userPage.totalPages - 1}" var="i">
                                         <c:if test="${i >= c - 1 && i <= c + 1}">
-                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a>
+                                            <c:if test="${sessionScope.user.role.id == 1}">
+                                                <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a>
+
+                                            </c:if>
+                                            <c:if test="${sessionScope.user.role.id == 2}">
+                                                <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&storeId=${storeId != null ? storeId : '-1'}">${i + 1}</a>
+
+                                            </c:if>
 
 
                                             </li>
@@ -417,10 +432,17 @@
 
 
                                     <li class="page-item ${c== userPage.totalPages -1?'disabled':''} ">
+                                        <c:if test="${sessionScope.user.role.id == 1}">
                                         <a class="page-link" href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}&input=${input}&active=${active}&role=${roleId}">Sau</a>
+                                        </c:if>
+                                        <c:if test="${sessionScope.user.role.id == 2}">
+                                            <a class="page-link" href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}&input=${input}&storeId=${storeId}">Sau</a>
+                                        </c:if>
+
                                     </li>
 
                                 </ul>
+                                </c:if>
 
                             </div>
 
@@ -536,6 +558,16 @@
             document.getElementById("search-form").submit();
         }
     });
+    function filterByStore(value) {
+        const url = new URL(window.location.href);//lay doi tuong url hien tai
+        url.searchParams.delete('page');
+        url.searchParams.set('storeId', value); // Luôn cập nhật giá trị status
+        url.searchParams.delete('input'); // Nếu input rỗng/null thì xóa khỏi URL
+        url.searchParams.delete('page'); // Nếu input rỗng/null thì xóa khỏi URL
+
+
+        window.location.href = url.toString(); // Điều hướng đến URL mới
+    }
 </script>
 
 

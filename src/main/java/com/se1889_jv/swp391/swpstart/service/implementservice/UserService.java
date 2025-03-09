@@ -122,6 +122,20 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public Page<User> findDistinctUsersByCreatedByAndStore(String createdBy, Long storeId, Pageable pageable) {
+        Page<User> users = this.findDistinctUsersByUserStores_Store_CreatedBy(createdBy, pageable);
+
+        // Lọc danh sách theo điều kiện name hoặc phone chứa input
+        List<User> filteredUsers = users.stream()
+                .filter(user -> user.getUserStores().stream()
+                        .anyMatch(us -> us.getStore().getId() == storeId)) // Đóng filter đúng chỗ
+                .collect(Collectors.toList()); // collect đúng vị trí
+
+        // Chuyển danh sách đã lọc thành Page
+        return new PageImpl<>(filteredUsers, pageable, filteredUsers.size());
+    }
+
+    @Override
     public Page<User> getUsersByActive(boolean active, Pageable pageable) {
         return this.userRepository.findUsersByActive(active,pageable);
     }
