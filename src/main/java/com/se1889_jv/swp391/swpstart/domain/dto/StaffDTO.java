@@ -15,6 +15,7 @@ public class StaffDTO {
 
     @NotBlank(message = "Tên không được để trống")
     @Size(max = 100, message = "Tên không được vượt quá 100 ký tự")
+    @Pattern(regexp = "^[a-zA-ZÀ-ỹ\\s]+$", message = "Tên không được chứa số hoặc ký tự đặc biệt!")
     private String name;
 
     @NotBlank(message = "Số điện thoại không được để trống")

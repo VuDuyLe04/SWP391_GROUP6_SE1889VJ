@@ -303,12 +303,21 @@ public class UserController {
             model.addAttribute("stores", storeList);
             return "admin/user/createstaff";
         }
-
-        if (userStoreService.getUserStoreByPhoneAndStore(staffDTO.getPhone(), staffDTO.getStoreId()) != null) {
+        String userId = String.valueOf(Utility.getUserInSession().getId());
+        UserStore existingUserStore = userStoreService.findByUser_PhoneAndStore_CreatedBy(staffDTO.getPhone(), userId);
+        if (existingUserStore != null ) {
+            if(existingUserStore.getStore().getId() == staffDTO.getStoreId()) {
+                String storeName = storeService.findStoreById(staffDTO.getStoreId()).getName();
+                model.addAttribute("phoneError", "Số điện thoại đã tồn tại trong cửa hàng " + storeName + " !");
+            }
+            else{
+                if(!existingUserStore.getUser().getName().equals(staffDTO.getName())){
+                    model.addAttribute("nameError", "Tên không trùng với số điện thoại đã tồn tại đã đăng kí!");
+                }
+            }
             List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
             model.addAttribute("stores", storeList);
-            String storeName = storeService.findStoreById(staffDTO.getStoreId()).getName();
-            model.addAttribute("phoneError", "Số điện thoại đã tồn tại trong cửa hàng " + storeName + " !");
+
             return "admin/user/createstaff";
         }
 

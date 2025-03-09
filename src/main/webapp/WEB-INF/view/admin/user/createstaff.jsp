@@ -439,7 +439,7 @@
                                                placeholder="Nhập tên nhân viên"
                                                onblur="checkName()"/>
                                         <form:errors path="name" cssClass="text-danger"/>
-                                        <span class="text-danger" id="nameError"></span>
+                                        <span class="text-danger" id="nameError">${nameError}</span>
                                     </div>
                                 </div>
 
@@ -572,7 +572,7 @@
         const button = document.getElementById("submitBtn");
 
         // Biểu thức chính quy kiểm tra tên hợp lệ
-        const nameRegex = /^[a-zA-Z\s]+$/;
+        const nameRegex = /^[a-zA-ZÀ-ỹ\s]+$/;
 
         if (name.length > 0 && !nameRegex.test(name.trim())) {
             nameError.textContent = "Tên không đuợc chứa số và các kí tự đặc biệt! ";
