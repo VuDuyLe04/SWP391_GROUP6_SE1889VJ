@@ -380,7 +380,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           <!-- start: page -->
             <div class="row">
                 <div class="col-lg-12">
-                    <section class="panel">
+                    <section class="panel" style="margin-top: -72px;">
                         <header class="panel-heading">
                             <div class="panel-actions"></div>
                   <h2 class="panel-title"></h2>

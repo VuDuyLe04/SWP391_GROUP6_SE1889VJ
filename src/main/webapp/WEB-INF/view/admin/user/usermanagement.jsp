@@ -371,6 +371,7 @@
                                             </c:if>
 
                                             <td>
+                                                <c:if test="${sessionScope.user.role.id == 1}">
                                                 <button
                                                         class="btn btn-default btn-sm mr-xs view-button"
                                                         title="Xem"
@@ -387,7 +388,7 @@
 
                                                     <i class="fa fa-eye"></i>
                                                 </button>
-
+                                                </c:if>
                                                 <c:if test="${sessionScope.user.role.id == 1}">
                                                     <a href="updateuser?id=${u.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
                                                         <i class="fa fa-pencil"></i>
