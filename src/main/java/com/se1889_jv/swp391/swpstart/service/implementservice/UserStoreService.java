@@ -38,7 +38,7 @@ public class UserStoreService implements IUserStoreService {
 
     @Override
     public UserStore findUserStore(long userId) {
-        return null;
+        return userStoreRepository.findById(userId);
     }
 
     @Override

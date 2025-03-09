@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -59,7 +60,7 @@ public class UserController {
         Page<User> users = null;
         User user = Utility.getUserInSession();
         String userId = String.valueOf(user.getId());
-        if(user.getRole().getName().equals("ADMIN")){
+        if (user.getRole().getName().equals("ADMIN")) {
             if (input != null && !input.isEmpty()) {
                 users = userService.getUsersBySearch(input.trim(), input.trim(), pageable);
             } else {
@@ -80,30 +81,26 @@ public class UserController {
             model.addAttribute("roleId", roleId);
             model.addAttribute("roles", roleService.getAllRoles());
 
-        }
-        else if(user.getRole().getName().equals("OWNER")){
+        } else if (user.getRole().getName().equals("OWNER")) {
             List<Store> stores = storeService.findStoresByCreatedBy(userId);
             model.addAttribute("stores", stores);
             if (input != null && !input.isEmpty()) {
-                users = userService.findDistinctUsersByCreatedByAndByNameOrPhone(userId,input.trim(),pageable);
+                users = userService.findDistinctUsersByCreatedByAndByNameOrPhone(userId, input.trim(), pageable);
             }
-            if(storeId != null && !storeId.isEmpty() && !storeId.equals("-1")){
+            if (storeId != null && !storeId.isEmpty() && !storeId.equals("-1")) {
                 users = userService.findDistinctUsersByCreatedByAndStore(userId, Long.valueOf(storeId), pageable);
                 model.addAttribute("storeId", storeId);
-            }
-            else
-                 users = userService.findDistinctUsersByUserStores_Store_CreatedBy(userId, pageable);
+            } else
+                users = userService.findDistinctUsersByUserStores_Store_CreatedBy(userId, pageable);
 
 
         }
-
 
 
         model.addAttribute("input", input != null ? input : "");
-        if(users == null || users.getContent().isEmpty()) {
+        if (users == null || users.getContent().isEmpty()) {
             model.addAttribute("emptyList", "Không có tài khoản nào được tìm thấy !");
-        }
-        else{
+        } else {
             model.addAttribute("userPage", users);
         }
 
@@ -112,9 +109,9 @@ public class UserController {
     }
 
     @GetMapping("/checkphone")
-    public String checkPhone(@RequestParam(value="createdPhone",required = false) String createdPhone,
-                             @RequestParam(value="updatedPhone",required = false) String updatedPhone,
-                             @RequestParam(value="id",required = false) String id,
+    public String checkPhone(@RequestParam(value = "createdPhone", required = false) String createdPhone,
+                             @RequestParam(value = "updatedPhone", required = false) String updatedPhone,
+                             @RequestParam(value = "id", required = false) String id,
                              Model model) {
         String error = null;
         String phone = (updatedPhone != null ? updatedPhone : createdPhone).trim();
@@ -131,7 +128,7 @@ public class UserController {
         }
 
         model.addAttribute("error", error);
-        
+
         if (updatedPhone != null && id != null) {
             User user = userService.findById(Long.parseLong(id));
             user.setPhone(updatedPhone);
@@ -142,6 +139,7 @@ public class UserController {
             return "admin/user/createuser";
         }
     }
+
     @GetMapping("/createuser")
     public String createUser(@RequestParam(value = "phone", required = false) String phone,
                              @RequestParam(value = "password", required = false) String password,
@@ -180,13 +178,13 @@ public class UserController {
             user.setCreatedBy(sessionUser.getName());
             user.setRole(roleService.getRole(2L));
             user.setUserStores(null);
-            boolean isCreated = userService.createUser(user)!=null;
+            boolean isCreated = userService.createUser(user) != null;
             if (isCreated) {
                 model.addAttribute("success", "Tạo người dùng thành công.");
             } else {
                 model.addAttribute("error", "Không thể tạo người dùng, vui lòng thử lại.");
             }
-        } else{
+        } else {
 
         }
 
@@ -195,21 +193,21 @@ public class UserController {
 
 
     @GetMapping("/updateuser")
-    public String updateUser(@RequestParam (value="id", required = false) String id,
-                             @RequestParam(value="phone",required = false) String phone,
+    public String updateUser(@RequestParam(value = "id", required = false) String id,
+                             @RequestParam(value = "phone", required = false) String phone,
 //                             @RequestParam(value="password",required = false) String password,
-                             @RequestParam(value="name",required = false) String name,
-                             @RequestParam(value="active",defaultValue = "false") boolean active,
-                             Model model){
+                             @RequestParam(value = "name", required = false) String name,
+                             @RequestParam(value = "active", defaultValue = "false") boolean active,
+                             Model model) {
         User user = new User();
         user = userService.findById(Long.parseLong(id));
-        if(phone != null && phone.matches("^[0-9]{10}$")  && name!=null && name.matches("^[a-zA-Z\s]+$")) {
-            if(userService.getUserByPhone(phone) == null)  user.setPhone(phone);
+        if (phone != null && phone.matches("^[0-9]{10}$") && name != null && name.matches("^[a-zA-Z\s]+$")) {
+            if (userService.getUserByPhone(phone) == null) user.setPhone(phone);
             user.setName(name);
             user.setActive(active);
             userService.createUser(user);
-            if(user.getPhone().equals(phone)){
-                model.addAttribute("success","Cập nhật người dùng thành công!");
+            if (user.getPhone().equals(phone)) {
+                model.addAttribute("success", "Cập nhật người dùng thành công!");
             }
         }
 
@@ -218,7 +216,7 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String getProfilePage(Model model){
+    public String getProfilePage(Model model) {
         User userSession = Utility.getUserInSession();
         User user = this.userService.findById(userSession.getId());
         model.addAttribute("user", user);
@@ -231,13 +229,13 @@ public class UserController {
             @RequestParam(value = "oldPassword", required = false) String oldPassword,
             @RequestParam(value = "newPassword", required = false) String newPassword,
             @RequestParam(value = "repeatNewPassword", required = false) String repeatNewPassword
-            ){
+    ) {
         User userSession = Utility.getUserInSession();
         User user = this.userService.findById(userSession.getId());
 
         if (passwordEncoder.matches(oldPassword, user.getPassword())) {
             if (newPassword.isEmpty() || newPassword.length() < 3) {
-                model.addAttribute("errorNew" ,"Mật khẩu phải có tối thiểu 3 ký tự");
+                model.addAttribute("errorNew", "Mật khẩu phải có tối thiểu 3 ký tự");
                 model.addAttribute("user", userSession);
                 model.addAttribute("oldPassword", oldPassword);
                 model.addAttribute("newPassword", newPassword);
@@ -263,8 +261,7 @@ public class UserController {
                 session.setAttribute("user", updateUser);
                 session.setAttribute("message", "Đổi mật khẩu thành công");
                 return "redirect:/profile";
-            }
-            else  {
+            } else {
                 model.addAttribute("user", userSession);
                 model.addAttribute("errorReNew", "Mật khẩu không khớp");
                 model.addAttribute("oldPassword", oldPassword);
@@ -286,7 +283,7 @@ public class UserController {
     }
 
     @PostMapping("/profile/update")
-    public String handleUpdateProfile(Model model,HttpSession session, @Valid @ModelAttribute("user") User user, BindingResult bindingResult){
+    public String handleUpdateProfile(Model model, HttpSession session, @Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
         User userSession = Utility.getUserInSession();
         if (bindingResult.hasErrors()) {
 
@@ -299,6 +296,7 @@ public class UserController {
         session.setAttribute("message", "Cập nhật thông tin thành công");
         return "redirect:/profile";
     }
+
     @GetMapping("/createstaff")
     public String createStaff(Model model) {
         List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
@@ -308,9 +306,9 @@ public class UserController {
     }
 
     @PostMapping("/createstaff")
-    public String handleCreateStaff(@Valid @ModelAttribute("StaffDTO") StaffDTO staffDTO, 
-                                  BindingResult bindingResult, 
-                                  Model model) {
+    public String handleCreateStaff(@Valid @ModelAttribute("StaffDTO") StaffDTO staffDTO,
+                                    BindingResult bindingResult,
+                                    Model model) {
         if (bindingResult.hasErrors()) {
             List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
             model.addAttribute("stores", storeList);
@@ -318,16 +316,14 @@ public class UserController {
         }
         String userId = String.valueOf(Utility.getUserInSession().getId());
         UserStore existingUserStore = userStoreService.findByUser_PhoneAndStore_CreatedBy(staffDTO.getPhone(), userId);
-        if (existingUserStore != null ) {
-            if(existingUserStore.getStore().getId() == staffDTO.getStoreId()) {
+        if (existingUserStore != null) {
+            if (existingUserStore.getStore().getId() == staffDTO.getStoreId()) {
                 String storeName = storeService.findStoreById(staffDTO.getStoreId()).getName();
                 model.addAttribute("phoneError", "Số điện thoại đã tồn tại trong cửa hàng " + storeName + " !");
-            }
-            else{
-                if(!existingUserStore.getUser().getName().equals(staffDTO.getName())){
+            } else {
+                if (!existingUserStore.getUser().getName().equals(staffDTO.getName())) {
                     model.addAttribute("nameError", "Tên không trùng với số điện thoại đã tồn tại đã đăng kí!");
-                }
-                else{
+                } else {
                     UserStore userStore = new UserStore();
                     userStore.setUser(existingUserStore.getUser());
                     userStore.setStore(storeService.findStoreById(staffDTO.getStoreId()));
@@ -358,7 +354,7 @@ public class UserController {
             userStore.setUser(savedUser);
             userStore.setStore(storeService.findStoreById(staffDTO.getStoreId()));
             userStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf("ACCESSED"));
-            
+
             if (userStoreService.saveUserStore(userStore) != null) {
                 model.addAttribute("success", "Tạo nhân viên thành công!");
             }
@@ -370,6 +366,7 @@ public class UserController {
         model.addAttribute("stores", storeList);
         return "admin/user/createstaff";
     }
+
     @GetMapping("/updatestaff/{id}")
     public String updateStaff(@PathVariable Long id, Model model) {
         User user = userService.findById(id);
@@ -378,7 +375,21 @@ public class UserController {
         return "admin/user/updatestaff";
     }
 
+    @GetMapping("/updatestatus")
+    public String updateStaffStatus(
+            @RequestParam String userId,
+            @RequestParam String userStoreId,
+            @RequestParam String status
 
+    ) {
+        UserStore updatedUserStore = userStoreService.findUserStore(Long.parseLong(userStoreId));
+        if (updatedUserStore != null) {
+            updatedUserStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf(status));
+            UserStore savedUserStore = userStoreService.saveUserStore(updatedUserStore);
+        }
+        return "redirect:/updatestaff/" + Long.parseLong(userId);
+
+    }
 }
 
 

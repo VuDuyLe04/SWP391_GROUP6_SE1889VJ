@@ -239,6 +239,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 </header>
                 <div class="panel-body">
                   <h3>Thông Tin Nhân Viên</h3>
+                  ${success} ${error}
                   <table class="table table-bordered">
                     <tr>
                       <th>Tên Nhân Viên</th>
@@ -258,54 +259,47 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                     </tr>
                   </table>
 
+                  <!-- Thêm form ẩn để submit -->
+
                   <!-- Bảng danh sách cửa hàng -->
                   <h3>Chỉnh sửa quyền truy cập các cửa hàng</h3>
-                  <form action="updateUserStores" method="post">
-                    <input type="hidden" name="userId" value="${user.id}" />
-                    <table class="table table-bordered">
-                      <thead>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Tên Cửa Hàng</th>
+                        <th>Trạng Thái Truy Cập</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <c:forEach var="userStore" items="${user.userStores}">
                         <tr>
-                          <th>Tên Cửa Hàng</th>
-                          <th>Trạng Thái Truy Cập</th>
+                          <td>${userStore.store.name}</td>
+                          <td>
+                            <div style="display: flex; align-items: center">
+                              <label class="switch">
+                                <input type="checkbox"
+                                name="accessStoreStatus_${userStore.id}"
+                                ${userStore.accessStoreStatus == 'ACCESSED' ?
+                                'checked' : ''}
+                                onchange="updateUserStoreAccess('${user.id}',
+                                '${userStore.id}', this)">
+                                <span class="slider"></span>
+                              </label>
+                              <span class="status-text">
+                                ${userStore.accessStoreStatus == 'ACCESSED' ?
+                                'Truy cập' : 'Cấm'}
+                              </span>
+                            </div>
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        <c:forEach var="userStore" items="${user.userStores}">
-                          <tr>
-                            <td>${userStore.store.name}</td>
-                            <td>
-                              <div style="display: flex; align-items: center">
-                                <label class="switch">
-                                  <input type="checkbox"
-                                  name="accessStoreStatus_${userStore.id}"
-                                  value="ACCESSED" ${userStore.accessStoreStatus
-                                  == 'ACCESSED' ? 'checked' : ''}
-                                  onchange="updateStatusText(this)">
-                                  <span class="slider"></span>
-                                </label>
-                                <span class="status-text">
-                                  ${userStore.accessStoreStatus == 'ACCESSED' ?
-                                  'Truy cập' : 'Cấm'}
-                                </span>
-                              </div>
-                            </td>
-                          </tr>
-                        </c:forEach>
-                      </tbody>
-                    </table>
-                    <div class="button-container">
-                      <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-save"></i> Lưu trạng thái
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-success"
-                        onclick="window.location.href='/createstore'"
-                      >
-                        <i class="fa fa-plus"></i> Thêm cửa hàng
-                      </button>
-                    </div>
-                  </form>
+                      </c:forEach>
+                    </tbody>
+                  </table>
+                  <div class="button-container">
+                    <button type="button" class="btn btn-success">
+                      <i class="fa fa-plus"></i> Thêm cửa hàng
+                    </button>
+                  </div>
                 </div>
               </section>
             </div>
@@ -316,121 +310,56 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     </section>
 
     <script>
-      function checkPhone(phone) {
-        const phoneRegex = /^[0-9]{10}$/;
-        const phoneError = document.getElementById("phoneError");
-        const button = document.getElementById("submitBtn");
-
-        if (phone.length > 0 && !phoneRegex.test(phone.trim())) {
-          phoneError.textContent =
-            "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số!";
-          button.disabled = true;
-        } else {
-          phoneError.textContent = "";
-          button.disabled = false;
-        }
-      }
-
-      function checkPassword() {
-        const password = document.getElementById("password").value;
-        const passError = document.getElementById("passError");
-        const button = document.getElementById("submitBtn");
-        const passRegex =
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/;
-
-        if (password.length > 0 && !passRegex.test(password)) {
-          passError.textContent =
-            "Mật khẩu không hợp lệ. Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!";
-          button.disabled = true;
-        } else {
-          passError.textContent = "";
-          button.disabled = false;
-        }
-      }
-
-      function checkRePassword() {
-        const password = document.getElementById("password").value;
-        const repassword = document.getElementById("repassword").value;
-        const repassError = document.getElementById("repassError");
-        const button = document.getElementById("submitBtn");
-
-        if (repassword.length > 0 && password !== repassword) {
-          repassError.textContent =
-            "Mật khẩu không khớp. Xin vui lòng nhập lại!";
-          button.disabled = true;
-        } else {
-          repassError.textContent = "";
-          button.disabled = false;
-        }
-      }
-
-      function checkName() {
-        const name = document.getElementById("name").value.trim();
-        const nameError = document.getElementById("nameError");
-        const button = document.getElementById("submitBtn");
-        const nameRegex = /^[a-zA-ZÀ-ỹ\s]+$/;
-
-        if (name.length > 0 && !nameRegex.test(name.trim())) {
-          nameError.textContent =
-            "Tên không được chứa số và các kí tự đặc biệt!";
-          button.disabled = true;
-        } else {
-          nameError.textContent = "";
-          button.disabled = false;
-        }
-      }
-
-      function updateStatusText(checkbox) {
+      function updateUserStoreAccess(userId, userStoreId, checkbox) {
+        const status = checkbox.checked ? "ACCESSED" : "ACCESSDENY";
         const statusText = checkbox.parentElement.nextElementSibling;
-        statusText.textContent = checkbox.checked
-          ? "Đã truy cập"
-          : "Chưa truy cập";
-        checkbox.value = checkbox.checked ? "ACCESSED" : "NOT_ACCESSED";
-      }
 
-      document
-        .getElementById("submitBtn")
-        .addEventListener("click", function (event) {
-          let isValid = true;
-          let phone = document.getElementById("phone").value.trim();
-          let password = document.getElementById("password").value.trim();
-          let repassword = document.getElementById("repassword").value.trim();
-          let name = document.getElementById("name").value.trim();
-
-          document.getElementById("phoneError").textContent = "";
-          document.getElementById("passError").textContent = "";
-          document.getElementById("repassError").textContent = "";
-          document.getElementById("nameError").textContent = "";
-
-          if (phone === "") {
-            document.getElementById("phoneError").textContent =
-              "Vui lòng nhập số điện thoại!";
-            isValid = false;
-          }
-
-          if (password === "") {
-            document.getElementById("passError").textContent =
-              "Vui lòng nhập mật khẩu!";
-            isValid = false;
-          }
-
-          if (repassword === "") {
-            document.getElementById("repassError").textContent =
-              "Vui lòng nhập lại mật khẩu!";
-            isValid = false;
-          }
-
-          if (name === "") {
-            document.getElementById("nameError").textContent =
-              "Vui lòng nhập tên!";
-            isValid = false;
-          }
-
-          if (!isValid) {
-            event.preventDefault();
-          }
+        // Log để debug
+        console.log("Updating access:", {
+          userId: userId,
+          userStoreId: userStoreId,
+          status: status,
         });
+
+        // Gửi request
+        window.location.href =
+          "/updatestatus?" +
+          "userId=" +
+          userId +
+          "&userStoreId=" +
+          userStoreId +
+          "&status=" +
+          status;
+      }
     </script>
+
+    <!-- Hiển thị thông báo thành công/thất bại -->
+    <c:if test="${not empty success}">
+      <div class="alert alert-success">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+        ${success}
+      </div>
+    </c:if>
+    <c:if test="${not empty error}">
+      <div class="alert alert-danger">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+        ${error}
+      </div>
+    </c:if>
 
     <!-- Vendor -->
     <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>

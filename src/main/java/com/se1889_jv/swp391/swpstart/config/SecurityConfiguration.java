@@ -56,6 +56,7 @@ public class SecurityConfiguration {
     public AuthenticationSuccessHandler customSuccessHandler(UserService userService) {
         return new CustomSuccessHandler(userService);
     }
+
 //
 //
 //    //Don't touch please
