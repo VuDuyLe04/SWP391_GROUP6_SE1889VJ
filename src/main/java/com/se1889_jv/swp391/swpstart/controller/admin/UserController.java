@@ -370,7 +370,15 @@ public class UserController {
     @GetMapping("/updatestaff/{id}")
     public String updateStaff(@PathVariable Long id, Model model) {
         User user = userService.findById(id);
-
+        List<Store> stores = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
+        List<Store> userStores = user.getUserStores()
+                .stream()
+                .map(UserStore::getStore) // Lấy store từ UserStore
+                .collect(Collectors.toList());
+        List<Store> availableStores = stores.stream()
+                .filter(store -> !userStores.contains(store)) // Lọc các store chưa có
+                .collect(Collectors.toList());
+        model.addAttribute("stores", availableStores);
         model.addAttribute("user", user);
         return "admin/user/updatestaff";
     }
@@ -389,6 +397,21 @@ public class UserController {
         }
         return "redirect:/updatestaff/" + Long.parseLong(userId);
 
+    }
+    @GetMapping("/savestore")
+    public String saveSelectedStores(@RequestParam("selectedStores") List<Long> selectedStoreIds,
+                                     @RequestParam("userId") String userId,
+                                     Model model) {
+        // In ra danh sách ID của các store đã chọn
+       for (Long selectedStoreId : selectedStoreIds) {
+           UserStore userStore = new UserStore();
+           userStore.setStore(storeService.findStoreById(selectedStoreId));
+           userStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf("ACCESSED"));
+           userStore.setUser(userService.findById(Long.parseLong(userId)));
+           userStoreService.saveUserStore(userStore);
+       }
+
+        return "redirect:/updatestaff/" + Long.parseLong(userId);
     }
 }
 

@@ -296,9 +296,17 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                     </tbody>
                   </table>
                   <div class="button-container">
-                    <button type="button" class="btn btn-success">
-                      <i class="fa fa-plus"></i> Thêm cửa hàng
-                    </button>
+
+                     Thêm cửa hàng cho nhân viên
+                      <form action="/savestore">
+                        <input type="hidden" name="userId" value="${user.id}">
+                          <c:forEach var="store" items="${stores}">
+                          <div>
+                              <input type="checkbox" name="selectedStores" value="${store.id}" id="store_${store.id}">
+                              <label for="store_${store.id}">${store.name} </label>
+                          </div>
+                          </c:forEach>
+                          <button type="submit">Xác nhận</button>
                   </div>
                 </div>
               </section>
