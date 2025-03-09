@@ -327,6 +327,17 @@ public class UserController {
                 if(!existingUserStore.getUser().getName().equals(staffDTO.getName())){
                     model.addAttribute("nameError", "Tên không trùng với số điện thoại đã tồn tại đã đăng kí!");
                 }
+                else{
+                    UserStore userStore = new UserStore();
+                    userStore.setUser(existingUserStore.getUser());
+                    userStore.setStore(storeService.findStoreById(staffDTO.getStoreId()));
+                    userStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf("ACCESSED"));
+
+                    if (userStoreService.saveUserStore(userStore) != null) {
+                        model.addAttribute("success", "Tạo nhân viên thành công!");
+                    }
+
+                }
             }
             List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
             model.addAttribute("stores", storeList);
@@ -359,6 +370,14 @@ public class UserController {
         model.addAttribute("stores", storeList);
         return "admin/user/createstaff";
     }
+    @GetMapping("/updatestaff/{id}")
+    public String updateStaff(@PathVariable Long id, Model model) {
+        User user = userService.findById(id);
+
+        model.addAttribute("user", user);
+        return "admin/user/updatestaff";
+    }
+
 
 }
 

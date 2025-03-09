@@ -387,9 +387,18 @@
 
                                                     <i class="fa fa-eye"></i>
                                                 </button>
-                                                <a href="updateuser?id=${u.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
-                                                    <i class="fa fa-pencil"></i>
-                                                </a>
+
+                                                <c:if test="${sessionScope.user.role.id == 1}">
+                                                    <a href="updateuser?id=${u.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+                                            </c:if>
+                                                <c:if test="${sessionScope.user.role.id == 2}">
+                                                    <a href="updatestaff/${u.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+                                                </c:if>
+
                                             </td>
                                         </tr>
                                     </c:forEach>
