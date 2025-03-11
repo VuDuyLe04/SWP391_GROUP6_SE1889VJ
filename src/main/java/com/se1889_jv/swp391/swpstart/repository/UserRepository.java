@@ -15,8 +15,10 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
-
+    User findByPhoneAndPassword(String phone, String password);
     User findByPhone(String phone);
+    List<User> findByRoleIdIn(List<Long> roleIds);
+
     Page<User> findUsersByNameContainingOrPhoneContaining(String name, String phone, Pageable pageable);
     boolean existsByPhone(String phone);
     @Query("SELECT u FROM User u " +

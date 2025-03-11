@@ -18,6 +18,8 @@ public interface IUserService {
     User registerDTOtoUser(RegisterDTO registerDTO);
     boolean checkPhoneExist(String phone);
     List<UserStore> getAllUserStores(User user);
+    User findByPhoneAndPassword(String phone, String password);
+    List<User> findByRoleIdIn(List<Long> roleIds);
 
     User updateUser(User user);
 

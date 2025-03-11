@@ -315,33 +315,13 @@ public class UserController {
             return "admin/user/createstaff";
         }
         String userId = String.valueOf(Utility.getUserInSession().getId());
-        UserStore existingUserStore = userStoreService.findByUser_PhoneAndStore_CreatedBy(staffDTO.getPhone(), userId);
-        if (existingUserStore != null) {
-            if (existingUserStore.getStore().getId() == staffDTO.getStoreId()) {
-                String storeName = storeService.findStoreById(staffDTO.getStoreId()).getName();
-                model.addAttribute("phoneError", "Số điện thoại đã tồn tại trong cửa hàng " + storeName + " !");
-            } else {
-                if (!existingUserStore.getUser().getName().equals(staffDTO.getName())) {
-                    model.addAttribute("nameError", "Tên không trùng với số điện thoại đã tồn tại đã đăng kí!");
-                } else {
-                    UserStore userStore = new UserStore();
-                    userStore.setUser(existingUserStore.getUser());
-                    userStore.setStore(storeService.findStoreById(staffDTO.getStoreId()));
-                    userStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf("ACCESSED"));
-
-                    if (userStoreService.saveUserStore(userStore) != null) {
-                        model.addAttribute("success", "Tạo nhân viên thành công!");
-                    }
-
-                }
-            }
+        User existingUser = userService.getUserByPhone(staffDTO.getPhone());
+        if (existingUser != null) {
+            model.addAttribute("phoneError", "Số điện thoại đã tồn tại !");
             List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
             model.addAttribute("stores", storeList);
-
             return "admin/user/createstaff";
-        }
-
-        try {
+        } else {
             User user = new User();
             user.setName(staffDTO.getName());
             user.setPhone(staffDTO.getPhone());
@@ -358,13 +338,10 @@ public class UserController {
             if (userStoreService.saveUserStore(userStore) != null) {
                 model.addAttribute("success", "Tạo nhân viên thành công!");
             }
-        } catch (Exception e) {
-            model.addAttribute("error", "Có lỗi xảy ra khi tạo nhân viên: " + e.getMessage());
+            List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
+            model.addAttribute("stores", storeList);
+            return "admin/user/createstaff";
         }
-
-        List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
-        model.addAttribute("stores", storeList);
-        return "admin/user/createstaff";
     }
 
     @GetMapping("/updatestaff/{id}")

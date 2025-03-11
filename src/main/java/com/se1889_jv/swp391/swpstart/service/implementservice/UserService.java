@@ -63,6 +63,7 @@ public class UserService implements IUserService {
         return null;
     }
 
+
     @Override
     public User createUser(User user) {
 
@@ -150,6 +151,16 @@ public class UserService implements IUserService {
     public List<UserStore> getAllUserStores(User user) {
 
         return user.getUserStores();
+    }
+
+    @Override
+    public User findByPhoneAndPassword(String phone, String password) {
+        return userRepository.findByPhoneAndPassword(phone, password);
+    }
+
+    @Override
+    public List<User> findByRoleIdIn(List<Long> roleIds) {
+        return userRepository.findByRoleIdIn(roleIds);
     }
 
     @Override

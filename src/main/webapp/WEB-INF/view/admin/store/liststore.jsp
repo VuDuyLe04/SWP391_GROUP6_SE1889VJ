@@ -464,19 +464,19 @@
                 <!-- Thống kê -->
                 <div class="stats-container">
                     <div class="stat-card">
-                        <div class="stat-value" id="modal-totalCustomers">0</div>
+                        <div class="stat-value" id="modal-totalCustomers"></div>
                         <div class="stat-label">Khách hàng</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="modal-totalWarehouses">0</div>
+                        <div class="stat-value" id="modal-totalWarehouses"></div>
                         <div class="stat-label">Kho hàng</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="modal-totalProducts">0</div>
+                        <div class="stat-value" id="modal-totalProducts"></div>
                         <div class="stat-label">Sản phẩm</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="modal-totalUserStores">0</div>
+                        <div class="stat-value" id="modal-totalUserStores"></div>
                         <div class="stat-label">Nhân viên</div>
                     </div>
                 </div>
@@ -505,10 +505,12 @@
             const createdAt = $(this).attr('data-createdAt');
             const updatedAt = $(this).attr('data-updatedAt')
             // Xử lý các giá trị số liệu
-            const totalCustomers = $(this).data("totalCustomers") || 0;
-            const totalWarehouses = $(this).data("totalWarehouses") || 0;
-            const totalProducts = $(this).data("totalProducts") || 0;
-            const totalUserStores = $(this).data("totalUserStores") || 0;
+            const totalCustomers = $(this).attr("totalCustomers") || 0;
+            const totalWarehouses = $(this).attr("totalWarehouses") || 0;
+            const totalUserStores = $(this).attr("data-totalUserStores") || "0";
+            const totalProducts = $(this).attr("data-totalProducts") || "0";
+            console.log("totalUserStores:", $(this).data("totalUserStores"));
+            // console.log("totalProducts:", $(this).data("totalProducts"));
 
             $("#modal-name").text(name);
             $("#modal-address").text(address);

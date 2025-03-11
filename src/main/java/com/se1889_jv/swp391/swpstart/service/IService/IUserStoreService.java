@@ -13,4 +13,5 @@ public interface IUserStoreService {
     UserStore findUserStoreByUserAndStore(User user, Store store);
     List<UserStore> getAllUserStoresByUserId(long userId);
     UserStore findByUser_PhoneAndStore_CreatedBy(String phone , String storeId);
+
 }
