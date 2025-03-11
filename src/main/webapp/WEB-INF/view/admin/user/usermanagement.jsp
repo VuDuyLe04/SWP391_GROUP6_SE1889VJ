@@ -9,34 +9,33 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Dashboard | JSOFT Themes | JSOFT-Admin</title>
-    <meta name="keywords" content="HTML5 Admin Template"/>
+    <title>Quản lí người dùng</title>
+    <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
 
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <!-- Web Fonts  -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light"
-          rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
     <!-- Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css"/>
-    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css"/>
-    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css"/>
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
 
     <!-- Specific Page Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css"/>
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css"/>
-    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css" />
 
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme.css" />
 
     <!-- Skin CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/stylesheets/skins/default.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/stylesheets/skins/default.css" />
 
     <!-- Theme Custom CSS -->
     <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme-custom.css">
@@ -47,65 +46,53 @@
         .panel-featured-primary {
             border-color: #0088cc;
         }
-
         .panel-featured-primary .panel-heading {
             background-color: #0088cc;
             color: #FFF;
             border-radius: 5px 5px 0 0;
         }
-
         .input-group-addon {
             background-color: #0088cc;
             color: #FFF;
             border-color: #0088cc;
         }
-
         .table > thead > tr > th {
             background-color: #f5f5f5;
             border-bottom: 2px solid #0088cc;
         }
-
         .btn-primary {
             background-color: #0088cc;
             border-color: #0088cc;
         }
-
         .btn-primary:hover {
             background-color: #006699;
             border-color: #006699;
         }
-
         .label-sm {
             font-size: 90%;
             padding: 3px 8px;
         }
-
         .mr-xs {
             margin-right: 5px;
         }
-
         .mb-xs {
             margin-bottom: 5px;
         }
-
         .mt-xs {
             margin-top: 5px;
         }
-
         .status-label {
             display: inline-block;
             min-width: 85px;
             text-align: center;
             padding: 5px 10px;
         }
-
         .pagination {
             margin: 20px auto;
             display: inline-flex;
             justify-content: center;
             padding-left: 0;
         }
-
         /* Existing modal styles */
         html, body {
             overflow-y: scroll !important;
@@ -141,7 +128,7 @@
         .modal-content {
             border: none;
             border-radius: 4px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             height: auto !important;
             max-height: 500px !important;
         }
@@ -219,12 +206,12 @@
 <section class="body">
 
     <!-- start: header -->
-    <jsp:include page="../layout/header.jsp"/>
+    <jsp:include page="../layout/header.jsp" />
     <!-- end: header -->
 
     <div class="inner-wrapper">
         <!-- start: sidebar -->
-        <jsp:include page="../layout/sidebar.jsp"/>
+        <jsp:include page="../layout/sidebar.jsp" />
         <!-- end: sidebar -->
 
         <section role="main" class="content-body">
@@ -256,12 +243,10 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <form id="search-form" action="usermanagement" method="get"
-                                              class="search nav-form">
+                                        <form id="search-form" action="usermanagement" method="get" class="search nav-form">
                                             <div class="input-group input-search">
                                                 <input type="text" class="form-control" name="input"
-                                                       placeholder="Tìm kiếm theo tên hoặc số điện thoại"
-                                                       value="${input}">
+                                                       placeholder="Tìm kiếm theo tên hoặc số điện thoại" value="${input}" >
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-primary" type="submit">
                                                         <i class="fa fa-search"></i>
@@ -281,12 +266,9 @@
                                         <c:if test="${sessionScope.user.role.id == 1}">
                                             <div class="form-group mr-md">
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i
-                                                            class="fa fa-user-circle"></i></span>
+                                                    <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
                                                     <select id="role" name="role" class="form-control">
-                                                        <option ${roleId == -1 ? "selected" : ""} value="-1">Các vai
-                                                            trò
-                                                        </option>
+                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >Các vai trò</option>
                                                         <c:forEach items="${roles}" var="r">
                                                         <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
                                                             <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>
@@ -300,22 +282,15 @@
                                             </div>
                                             <div class="form-group mr-md">
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i
-                                                            class="fa fa-toggle-on"></i></span>
+                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
                                                     <select id="active" name="active" class="form-control">
-                                                        <option ${active == -1 ? "selected" : ""} value="-1">Các trạng
-                                                            thái
-                                                        </option>
-                                                        <option ${active == 1 ? "selected" : ""} value="1">Hoạt động
-                                                        </option>
-                                                        <option ${active == 0 ? "selected" : ""} value="0">Bị cấm
-                                                        </option>
+                                                        <option ${active == -1 ? "selected" : ""} value="-1">Các trạng thái</option>
+                                                        <option ${active == 1 ? "selected" : ""} value="1">Hoạt động</option>
+                                                        <option ${active == 0 ? "selected" : ""} value="0">Bị cấm</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-primary"><i
-                                                    class="fa fa-filter mr-xs"></i>Lọc
-                                            </button>
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>
                                         </c:if>
                                         <%--                                        <c:if test="${sessionScope.user.role.id == 2}">--%>
                                         <%--                                            <select id="store" name="store" class="form-control">--%>
@@ -386,16 +361,15 @@
                                                         data-role="${u.role.name}"
                                                         data-status="${u.active == 'true' ? 'Active' : 'Banned'}"
                                                         data-createdAt="${u.createdAtFormatted}"
-                                                        data-createdBy="${u.createdBy}"
+                                                        data-createdBy = "${u.createdBy}"
                                                         data-updatedAt="${u.updatedAtFormatted}"
-                                                        data-updatedBy="${u.updatedBy}"
-                                                        data-userStores="${u.userStores}"
+                                                        data-updatedBy = "${u.updatedBy}"
+                                                        data-userStores = "${u.userStores}"
                                                 >
 
                                                     <i class="fa fa-eye"></i>
                                                 </button>
-                                                <a href="updateuser?id=${u.id}" class="btn btn-primary btn-sm"
-                                                   title="Chỉnh sửa">
+                                                <a href="updateuser?id=${u.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
                                             </td>
@@ -404,36 +378,34 @@
 
                                     </tbody>
                                 </table>
-                                <c:if test="${not empty userPage.number and userPage.number ne 0}">
-                                    <c:set var="c" value="${userPage.number}"></c:set>
-                                    <ul class="pagination"
-                                        style="display: flex; justify-content: center; margin-leftgit:413px">
-                                        <li class="page-item ${c==0 ?'disabled':''} ">
-                                            <a class="page-link"
-                                               href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
-                                        </li>
 
-                                        <c:forEach begin="0" end="${userPage.totalPages - 1}" var="i">
-                                            <c:if test="${i >= c - 1 && i <= c + 1}">
-                                                <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link"
-                                                                                                   href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a>
+                                <c:set var="c" value="${userPage.number}"></c:set>
+                                <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
+                                    <li class="page-item ${c==0 ?'disabled':''} ">
+                                        <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
+                                    </li>
+
+                                    <c:forEach begin="0" end="${userPage.totalPages - 1}" var="i">
+                                        <c:if test="${i >= c - 1 && i <= c + 1}">
+                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a>
 
 
-                                                </li>
-                                            </c:if>
-                                            <c:if test="${i == c- 2 || i == c+ 2}">
-                                                <li><span>...</span></li>
-                                            </c:if>
-                                        </c:forEach>
+                                            </li>
+                                        </c:if>
+                                        <c:if test="${i == c- 2 || i == c+ 2}">
+                                            <li><span>...</span></li>
+                                        </c:if>
+                                    </c:forEach>
+                                    </c:if>
 
-                                        <li class="page-item ${c== userPage.totalPages -1?'disabled':''} ">
-                                            <a class="page-link"
-                                               href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}&input=${input}&active=${active}&role=${roleId}">Sau</a>
-                                        </li>
 
-                                    </ul>
-                                </c:if>
-                                </c:if>
+
+                                    <li class="page-item ${c== userPage.totalPages -1?'disabled':''} ">
+                                        <a class="page-link" href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}&input=${input}&active=${active}&role=${roleId}">Sau</a>
+                                    </li>
+
+                                </ul>
+
                             </div>
 
                         </div>
@@ -443,6 +415,7 @@
         </section>
     </div>
 </section>
+
 
 
 <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
@@ -508,13 +481,13 @@
 <script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
 
 <script>
-    $(document).ready(function () {
-        $('.view-button').on('click', function () {
+    $(document).ready(function() {
+        $('.view-button').on('click', function() {
             const name = $(this).data('name');
             const phone = $(this).data('phone');
             let role = $(this).data('role');
-            if (role === "ADMIN") role = "Quản trị viên";
-            else if (role === "OWNER") role = "Chủ cửa hàng";
+            if(role === "ADMIN") role = "Quản trị viên";
+            else if(role === "OWNER") role = "Chủ cửa hàng";
             else role = "Nhân viên";
 
             const createdAt = $(this).attr('data-createdAt');
@@ -541,13 +514,15 @@
             $('#userModal').modal('show');
         });
     });
-    document.getElementById("search-input").addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
+    document.getElementById("search-input").addEventListener("keypress",function(event){
+        if(event.key === "Enter"){
             event.preventDefault();
             document.getElementById("search-form").submit();
         }
     });
 </script>
+
+
 
 
 <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>

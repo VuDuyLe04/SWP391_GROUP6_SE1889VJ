@@ -28,9 +28,9 @@ public class Service {
     @Column(columnDefinition = "MEDIUMTEXT")
     private String description;
 
-    @ValidDouble(message = "Giá dịch vụ phải lớn hơn bằng 0 và là số thập phân")
+    @ValidDouble(message = "Giá dịch vụ phải lớn hơn bằng 0")
     private Double price;
-    private boolean active;
+    private Boolean active;
     private Instant createdAt;
     private String createdBy;
     private Instant updatedAt;

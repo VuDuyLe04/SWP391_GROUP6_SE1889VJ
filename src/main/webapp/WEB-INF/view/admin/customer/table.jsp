@@ -137,7 +137,6 @@
                                         <th>Số thứ tự</th>
                                         <th>Tên</th>
                                         <th class="text-right">Số điện thoại</th>
-
                                         <th class="text-center">Tiền nợ</th>
                                         <th class="text-right">Cửa hàng</th>
                                         <th class="text-right">Hoạt động</th>

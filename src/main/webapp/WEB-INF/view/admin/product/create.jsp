@@ -133,12 +133,12 @@
                                 </div>
 
 
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputQuantity">Số lượng trong kho</label>
-                                    <div class="col-md-6">
-                                        <form:input path="totalQuantity" type="number"  class="form-control" id="inputQuantity" readonly="true"/>
-                                    </div>
-                                </div>
+<%--                                <div class="form-group">--%>
+<%--                                    <label class="col-md-3 control-label" for="inputQuantity">Số lượng trong kho</label>--%>
+<%--                                    <div class="col-md-6">--%>
+<%--                                        <form:input path="totalQuantity" type="number"  class="form-control" id="inputQuantity" readonly="true"/>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputDescription">Mô tả</label>
                                     <div class="col-md-6">
@@ -153,11 +153,13 @@
                                         <form:select path="store" cssClass="form-control" id="inputStore" onchange="filterWarehouses()">
                                             <option value="">-- Chọn cửa hàng --</option>
                                             <c:forEach items="${listStore}" var="storeIt">
-                                                <form:option value="${storeIt.id}">
+                                                <form:option value="${storeIt.id}"
+                                                             selected="${storeIt.id == store.id ? 'selected' : ''}">
                                                     ${storeIt.name}
                                                 </form:option>
                                             </c:forEach>
                                         </form:select>
+                                        <form:errors path="store" cssClass="text-danger"/>
                                     </div>
                                 </div>
                                 <div class="form-group" id="warehouseGroup" style="display: none;">

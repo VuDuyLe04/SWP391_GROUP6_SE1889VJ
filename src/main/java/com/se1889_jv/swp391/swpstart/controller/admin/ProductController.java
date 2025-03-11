@@ -94,7 +94,7 @@ ProductController {
             User user = (User) session.getAttribute("user");
             List<Store> stores = Utility.getListStoreOfOwner(user);
             List<WareHouse> wareHouses = wareHouseService.getAllWareHouseByListStore(stores);
-
+            model.addAttribute("store1", product.getStore());
             model.addAttribute("listStore", stores);
             model.addAttribute("wareHouses", wareHouses);
             return "admin/product/create";

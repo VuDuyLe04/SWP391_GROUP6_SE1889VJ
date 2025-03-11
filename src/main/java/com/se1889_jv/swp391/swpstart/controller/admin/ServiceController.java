@@ -4,6 +4,7 @@ import com.se1889_jv.swp391.swpstart.domain.Service;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.service.implementservice.ServiceService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,10 +20,12 @@ public class ServiceController {
     @Autowired
     private ServiceService serviceService;
 
+
     @GetMapping("/service/create")
     public String createServicePage(Model model) {
         Service service = new Service();
         service.setDurationMonths(1);
+        service.setActive(true);
         model.addAttribute("service", service);
 
         return "admin/service/create";
@@ -33,6 +36,9 @@ public class ServiceController {
             Model model,
             @Valid @ModelAttribute("service") Service serviceCreate,
             BindingResult bindingResult) {
+        if (this.serviceService.existByName(serviceCreate.getName())) {
+            bindingResult.rejectValue("name","service.name.exists", "Tên dịch vụ đã tồn tại");
+        }
 
         if (bindingResult.hasErrors()) {
             return "admin/service/create";
@@ -64,6 +70,23 @@ public class ServiceController {
        Service service = this.serviceService.findServiceById(id);
         model.addAttribute("service", service);
         return "admin/service/update";
+    }
+
+    @PostMapping("/service/update")
+    public String handleUpdateService(
+            @Valid @ModelAttribute("service") Service service,
+                                      BindingResult bindingResult,
+            HttpSession session,
+            @RequestParam(value = "oldName") String oldName) {
+        if (this.serviceService.existsByNameExcludingOldName(service.getName(), oldName) == true) {
+            bindingResult.rejectValue("name","service.name.exists", "Tên dịch vụ đã tồn tại");
+        }
+        if (bindingResult.hasErrors()) {
+            return "admin/service/update";
+        }
+        this.serviceService.updateService(service);
+        session.setAttribute("message", "Cập nhập thành công");
+        return "redirect:/service/table";
     }
 
 }

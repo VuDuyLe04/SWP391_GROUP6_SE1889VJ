@@ -26,8 +26,7 @@ public class Store {
     private String createdBy;
     private Instant updatedAt;
     private String updatedBy;
-//    private Instant renewalDate;
-//    private Instant expirationDate;
+
     @Enumerated(EnumType.STRING)
     private StatusStoreEnum status;
 

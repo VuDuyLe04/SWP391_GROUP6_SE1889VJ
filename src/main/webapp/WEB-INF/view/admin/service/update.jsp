@@ -98,57 +98,78 @@
                             <h2 class="panel-title">Cập nhật dịch vụ</h2>
                         </header>
                         <div class="panel-body " >
-                            <form:form modelAttribute="service" class="form-horizontal" method="post" action="/service/update">
-<%--                                <c:set var="errorName">--%>
-<%--                                    <form:errors path="name"--%>
-<%--                                                 cssClass="invalid-feedback" cssStyle="color: red"/>--%>
-<%--                                </c:set>--%>
+                            <form:form modelAttribute="service" class="form-horizontal form-bordered" method="post" action="/service/update">
 
-<%--                                <c:set var="errorPhone">--%>
-<%--                                    <form:errors path="phone"--%>
-<%--                                                 cssClass="invalid-feedback" cssStyle="color: red"/>--%>
-<%--                                </c:set>--%>
+                                <c:set var="errorName">
+                                    <form:errors path="name"
+                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
+                                </c:set>
 
-                                <div class="form-group row" hidden="hidden">
-                                    <label class="col-sm-3 col-form-label" for="name">Id</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="id" class="form-control" id="id" />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="name">Tên</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="name" class="form-control ${not empty errorName ? 'is-invalid' : ''}" id="name" />
+                                <c:set var="errorDurationMonths">
+                                    <form:errors path="durationMonths"
+                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
+                                </c:set>
+
+                                <c:set var="errorDescription">
+                                    <form:errors path="description"
+                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
+                                </c:set>
+
+                                <c:set var="errorPrice">
+                                    <form:errors path="price"
+                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
+                                </c:set>
+                                <form:hidden path="id"/>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" >Tên</label>
+                                    <div class="col-md-6">
+                                        <form:input path="name" class="form-control ${not empty errorName ? 'is-invalid' : ''}" />
                                             ${errorName}
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="phone">Thời gian gói dịch vụ</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="durationMonths" class="form-control ${not empty errorPhone ? 'is-invalid' : ''}" id="phone" />
-                                            ${errorPhone}
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="inputHelpText">Thời gian gói dịch vụ</label>
+                                    <div class="col-md-1">
+                                        <form:input path="durationMonths" type="number"  class="form-control ${not empty errorDurationMonths ? 'is-invalid' : ''}" id="inputHelpText" />
+                                            ${errorDurationMonths}
+                                    </div>
+                                    <label class="col-md-2 control-label" for="inputReadOnly">Giá dịch vụ</label>
+                                    <div class="col-md-3">
+                                        <form:input path="price" type="number" class="form-control ${not empty errorPrice ? 'is-invalid' : ''}" id="inputReadOnly" />
+                                            ${errorPrice}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" >Mô tả chi tiết</label>
+                                    <div class="col-md-6">
+                                        <form:textarea path="description" class="form-control ${not empty errorDescription ? 'is-invalid' : ''}" id="address" />
+                                            ${errorDescription}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" >Trạng thái</label>
+                                    <div class="col-md-2">
+                                        <form:select path="active" class="form-control">
+                                            <form:option value="true"  >Active</form:option>
+                                            <form:option value="false">Banned</form:option>
+                                        </form:select>
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="address">Mô tả</label>
-                                    <div class="col-sm-9">
-                                        <form:textarea path="description" class="form-control" id="address"/>
-                                    </div>
-                                </div>
 
 
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="balance">Giá dịch vụ</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="price" class="form-control"/>
-                                    </div>
-                                </div>
+                                <input type="hidden" value="${service.name}" name="oldName"/>
 
-                                <div class="form-group row">
-                                    <div class="col-sm-9 offset-sm-3">
-                                        <button type="submit" class="btn btn-primary">Cập nhật</button>
-                                        <a href="/service/table" class="btn btn-secondary">Hủy</a>
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+
+                                        <button type="submit" class="btn btn-primary ${not empty errorName ? 'is-invalid' : ''}">Cập nhật</button>
+                                        <div style="color: green">
+                                                ${message}
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </form:form>

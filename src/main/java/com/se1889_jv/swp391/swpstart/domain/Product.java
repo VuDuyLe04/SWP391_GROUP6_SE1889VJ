@@ -37,8 +37,6 @@ public class Product {
     @Min(value = 1, message = "Giá phải lớn hơn 0")
     private double unitPrice;
 
-    @NotNull(message = "Số lượng không được để trống")
-    @Min(value = 0, message = "Số lượng không thể âm")
     private double totalQuantity;
     private String image;
     private boolean storage;
@@ -57,10 +55,12 @@ public class Product {
     private String createdBy;
     private String updatedBy;
 
+    @NotNull(message = "Phải chọn cửa hàng và kho")
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     private WareHouse warehouse;

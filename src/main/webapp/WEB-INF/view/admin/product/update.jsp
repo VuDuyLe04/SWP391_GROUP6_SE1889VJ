@@ -148,12 +148,12 @@
                                 </div>
 
 
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputQuantity">Số lượng trong kho</label>
-                                    <div class="col-md-6">
-                                        <form:input path="totalQuantity" type="number"  class="form-control" id="inputQuantity" readonly="true"/>
-                                    </div>
-                                </div>
+<%--                                <div class="form-group">--%>
+<%--                                    <label class="col-md-3 control-label" for="inputQuantity">Số lượng trong kho</label>--%>
+<%--                                    <div class="col-md-6">--%>
+<%--                                        <form:input path="totalQuantity" type="number"  class="form-control" id="inputQuantity" readonly="true"/>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputDescription">Mô tả</label>
                                     <div class="col-md-6">

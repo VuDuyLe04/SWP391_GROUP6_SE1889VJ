@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @org.springframework.stereotype.Service
@@ -31,7 +32,6 @@ public class ServiceService implements IServiceService {
         User user = Utility.getUserInSession();
         service.setCreatedAt(Instant.now());
         service.setCreatedBy(user.getName());
-        service.setActive(true);
         return this.serviceRepository.save(service);
     }
 
@@ -39,4 +39,34 @@ public class ServiceService implements IServiceService {
     public Page<Service> findAllServices(Pageable pageable) {
         return this.serviceRepository.findAll(pageable);
     }
+
+    @Override
+    public boolean existByName(String serviceName) {
+        return this.serviceRepository.existsByName(serviceName);
+    }
+
+    @Override
+    public void updateService(Service service) {
+        Service oldService = this.findServiceById(service.getId());
+        if (oldService != null) {
+            oldService.setName(service.getName());
+            oldService.setDescription(service.getDescription());
+            oldService.setActive(service.getActive());
+            oldService.setPrice(service.getPrice());
+            oldService.setDurationMonths(service.getDurationMonths());
+        }
+        this.serviceRepository.save(oldService);
+    }
+
+    @Override
+    public boolean existsByNameExcludingOldName(String newName, String oldName) {
+        return this.serviceRepository.existsByNameExcludingOldName(newName, oldName);
+    }
+
+    @Override
+    public List<Service> findAllServicesForHomePage() {
+        return this.serviceRepository.findAllByActive(true);
+    }
+
+
 }

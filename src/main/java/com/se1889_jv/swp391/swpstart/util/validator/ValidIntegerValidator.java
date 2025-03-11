@@ -20,7 +20,7 @@ public class ValidIntegerValidator implements ConstraintValidator<ValidInteger,I
         try {
             // Kiểm tra xem chuỗi có phải là số hợp lệ hay không
             int v = integer.intValue();
-            if (v < 0 || v > Integer.MAX_VALUE) {
+            if (v <= 0 || v > Integer.MAX_VALUE) {
                 return false;
             }
             return true;

@@ -6,31 +6,30 @@ import com.se1889_jv.swp391.swpstart.domain.UserStore;
 import com.se1889_jv.swp391.swpstart.repository.UserRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 
 
 
 import com.se1889_jv.swp391.swpstart.domain.Role;
 import com.se1889_jv.swp391.swpstart.domain.Store;
-import com.se1889_jv.swp391.swpstart.domain.User;
-import com.se1889_jv.swp391.swpstart.domain.UserStore;
+
 import com.se1889_jv.swp391.swpstart.domain.dto.RegisterDTO;
 import com.se1889_jv.swp391.swpstart.repository.RoleRepository;
 import com.se1889_jv.swp391.swpstart.repository.StoreRepository;
-import com.se1889_jv.swp391.swpstart.repository.UserRepository;
-import com.se1889_jv.swp391.swpstart.repository.UserStoreRepository;
-import com.se1889_jv.swp391.swpstart.service.IService.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import java.time.Instant;
-import java.util.ArrayList;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 public class UserService implements IUserService {
@@ -49,6 +48,8 @@ public class UserService implements IUserService {
     @Autowired
     private UserStoreService userStoreService;
 
+    @Autowired
+    private ServiceService serviceService;
 
     @Override
     public User getUserByPhone(String phone) {
@@ -125,6 +126,25 @@ public class UserService implements IUserService {
         return this.userRepository.findAllByUserStoresIn(userStores);
     }
 
+    @Override
+    public User handleBuyService(User user,List<User> users, com.se1889_jv.swp391.swpstart.domain.Service service) {
+
+        for (User user1 : users) {
+            user1.setRenewalDate(Instant.now()); // Cập nhật ngày gia hạn hiện tại
+            LocalDateTime expirationDate = LocalDateTime.now().plus(service.getDurationMonths(), ChronoUnit.MONTHS);
+            user1.setExpirationDate(expirationDate.atZone(ZoneId.systemDefault()).toInstant());
+            user1.setStatusService(true);
+        }
+        user.setBalance(user.getBalance()- service.getPrice());
+        user.setRenewalDate(Instant.now()); // Cập nhật ngày gia hạn hiện tại
+        LocalDateTime expirationDate = LocalDateTime.now().plus(service.getDurationMonths(), ChronoUnit.MONTHS);
+        user.setExpirationDate(expirationDate.atZone(ZoneId.systemDefault()).toInstant());
+        user.setStatusService(true);
+        this.userRepository.save(user);
+        return user;
+
+    }
+
 
     @Override
     public List<UserStore> getAllUserStores(User user) {
@@ -135,11 +155,13 @@ public class UserService implements IUserService {
     @Override
     public User updateUser(User user) {
         User user1 = findById(user.getId());
+
         if(user1 != null){
             user1.setName(user.getName());
             user1.setUpdatedAt(Instant.now());
             user1.setUpdatedBy(user.getName());
         }
+
         return this.userRepository.save(user1);
     }
 

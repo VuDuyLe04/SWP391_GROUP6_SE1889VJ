@@ -78,8 +78,10 @@ public class CustomerController {
 
         return "redirect:/customer";
     }
+
     @GetMapping("/customer/detail/{id}")
     public String getCustomerDetail(@PathVariable("id") long id, Model model) {
+
         // Check session
         if (Utility.getUserInSession() == null) {
             return "redirect:/login";

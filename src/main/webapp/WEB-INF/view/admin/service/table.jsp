@@ -42,7 +42,12 @@
 
     <!-- Head Libs -->
     <script src="/client/auth/assets/vendor/modernizr/modernizr.js"></script>
-
+    <style>
+        .label-sm {
+            font-size: 90%;
+            padding: 3px 8px;
+        }
+    </style>
 </head>
 <body>
 
@@ -82,63 +87,88 @@
                 <div class="col-lg-12">
                     <section class="panel">
                         <header class="panel-heading">
-                            <div class="panel-actions">
-                                <a href="/service/create" class="btn btn-success" style="display: inline-flex; /* Sử dụng flexbox để căn giữa */
-        justify-content: center;
-        align-items: center;
-        width: 120px;
-        height: 40px;
-        font-size: 14px;
-        font-weight: bold;
-        color: #ffffff;
-        background: linear-gradient(90deg, #0093DD, #007ACC);
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;">Thêm dịch vụ mới</a>
-                            </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <form method="GET" action="/customer/search" class="form-inline"
-                                          style="margin-bottom: 20px;">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" name="name"
-                                                   placeholder="Tìm kiếm theo tên" value="${param.name}"/>
-                                            <span class="input-group-btn">
-                        <button class="btn btn-primary" type="submit">Search</button>
-                    </span>
-                                        </div>
-                                    </form>
+                            <div class="panel-actions">
+                                <a href="#" class="panel-action panel-action-toggle" data-panel-toggle></a>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
                                 </div>
-                                <div class="col-md-3">
-                                    <!-- Form tìm kiếm theo số điện thoại -->
-                                    <form method="GET" action="/customer/search" class="form-inline">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" name="phone"
-                                                   placeholder="Search by phone" value="${param.phone}"/>
-                                            <span class="input-group-btn">
-                    <button class="btn btn-primary" type="submit">Search</button>
-                </span>
-                                        </div>
-                                    </form>
+                                <div class="col-sm-6">
+                                    <div class="pull-right">
+                                        <form id="search-form" action="usermanagement" method="get" class="search nav-form">
+                                            <div class="input-group input-search">
+                                                <input type="text" class="form-control" name="input"
+                                                       placeholder="Tìm kiếm theo tên hoặc giá tiền" value="${input}" >
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-primary" type="submit">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
 
                         </header>
                         <div class="panel-body">
+                            <div class="row mb-md">
+                                <div class="col-sm-6">
+                                    <form action="usermanagement" method="get" class="form-inline">
+                                        <c:if test="${sessionScope.user.role.id == 1}">
+                                            <div class="form-group mr-md">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                                                    <select id="role" name="role" class="form-control">
+                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >Thời gian</option>
+                                                        <c:forEach items="${roles}" var="r">
+                                                        <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
+                                                            <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>
+                                                            <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>
+                                                            <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>
+
+                                                            </c:forEach>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mr-md">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
+                                                    <select id="active" name="active" class="form-control">
+                                                        <option ${active == -1 ? "selected" : ""} value="-1">Các trạng thái</option>
+                                                        <option ${active == 1 ? "selected" : ""} value="1">Hoạt động</option>
+                                                        <option ${active == 0 ? "selected" : ""} value="0">Bị cấm</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>
+                                        </c:if>
+
+
+                                    </form>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="pull-right">
+                                        <a href="/service/create" class="btn btn-primary mb-xs mt-xs mr-xs">
+                                            <i class="fa fa-plus mr-xs"></i>Thêm dịch vụ mới
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-condensed mb-none">
                                     <thead>
 
                                     <tr>
-                                        <th>Số thứ tự</th>
-                                        <th>Tên</th>
-                                        <th class="text-right">Thời gian dịch vụ</th>
-                                        <th class="text-right">Giá</th>
-                                        <th class="text-right">Trạng thái</th>
-                                        <th class="text-right">Hoạt động</th>
+                                        <th>STT</th>
+                                        <th class="text-center">Tên</th>
+                                        <th class="text-center">Thời gian dịch vụ</th>
+                                        <th class="text-center">Giá</th>
+                                        <th class="text-center">Trạng thái</th>
+                                        <th class="text-center"><i class="fa fa-cogs mr-xs"></i>Hành động</th>
                                     </tr>
 
                                     </thead>
@@ -146,11 +176,17 @@
                                     <c:forEach items="${listService}" var="service" varStatus="status">
                                         <tr>
                                             <td>${status.index + 1}</td>
-                                            <td>${service.name}</td>
-                                            <td class="text-right">${service.durationMonths}</td>
-                                            <td class="text-right">${service.price}</td>
-                                            <td class="text-center">${service.active}</td>
-                                            <td class="text-right">
+                                            <td class="text-center">${service.name}</td>
+                                            <td class="text-center">${service.durationMonths} tháng</td>
+                                            <td class="text-center">${service.price}</td>
+<%--                                            <td class="text-center">${service.active}</td>--%>
+                                            <td class="text-center">
+                                                <span class="label ${service.active == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
+                    <i class="fa ${service.active == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
+                    ${service.active == "true" ? "Active" : "Banned"}
+                </span>
+                                            </td>
+                                            <td class="text-center">
                                                 <a href="/service/update/${service.id}" class="btn btn-primary">Cập
                                                     nhật</a>
                                             </td>
@@ -164,7 +200,7 @@
                                     <ul class="pagination justify-content-center">
                                         <c:if test="${currentPage > 0}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customer?page=${currentPage - 1}"
+                                                <a class="page-link" href="/service/table?page=${currentPage - 1}"
                                                    aria-label="Previous">
                                                     <span aria-hidden="true">&laquo; Trước</span>
                                                 </a>
@@ -202,7 +238,25 @@
 
 
 </section>
+<%
+    String message = (String) session.getAttribute("message");
+    if (message != null) {
+%>
+<div id="alertMessage" class="alert alert-success text-center"
+     style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 50%;"
+     role="alert">
+    <%= message %>
+</div>
+<script>
 
+    setTimeout(function () {
+        document.getElementById("alertMessage").style.display = 'none';
+    }, 2000);
+</script>
+<%
+        session.removeAttribute("message");
+    }
+%>
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>

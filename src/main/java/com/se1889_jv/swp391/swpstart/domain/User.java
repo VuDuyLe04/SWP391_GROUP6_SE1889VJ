@@ -57,13 +57,15 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<UserStore> userStores;
-    public void addUserStore() {
-    User user = new User();
-    user.getUserStores();
-}
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<TransactionService> transactionServices;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<TransactionPayment> transactionPayments;
+
+
+
     public Date getCreatedAtAsDate() {
         return createdAt != null ? Date.from(createdAt) : null;
     }

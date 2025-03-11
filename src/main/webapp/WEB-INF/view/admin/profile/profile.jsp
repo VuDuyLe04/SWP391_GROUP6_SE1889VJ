@@ -80,7 +80,19 @@
                                 <img src="/client/auth/assets/images/vuduyle.jpg" class="rounded img-responsive" alt="John Doe">
                                 <div class="thumb-info-title">
                                     <span class="thumb-info-inner">${sessionScope.user.name}</span>
-                                    <span class="thumb-info-type">${sessionScope.user.role.name}</span>
+                                    <span class="thumb-info-type">
+                                        <c:if test="${sessionScope.user.role.name == 'OWNER'}">
+                                            CHỦ CỬA HÀNG
+                                        </c:if>
+
+                                        <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
+                                            ADMIN
+                                        </c:if>
+
+                                        <c:if test="${sessionScope.user.role.name == 'STAFF'}">
+                                            NHÂN VIÊN
+                                        </c:if>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -88,6 +100,7 @@
 
 
                 </div>
+
                 <div class="col-md-8 col-lg-6">
 
                     <div class="tabs">
