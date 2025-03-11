@@ -158,7 +158,7 @@
                                                     chi tiết</a>
                                                 <a href="/customer/update/${customer.id}" class="btn btn-primary">Cập
                                                     nhật</a>
-                                                <a href="/customer/debt-history/${customer.id}" class="btn btn-primary">Nợ</a>
+                                                <a href="/debt-receipt/search/${customer.id}" class="btn btn-primary">Nợ</a>
                                             </td>
                                         </tr>
                                     </c:forEach>

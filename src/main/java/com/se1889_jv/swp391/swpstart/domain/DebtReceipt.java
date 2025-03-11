@@ -4,9 +4,9 @@ import com.se1889_jv.swp391.swpstart.util.constant.DebtTypeEnum;
 import jakarta.persistence.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -20,12 +20,10 @@ public class DebtReceipt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    private long debtAmount;
+    private double debtAmount;
     @Enumerated(EnumType.STRING)
     private DebtTypeEnum debtType;
     private String debtReason;
-    private BigDecimal amount;
     private Instant createdAt;
     private String createdBy;
 

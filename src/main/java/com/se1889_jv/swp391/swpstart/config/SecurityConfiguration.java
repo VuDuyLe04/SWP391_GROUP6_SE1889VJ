@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -100,6 +101,7 @@ public class SecurityConfiguration {
 @Bean
 SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     UserService userService1 = null;
+    http.csrf(AbstractHttpConfigurer::disable);
     http
             .authorizeHttpRequests(authorize -> authorize
                     .dispatcherTypeMatchers(DispatcherType.FORWARD,
@@ -109,6 +111,7 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                             .requestMatchers("/customer", "/customer/**").hasAnyRole("STAFF", "OWNER")
                             .requestMatchers("/warehouse", "/warehouse/**", "/product", "/product/**").hasRole("OWNER")
                             .requestMatchers("/service/**").hasRole("ADMIN")
+                            .requestMatchers("/api/v1/debt-receipt/**").permitAll()
 //                    .requestMatchers("/customer/**", "/product/**").hasRole("OWNER")
 
                     .anyRequest().authenticated()

@@ -2,10 +2,12 @@ package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.Store;
+import com.se1889_jv.swp391.swpstart.domain.dto.response.PageResponse;
 import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import com.se1889_jv.swp391.swpstart.repository.DebtReceiptRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -83,6 +85,21 @@ public class CustomerService implements ICustomerService {
     @Override
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
+    }
+
+    @Override
+    public PageResponse<Customer> getAllCustomer(int page) {
+        Pageable pageable = PageRequest.of(page - 1,5);
+        Page<Customer> customers = customerRepository.findAll(pageable);
+        List<Customer> customerList = customers.getContent();
+
+        return PageResponse.<Customer>builder()
+                .currentPage(page)
+                .pageSize(pageable.getPageSize())
+                .totalPages(customers.getTotalPages())
+                .totalElements(customers.getTotalElements())
+                .data(customerList)
+                .build();
     }
 
     @Override

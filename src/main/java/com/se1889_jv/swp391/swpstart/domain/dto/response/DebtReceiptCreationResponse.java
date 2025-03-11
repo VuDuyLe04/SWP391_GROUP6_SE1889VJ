@@ -12,10 +12,11 @@ import java.time.Instant;
 @Builder
 public class DebtReceiptCreationResponse implements Serializable {
     private long id;
+    private String customerName;
     private String debtReason;
-    private BigDecimal amount;
     private Instant createdAt;
     private String createdBy;
-    private long debtAmount;
+    private double debtAmount;
+    private double totalAmount;
 
 }

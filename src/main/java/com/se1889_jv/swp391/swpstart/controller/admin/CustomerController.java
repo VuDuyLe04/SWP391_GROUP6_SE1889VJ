@@ -5,14 +5,12 @@ import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.DebtReceipt;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
-import com.se1889_jv.swp391.swpstart.domain.dto.request.DebtReceiptCreationRequest;
 import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import com.se1889_jv.swp391.swpstart.service.implementservice.CustomerService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.DebtReceiptService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
@@ -218,27 +215,5 @@ public class CustomerController {
         return "admin/customer/table";
     }
 
-    @GetMapping("/customer/debt-history/{id}")
-    public String getCustomerDebts(@PathVariable("id") long customerId, Model model) {
-        Customer customer = customerService.getCustomerById(customerId);
-        if (customer == null) {
-            return "redirect:/customer";
-        }
-
-        List<DebtReceipt> debts = debtReceiptService.getDebtsByCustomer(customer);
-
-        model.addAttribute("customer", customer);
-        model.addAttribute("debts", debts);
-
-        return "admin/customer/debtlist"; // Trang hiển thị lịch sử công nợ
-    }
-
-    @PostMapping("/creation-debt-recipt")
-    public String creationDebtReceipt(@ModelAttribute DebtReceiptCreationRequest request, Model model) {
-        var result = debtReceiptService.createDebtReceipt(request);
-        model.addAttribute("debtReceipt", result);
-
-        return "admin/customer/debtlist";
-    }
 
 }

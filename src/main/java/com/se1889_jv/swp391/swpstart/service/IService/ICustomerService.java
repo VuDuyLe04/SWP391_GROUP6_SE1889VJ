@@ -2,6 +2,7 @@ package com.se1889_jv.swp391.swpstart.service.IService;
 
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.Store;
+import com.se1889_jv.swp391.swpstart.domain.dto.response.PageResponse;
 import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +17,7 @@ public interface ICustomerService {
     void updateCustomer(Customer customer);
     public List<Customer> getAllCustomers();
 
-
+    PageResponse<Customer> getAllCustomer(int page);
     //Search owner
     public default Page<Customer> searchCustomersByNameRoleOwner(String name ,List<Store> stores, Pageable pageable) {
 

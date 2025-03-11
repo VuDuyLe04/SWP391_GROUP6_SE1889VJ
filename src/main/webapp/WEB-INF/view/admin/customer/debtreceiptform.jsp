@@ -44,133 +44,45 @@
 
 </head>
 <body>
-
 <section class="body">
-
-    <!-- start: header -->
-    <jsp:include page="../layout/header.jsp" />
-    <!-- end: header -->
-
+    <jsp:include page="../layout/header.jsp"/>
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <jsp:include page="../layout/sidebar.jsp" />
-        <!-- end: sidebar -->
-
+        <jsp:include page="../layout/sidebar.jsp"/>
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Tạo mới khách hàng</h2>
-
-                <div class="right-wrapper pull-right">
-                    <ol class="breadcrumbs">
-                        <li>
-                            <a href="/">
-                                <i class="fa fa-home"></i>
-                            </a>
-                        </li>
-                        <li><span>Tạo mới khách hàng</span></li>
-                    </ol>
-
-                    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
-                </div>
+                <h2>Tạo phiếu nợ cho khách hàng: ${customer.name}</h2>
             </header>
 
-
-
-            <!-- start: page -->
             <div class="row">
                 <div class="col-lg-12">
                     <section class="panel">
-                        <header class="panel-heading">
-                            <div class="panel-actions">
-
-                            </div>
-
-                            <h2 class="panel-title">Tạo mới khách hàng</h2>
-                        </header>
                         <div class="panel-body">
-                            <form:form modelAttribute="customer" class="form-horizontal form-bordered" method="post" action="/customer/create">
-
-                                <c:set var="errorName">
-                                    <form:errors path="name"
-                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
-                                </c:set>
-
-                                <c:set var="errorPhone">
-                                    <form:errors path="phone"
-                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
-                                </c:set>
-
-
+                            <form action="/debt-receipt/creation" method="POST" id="createDebtReceiptForm">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" >Tên</label>
-                                    <div class="col-md-6">
-                                        <form:input path="name" class="form-control ${not empty errorName ? 'is-invalid' : ''}" />
-                                            ${errorName}
-                                    </div>
+                                    <label for="debtType">Loại nợ:</label>
+                                    <select id="debtType" name="debtType" class="form-control">
+                                        <option value="DEBIT">Thêm Nợ</option>
+                                        <option value="DEBTREPAY">Trả Nợ</option>
+                                    </select>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" >Số điện thoại</label>
-                                    <div class="col-md-6">
-                                        <form:input path="phone" class="form-control ${not empty errorPhone ? 'is-invalid' : ''}"  />
-                                            ${errorPhone}
-                                    </div>
+                                    <label for="debtReason">Lý do:</label>
+                                    <input type="text" id="debtReason" name="debtReason" class="form-control" placeholder="Nhập lý do" required>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputReadOnly">Địa chỉ</label>
-                                    <div class="col-md-6">
-                                        <form:input path="address" class="form-control" id="inputReadOnly" />
-                                    </div>
+                                    <label for="debtAmount">Số tiền:</label>
+                                    <input type="number" id="debtAmount" name="debtAmount" class="form-control" placeholder="Nhập số tiền" required>
                                 </div>
-
-                                <c:if test="${sessionScope.user.role.name == 'STAFF'}">
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label" for="inputHelpText">Cửa hàng</label>
-                                        <div class="col-md-6">
-                                            <input name="balance" value="${sessionScope.store.name}"
-                                                   class="form-control" id="inputHelpText" readonly="true"/>
-                                        </div>
-                                    </div>
-                                </c:if>
-                                <c:if test="${sessionScope.user.role.name == 'OWNER'}">
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label" for="inputHelpText">Cửa hàng</label>
-                                        <div class="col-md-6">
-                                            <select name="storeId">
-                                                <c:forEach items="${listStore}" var="store">
-                                                    <option value="${store.id}">${store.name}</option>
-                                                </c:forEach>
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                </c:if>
-
-
-
-                                <div class="form-group">
-                                    <div class="col-md-6 col-md-offset-3">
-                                        <button type="submit" class="btn btn-primary">Tạo</button>
-                                    </div>
-                                </div>
-                            </form:form>
-
+                                <input type="hidden" name="customerId" value="${customer.id}">
+                                <button type="submit" class="btn btn-primary">Lưu phiếu nợ</button>
+                            </form>
                         </div>
                     </section>
-
-
-
                 </div>
             </div>
-            <!-- end: page -->
         </section>
     </div>
-
-
-
 </section>
-
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
