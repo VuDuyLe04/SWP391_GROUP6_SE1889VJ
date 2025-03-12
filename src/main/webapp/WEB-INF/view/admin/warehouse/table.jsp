@@ -189,7 +189,7 @@
                                             <td class="text-right">
                                                 <a href="/warehouse/update/${warehouse.id}" class="btn btn-primary">Cập nhật</a>
                                                 <a href="/warehouse/detail/${warehouse.id}" class="btn btn-primary">Detail</a>
-                                                <a href="#" class="btn btn-primary">Nợ</a>
+                                              
                                             </td>
                                         </tr>
                                     </c:forEach>
