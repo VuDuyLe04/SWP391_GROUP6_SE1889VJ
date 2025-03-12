@@ -333,6 +333,11 @@
                                     </div>
                                 </div>
 
+                                <c:if test="${emptyList != null}">
+                                    <div class="alert alert-info">
+                                        <i class="fa fa-info-circle mr-xs"></i> ${emptyList}
+                                    </div>
+                                </c:if>
                                 <c:if test="${searchMessage != null}">
                                     <div class="alert alert-info">
                                         <i class="fa fa-info-circle mr-xs"></i> ${searchMessage}
@@ -378,11 +383,13 @@
                                                         data-createdBy="${s.createdBy}"
                                                         data-updatedAt="${s.updatedAtFormatted}"
                                                         data-updatedBy="${s.updatedBy}"
-                                                        data-totalCustomers="${s.customers.size()}"
-                                                        data-totalWarehouses="${s.wareHouses.size()}"
-                                                        data-totalProducts="${s.products.size()}"
-                                                        data-totalUserStores="${s.userStores.size()-1}">
-                                                    <i class="fa fa-eye"></i>
+                                                        data-totalCustomers="${s.customers != null ? s.customers.size() : 0}"
+                                                        data-totalWarehouses="${s.wareHouses != null ? s.wareHouses.size() : 0}"
+                                                        data-totalProducts="${s.products != null ? s.products.size() : 0}"
+                                                        data-totalUserStores="${s.userStores != null && s.userStores.size() > 0 ? s.userStores.size() - 1 : 0}">
+
+
+                                                <i class="fa fa-eye"></i>
                                                 </button>
 
                                                 <a href="/updatestore/${s.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
@@ -491,7 +498,6 @@
 </div>
 
 
-<!-- Đoạn mã JavaScript của bạn -->
 
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
@@ -507,8 +513,8 @@
             // Xử lý các giá trị số liệu
             const totalCustomers = $(this).attr("totalCustomers") || 0;
             const totalWarehouses = $(this).attr("totalWarehouses") || 0;
-            const totalUserStores = $(this).attr("data-totalUserStores") || "0";
-            const totalProducts = $(this).attr("data-totalProducts") || "0";
+            const totalUserStores = $(this).attr("data-totalUserStores") || 0;
+            const totalProducts = $(this).attr("data-totalProducts") || 0;
             console.log("totalUserStores:", $(this).data("totalUserStores"));
             // console.log("totalProducts:", $(this).data("totalProducts"));
 
@@ -546,6 +552,7 @@
 
         window.location.href = url.toString(); // Điều hướng đến URL mới
     }
+
     function sortByCreatedAt(value) {
         const url = new URL(window.location.href);
         url.searchParams.set('sort', value); // Luôn cập nhật giá trị status
