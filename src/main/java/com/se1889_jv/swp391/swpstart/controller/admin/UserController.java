@@ -82,7 +82,7 @@ public class UserController {
             model.addAttribute("roles", roleService.getAllRoles());
 
         } else if (user.getRole().getName().equals("OWNER")) {
-            List<Store> stores = storeService.findStoresByCreatedBy(userId);
+            List<Store> stores = Utility.getListStoreOfOwner(user);
             model.addAttribute("stores", stores);
             if (input != null && !input.isEmpty()) {
                 users = userService.findDistinctUsersByCreatedByAndByNameOrPhone(userId, input.trim(), pageable);

@@ -28,7 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-public class StoreController {
+public class    StoreController {
     @Autowired
     StoreService storeService;
 
