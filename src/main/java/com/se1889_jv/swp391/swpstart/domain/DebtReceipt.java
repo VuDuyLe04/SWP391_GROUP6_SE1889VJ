@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Builder;
 
 @Entity
 @Table(name = "debt_receipts")
@@ -31,11 +34,11 @@ public class DebtReceipt {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @PrePersist
-    public void handleBeforeCreate() {
-        HttpServletRequest request = null;
-        HttpSession session = request.getSession(false);
-        this.createdBy = (String) session.getAttribute("name");
-        this.createdAt = Instant.now();
-    }
+//    @PrePersist
+//    public void handleBeforeCreate() {
+//        HttpServletRequest request = null;
+//        HttpSession session = request.getSession(false);
+//        this.createdBy = (String) session.getAttribute("name");
+//        this.createdAt = Instant.now();
+//    }
 }
