@@ -3,8 +3,7 @@ package com.se1889_jv.swp391.swpstart.domain;
 import com.se1889_jv.swp391.swpstart.util.validator.annotation.WareHouseExist;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,6 +11,9 @@ import java.util.List;
 @Table(name = "ware_houses")
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class WareHouse {
 
     @Id
@@ -20,12 +22,16 @@ public class WareHouse {
 
     @WareHouseExist
     private String name;
-    
+
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToMany(mappedBy = "warehouse", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "warehouse", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Product> products;
 
+    // Thêm phương thức để lấy storeName
+    public String getStoreName() {
+        return store != null ? store.getName() : "Không xác định";
+    }
 }

@@ -3,7 +3,6 @@ package com.se1889_jv.swp391.swpstart.service.implementservice;
 import com.se1889_jv.swp391.swpstart.domain.Product;
 import com.se1889_jv.swp391.swpstart.repository.ProductRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IProductService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +60,7 @@ public class ProductService implements IProductService {
     }
 
 
+
     @Override
     public Page<Product> getProductByStoreId(Long storeId, Pageable pageable) {
         return productRepository.findAllByStoreId(storeId, pageable);
@@ -71,7 +71,6 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    @Transactional
     public void updateProduct(Product product) {
         Optional<Product> productOptional = productRepository.findById(product.getId());
         if (productOptional.isPresent()) {
@@ -85,4 +84,11 @@ public class ProductService implements IProductService {
             productRepository.save(productOptional.get());
         }
     }
+
+    @Override
+    public List<Product> getProductsByWarehouseId(Long warehouseId) {
+        return productRepository.findAllByWarehouseId(warehouseId);
+    }
+
+
 }

@@ -79,6 +79,24 @@
             white-space: nowrap; /* Giữ chữ không bị xuống dòng */
         }
 
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 350px;
+        }
+
+        .search-input {
+            flex: 1;
+            border-radius: 20px;
+            padding-left: 10px;
+        }
+
+        .search-btn {
+            margin-left: 5px;
+            border-radius: 20px;
+            padding: 5px 15px;
+        }
 
 
     </style>
@@ -127,8 +145,24 @@
                             <!-- Ô tìm kiếm -->
                             <div class="search-container">
                                 <input type="text" id="searchInput" class="form-control search-input" placeholder="Tìm kiếm khu vực...">
-                                <i class="fa fa-search search-icon"></i>
+                                <button class="btn btn-primary search-btn" onclick="searchWarehouses()">
+                                    <i class="fa fa-search"></i> Tìm kiếm
+                                </button>
                             </div>
+
+                            <script>
+                                function searchWarehouses() {
+                                    let searchValue = document.getElementById("searchInput").value.trim();
+                                    if (searchValue) {
+                                        window.location.href = "/warehouse/search?name=" + encodeURIComponent(searchValue);
+                                    } else {
+                                        alert("Vui lòng nhập từ khóa tìm kiếm!");
+                                    }
+                                }
+
+
+                            </script>
+
 
                             <!-- Nút tạo khu vực mới -->
                             <a href="/warehouse/create" class="btn btn-primary">
@@ -142,7 +176,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Tên</th>
-                                        <th>Store Name</th>
+                                        <th>Cửa hàng</th>
                                         <th class="text-right">Hoạt động</th>
                                     </tr>
                                     </thead>
@@ -161,6 +195,7 @@
                                     </c:forEach>
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
                     </section>
@@ -169,8 +204,6 @@
             <!-- end: page -->
         </section>
     </div>
-
-
 </section>
 
 <!-- Vendor -->

@@ -20,4 +20,6 @@ public interface IProductService {
 
     Page<Product> getAllProducts(Pageable pageable);
     void updateProduct(Product product);
+    List<Product> getProductsByWarehouseId(Long warehouseId);
+
 }
