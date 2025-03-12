@@ -104,6 +104,17 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Chọn cửa hàng</label>
+                                    <div class="col-md-6">
+                                        <form:select path="id" class="form-control">
+                                            <option value="">-- Chọn cửa hàng --</option>
+                                            <c:forEach items="${listStore}" var="store">
+                                                <form:option value="${store.id}">${store.name}</form:option>
+                                            </c:forEach>
+                                        </form:select>
+                                    </div>
+                                </div>
 
 
                                 <div class="form-group">

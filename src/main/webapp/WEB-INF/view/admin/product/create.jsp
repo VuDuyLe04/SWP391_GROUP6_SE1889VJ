@@ -102,8 +102,8 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputDefault">Tên gạo</label>
                                     <div class="col-md-6">
-                                        <form:input path="name" type="text" class="form-control" id="inputDefault"/>
-                                        <form:errors path="name" cssClass="text-danger"/>
+                                        <form:input path="name" type="text" class="form-control" id="inputDefault"
+                                                    requiredpattern="[A-Za-z0-9 ]{1,50}" title="Chỉ cho phép chữ cái, số và tối đa 50 ký tự"/>
                                     </div>
                                 </div>
 
@@ -111,8 +111,6 @@
                                     <label class="col-md-3 control-label" for="inputImage">Hình ảnh</label>
                                     <div class="col-md-6">
                                         <form:input path="image" class="form-control" id="inputImage" type="text" readonly="true"/>
-<%--                                        <form:errors path="image" cssClass="text-danger"/>--%>
-
                                     </div>
                                 </div>
 
@@ -120,7 +118,6 @@
                                     <label class="col-md-3 control-label" for="inputPrice">Giá gạo</label>
                                     <div class="col-md-6">
                                         <form:input path="unitPrice" type="number" id="inputPrice" class="form-control"/>
-                                        <form:errors path="unitPrice" cssClass="text-danger"/>
                                     </div>
                                 </div>
 
@@ -128,7 +125,6 @@
                                     <label class="col-md-3 control-label" for="inputCategory">Loại gạo</label>
                                     <div class="col-md-6">
                                         <form:input path="category" type="text"  class="form-control" id="inputCategory"/>
-                                        <form:errors path="category" cssClass="text-danger"/>
                                     </div>
                                 </div>
 
@@ -143,14 +139,12 @@
                                     <label class="col-md-3 control-label" for="inputDescription">Mô tả</label>
                                     <div class="col-md-6">
                                         <form:input path="description" type="text"  class="form-control" id="inputDescription"/>
-                                        <form:errors path="description" cssClass="text-danger"/>
-
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputDescription">Cửa hàng</label>
                                     <div class="col-md-6">
-                                        <form:select path="store" cssClass="form-control" id="inputStore" onchange="filterWarehouses()">
+                                        <form:select path="store.id" cssClass="form-control" id="inputStore" onchange="filterWarehouses()">
                                             <option value="">-- Chọn cửa hàng --</option>
                                             <c:forEach items="${listStore}" var="storeIt">
                                                 <form:option value="${storeIt.id}">
@@ -163,7 +157,7 @@
                                 <div class="form-group" id="warehouseGroup" style="display: none;">
                                     <label class="col-md-3 control-label" for="inputWarehouse">Kho hàng</label>
                                     <div class="col-md-6">
-                                        <form:select path="warehouse" class="form-control" id="inputWarehouse">
+                                        <form:select path="warehouse.id" class="form-control" id="inputWarehouse">
                                             <option value="">-- Chọn kho hàng --</option>
                                             <c:forEach items="${wareHouses}" var="warehouse">
                                                 <form:option value="${warehouse.id}" data-store-id="${warehouse.store.id}">
@@ -185,13 +179,8 @@
                         </div>
                     </section>
 
-
                 </div>
             </div>
-
-
-
-
             <!-- end: page -->
         </section>
     </div>

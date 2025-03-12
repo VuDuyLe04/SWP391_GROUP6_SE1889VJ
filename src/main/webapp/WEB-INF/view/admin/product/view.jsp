@@ -46,7 +46,14 @@
                                     <th>Loại gạo</th>
                                     <td>${product.category}</td>
                                 </tr>
-
+<%--                                <tr>--%>
+<%--                                    <th>Cửa hàng</th>--%>
+<%--                                    <td>${product.store.name}</td>--%>
+<%--                                </tr>--%>
+                                <tr>
+                                    <th>Kho hàng</th>
+                                    <td>${product.warehouse.name}</td>
+                                </tr>
 
                             </table>
                         </div>

@@ -43,6 +43,46 @@
     <!-- Head Libs -->
     <script src="/client/auth/assets/vendor/modernizr/modernizr.js"></script>
 
+    <style>
+        .add-warehouse {
+            color: white !important;
+            text-decoration: none;
+        }
+
+        .panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            border-radius: 20px;
+            padding-left: 35px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            color: gray;
+        }
+
+        .btn-primary {
+            white-space: nowrap; /* Giữ chữ không bị xuống dòng */
+        }
+
+
+
+    </style>
+
 </head>
 <body>
 
@@ -77,15 +117,23 @@
 
 
             <!-- start: page -->
+
+
+
             <div class="row">
                 <div class="col-lg-12">
                     <section class="panel">
-                        <header class="panel-heading">
-                            <div class="panel-actions">
-
+                        <header class="panel-heading d-flex justify-content-between align-items-center">
+                            <!-- Ô tìm kiếm -->
+                            <div class="search-container">
+                                <input type="text" id="searchInput" class="form-control search-input" placeholder="Tìm kiếm khu vực...">
+                                <i class="fa fa-search search-icon"></i>
                             </div>
 
-                            <a href="/warehouse/create" class="panel-featured-right">Tạo mới khu vực</a>
+                            <!-- Nút tạo khu vực mới -->
+                            <a href="/warehouse/create" class="btn btn-primary">
+                                <i class="fa fa-plus"></i> Tạo khu vực mới
+                            </a>
                         </header>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -94,8 +142,8 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Tên</th>
+                                        <th>Store Name</th>
                                         <th class="text-right">Hoạt động</th>
-
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -103,22 +151,19 @@
                                         <tr>
                                             <td>${warehouse.id}</td>
                                             <td>${warehouse.name}</td>
+                                            <td>${warehouse.storeName}</td>
                                             <td class="text-right">
-                                                <a href="/warehouse/update/${warehouse.id}"
-                                                   class="btn btn-primary">Cập nhật</a>
+                                                <a href="/warehouse/update/${warehouse.id}" class="btn btn-primary">Cập nhật</a>
+                                                <a href="/warehouse/detail/${warehouse.id}" class="btn btn-info btn-sm">Detail</a>
                                                 <a href="#" class="btn btn-primary">Nợ</a>
                                             </td>
                                         </tr>
                                     </c:forEach>
-
                                     </tbody>
-
                                 </table>
                             </div>
                         </div>
                     </section>
-
-
                 </div>
             </div>
             <!-- end: page -->
