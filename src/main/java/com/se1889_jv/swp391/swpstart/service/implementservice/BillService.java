@@ -3,6 +3,8 @@ package com.se1889_jv.swp391.swpstart.service.implementservice;
 import com.se1889_jv.swp391.swpstart.domain.Bill;
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
+import com.se1889_jv.swp391.swpstart.exception.AppException;
+import com.se1889_jv.swp391.swpstart.exception.ErrorException;
 import com.se1889_jv.swp391.swpstart.repository.BillRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IBillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +52,8 @@ public class BillService implements IBillService {
     @Override
     public Bill createBillForFirstDetail(Bill bill) {
         return billRepository.save(bill);
+    }
+    public Bill findBillById(Long id) {
+        return billRepository.findById(id).orElseThrow(() ->  new AppException(ErrorException.BILL_NOT_FOUND));
     }
 }

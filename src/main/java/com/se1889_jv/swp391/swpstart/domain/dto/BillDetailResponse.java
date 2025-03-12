@@ -1,8 +1,12 @@
 package com.se1889_jv.swp391.swpstart.domain.dto;
 
 import com.se1889_jv.swp391.swpstart.domain.BillDetail;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class BillDetailResponse {
     private Long id;
@@ -17,6 +21,7 @@ public class BillDetailResponse {
     private Long billId;
     private Long productId;
     private Long packagingId;
+    private String packagingName;
     public BillDetailResponse(BillDetail billDetail) {
         this.id = billDetail.getId();
         this.quantity = billDetail.getQuantity();
@@ -30,5 +35,6 @@ public class BillDetailResponse {
         this.billId = billDetail.getBill().getId();
         this.productId = billDetail.getProduct().getId();
         this.packagingId = billDetail.getPackaging().getId();
+        this.packagingName = billDetail.getPackaging().getPackageType();
     }
 }

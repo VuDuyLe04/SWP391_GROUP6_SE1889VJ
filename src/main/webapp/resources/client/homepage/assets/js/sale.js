@@ -168,7 +168,6 @@ async function addCustomer() {
 function validateCustomerForm() {
     let isValid = true;
 
-    // Lấy giá trị nhập vào
     let name = document.getElementById("customer-name").value.trim();
     let phone = document.getElementById("customer-phone").value.trim();
     let address = document.getElementById("customer-address").value.trim();
@@ -177,11 +176,15 @@ function validateCustomerForm() {
     let nameError = document.getElementById("name-error");
     let addressError = document.getElementById("address-error");
 
+    // Kiểm tra tên
     if (name === "") {
         nameError.hidden = false;
         isValid = false;
+    } else {
+        nameError.hidden = true;  // Ẩn lỗi nếu nhập đúng
     }
 
+    // Kiểm tra số điện thoại
     let phoneRegex = /^(0[2-9]{1}[0-9]{8,9})$/;
     if (!phoneRegex.test(phone)) {
         phoneError.hidden = false;
@@ -189,12 +192,18 @@ function validateCustomerForm() {
     } else {
         phoneError.hidden = true;
     }
+
+    // Kiểm tra địa chỉ
     if (address === "") {
         addressError.hidden = false;
         isValid = false;
+    } else {
+        addressError.hidden = true;
     }
+
     return isValid;
 }
+
 
 function showToast(message, isSuccess = true) {
     let toastElement = document.getElementById("toastMessage");

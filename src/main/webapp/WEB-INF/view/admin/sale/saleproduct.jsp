@@ -33,7 +33,7 @@
 <div class="container-fluid">
     <div class="row">
         <!-- Left Panel - Products -->
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="top-bar">
                 <div class="row">
                     <div class="col-md-4 d-flex">
@@ -171,7 +171,7 @@
         </div>
 
         <!-- Right Panel - Bill -->
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="bill-section">
                 <div hidden="hidden" id="storeId">${storeId}</div>
                 <div class="bill-header">
@@ -180,20 +180,20 @@
                 </div>
 
 
-                <div class="bill-items">
+                <div class="bill-items" id="bill-items">
                     <!-- Mẫu item trong bill -->
-<%--                    <div class="bill-item">--%>
-<%--                        <div>--%>
-<%--                            <h6 class="mb-0">Tên sản phẩm</h6>--%>
-<%--                            <small class="text-muted">Loại: Standard</small>--%>
-<%--                        </div>--%>
-<%--                        <div>2 x 100,000đ</div>--%>
-<%--                        <div>Giảm: 10,000đ</div>--%>
-<%--                        <div class="text-end">190,000đ</div>--%>
-<%--                        <button class="btn btn-danger btn-sm">--%>
-<%--                            <i class="fas fa-times"></i>--%>
-<%--                        </button>--%>
-<%--                    </div>--%>
+                    <div class="bill-item">
+                        <div>
+                            <h6 class="mb-0">Tên sản phẩm</h6>
+                            <small class="text-muted">Loại: Standard</small>
+                        </div>
+                        <div>2 x 100,000đ</div>
+                        <div>Giảm: 10,000đ</div>
+                        <div class="text-end">190,000đ</div>
+                        <button class="btn btn-danger btn-sm">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="bill-summary">
@@ -220,7 +220,24 @@
                         <div id="suggestion-box" class="border bg-white mt-1" style="display: none; position: absolute;"></div>
                     </div>
                     <textarea class="form-control mt-3" rows="2" placeholder="Ghi chú đơn hàng..."></textarea>
+                    <div class="mt-4">
+                        <div class="d-flex align-items-center">
 
+                            <select class="form-select me-3" id="paymentOptions"  style="width: 200px;">
+                                <option selected disabled>Chọn hành động</option>
+                                <option value="debt">Trả tiền nợ</option>
+                                <option value="order">Trả đơn hàng</option>
+                                <option value="all">Trả tất cả</option>
+                            </select>
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="bocVacCheckbox">
+                                <label class="form-check-label fw-bold text-primary" for="bocVacCheckbox">
+                                    Bốc vác
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">

@@ -13,7 +13,8 @@ public enum ErrorException {
     NOT_ENOUGH_QUANTITY(102, "Không đủ số lượng"),
     CUSTOMER_EXITED(103, "Khách hàng đã tồn tại trong cửa hàng"),
     NOT_NULL(104, "Không được để trống"),
-
+    BILL_DETAIL_NOT_FOUND(105, "Không tìm thấy thông tin bill này"),
+    BILL_NOT_FOUND(106, "Bill này không tồn tại")
     ;
     private int code;
     private String message;
