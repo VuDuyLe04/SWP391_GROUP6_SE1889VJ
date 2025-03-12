@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Danh sách dịch vụ</title>
+    <title>Lịch sử nạp tiền</title>
     <meta name="keywords" content="HTML5 Admin Template"/>
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -65,7 +65,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Danh sách dịch vụ</h2>
+                <h2>Lịch sử nạp tiền</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -74,7 +74,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Danh sách dịch vụ</span></li>
+                        <li><span>Lịch sử nạp tiền</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -115,48 +115,41 @@
                         <div class="panel-body">
                             <div class="row mb-md">
                                 <div class="col-sm-6">
-<%--                                    <form action="usermanagement" method="get" class="form-inline">--%>
-<%--                                        <c:if test="${sessionScope.user.role.id == 1}">--%>
-<%--                                            <div class="form-group mr-md">--%>
-<%--                                                <div class="input-group">--%>
-<%--                                                    <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>--%>
-<%--                                                    <select id="role" name="role" class="form-control">--%>
-<%--                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >Thời gian</option>--%>
-<%--                                                        <c:forEach items="${roles}" var="r">--%>
-<%--                                                        <option ${roleId == r.id ? "selected" : ""} value="${r.id}">--%>
-<%--                                                            <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>--%>
-<%--                                                            <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>--%>
-<%--                                                            <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>--%>
+                                    <form action="usermanagement" method="get" class="form-inline">
+                                        <c:if test="${sessionScope.user.role.id == 1}">
+                                            <div class="form-group mr-md">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                                                    <select id="role" name="role" class="form-control">
+                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >Thời gian</option>
+                                                        <c:forEach items="${roles}" var="r">
+                                                        <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
+                                                            <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>
+                                                            <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>
+                                                            <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>
 
-<%--                                                            </c:forEach>--%>
+                                                            </c:forEach>
 
-<%--                                                    </select>--%>
-<%--                                                </div>--%>
-<%--                                            </div>--%>
-<%--                                            <div class="form-group mr-md">--%>
-<%--                                                <div class="input-group">--%>
-<%--                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>--%>
-<%--                                                    <select id="active" name="active" class="form-control">--%>
-<%--                                                        <option ${active == -1 ? "selected" : ""} value="-1">Các trạng thái</option>--%>
-<%--                                                        <option ${active == 1 ? "selected" : ""} value="1">Hoạt động</option>--%>
-<%--                                                        <option ${active == 0 ? "selected" : ""} value="0">Bị cấm</option>--%>
-<%--                                                    </select>--%>
-<%--                                                </div>--%>
-<%--                                            </div>--%>
-<%--                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>--%>
-<%--                                        </c:if>--%>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mr-md">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
+                                                    <select id="active" name="active" class="form-control">
+                                                        <option ${active == -1 ? "selected" : ""} value="-1">Các trạng thái</option>
+                                                        <option ${active == 1 ? "selected" : ""} value="1">Hoạt động</option>
+                                                        <option ${active == 0 ? "selected" : ""} value="0">Bị cấm</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>
+                                        </c:if>
 
 
-<%--                                    </form>--%>
+                                    </form>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="pull-right">
-                                        <a href="/service/create" class="btn btn-primary mb-xs mt-xs mr-xs">
-                                            <i class="fa fa-plus mr-xs"></i>Thêm dịch vụ mới
-                                        </a>
 
-                                    </div>
-                                </div>
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-condensed mb-none">
@@ -164,32 +157,27 @@
 
                                     <tr>
                                         <th>STT</th>
-                                        <th class="text-center">Tên</th>
-                                        <th class="text-center">Thời gian dịch vụ</th>
-                                        <th class="text-center">Giá</th>
+                                        <th class="text-center">Mã giao dịch</th>
+                                        <th class="text-center">Tiền</th>
+                                        <th class="text-center">Nội dung</th>
+                                        <th class="text-center">Thời gian</th>
+                                        <th class="text-center">Tài khoản nhận tiền</th>
+                                        <th class="text-center">Cổng thanh toán</th>
                                         <th class="text-center">Trạng thái</th>
-                                        <th class="text-center"><i class="fa fa-cogs mr-xs"></i>Hành động</th>
                                     </tr>
 
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${listService}" var="service" varStatus="status">
+                                    <c:forEach items="${listTransactionPayment}" var="t" varStatus="status">
                                         <tr>
                                             <td>${status.index + 1}</td>
-                                            <td class="text-center">${service.name}</td>
-                                            <td class="text-center">${service.durationMonths} tháng</td>
-                                            <td class="text-center">${service.price}</td>
-<%--                                            <td class="text-center">${service.active}</td>--%>
-                                            <td class="text-center">
-                                                <span class="label ${service.active == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
-                    <i class="fa ${service.active == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
-                    ${service.active == "true" ? "Active" : "Banned"}
-                </span>
-                                            </td>
-                                            <td class="text-center">
-                                                <a href="/service/update/${service.id}" class="btn btn-primary">Cập
-                                                    nhật</a>
-                                            </td>
+                                            <td class="text-center">${t.transactionId}</td>
+                                            <td class="text-center">${t.amount}</td>
+                                            <td class="text-center">${t.content}</td>
+                                            <td class="text-center">${t.date}</td>
+                                            <td class="text-center">${t.accountReceiver}</td>
+                                            <td class="text-center">${t.gate}</td>
+                                            <td class="text-center">${t.transactionStatus}</td>
                                         </tr>
                                     </c:forEach>
 
@@ -200,7 +188,7 @@
                                     <ul class="pagination justify-content-center">
                                         <c:if test="${currentPage > 0}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/service/table?page=${currentPage - 1}"
+                                                <a class="page-link" href="/payment/history?page=${currentPage - 1}"
                                                    aria-label="Previous">
                                                     <span aria-hidden="true">&laquo; Trước</span>
                                                 </a>
@@ -209,13 +197,13 @@
                                         <c:if test="${totalPages > 0}">
                                             <c:forEach begin="0" end="${totalPages - 1}" var="i">
                                                 <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                    <a class="page-link" href="/service/table?page=${i}">${i + 1}</a>
+                                                    <a class="page-link" href="/payment/history?page=${i}">${i + 1}</a>
                                                 </li>
                                             </c:forEach>
                                         </c:if>
                                         <c:if test="${currentPage < totalPages - 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/service/table?page=${currentPage + 1}"
+                                                <a class="page-link" href="/payment/history?page=${currentPage + 1}"
                                                    aria-label="Next">
                                                     <span aria-hidden="true">Sau &raquo;</span>
                                                 </a>

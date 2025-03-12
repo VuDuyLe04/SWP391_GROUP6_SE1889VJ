@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 public class ServiceController {
     @Autowired
@@ -55,9 +57,18 @@ public class ServiceController {
     @GetMapping("/service/table")
     public String serviceTable(
             Model model,
-            @RequestParam(defaultValue = "0") int page) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam("name")Optional<String> nameOptional) {
+        String name ="";
+        if (nameOptional.isPresent()) {
+             name = nameOptional.get();
+        } else {
+            name = "";
+        }
+
+
         Pageable pageable = PageRequest.of(page, 5);
-        Page<Service> servicePage = this.serviceService.findAllServices(pageable);
+        Page<Service> servicePage = this.serviceService.findAllServices(pageable, name);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", servicePage.getTotalPages());
         model.addAttribute("listService", servicePage.getContent());

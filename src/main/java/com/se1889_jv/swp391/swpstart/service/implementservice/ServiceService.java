@@ -1,6 +1,7 @@
 package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 import com.se1889_jv.swp391.swpstart.domain.Service;
+import com.se1889_jv.swp391.swpstart.domain.Service_;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.repository.ServiceRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IServiceService;
@@ -8,6 +9,7 @@ import com.se1889_jv.swp391.swpstart.util.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.time.Instant;
 import java.util.List;
@@ -37,7 +39,18 @@ public class ServiceService implements IServiceService {
 
     @Override
     public Page<Service> findAllServices(Pageable pageable) {
-        return this.serviceRepository.findAll(pageable);
+        return null;
+    }
+
+    private Specification<Service> nameLike(String name){
+        return (root, query, criteriaBuilder)
+                -> criteriaBuilder.like(root.get(Service_.NAME), "%"+name+"%");
+    }
+
+
+    
+    public Page<Service> findAllServices(Pageable pageable, String name) {
+        return this.serviceRepository.findAll(this.nameLike(name),pageable);
     }
 
     @Override
