@@ -174,21 +174,21 @@
                                 <table class="table table-bordered table-striped table-condensed mb-none">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Tên</th>
-                                        <th>Cửa hàng</th>
+                                        <th class ="text-center">ID</th>
+                                        <th class ="text-center">Tên</th>
+                                        <th class ="text-center">Cửa hàng</th>
                                         <th class="text-right">Hoạt động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <c:forEach items="${listWareHouse}" var="warehouse">
                                         <tr>
-                                            <td>${warehouse.id}</td>
-                                            <td>${warehouse.name}</td>
-                                            <td>${warehouse.storeName}</td>
+                                            <td class ="text-center" >${warehouse.id}</td>
+                                            <td class ="text-center">${warehouse.name}</td>
+                                            <td class ="text-center">${warehouse.storeName}</td>
                                             <td class="text-right">
                                                 <a href="/warehouse/update/${warehouse.id}" class="btn btn-primary">Cập nhật</a>
-                                                <a href="/warehouse/detail/${warehouse.id}" class="btn btn-info btn-sm">Detail</a>
+                                                <a href="/warehouse/detail/${warehouse.id}" class="btn btn-primary">Detail</a>
                                                 <a href="#" class="btn btn-primary">Nợ</a>
                                             </td>
                                         </tr>
@@ -197,6 +197,9 @@
                                 </table>
 
                             </div>
+
+
+
                         </div>
                     </section>
                 </div>

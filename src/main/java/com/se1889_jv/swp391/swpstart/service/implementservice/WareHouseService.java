@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -96,7 +97,10 @@ public class WareHouseService implements IWareHouseService {
         return wareHouseRepository.findByNameContaining(name);
     }
 
-
+    public Page<WareHouse> getWareHousesWithPagination(int page, int size, Store store) {
+        Pageable pageable = PageRequest.of(page, size);
+        return wareHouseRepository.findByStore(store, pageable);
+    }
 
 
 }

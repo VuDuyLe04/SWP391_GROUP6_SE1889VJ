@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -50,23 +51,25 @@ public class WareHouseController {
 
     //bảng các khu vực
     @GetMapping("/warehouse")
-    public String getTableWarehouse(Model model) {
+    public String getTableWarehouse(@RequestParam(defaultValue = "0") int page, Model model) {
         Store store = Utility.getStoreInSession();
-        System.out.println("Store trong session: " + store);
+        if (store == null) {
+            return "redirect:/dashboard";
+        }
 
-        List<WareHouse> warehouses = this.wareHouseService.getAllWareHouse(store);
-        System.out.println("Danh sách kho: " + warehouses);
-
-        model.addAttribute("listWareHouse", warehouses);
+        Page<WareHouse> warehousePage = this.wareHouseService.getWareHousesWithPagination(page, 5, store);
+        model.addAttribute("listWareHouse", warehousePage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", warehousePage.getTotalPages());
         return "admin/warehouse/table";
     }
 
     @GetMapping("/warehouse/update/{id}")
     public String getUpdatePage(@PathVariable("id") long id, Model model) {
         Store store = Utility.getStoreInSession();
-        if (store == null) {
-            return "redirect:/dashboard";
-        }
+//        if (store == null) {
+//            return "redirect:/dashboard";
+//        }
         WareHouse wareHouse = this.wareHouseService.getWareHouseById(id);
         model.addAttribute("warehouse", wareHouse);
         return "admin/warehouse/update";
@@ -74,7 +77,7 @@ public class WareHouseController {
 
     @PostMapping("/warehouse/update")
     public String updateWareHouse(
-            @Valid @ModelAttribute("customer") WareHouse wareHouse,
+            @Valid @ModelAttribute("warehouse") WareHouse wareHouse,
             BindingResult result
     ) {
         if (result.hasErrors()) {
