@@ -188,7 +188,7 @@
                                             <td class ="text-center">${warehouse.storeName}</td>
                                             <td class="text-right">
                                                 <a href="/warehouse/update/${warehouse.id}" class="btn btn-primary">Cập nhật</a>
-                                                <a href="/warehouse/detail/${warehouse.id}" class="btn btn-primary">Detail</a>
+                                                <a href="/warehouse/detail/${warehouse.id}" class="btn btn-primary">Chi tiết</a>
                                               
                                             </td>
                                         </tr>
