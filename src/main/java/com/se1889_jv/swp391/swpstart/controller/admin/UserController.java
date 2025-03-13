@@ -49,7 +49,7 @@ public class UserController {
         Page<User> users;
 
         if (input != null && !input.isEmpty()) {
-            users = userService.getUsersBySearch(input.trim(), input.trim(), pageable);
+            users = userService.getUsersBySearch(input.trim(), input.trim(),1L, pageable);
         } else {
             long roleIdValue = "-1".equals(roleId) ? -1 : Long.parseLong(roleId);
             boolean isActive = "1".equals(active);

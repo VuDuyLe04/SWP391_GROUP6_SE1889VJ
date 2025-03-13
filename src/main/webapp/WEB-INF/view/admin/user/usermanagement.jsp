@@ -271,10 +271,9 @@
                                                         <option ${roleId == -1 ? "selected" : ""} value="-1" >Các vai trò</option>
                                                         <c:forEach items="${roles}" var="r">
                                                             <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
-                                                                <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>
                                                                 <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>
                                                                 <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>
-
+                                                            </option>
                                                         </c:forEach>
 
                                                     </select>
@@ -292,14 +291,7 @@
                                             </div>
                                             <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>
                                         </c:if>
-<%--                                        <c:if test="${sessionScope.user.role.id == 2}">--%>
-<%--                                            <select id="store" name="store" class="form-control">--%>
-<%--                                                <option value="0">All Status</option>--%>
-<%--                                                <c:forEach items="${stores}" var="s">--%>
-<%--                                                    <option value="${s.id}">${s.name}</option>--%>
-<%--                                                </c:forEach>--%>
-<%--                                            </select>--%>
-<%--                                        </c:if>--%>
+
 
                                     </form>
                                 </div>
@@ -338,7 +330,6 @@
                                             <c:if test="${sessionScope.user.role.id == 1}">
                                                 <td><span class="text-primary">
                                                         <c:choose>
-                                                            <c:when test="${u.role.name == 'ADMIN'}">Quản trị viên</c:when>
                                                             <c:when test="${u.role.name == 'OWNER'}">Chủ cửa hàng</c:when>
                                                             <c:when test="${u.role.name == 'STAFF'}">Nhân viên</c:when>
                                                             <c:otherwise>${u.role.name}</c:otherwise>

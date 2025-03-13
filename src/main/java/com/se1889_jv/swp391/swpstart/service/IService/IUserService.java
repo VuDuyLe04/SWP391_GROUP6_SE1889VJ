@@ -18,12 +18,14 @@ public interface IUserService {
     User registerDTOtoUser(RegisterDTO registerDTO);
     boolean checkPhoneExist(String phone);
     List<UserStore> getAllUserStores(User user);
-
+//    Page<User> findUsersByRoleNot(Long roleId, Pageable pageable);
     User updateUser(User user);
 
     Page<User> getAll(Pageable pageable);
 
-    Page<User> getUsersBySearch(String name, String phone, Pageable pageable);
+    Page<User> getUsersBySearch(String name, String phone,Long roleId, Pageable pageable);
+
+
 
     Page<User> getUsersbyRoleID(Long id, Pageable pageable);
 

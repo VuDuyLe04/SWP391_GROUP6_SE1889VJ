@@ -16,11 +16,13 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
     User findByPhone(String phone);
-    Page<User> findUsersByNameContainingOrPhoneContaining(String name, String phone, Pageable pageable);
+//    Page<User> findUsersByNameContainingOrPhoneContainingAndRoleIdNot(String name, String phone, Long roleId,Pageable pageable);
     boolean existsByPhone(String phone);
+    Page<User> findByNameContainingOrPhoneContainingAndRole_IdNot(String name, String phone, Long roleId, Pageable pageable);
 
 //    List<User> findByUserStore(List<UserStore> userStores);
 
+    Page<User> findByRoleIdNot(Long id, Pageable pageable);
 
 
     Page<User> findUsersByActive(boolean active, Pageable pageable);
