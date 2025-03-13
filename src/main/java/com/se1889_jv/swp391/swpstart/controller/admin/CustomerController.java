@@ -175,7 +175,7 @@ public class CustomerController {
             model.addAttribute("totalPages", customers.getTotalPages());
         }
 
-//        model.addAttribute("listCustomer", customers);
+
 
         return "admin/customer/table";
     }

@@ -17,7 +17,7 @@ public interface ICustomerService {
     void updateCustomer(Customer customer);
     public List<Customer> getAllCustomers();
 
-    PageResponse<Customer> getAllCustomer(int page);
+
     //Search owner
     public default Page<Customer> searchCustomersByNameRoleOwner(String name ,List<Store> stores, Pageable pageable) {
 

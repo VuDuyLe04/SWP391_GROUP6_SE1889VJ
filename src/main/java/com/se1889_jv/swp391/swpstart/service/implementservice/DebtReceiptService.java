@@ -86,7 +86,7 @@ public class DebtReceiptService implements IDebtReceiptService {
                 .debtReason(request.getDebtReason())
                 .createdAt(Instant.now())
                 .customer(customer)
-                .createdBy("ADMIN")
+                .createdBy(request.getCreatedBy())
                 .build();
 
         debtReceiptRepository.save(debtReceipt);

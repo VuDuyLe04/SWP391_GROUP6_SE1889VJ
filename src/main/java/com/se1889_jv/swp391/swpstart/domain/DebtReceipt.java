@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
+import com.se1889_jv.swp391.swpstart.util.Utility;
 import com.se1889_jv.swp391.swpstart.util.constant.DebtTypeEnum;
 import jakarta.persistence.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,11 +35,10 @@ public class DebtReceipt {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-//    @PrePersist
-//    public void handleBeforeCreate() {
-//        HttpServletRequest request = null;
-//        HttpSession session = request.getSession(false);
-//        this.createdBy = (String) session.getAttribute("name");
-//        this.createdAt = Instant.now();
-//    }
+    @PrePersist
+    public void handleBeforeCreate() {
+        User user = Utility.getUserInSession();
+        this.createdBy = user.getName();
+        this.createdAt = Instant.now();
+    }
 }

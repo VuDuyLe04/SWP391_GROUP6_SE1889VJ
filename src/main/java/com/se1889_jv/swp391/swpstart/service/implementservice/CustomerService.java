@@ -87,20 +87,8 @@ public class CustomerService implements ICustomerService {
         return customerRepository.findAll();
     }
 
-    @Override
-    public PageResponse<Customer> getAllCustomer(int page) {
-        Pageable pageable = PageRequest.of(page - 1,5);
-        Page<Customer> customers = customerRepository.findAll(pageable);
-        List<Customer> customerList = customers.getContent();
 
-        return PageResponse.<Customer>builder()
-                .currentPage(page)
-                .pageSize(pageable.getPageSize())
-                .totalPages(customers.getTotalPages())
-                .totalElements(customers.getTotalElements())
-                .data(customerList)
-                .build();
-    }
+
 
     @Override
     public List<Customer> getCustomersByStoreId(Long storeId) {
