@@ -58,13 +58,14 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<UserStore> userStores;
-    public void addUserStore() {
-    User user = new User();
-    user.getUserStores();
-}
-
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<TransactionService> transactionServices;
+
+    public void addUserStore() {
+        User user = new User();
+        user.getUserStores();
+    }
+
     public Date getCreatedAtAsDate() {
         return createdAt != null ? Date.from(createdAt) : null;
     }
@@ -72,6 +73,7 @@ public class User {
     public Date getUpdatedAtAsDate() {
         return updatedAt != null ? Date.from(updatedAt) : null;
     }
+
     public String getCreatedAtFormatted() {
         return formatInstant(createdAt);
     }
