@@ -14,8 +14,12 @@ public enum ErrorException {
     CUSTOMER_EXITED(103, "Khách hàng đã tồn tại trong cửa hàng"),
     NOT_NULL(104, "Không được để trống"),
     BILL_DETAIL_NOT_FOUND(105, "Không tìm thấy thông tin bill này"),
-    BILL_NOT_FOUND(106, "Bill này không tồn tại")
+    BILL_NOT_FOUND(106, "Bill này không tồn tại"),
+    PACK_NOT_FOUND(107, "Không thấy đóng gói này"),
+    NOT_POSITIVE(108, "Số lượng không thể âm")
     ;
     private int code;
     private String message;
+
+
 }

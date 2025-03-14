@@ -15,4 +15,5 @@ public interface IBillDetailService {
     BillDetailResponse createBillDetail2(BillDetailRequest request);
     void deleteBillDetail(Long id);
     List<BillDetailResponse> getBillDetails(Long billId);
+    double getTotalPrice(Long billId);
 }

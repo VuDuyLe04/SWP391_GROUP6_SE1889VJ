@@ -4,18 +4,37 @@ function attachEventListeners() {
         button.addEventListener("click", function () { addBillDetail(this); });
     });
 }
+document.addEventListener("DOMContentLoaded", async function () {
+    await checkAndLoadBill();
+});
+
+async function checkAndLoadBill() {
+    try {
+        const storeId = parseInt(document.getElementById("storeId").textContent);
+        let billCheckResponse = await fetch(`/api/getCurrentBill?storeId=${encodeURIComponent(storeId)}`);
+        let billCheckData = await billCheckResponse.json();
+
+        if (billCheckData.code === 200 && billCheckData.data) {
+            console.log("Tìm thấy hóa đơn hiện tại:", billCheckData.data);
+            await loadBillDetails();
+        } else {
+            console.warn("Không tìm thấy hóa đơn hiện tại.");
+        }
+    } catch (error) {
+        console.error("Lỗi khi kiểm tra hóa đơn:", error);
+    }
+}
 
 async function addBillDetail(button) {
     let modal = button.closest(".modal");
     let productId = modal.id.replace("productModal", "");
-    let quantity = modal.querySelector(".quantity-input").value;
+    let quantity = parseInt(modal.querySelector(".quantity-input").value);
     let packagingId = modal.querySelector("select[name='packaging']").value;
-    let discount = modal.querySelector("select[name='discount']").value;
-    let listed = modal.querySelector('.listed-input').value;
+    let discount = parseFloat(modal.querySelector("select[name='discount']").value);
+    let listed = parseFloat(modal.querySelector('.listed-input').value);
     const storeId = parseInt(document.getElementById("storeId").textContent);
 
     try {
-        // Kiểm tra xem đã có hóa đơn hiện tại trong session chưa
         let billCheckResponse = await fetch(`/api/getCurrentBill?storeId=${encodeURIComponent(storeId)}`);
         let billData = await billCheckResponse.json();
 
@@ -34,39 +53,43 @@ async function addBillDetail(button) {
             quantity: quantity,
             packagingId: packagingId,
             discount: discount,
-            listedPrice: listed
+            listedPrice: listed,
+            actualSellPrice: listed - discount,
         };
 
-        console.log("Gửi dữ liệu thêm chi tiết hóa đơn:", requestData);
+        console.log("🚀 Gửi dữ liệu thêm chi tiết hóa đơn:", requestData);
 
         let detailResponse = await fetch("/api/addBillDetail", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(requestData)
         });
 
         let responseData = await detailResponse.json();
-        console.log("Kết quả thêm chi tiết hóa đơn:", responseData);
+        console.log("📌 Kết quả thêm chi tiết hóa đơn:", responseData);
+
+        if (responseData.code === 500 && responseData.message.includes("Not enough stock")) {
+            alert("🚨 Sản phẩm không đủ số lượng trong kho!");
+            return;
+        }
 
         if (responseData.code === 200) {
-            console.log("Thêm chi tiết hóa đơn thành công! Chờ cập nhật cơ sở dữ liệu...");
-
-            // Chờ 300ms để đảm bảo dữ liệu đã cập nhật
+            console.log("✅ Thêm chi tiết hóa đơn thành công! Chờ cập nhật...");
+            showToast(responseData.message)
             await new Promise(resolve => setTimeout(resolve, 300));
 
-            // Sau khi thêm thành công, gọi lại loadBillDetails()
             await loadBillDetails();
         } else {
-            alert(responseData.message || "Có lỗi xảy ra khi thêm chi tiết hóa đơn.");
+
+            showToast(responseData.message, false)
         }
 
     } catch (error) {
         console.error("Lỗi khi thêm chi tiết hóa đơn:", error);
-        alert("Đã xảy ra lỗi. Vui lòng thử lại!");
+        alert("⚠️ Đã xảy ra lỗi. Vui lòng thử lại!");
     }
 }
+
 
 
 async function loadBillDetails() {
@@ -89,16 +112,41 @@ async function loadBillDetails() {
             billItem.classList.add("bill-item", "d-flex", "justify-content-between", "align-items-center", "p-2", "border-bottom");
 
             billItem.innerHTML = `
-        <div class="d-flex flex-column">
-            <h6 class="mb-0">${detail.nameProduct}</h6>
-            <small class="text-muted">Loại: ${detail.packagingName}</small>
+        
+        <div class="container">
+    <div class="row align-items-center g-0 py-2 border-bottom">
+        <!-- Tên sản phẩm -->
+        <div class="col-4 overflow-hidden">
+            <h6 class="mb-0 text-truncate">${detail.nameProduct}</h6>
+            <small class="text-muted">Loại: ${detail.packageType}</small>
         </div>
-        <div>${detail.quantity} x ${detail.listedPrice}đ</div>
-        <div class="text-danger">Giảm: ${detail.discount}đ</div>
-        <div class="text-end fw-bold">đ</div>
-        <button class="btn btn-danger btn-sm" onclick="removeBillDetail(${detail.id})">
-            <i class="fas fa-times"></i>
-        </button>
+
+        <!-- Số lượng & Giá -->
+        <div class="col-3 d-flex align-items-center">
+            <input type="number" class="form-control text-center me-2 flex-shrink-0" style="width: 60px;" value="${detail.quantity}" onchange="updateQuantity(${detail.id}, this.value,this, ${detail.quantity})" />
+            <span class="text-nowrap">x ${detail.listedPrice}đ</span>
+        </div>
+
+        <!-- Giảm giá -->
+        <div class="col-2 text-danger text-center">
+            <span class="text-nowrap">Giảm: ${detail.discount}đ</span>
+        </div>
+
+        <!-- Tổng giá -->
+        <div class="col-2 fw-bold text-end">
+            ${detail.totalPrice ? detail.totalPrice + "đ" : "0đ"}
+        </div>
+
+        <!-- Nút xóa -->
+        <div class="col-1 text-end">
+            <button class="btn btn-danger btn-sm" onclick="removeBillDetail(${detail.id})">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+
     `;
 
             billDetailsContainer.appendChild(billItem);
@@ -110,3 +158,64 @@ async function loadBillDetails() {
         console.error("Lỗi khi tải danh sách hóa đơn:", error);
     }
 }
+async function removeBillDetail(id) {
+    try {
+        let response = await fetch(`/api/deletebilldetail/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        let billData = await response.json();
+        console.log(billData.data);
+
+        if (billData.code === 200) {
+            console.log("Xóa thành công");
+
+            await new Promise(resolve => setTimeout(resolve, 300));
+
+            await loadBillDetails();
+        } else {
+            alert(billData.message || "Có lỗi xảy ra khi xóa chi tiết hóa đơn.");
+        }
+    } catch (error) {
+        console.error("Lỗi khi xóa chi tiết hóa đơn:", error);
+        alert("Không thể kết nối đến máy chủ.");
+    }
+}
+
+async function updateQuantity(billDetailId, newQuantity, inputElement, oldQuan) {
+
+    console.log(oldQuan);
+    // Kiểm tra số lượng hợp lệ
+    if (newQuantity < 1) {
+        showToast("Số lượng không hợp lệ!", false);
+        inputElement.value = oldQuantity; // Khôi phục giá trị cũ
+        return;
+    }
+
+    try {
+        let response = await fetch(`/api/updatequantity/${billDetailId}?quantity=${newQuantity}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        let data = await response.json();
+
+        if (data.code === 200) {
+            showToast("Cập nhật thành công!", true);
+            inputElement.dataset.oldValue = newQuantity;
+            await loadBillDetails();
+        } else {
+            showToast("Cập nhật thất bại: " + data.message, false);
+            inputElement.value = oldQuan;
+        }
+    } catch (error) {
+        showToast("Lỗi kết nối! Hãy thử lại.", false);
+        inputElement.value = oldQuantity;
+        console.error("Lỗi kết nối khi cập nhật số lượng:", error);
+    }
+}
+
+

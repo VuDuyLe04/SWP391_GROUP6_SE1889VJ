@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -98,9 +99,12 @@ public class BillDetailService implements IBillDetailService {
     @Override
     @Transactional
     public BillDetailResponse createBillDetail2(BillDetailRequest request) {
+
         Product p = productService.getProductById(request.getProductId());
         Packaging packaging = packagingService.getPackagingById(request.getPackagingId());
-
+        if(request.getQuantity() < 0){
+            throw new AppException(ErrorException.NOT_POSITIVE);
+        }
         if (p == null) {
             throw new AppException(ErrorException.PRODUCT_NOT_FOUND);
         }
@@ -125,10 +129,9 @@ public class BillDetailService implements IBillDetailService {
             // Nếu đã có BillDetail, cập nhật quantity và giá
             billDetail = existingBillDetailOpt.get();
             billDetail.setQuantity(billDetail.getQuantity() + request.getQuantity());
-//            billDetail.setTotalProductPrice(
-//                    billDetail.getActualSellPrice() * billDetail.getQuantity()
-//                            - billDetail.getDiscount() * billDetail.getQuantity()
-//            );
+            billDetail.setTotalProductPrice(
+                   billDetail.getQuantity() * billDetail.getActualSellPrice()* packaging.getQuantityPerPackage()
+            );
         } else {
             // Nếu chưa có, tạo mới
             billDetail = new BillDetail();
@@ -142,21 +145,18 @@ public class BillDetailService implements IBillDetailService {
             billDetail.setNameProduct(p.getName());
             billDetail.setTotalLiftProductPrice(request.getQuantity() * packaging.getLiftCost());
             billDetail.setTotalProductPrice(
-                    request.getActualSellPrice() * request.getQuantity() - request.getDiscount() * request.getQuantity()
+                    request.getActualSellPrice() * request.getQuantity() * packaging.getQuantityPerPackage()
             );
             billDetail.setBill(bill);
         }
 
-        // Lưu lại vào database
         BillDetail savedBillDetail = billDetailRepository.save(billDetail);
 
-        // Trừ số lượng sản phẩm trong kho
-        p.setTotalQuantity(p.getTotalQuantity() - request.getQuantity());
+        p.setTotalQuantity(p.getTotalQuantity() - request.getQuantity()*packaging.getQuantityPerPackage());
         productRepository.save(p);
 
         // Chuyển đổi sang BillDetailResponse
         BillDetailResponse response = new BillDetailResponse(savedBillDetail);
-        response.setPackagingName(packaging.getPackageType());
         try {
             System.out.println(new ObjectMapper().writeValueAsString(response));
         } catch (JsonProcessingException e) {
@@ -170,8 +170,31 @@ public class BillDetailService implements IBillDetailService {
     public void deleteBillDetail(Long id) {
         BillDetail billDetail = billDetailRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorException.BILL_DETAIL_NOT_FOUND));
+        Packaging p = packagingService.getPackagingById(billDetail.getPackaging().getId());
+        Product product = productService.getProductById(billDetail.getProduct().getId());
+        product.setTotalQuantity(product.getTotalQuantity() + billDetail.getQuantity() * p.getQuantityPerPackage());
+        productRepository.save(product);
         billDetailRepository.delete(billDetail);
     }
+
+    public void updateQuantityBillDetail(Long id, Double quantity) {
+        BillDetail billDetail = billDetailRepository.findById(id).orElseThrow(() -> new AppException(ErrorException.BILL_DETAIL_NOT_FOUND));
+        if(quantity < 0){
+            throw new AppException(ErrorException.NOT_POSITIVE);
+        }
+        Packaging p = packagingService.getPackagingById(billDetail.getPackaging().getId());
+        Product product = productService.getProductById(billDetail.getProduct().getId());
+        double di = billDetail.getQuantity() - quantity;
+        if(di*p.getQuantityPerPackage() + product.getTotalQuantity() < 0){
+            throw new AppException(ErrorException.NOT_ENOUGH_QUANTITY);
+        }
+        product.setTotalQuantity(product.getTotalQuantity() + di* p.getQuantityPerPackage());
+        productRepository.save(product);
+        billDetail.setQuantity(quantity);
+        billDetail.setTotalProductPrice(billDetail.getQuantity()*billDetail.getActualSellPrice());
+        billDetailRepository.save(billDetail);
+    }
+
 
     @Override
     public List<BillDetailResponse> getBillDetails(Long billId) {
@@ -181,10 +204,19 @@ public class BillDetailService implements IBillDetailService {
         }
 
         List<BillDetail> billDetails = billDetailRepository.findAllByBillId(billId);
-
-        return billDetails.stream()
+        List<BillDetailResponse> result = billDetails.stream()
                 .map(detail -> mapperConfig.map(detail, BillDetailResponse.class))
                 .collect(Collectors.toList());
+        for(int i = 0; i < result.size(); i++){
+            result.get(i).setDiscount(billDetails.get(i).getListedPrice() - billDetails.get(i).getActualSellPrice());
+            result.get(i).setPackageType(billDetails.get(i).getPackaging().getPackageType());
+        }
+        return result;
+    }
+
+    @Override
+    public double getTotalPrice(Long billId) {
+        return billDetailRepository.findAllByBillId(billId).stream().map(BillDetail::getTotalProductPrice).reduce(0.0, Double::sum);
     }
 }
 

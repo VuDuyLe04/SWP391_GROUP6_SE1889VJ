@@ -182,18 +182,7 @@
 
                 <div class="bill-items" id="bill-items">
                     <!-- Mẫu item trong bill -->
-                    <div class="bill-item">
-                        <div>
-                            <h6 class="mb-0">Tên sản phẩm</h6>
-                            <small class="text-muted">Loại: Standard</small>
-                        </div>
-                        <div>2 x 100,000đ</div>
-                        <div>Giảm: 10,000đ</div>
-                        <div class="text-end">190,000đ</div>
-                        <button class="btn btn-danger btn-sm">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
+
                 </div>
 
                 <div class="bill-summary">

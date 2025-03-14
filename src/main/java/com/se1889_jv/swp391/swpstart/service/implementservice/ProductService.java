@@ -32,7 +32,9 @@ public class ProductService implements IProductService {
         return productRepository.findAll();
     }
 
-
+    public Product getProductByIdForUpdate(Long id){
+        return productRepository.getProductByIdForUpdate(id);
+    }
     @Override
     public Product saveProduct(Product product) {
         product.setStorage(true);

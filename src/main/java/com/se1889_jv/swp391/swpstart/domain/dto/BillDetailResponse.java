@@ -1,9 +1,11 @@
 package com.se1889_jv.swp391.swpstart.domain.dto;
 
 import com.se1889_jv.swp391.swpstart.domain.BillDetail;
+import com.se1889_jv.swp391.swpstart.service.implementservice.BillDetailService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +23,9 @@ public class BillDetailResponse {
     private Long billId;
     private Long productId;
     private Long packagingId;
-    private String packagingName;
+    private String packageType;
+    private Double discount;
+
     public BillDetailResponse(BillDetail billDetail) {
         this.id = billDetail.getId();
         this.quantity = billDetail.getQuantity();
@@ -35,6 +39,7 @@ public class BillDetailResponse {
         this.billId = billDetail.getBill().getId();
         this.productId = billDetail.getProduct().getId();
         this.packagingId = billDetail.getPackaging().getId();
-        this.packagingName = billDetail.getPackaging().getPackageType();
+        this.packageType = billDetail.getPackaging().getPackageType();
+        this.discount = billDetail.getListedPrice() - billDetail.getActualSellPrice();
     }
 }

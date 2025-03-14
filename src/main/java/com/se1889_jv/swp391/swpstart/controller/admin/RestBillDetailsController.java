@@ -46,20 +46,24 @@ public class RestBillDetailsController {
     public ApiResponse<String> addBillDetail(@RequestBody BillDetailRequest billDetail, HttpSession session) {
         Long billId = (Long) session.getAttribute("currentBillId");
         if (billId == null) {
-            ApiResponse<String> errorResponse = new ApiResponse<>();
-            errorResponse.setCode(400);
-            errorResponse.setMessage("No active bill found");
-            return errorResponse;
+            return new ApiResponse<>(400, "No active bill found", null);
         }
         billDetail.setBillId(billId);
 
-        rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_NAME, billDetail);
-        ApiResponse<String> response = new ApiResponse<>();
-        response.setCode(200);
-        response.setMessage("Request received, processing...");
-        response.setData("BillDetail is being processed in queue");
+        // Gửi vào RabbitMQ và chờ phản hồi từ consumer
+        ApiResponse<String> response = (ApiResponse<String>) rabbitTemplate.convertSendAndReceive(
+                RabbitMQConfig.BILL_QUEUE, billDetail
+        );
+
+        if (response == null) {
+            return new ApiResponse<>(202, "Request is being processed...", null);
+        }
+
         return response;
     }
+
+
+
     @GetMapping("/getCurrentBill")
     public ApiResponse<Map<String, Long>> getCurrentBill(HttpSession session) {
         ApiResponse<Map<String, Long>> response = new ApiResponse<>();
@@ -137,11 +141,12 @@ public class RestBillDetailsController {
         return response;
     }
     @DeleteMapping("/deletebilldetail/{id}")
-    public ApiResponse<String> deleteBillDetail(@RequestParam("billId") Long billId) {
+    public ApiResponse<String> deleteBillDetail(@PathVariable("id") Long billId) {
         ApiResponse<String> response = new ApiResponse<>();
+        billDetailService.deleteBillDetail(billId);
         response.setCode(200);
         response.setMessage("Success");
-        response.setData(null);
+        response.setData("Xóa thành công");
         return response;
     }
     @GetMapping("/getBillDetails")
@@ -172,5 +177,20 @@ public class RestBillDetailsController {
 
         return response;
     }
+    @PutMapping("/updatequantity/{id}")
+    public ApiResponse<String> updateQuantity(@PathVariable("id") Long billId, @RequestParam Double quantity) {
+        UpdateQuantityRequest updateRequest = new UpdateQuantityRequest(billId, quantity);
 
+        // Gửi vào queue để xử lý
+        ApiResponse<String> response = (ApiResponse<String>) rabbitTemplate.convertSendAndReceive(
+                RabbitMQConfig.BILL_QUEUE, updateRequest
+        );
+
+        if (response == null) {
+            return new ApiResponse<>(202, "Request is being processed...", null);
+        }
+
+        return response;
+    }
+    
 }
