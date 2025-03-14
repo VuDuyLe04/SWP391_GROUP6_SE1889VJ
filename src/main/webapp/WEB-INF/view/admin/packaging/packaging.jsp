@@ -127,6 +127,9 @@
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .but-sort{
+            padding-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -157,8 +160,11 @@
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
             </header>
-
-
+            <c:if test="${not empty errorInput}">
+                <div class="alert alert-danger" id="errorAlert">
+                        ${errorInput}
+                </div>
+            </c:if>
             <div class="row">
                 <div class="col-md-12">
                     <section class="panel panel-featured panel-featured-primary">
@@ -191,13 +197,15 @@
                         <div class="panel-body">
                             <div class="row mb-md">
                                 <div class="col-sm-6">
-                                    <form action="packaings" method="get" class="form-inline">
+                                    <form id="form-header" action="packaings" method="get" class="form-inline">
+                                        <!-- Hidden input for sort parameter -->
+                                        <input type="hidden" name="sort" id="sortField" value="${sort}">
+
                                         <div class="form-group mr-md">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-store"></i></span>
                                                 <select id="store" name="store" class="form-control">
                                                     <option value="0" ${store == 0 ? "selected" : ""}>Tất cả cửa hàng</option>
-
                                                     <c:forEach items="${stores}" var="storeItem">
                                                         <option value="${storeItem.id}" ${store == storeItem.id ? "selected" : ""}>
                                                                 ${storeItem.name}
@@ -207,19 +215,35 @@
                                             </div>
                                         </div>
 
-                                            <div class="form-group mr-md">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
-                                                    <select id="active" name="active" class="form-control">
-                                                        <option ${active == -1 ? "selected" : ""} value="-1">Tất cả</option>
-                                                        <option ${active == 1 ? "selected" : ""} value="1">Sử dụng</option>
-                                                        <option ${active == 0 ? "selected" : ""} value="0">Lưu trữ</option>
-                                                    </select>
-                                                </div>
+                                        <div class="form-group mr-md">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
+                                                <select id="active" name="active" class="form-control">
+                                                    <option ${active == -1 ? "selected" : ""} value="-1">Tất cả</option>
+                                                    <option ${active == 1 ? "selected" : ""} value="1">Sử dụng</option>
+                                                    <option ${active == 0 ? "selected" : ""} value="0">Lưu trữ</option>
+                                                </select>
                                             </div>
+                                        </div>
 
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Filter</button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-filter mr-xs"></i>Filter
+                                        </button>
 
+                                        <div class="d-flex gap-2 p-2 but-sort">
+                                            <button type="button" class="btn btn-secondary" onclick="setSort('liftCost,asc')">
+                                                <i class="fa fa-sort-amount-asc"></i> Giá tăng
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" onclick="setSort('liftCost,desc')">
+                                                <i class="fa fa-sort-amount-desc"></i> Giá giảm
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" onclick="setSort('createdAt,desc')">
+                                                <i class="fa fa-clock-o"></i> Mới nhất
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" onclick="setSort('createdAt,asc')">
+                                                <i class="fa fa-clock-o"></i> Muộn nhất
+                                            </button>
+                                        </div>
                                     </form>
                                 </div>
 
@@ -239,38 +263,41 @@
                                         </div>
 
                                         <!-- Modal Body -->
-                                        <form id="add-form" action="/addPackaging" method="post" onsubmit="return validateAddPack()">
-                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                        <form:form id="add-form" action="/addPackaging" method="post" onsubmit="return validateAddPack()" modelAttribute="packagingDTO">
+<%--                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />--%>
                                             <div class="modal-body">
                                                 <div class="form-group">
                                                     <label >Loại gói:</label>
-                                                    <input id="add-input-pack" type="text" class="form-control" name="packageType" required>
-                                                    <p id="packageErro" class="text-danger" style="display: none"></p>
+                                                    <form:input id="add-input-pack"  type="text" class="form-control" path="packageTypeDTO" value="${packagingDTOError.packageTypeDTO}"/>
+                                                    <form:errors path="packageTypeDTO" class="text-danger"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Gía bốc vác:</label>
-                                                    <input type="number" class="form-control" name="liftCost" required>
+                                                    <form:input min="0" type="number" class="form-control" path="liftCostDTO" value="${packagingDTOError.liftCostDTO}"/>
+                                                    <form:errors path="liftCostDTO" class="text-danger"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Số lượng gạo 1 gói:</label>
-                                                    <input type="number" class="form-control" name="quantityPerPackage" required>
+                                                    <form:input min="0" type="number" class="form-control" path="quantityPerPackageDTO" value="${packagingDTOError.quantityPerPackageDTO}" />
+                                                    <form:errors path="quantityPerPackageDTO" class="text-danger"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Cửa hàng</label>
                                                 </div>
-                                                <select id="store-option" name="storeId" class="form-control">
+                                                <select id="store-option" name="storeIdDTO" class="form-control">
                                                     <c:forEach items="${stores}" var="storeIt">
                                                         <option value="${storeIt.id}" ${store == storeIt.id ? "selected" : ""}>
                                                                 ${storeIt.name}
                                                         </option>
                                                     </c:forEach>
                                                 </select>
+                                                <form:hidden path="storeIdDTO"/>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" id="cancelButton">Hủy</button>
                                                 <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
                                             </div>
-                                        </form>
+                                        </form:form>
                                     </div>
                                 </div>
 
@@ -280,10 +307,12 @@
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
                                     <tr>
+                                        <th><i class="fa"></i>STT</th>
                                         <th><i class="fa fa-user mr-xs"></i>Đóng gói</th>
-                                        <th><i class="fa fa-check-circle mr-xs"></i>Tình Trạng</th>
+                                        <th><i class="fa fa-user mr-xs"></i>Gía bốc</th>
                                         <th><i class="fa fa-check-circle mr-xs"></i>Cửa hàng</th>
-                                        <th><i class="fa fa-cogs mr-xs"></i>Actions</th>
+                                        <th><i class="fa fa-check-circle mr-xs"></i>Tình Trạng</th>
+                                        <th><i class="fa fa-cogs mr-xs"></i>Hoạt động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -335,53 +364,64 @@
                                                     </div>
 
                                                     <!-- Modal update -->
-                                                    <form id="formUpdate-${u.id}" action="/updatePackaging" method="post">
-                                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                                        <div class="modal-body">
-                                                            <div class="form-group" hidden="hidden">
-                                                                <label for="packageType-${u.id}">Id:</label>
-                                                                <input  type="text" class="form-control" id="id-${u.id}" name="id" value="${u.id}" required>
+                                                <form:form id="formUpdate-${u.id}" action="/updatePackaging" method="post" modelAttribute="pack">
+                                                    <!-- CSRF Token -->
+<%--                                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />--%>
 
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="packageType-${u.id}">Loại gói:</label>
-                                                                <input type="text" class="form-control" id="packageType-${u.id}" data-type="${u.packageType}" data-store="${u.store.id}" name="packageType" value="${u.packageType}" required>
-                                                                <p id="packageTypeError-${u.id}" class="text-danger" style="display: none"></p>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="liftCost-${u.id}">Gía bốc vác:</label>
-                                                                <input type="number" class="form-control" id="liftCost-${u.id}" name="liftCost" value="${u.liftCost}" required>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="storage-${u.id}">Tình trạng:</label>
-                                                                <select class="form-control" id="storage-${u.id}" name="storage" required>
-                                                                    <option value="true" ${u.storage == 'true' ? 'selected' : ''}>Sử dụng</option>
-                                                                    <option value="false" ${u.storage == 'false' ? 'selected' : ''}>Lưu trữ</option>
-                                                                </select>
-                                                            </div>
-
+                                                    <div class="modal-body">
+                                                        <!-- ID (Ẩn) -->
+                                                        <div class="form-group" hidden="hidden">
+                                                            <label for="id-${u.id}">Id:</label>
+                                                            <form:input type="text" path="id" class="form-control" id="id-${u.id}" name="id" value="${u.id}" required="true"/>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-id="updateModal-${u.id}">Hủy</button>
-                                                            <button type="submit" class="btn btn-primary" id="button-update" onclick="getPackInputType(${u.id})">Cập nhật</button>
+
+                                                        <!-- Loại gói -->
+                                                        <div class="form-group">
+                                                            <label for="packageType-${u.id}">Loại gói:</label>
+                                                            <form:input type="text" path="packageType" class="form-control" id="packageType-${u.id}" data-type="${u.packageType}" data-store="${u.store.id}" name="packageType" value="${u.packageType}" />
+                                                            <p id="packageTypeError-${u.id}" class="text-danger" style="display: none"></p>
                                                         </div>
-                                                    </form>
+
+                                                        <!-- Giá bốc vác -->
+                                                        <div class="form-group">
+                                                            <label for="liftCost-${u.id}">Gía bốc vác:</label>
+                                                            <form:input type="number" path="liftCost" class="form-control" id="liftCost-${u.id}" name="liftCost" value="${u.liftCost}" />
+                                                        </div>
+
+                                                        <!-- Tình trạng -->
+                                                        <div class="form-group">
+                                                            <label for="storage-${u.id}">Tình trạng:</label>
+                                                            <select class="form-control" id="storage-${u.id}" name="storage">
+                                                                <option value="true" <c:if test="${u.storage == true}">selected</c:if>>Sử dụng</option>
+                                                                <option value="false" <c:if test="${u.storage == false}">selected</c:if>>Lưu trữ</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Buttons -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-id="updateModal-${u.id}">Hủy</button>
+                                                        <button type="submit" class="btn btn-primary" id="button-update" onclick="getPackInputType(${u.id})">Cập nhật</button>
+                                                    </div>
+                                                </form:form>
+
 
                                             </div>
                                         </div>
 
                                         <!-- Bảng dữ liệu -->
                                         <tr>
+                                            <td>${status.index + 1}</td>
                                             <td>${u.packageType}</td>
+                                            <td>${u.liftCost}</td>
+                                            <td>
+                                                    ${u.store.name}
+                                            </td>
                                             <td>
                                                 <span class="label ${u.storage == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
                                                     <i class="fa ${u.storage == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
                                                     ${u.storage == "true" ? "Active" : "Banned"}
                                                 </span>
-                                            </td>
-                                            <td>
-                                                ${u.store.name}
                                             </td>
                                             <td>
                                                 <button class="btn btn-default btn-sm mr-xs view-modal" title="View" data-id="myModal-${u.id}">
@@ -400,7 +440,7 @@
                                 <ul class="pagination justify-content-center">
                                     <!-- Nút Previous -->
                                     <li class="page-item ${c == 0 ? 'disabled' : ''}">
-                                        <a class="page-link" href="packaings?page=${c == 0 ? 0 : (c - 1)}&store=${param.store}&input=${param.input}">Trước</a>
+                                        <a class="page-link" href="packaings?page=${c == 0 ? 0 : (c - 1)}&store=${param.store}&input=${param.input}&sort${param.sort}&active=${param.active}">Trước</a>
                                     </li>
 
                                     <!-- Hiển thị các số trang -->
@@ -408,7 +448,7 @@
                                         <c:forEach begin="0" end="${packagingPage.totalPages - 1}" var="i">
                                             <c:if test="${i >= c - 1 && i <= c + 1}">
                                                 <li class="page-item ${c == i ? 'active' : ''}">
-                                                    <a class="page-link" href="packaings?page=${i}&store=${param.store}&input=${param.input}">${i + 1}</a>
+                                                    <a class="page-link" href="packaings?page=${i}&store=${param.store}&input=${param.input}&sort${param.sort}&active=${param.active}">${i + 1}</a>
                                                 </li>
                                             </c:if>
                                         </c:forEach>
@@ -416,11 +456,11 @@
 
                                     <!-- Nút Next -->
                                     <li class="page-item ${c == packagingPage.totalPages - 1 ? 'disabled' : ''}">
-                                        <a class="page-link" href="packaings?page=${c == packagingPage.totalPages - 1 ? c : (c + 1)}&store=${param.store}&input=${param.input}">Sau</a>
+                                        <a class="page-link" href="packaings?page=${c == packagingPage.totalPages - 1 ? c : (c + 1)}&store=${param.store}&input=${param.input}&sort${param.sort}&active=${param.active}">Sau</a>
                                     </li>
 
                                 </ul>
-                                </ul>
+
                             </div>
 
                         </div>
@@ -431,6 +471,7 @@
                 <h5 data-id="${a.id}" data-storeId="${a.store.id}">${a.packageType}</h5>
 
             </c:forEach></div>
+
 
 
             <!-- start: page -->
@@ -492,6 +533,75 @@
 <!-- Examples -->
 <script src="/client/auth/assets/javascripts/dashboard/examples.dashboard.js"></script>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var errorModal = "<c:out value='${errorModal}'/>";
+
+        if (errorModal === "true") {
+            let packageTypeInput = document.getElementById("add-input-pack");
+            let liftCostInput = document.querySelector("input[name='liftCostDTO']");
+            let quantityPerPackageInput = document.querySelector("input[name='quantityPerPackageDTO']");
+            let storeInput = document.getElementById("store-option");
+
+            let hasError = false;
+            function validateInput(input, errorId, message) {
+                let errorElement = document.getElementById(errorId);
+                if (!input.value.trim()) {
+                    hasError = true;
+                    if (!errorElement) {
+                        errorElement = document.createElement("span");
+                        errorElement.id = errorId;
+                        errorElement.className = "text-danger";
+                        input.parentNode.appendChild(errorElement);
+                    }
+                    errorElement.textContent = message;
+                    return false;
+                } else {
+                    if (errorElement) {
+                        errorElement.textContent = "";
+                    }
+                    return true;
+                }
+            }
+
+            function validatePositiveNumber(input, errorId, message) {
+                let errorElement = document.getElementById(errorId);
+                let value = parseFloat(input.value);
+                if (!isNaN(value) && value < 0) {
+                    hasError = true;
+                    if (!errorElement) {
+                        errorElement = document.createElement("span");
+                        errorElement.id = errorId;
+                        errorElement.className = "text-danger";
+                        input.parentNode.appendChild(errorElement);
+                    }
+                    errorElement.textContent = message;
+                } else {
+                    if (errorElement) {
+                        errorElement.textContent = "";
+                    }
+                }
+            }
+            validateInput(packageTypeInput, "error-packageType", "Loại gói không được để trống!");
+            if (validateInput(liftCostInput, "error-liftCost", "Giá bốc vác không được để trống!")) {
+                validatePositiveNumber(liftCostInput, "error-liftCost-negative", "Giá bốc vác không được là số âm!");
+            }
+
+            if (validateInput(quantityPerPackageInput, "error-quantityPerPackage", "Số lượng gạo/gói không được để trống!")) {
+                validatePositiveNumber(quantityPerPackageInput, "error-quantityPerPackage-negative", "Số lượng gạo/gói không được là số âm!");
+            }
+
+            validateInput(storeInput, "error-store", "Vui lòng chọn cửa hàng!");
+
+            if (hasError) {
+                setTimeout(function () {
+                    const modalAddPackage = document.getElementById("addPack");
+                    if (modalAddPackage) {
+                        modalAddPackage.style.display = "block";
+                    }
+                }, 500);
+            }
+        }
+    });
     document.addEventListener("DOMContentLoaded", function () {
         const viewButtons = document.querySelectorAll(".view-modal");
         const closeButtons = document.querySelectorAll(".close");
@@ -627,6 +737,25 @@
         packageError.style.display = "none";
         return true;
     }
+    function setSort(sortValue) {
+        document.getElementById('sortField').value = sortValue;
+        document.getElementById('form-header').submit();
+    }
+    //hide alert
+    setTimeout(function() {
+        var alertBox = document.getElementById("errorAlert");
+        var fadeEffect = setInterval(function () {
+            if (!alertBox.style.opacity) {
+                alertBox.style.opacity = 1;
+            }
+            if (alertBox.style.opacity > 0) {
+                alertBox.style.opacity -= 0.1;
+            } else {
+                clearInterval(fadeEffect);
+                alertBox.style.display = "none";
+            }
+        }, 200);
+    }, 5000);
 
 
 

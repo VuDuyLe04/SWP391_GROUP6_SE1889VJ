@@ -48,8 +48,15 @@ public class WareHouseService implements IWareHouseService {
         if (oldWarehouse != null) {
             oldWarehouse.setName(warehouse.getName());
         }
+        assert oldWarehouse != null;
         this.wareHouseRepository.save(oldWarehouse);
     }
+
+    @Override
+    public List<WareHouse> getAllWareHouseByListStore(List<Store> store) {
+        return wareHouseRepository.findAllByStoreIn(store);
+    }
+
 
 
 }

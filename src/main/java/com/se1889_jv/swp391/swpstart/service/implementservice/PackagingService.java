@@ -85,4 +85,22 @@ public class PackagingService implements IPackagingService {
     public void addPackaging(Packaging packaging) {
         packagingRepository.save(packaging);
     }
+
+    @Override
+    public Page<Packaging> getAllPackagingByStoresIdAndStorage(Long storeId, Pageable pageable, boolean storage) {
+        if(storage){
+            return packagingRepository.findAllByStoreIdAndStorageIsTrue(storeId, pageable);
+        } else {
+            return packagingRepository.findAllByStoreIdAndStorageIsFalse(storeId, pageable);
+        }
+    }
+
+    @Override
+    public Page<Packaging> getAllPackagingByStorage(List<Long> storeId, Pageable pageable, boolean storage) {
+        if(storage){
+            return packagingRepository.findAllByStoreIdInAndStorageIsTrue(storeId, pageable);
+        } else {
+            return packagingRepository.findAllByStoreIdInAndStorageIsFalse(storeId, pageable);
+        }
+    }
 }

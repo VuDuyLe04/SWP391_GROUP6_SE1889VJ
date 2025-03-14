@@ -7,6 +7,7 @@ import com.se1889_jv.swp391.swpstart.util.constant.UserAccessStoreStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -15,4 +16,5 @@ public interface UserStoreRepository extends JpaRepository<UserStore, Long> {
 
     UserStore findByUserAndStore(User user, Store store);
 
+    List<UserStore> findAllByStoreIn(List<Store> stores);
 }

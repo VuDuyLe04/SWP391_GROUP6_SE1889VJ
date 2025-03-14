@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,6 +39,23 @@
     * Author: BootstrapMade.com
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
+
+    <style>
+        .member .pic {
+            width: 100%;
+            height: 450px; /* Điều chỉnh chiều cao tùy theo yêu cầu */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .member .pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Đảm bảo ảnh không bị méo, cắt bớt nếu cần */
+        }
+    </style>
 </head>
 
 <body class="index-page">
@@ -52,66 +70,29 @@
         <div class="container">
             <div class="row gy-4">
                 <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="fade-up">
-                    <h1>Elegant and creative solutions</h1>
-                    <p>We are team of talented designers making websites with Bootstrap</p>
+                    <h1>Hệ thống quản lí cửa hàng bán gạo hàng đầu Việt Nam</h1>
+                    <p>Chúng tôi là đội ngũ thiết kế tài năng, nhằm giải quyết bài toán quản lý cửa hàng bán gạo, cho các doanh nghiệp, cửa hàng.</p>
                     <div class="d-flex">
-                        <a href="#about" class="btn-get-started">Get Started</a>
-                        <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8"
-                           class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+                        <a href="#about" class="btn-get-started">Bắt đầu tìm hiểu</a>
+                        <a href="https://youtu.be/UgSCPpkzSvM?si=9crB7skezdgoy-Ur"
+                           class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Xem video hướng dẫn sử dụng dịch vụ</span></a>
                     </div>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="100">
-                    <img src="/client/homepage/assets/img/hero-img.png" class="img-fluid animated" alt="">
+                    <img src="/client/homepage/assets/img/gao.jpeg" class="img-fluid animated" alt="">
                 </div>
             </div>
         </div>
 
     </section><!-- /Hero Section -->
 
-    <!-- Featured Services Section -->
-    <section id="featured-services" class="featured-services section">
-
-        <div class="container">
-
-            <div class="row gy-4">
-
-                <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="100">
-                    <div class="service-item position-relative">
-                        <div class="icon"><i class="bi bi-activity icon"></i></div>
-                        <h4><a href="" class="stretched-link">Lorem Ipsum</a></h4>
-                        <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
-                    </div>
-                </div><!-- End Service Item -->
-
-                <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="200">
-                    <div class="service-item position-relative">
-                        <div class="icon"><i class="bi bi-bounding-box-circles icon"></i></div>
-                        <h4><a href="" class="stretched-link">Sed ut perspici</a></h4>
-                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
-                    </div>
-                </div><!-- End Service Item -->
-
-                <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="300">
-                    <div class="service-item position-relative">
-                        <div class="icon"><i class="bi bi-calendar4-week icon"></i></div>
-                        <h4><a href="" class="stretched-link">Magni Dolores</a></h4>
-                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</p>
-                    </div>
-                </div><!-- End Service Item -->
-
-            </div>
-
-        </div>
-
-    </section><!-- /Featured Services Section -->
-
     <!-- About Section -->
     <section id="about" class="about section">
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-            <span>About Us<br></span>
-            <h2>About</h2>
+            <span>Chicken Rice<br></span>
+            <h2>Tổng quát</h2>
             <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
         </div><!-- End Section Title -->
 
@@ -120,7 +101,7 @@
             <div class="row gy-4">
                 <div class="col-lg-6 position-relative align-self-start" data-aos="fade-up" data-aos-delay="100">
                     <img src="/client/homepage/assets/img/about.png" class="img-fluid" alt="">
-                    <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
+                    <a href="https://youtu.be/UgSCPpkzSvM?si=9crB7skezdgoy-Ur" class="glightbox pulsating-play-btn"></a>
                 </div>
                 <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="200">
                     <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
@@ -130,18 +111,15 @@
                         magna aliqua.
                     </p>
                     <ul>
-                        <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span>
+                        <li><i class="bi bi-check2-all"></i> <span>Phí dịch vụ rẻ, hợp lí.</span>
                         </li>
-                        <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span>
+                        <li><i class="bi bi-check2-all"></i> <span>Dễ dàng sử dụng, giao diện thân thiện.</span>
                         </li>
-                        <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</span>
+                        <li><i class="bi bi-check2-all"></i> <span>Giải quyết tồn vấn đề đang tồn đọng của quản lí truyền thống</span>
                         </li>
                     </ul>
                     <p>
-                        Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-                        in voluptate
-                        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                        proident
+                        Một hệ thống tốt
                     </p>
                 </div>
             </div>
@@ -157,37 +135,31 @@
 
             <div class="row gy-4">
 
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-6 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1"
+                        <span data-purecounter-start="0" data-purecounter-end="110" data-purecounter-duration="1"
                               class="purecounter"></span>
-                        <p>Clients</p>
+                        <p>Doanh nghiệp, cửa hàng</p>
                     </div>
                 </div><!-- End Stats Item -->
 
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-6 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1"
+                        <span data-purecounter-start="0" data-purecounter-end="1000" data-purecounter-duration="1"
                               class="purecounter"></span>
-                        <p>Projects</p>
+                        <p>Người dùng</p>
                     </div>
                 </div><!-- End Stats Item -->
 
-                <div class="col-lg-3 col-md-6">
-                    <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1"
-                              class="purecounter"></span>
-                        <p>Hours Of Support</p>
-                    </div>
-                </div><!-- End Stats Item -->
+<%--                <div class="col-lg-4 col-md-6">--%>
+<%--                    <div class="stats-item text-center w-100 h-100">--%>
+<%--                        <span data-purecounter-start="0" data-purecounter-end="70" data-purecounter-duration="1"--%>
+<%--                              class="purecounter"></span>--%>
+<%--                        <p>Sức lao động</p>--%>
+<%--                    </div>--%>
+<%--                </div><!-- End Stats Item -->--%>
 
-                <div class="col-lg-3 col-md-6">
-                    <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1"
-                              class="purecounter"></span>
-                        <p>Workers</p>
-                    </div>
-                </div><!-- End Stats Item -->
+
 
             </div>
 
@@ -200,95 +172,112 @@
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-            <span>Services</span>
-            <h2>Services</h2>
-            <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+            <span>Chicken Rice</span>
+            <h2>Dịch vụ</h2>
+            <p>Chúng tôi cung cấp đa dạng nhiều gói dịch vụ cho các cửa hàng, doanh nghiệp.</p>
         </div><!-- End Section Title -->
 
         <div class="container">
 
             <div class="row gy-4">
+                <c:forEach var="service" items="${services}" varStatus="status">
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                        <form id="service-${status.index}" method="post" action="/signupservice">
+                            <div class="service-item position-relative">
+                                <div class="icon">
+                                    <i class="bi bi-broadcast"></i>
+                                </div>
+                                <a href="#" class="stretched-link service-link"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#serviceModal"
+                                   data-id="${service.id}"
+                                   data-name="${service.name}"
+                                   data-price="${service.price}"
+                                   data-description="${service.description}"
+                                   data-duration="${service.durationMonths}">
+                                    <h3>${service.name}</h3>
+                                </a>
+                                <p><fmt:formatNumber type="number" value="${service.price}" /> đ</p>
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="service-item position-relative">
-                        <div class="icon">
-                            <i class="bi bi-activity"></i>
-                        </div>
-                        <a href="service-details.html" class="stretched-link">
-                            <h3>Nesciunt Mete</h3>
-                        </a>
-                        <p>Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure
-                            perferendis tempore et consequatur.</p>
+                            </div>
+                        </form>
                     </div>
-                </div><!-- End Service Item -->
+                </c:forEach>
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="service-item position-relative">
-                        <div class="icon">
-                            <i class="bi bi-broadcast"></i>
-                        </div>
-                        <a href="service-details.html" class="stretched-link">
-                            <h3>Eosle Commodi</h3>
-                        </a>
-                        <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic
-                            non ut nesciunt dolorem.</p>
-                    </div>
-                </div><!-- End Service Item -->
+                <!-- Modal Bootstrap -->
+                <div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="serviceModalLabel">Chi tiết dịch vụ</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h5><strong>Tên dịch vụ:</strong></h5>
+                                <p id="modalServiceName" class="text-muted"></p>
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="service-item position-relative">
-                        <div class="icon">
-                            <i class="bi bi-easel"></i>
-                        </div>
-                        <a href="service-details.html" class="stretched-link">
-                            <h3>Ledo Markt</h3>
-                        </a>
-                        <p>Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas
-                            adipisci eos earum corrupti.</p>
-                    </div>
-                </div><!-- End Service Item -->
+                                <h5><strong>Giá:</strong></h5>
+                                <p id="modalServicePrice" class="text-muted"></p>
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-                    <div class="service-item position-relative">
-                        <div class="icon">
-                            <i class="bi bi-bounding-box-circles"></i>
-                        </div>
-                        <a href="service-details.html" class="stretched-link">
-                            <h3>Asperiores Commodit</h3>
-                        </a>
-                        <p>Non et temporibus minus omnis sed dolor esse consequatur. Cupiditate sed error ea fuga sit
-                            provident adipisci neque.</p>
-                        <a href="service-details.html" class="stretched-link"></a>
-                    </div>
-                </div><!-- End Service Item -->
+                                <h5><strong>Mô tả:</strong></h5>
+                                <div id="modalServiceDescription" class="text-muted"></div>
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
-                    <div class="service-item position-relative">
-                        <div class="icon">
-                            <i class="bi bi-calendar4-week"></i>
-                        </div>
-                        <a href="service-details.html" class="stretched-link">
-                            <h3>Velit Doloremque</h3>
-                        </a>
-                        <p>Cumque et suscipit saepe. Est maiores autem enim facilis ut aut ipsam corporis aut. Sed animi
-                            at autem alias eius labore.</p>
-                        <a href="service-details.html" class="stretched-link"></a>
-                    </div>
-                </div><!-- End Service Item -->
+                                <h5><strong>Thời gian sử dụng:</strong></h5>
+                                <p id="modalServiceDuration" class="text-muted"></p>
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
-                    <div class="service-item position-relative">
-                        <div class="icon">
-                            <i class="bi bi-chat-square-text"></i>
+                                <!-- Form đăng ký ẩn -->
+                                <form id="serviceForm" action="/signupservice" method="post">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                    <input type="hidden" id="hiddenServiceId" name="id">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn btn-primary" id="registerButton">Đăng ký ngay</button>
+                            </div>
                         </div>
-                        <a href="service-details.html" class="stretched-link">
-                            <h3>Dolori Architecto</h3>
-                        </a>
-                        <p>Hic molestias ea quibusdam eos. Fugiat enim doloremque aut neque non et debitis iure.
-                            Corrupti recusandae ducimus enim.</p>
-                        <a href="service-details.html" class="stretched-link"></a>
                     </div>
-                </div><!-- End Service Item -->
+                </div>
+
+
+                <!-- JavaScript để cập nhật nội dung modal -->
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        let serviceLinks = document.querySelectorAll(".service-link");
+
+                        serviceLinks.forEach(link => {
+                            link.addEventListener("click", function () {
+                                let id = this.getAttribute("data-id");
+                                let name = this.getAttribute("data-name");
+                                let price = this.getAttribute("data-price");
+                                let description = this.getAttribute("data-description");
+                                let duration = this.getAttribute("data-duration");
+
+                                let formattedPrice = parseFloat(price).toLocaleString('vi-VN') + " đ";
+
+                                document.getElementById("modalServiceName").innerText = name;
+                                document.getElementById("modalServicePrice").innerText = formattedPrice;
+                                document.getElementById("modalServiceDescription").innerHTML = description;
+                                document.getElementById("modalServiceDuration").innerText = duration ? duration + " tháng" : "Không xác định";
+
+                                // Gán giá trị vào input hidden
+                                document.getElementById("hiddenServiceId").value = id;
+
+                            });
+                        });
+
+                        // Submit form khi bấm nút "Đăng ký ngay"
+                        document.getElementById("registerButton").addEventListener("click", function () {
+                            document.getElementById("serviceForm").submit();
+                        });
+                    });
+                </script>
+
+
+
+
+
+
 
             </div>
 
@@ -296,202 +285,15 @@
 
     </section><!-- /Services Section -->
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="portfolio section">
-
-        <!-- Section Title -->
-        <div class="container section-title" data-aos="fade-up">
-            <span>Portfolio</span>
-            <h2>Portfolio</h2>
-            <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-        </div><!-- End Section Title -->
-
-        <div class="container">
-
-            <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
-
-                <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
-                    <li data-filter="*" class="filter-active">All</li>
-                    <li data-filter=".filter-app">App</li>
-                    <li data-filter=".filter-product">Product</li>
-                    <li data-filter=".filter-branding">Branding</li>
-                    <li data-filter=".filter-books">Books</li>
-                </ul><!-- End Portfolio Filters -->
-
-                <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                        <img src="/client/homepage/assets/img/portfolio/app-1.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>App 1</h4>
-                            <p>Lorem ipsum, dolor sit amet consectetur</p>
-                            <a href="/client/homepage/assets/img/portfolio/app-1.jpg" title="App 1"
-                               data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i
-                                    class="bi bi-zoom-in"></i></a>
-                            <a href="portfolio-details.html" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div><!-- End Portfolio Item -->
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                        <img src="/client/homepage/assets/img/portfolio/product-1.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Product 1</h4>
-                            <p>Lorem ipsum, dolor sit amet consectetur</p>
-                            <a href="/client/homepage/assets/img/portfolio/product-1.jpg" title="Product 1"
-                               data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i
-                                    class="bi bi-zoom-in"></i></a>
-                            <a href="portfolio-details.html" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div><!-- End Portfolio Item -->
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                        <img src="/client/homepage/assets/img/portfolio/branding-1.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Branding 1</h4>
-                            <p>Lorem ipsum, dolor sit amet consectetur</p>
-                            <a href="/client/homepage/assets/img/portfolio/branding-1.jpg" title="Branding 1"
-                               data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i
-                                    class="bi bi-zoom-in"></i></a>
-                            <a href="portfolio-details.html" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div><!-- End Portfolio Item -->
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-                        <img src="/client/homepage/assets/img/portfolio/books-1.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Books 1</h4>
-                            <p>Lorem ipsum, dolor sit amet consectetur</p>
-                            <a href="/client/homepage/assets/img/portfolio/books-1.jpg" title="Branding 1"
-                               data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i
-                                    class="bi bi-zoom-in"></i></a>
-                            <a href="portfolio-details.html" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div><!-- End Portfolio Item -->
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                        <img src="/client/homepage/assets/img/portfolio/app-2.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>App 2</h4>
-                            <p>Lorem ipsum, dolor sit amet consectetur</p>
-                            <a href="/client/homepage/assets/img/portfolio/app-2.jpg" title="App 2"
-                               data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i
-                                    class="bi bi-zoom-in"></i></a>
-                            <a href="portfolio-details.html" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div><!-- End Portfolio Item -->
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                        <img src="/client/homepage/assets/img/portfolio/product-2.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Product 2</h4>
-                            <p>Lorem ipsum, dolor sit amet consectetur</p>
-                            <a href="/client/homepage/assets/img/portfolio/product-2.jpg" title="Product 2"
-                               data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i
-                                    class="bi bi-zoom-in"></i></a>
-                            <a href="portfolio-details.html" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div><!-- End Portfolio Item -->
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                        <img src="/client/homepage/assets/img/portfolio/branding-2.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Branding 2</h4>
-                            <p>Lorem ipsum, dolor sit amet consectetur</p>
-                            <a href="/client/homepage/assets/img/portfolio/branding-2.jpg" title="Branding 2"
-                               data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i
-                                    class="bi bi-zoom-in"></i></a>
-                            <a href="portfolio-details.html" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div><!-- End Portfolio Item -->
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-                        <img src="/client/homepage/assets/img/portfolio/books-2.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Books 2</h4>
-                            <p>Lorem ipsum, dolor sit amet consectetur</p>
-                            <a href="/client/homepage/assets/img/portfolio/books-2.jpg" title="Branding 2"
-                               data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i
-                                    class="bi bi-zoom-in"></i></a>
-                            <a href="portfolio-details.html" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div><!-- End Portfolio Item -->
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                        <img src="/client/homepage/assets/img/portfolio/app-3.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>App 3</h4>
-                            <p>Lorem ipsum, dolor sit amet consectetur</p>
-                            <a href="/client/homepage/assets/img/portfolio/app-3.jpg" title="App 3"
-                               data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i
-                                    class="bi bi-zoom-in"></i></a>
-                            <a href="portfolio-details.html" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div><!-- End Portfolio Item -->
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                        <img src="/client/homepage/assets/img/portfolio/product-3.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Product 3</h4>
-                            <p>Lorem ipsum, dolor sit amet consectetur</p>
-                            <a href="/client/homepage/assets/img/portfolio/product-3.jpg" title="Product 3"
-                               data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i
-                                    class="bi bi-zoom-in"></i></a>
-                            <a href="portfolio-details.html" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div><!-- End Portfolio Item -->
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                        <img src="/client/homepage/assets/img/portfolio/branding-3.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Branding 3</h4>
-                            <p>Lorem ipsum, dolor sit amet consectetur</p>
-                            <a href="/client/homepage/assets/img/portfolio/branding-3.jpg" title="Branding 2"
-                               data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i
-                                    class="bi bi-zoom-in"></i></a>
-                            <a href="portfolio-details.html" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div><!-- End Portfolio Item -->
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-                        <img src="/client/homepage/assets/img/portfolio/books-3.jpg" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>Books 3</h4>
-                            <p>Lorem ipsum, dolor sit amet consectetur</p>
-                            <a href="/client/homepage/assets/img/portfolio/books-3.jpg" title="Branding 3"
-                               data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i
-                                    class="bi bi-zoom-in"></i></a>
-                            <a href="portfolio-details.html" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div><!-- End Portfolio Item -->
-
-                </div><!-- End Portfolio Container -->
-
-            </div>
-
-        </div>
-
-    </section><!-- /Portfolio Section -->
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials section light-background">
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-            <span>Testimonials</span>
-            <h2>Testimonials</h2>
-            <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+            <span>Chicken Rice</span>
+            <h2>Lời nhận xét</h2>
+            <p>Ứng dụng tốt</p>
         </div><!-- End Section Title -->
 
         <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -604,33 +406,15 @@
 
     </section><!-- /Testimonials Section -->
 
-    <!-- Call To Action Section -->
-    <section id="call-to-action" class="call-to-action section accent-background">
-
-        <div class="container">
-            <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
-                <div class="col-xl-10">
-                    <div class="text-center">
-                        <h3>Call To Action</h3>
-                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                            mollit anim id est laborum.</p>
-                        <a class="cta-btn" href="#">Call To Action</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </section><!-- /Call To Action Section -->
 
     <!-- Team Section -->
     <section id="team" class="team section">
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-            <span>Section Title</span>
-            <h2>Team</h2>
-            <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+            <span>Chicken Rice</span>
+            <h2>Thành viên</h2>
+            <p>Đội ngũ phát triển hệ thống của chúng tôi.</p>
         </div><!-- End Section Title -->
 
         <div class="container">
@@ -639,11 +423,11 @@
 
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="member">
-                        <div class="pic"><img src="/client/homepage/assets/img/team/team-1.jpg" class="img-fluid"
+                        <div class="pic"><img src="/client/homepage/assets/img/team/le.jpg" class="img-fluid"
                                               alt=""></div>
                         <div class="member-info">
-                            <h4>Walter White</h4>
-                            <span>Chief Executive Officer</span>
+                            <h4>Vũ Duy Lê</h4>
+                            <span>Project Manager, Leader</span>
                             <div class="social">
                                 <a href=""><i class="bi bi-twitter-x"></i></a>
                                 <a href=""><i class="bi bi-facebook"></i></a>
@@ -656,11 +440,11 @@
 
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="member">
-                        <div class="pic"><img src="/client/homepage/assets/img/team/team-2.jpg" class="img-fluid"
+                        <div class="pic"><img src="/client/homepage/assets/img/team/nam.jpg" class="img-fluid"
                                               alt=""></div>
                         <div class="member-info">
-                            <h4>Sarah Jhonson</h4>
-                            <span>Product Manager</span>
+                            <h4>Nam Hoàng</h4>
+                            <span>Ăn hại đái khai</span>
                             <div class="social">
                                 <a href=""><i class="bi bi-twitter-x"></i></a>
                                 <a href=""><i class="bi bi-facebook"></i></a>
@@ -673,11 +457,11 @@
 
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
                     <div class="member">
-                        <div class="pic"><img src="/client/homepage/assets/img/team/team-3.jpg" class="img-fluid"
+                        <div class="pic"><img src="/client/homepage/assets/img/team/thao.jpg" class="img-fluid"
                                               alt=""></div>
                         <div class="member-info">
-                            <h4>William Anderson</h4>
-                            <span>CTO</span>
+                            <h4>Đinh Thị Thảo</h4>
+                            <span>Ăn hại đái khai không khai bằng Nam</span>
                             <div class="social">
                                 <a href=""><i class="bi bi-twitter-x"></i></a>
                                 <a href=""><i class="bi bi-facebook"></i></a>
@@ -687,6 +471,58 @@
                         </div>
                     </div>
                 </div><!-- End Team Member -->
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="member">
+                        <div class="pic"><img src="/client/homepage/assets/img/team/huythanh.jpg" class="img-fluid"
+                                              alt=""></div>
+                        <div class="member-info">
+                            <h4>Hồ Huy Thành</h4>
+                            <span>Ăn hại đái khai không khai bằng Nam</span>
+                            <div class="social">
+                                <a href=""><i class="bi bi-twitter-x"></i></a>
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-instagram"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Team Member -->
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="member">
+                        <div class="pic"><img src="/client/homepage/assets/img/team/ducthanh.jpg" class="img-fluid"
+                                              alt=""></div>
+                        <div class="member-info">
+                            <h4>Phạm Đức Thành</h4>
+                            <span>Ăn hại đái khai không khai bằng Nam</span>
+                            <div class="social">
+                                <a href=""><i class="bi bi-twitter-x"></i></a>
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-instagram"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Team Member -->
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="member">
+                        <div class="pic"><img src="/client/homepage/assets/img/team/khang.jpg" class="img-fluid"
+                                              alt=""></div>
+                        <div class="member-info">
+                            <h4>Phạm Quang Khang</h4>
+                            <span>Giảng viên hướng dẫn</span>
+                            <div class="social">
+                                <a href=""><i class="bi bi-twitter-x"></i></a>
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-instagram"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Team Member -->
+
 
             </div>
 
@@ -699,85 +535,48 @@
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-            <span>Section Title</span>
-            <h2>Contact</h2>
-            <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+            <span>Chicken rice</span>
+            <h2>Liên hệ</h2>
+            <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi, có thắc mắc vui lòng liên hệ thông tin dưới đây.</p>
         </div><!-- End Section Title -->
 
         <div class="container" data-aos="fade-up" data-aos-delay="100">
 
             <div class="row gy-4">
 
-                <div class="col-lg-5">
+                <div class="col-lg-12">
 
                     <div class="info-wrap">
                         <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
                             <i class="bi bi-geo-alt flex-shrink-0"></i>
                             <div>
-                                <h3>Address</h3>
-                                <p>A108 Adam Street, New York, NY 535022</p>
+                                <h3>Địa chỉ</h3>
+                                <p>Đại học FPT Hà Nội</p>
                             </div>
                         </div><!-- End Info Item -->
 
                         <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
                             <i class="bi bi-telephone flex-shrink-0"></i>
                             <div>
-                                <h3>Call Us</h3>
-                                <p>+1 5589 55488 55</p>
+                                <h3>Gọi cho chúng tôi</h3>
+                                <p>+84 8223 179 04</p>
                             </div>
                         </div><!-- End Info Item -->
 
                         <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
                             <i class="bi bi-envelope flex-shrink-0"></i>
                             <div>
-                                <h3>Email Us</h3>
-                                <p>info@example.com</p>
+                                <h3>Email</h3>
+                                <p>chickenrice@gmail.com</p>
                             </div>
                         </div><!-- End Info Item -->
 
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus"
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4582.878677382485!2d105.52350832596944!3d21.01274168832721!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135abc60e7d3f19%3A0x2be9d7d0b5abcbf4!2sFPT%20University!5e1!3m2!1sen!2s!4v1739900336821!5m2!1sen!2s"
                                 frameborder="0" style="border:0; width: 100%; height: 270px;" allowfullscreen=""
                                 loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
 
-                <div class="col-lg-7">
-                    <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up"
-                          data-aos-delay="200">
-                        <div class="row gy-4">
-
-                            <div class="col-md-6">
-                                <label for="name-field" class="pb-2">Your Name</label>
-                                <input type="text" name="name" id="name-field" class="form-control" required="">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="email-field" class="pb-2">Your Email</label>
-                                <input type="email" class="form-control" name="email" id="email-field" required="">
-                            </div>
-
-                            <div class="col-md-12">
-                                <label for="subject-field" class="pb-2">Subject</label>
-                                <input type="text" class="form-control" name="subject" id="subject-field" required="">
-                            </div>
-
-                            <div class="col-md-12">
-                                <label for="message-field" class="pb-2">Message</label>
-                                <textarea class="form-control" name="message" rows="10" id="message-field"
-                                          required=""></textarea>
-                            </div>
-
-                            <div class="col-md-12 text-center">
-                                <div class="loading">Loading</div>
-                                <div class="error-message"></div>
-                                <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                                <button type="submit">Send Message</button>
-                            </div>
-
-                        </div>
-                    </form>
-                </div><!-- End Contact Form -->
 
             </div>
 
@@ -786,6 +585,26 @@
     </section><!-- /Contact Section -->
 
 </main>
+
+<%
+    String message = (String) session.getAttribute("message");
+    if (message != null) {
+%>
+<div id="alertMessage" class="alert alert-success text-center"
+     style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 50%;"
+     role="alert">
+    <%= message %>
+</div>
+<script>
+
+    setTimeout(function () {
+        document.getElementById("alertMessage").style.display = 'none';
+    }, 2000);
+</script>
+<%
+        session.removeAttribute("message");
+    }
+%>
 
 <jsp:include page="../layout/footer.jsp" />
 

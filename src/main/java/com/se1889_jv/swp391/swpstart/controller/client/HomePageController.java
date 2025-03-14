@@ -2,8 +2,11 @@ package com.se1889_jv.swp391.swpstart.controller.client;
 
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.dto.RegisterDTO;
+import com.se1889_jv.swp391.swpstart.service.implementservice.ServiceService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomePageController {
+    @Autowired
+    private ServiceService serviceService;
+
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     public HomePageController(final UserService userService, final PasswordEncoder passwordEncoder) {
@@ -24,7 +30,7 @@ public class HomePageController {
 
     @RequestMapping("/")
     public String getHomePage(Model model) {
-
+        model.addAttribute("services", this.serviceService.findAllServicesForHomePage());
 
         return "client/homepage/show";
     }
@@ -44,7 +50,8 @@ public class HomePageController {
     @PostMapping("/register")
     public String handleRegister(
             @ModelAttribute("registerUser") @Valid RegisterDTO registerDTO,
-            BindingResult bindingResult) {
+            BindingResult bindingResult,
+            HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "client/auth/register";
         }
@@ -57,7 +64,7 @@ public class HomePageController {
         user.setRole(this.userService.getRoleByName("OWNER"));
         // save
         this.userService.createUser(user);
-
+        session.setAttribute("message", "Đăng ký tài khoản thành công.");
         return "redirect:/login";
 
     }

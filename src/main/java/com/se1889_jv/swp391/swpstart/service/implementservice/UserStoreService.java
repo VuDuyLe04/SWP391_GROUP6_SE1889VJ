@@ -27,7 +27,15 @@ public class UserStoreService implements IUserStoreService {
     }
 
     @Override
+    public List<UserStore> getAllUserStoresByStoreIn(List<Store> stores) {
+        return this.userStoreRepository.findAllByStoreIn(stores);
+    }
+
+    @Override
     public UserStore findUserStore(long userId) {
         return null;
     }
+
+
+
 }

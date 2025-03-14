@@ -105,17 +105,18 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                     .dispatcherTypeMatchers(DispatcherType.FORWARD,
                             DispatcherType.INCLUDE).permitAll()
 
-                    .requestMatchers("/", "/login", "/register", "/client/**", "/admin/**").permitAll()
+                    .requestMatchers("/", "/login", "/register", "/client/**", "/admin/**", "/api/**").permitAll()
+                            .requestMatchers("/customer", "/customer/**").hasAnyRole("STAFF", "OWNER")
+                            .requestMatchers("/warehouse", "/warehouse/**", "/product", "/product/**","/payment", "/payment/history").hasRole("OWNER")
 
-                    .requestMatchers("/warehouse", "/warehouse/**").hasRole("OWNER")
-
+                            .requestMatchers("/profile/**").hasAnyRole("ADMIN", "STAFF", "OWNER")
 //                    .requestMatchers("/customer/**", "/product/**").hasRole("OWNER")
-
-                    .anyRequest().authenticated()
+                            .requestMatchers("/service/**").hasRole("ADMIN")
+                            .anyRequest().authenticated()
             )
 
             .sessionManagement((sessionManagement) -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         .invalidSessionUrl("/logout?expired")
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(false))

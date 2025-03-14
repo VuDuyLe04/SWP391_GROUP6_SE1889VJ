@@ -127,16 +127,18 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="balance">Số dư</label>
+                                    <label class="col-sm-3 col-form-label" for="balance">Cửa hàng</label>
                                     <div class="col-sm-9">
-                                        <form:input path="balance" class="form-control" id="balance" readonly="true" />
+                                        <input value="${customer.store.name}" class="form-control" id="balance" readonly/>
                                     </div>
                                 </div>
+                                <input value="${customer.phone}" type="hidden" name="oldPhone">
+                                <form:hidden path="store"/>
 
                                 <div class="form-group row">
                                     <div class="col-sm-9 offset-sm-3">
-                                        <button type="submit" class="btn btn-primary">Update</button>
-                                        <a href="/customer" class="btn btn-secondary">Cancel</a>
+                                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                        <a href="/customer" class="btn btn-secondary">Hủy</a>
                                     </div>
                                 </div>
                             </form:form>

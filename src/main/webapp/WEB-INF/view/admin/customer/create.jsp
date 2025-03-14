@@ -58,7 +58,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Create Customer</h2>
+                <h2>Tạo mới khách hàng</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -67,7 +67,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Create customer</span></li>
+                        <li><span>Tạo mới khách hàng</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -100,6 +100,11 @@
                                                  cssClass="invalid-feedback" cssStyle="color: red"/>
                                 </c:set>
 
+<%--                                <c:set var="errorBalance">--%>
+<%--                                    <form:errors path="balance"--%>
+<%--                                                 cssClass="invalid-feedback" cssStyle="color: red"/>--%>
+<%--                                </c:set>--%>
+
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" >Tên</label>
                                     <div class="col-md-6">
@@ -116,8 +121,6 @@
                                     </div>
                                 </div>
 
-
-
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputReadOnly">Địa chỉ</label>
                                     <div class="col-md-6">
@@ -125,12 +128,38 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputHelpText">Số dư</label>
-                                    <div class="col-md-6">
-                                        <form:input path="balance" class="form-control" id="inputHelpText" readonly="true" />
+<%--                                <div class="form-group">--%>
+<%--                                    <label class="col-md-3 control-label" for="inputHelpText">Tiền nợ</label>--%>
+<%--                                    <div class="col-md-6">--%>
+<%--                                        <form:input path="balance" class="form-control ${not empty errorBalance ? 'is-invalid' : ''}" id="inputHelpText" readonly="true"/>--%>
+<%--                                        ${errorBalance}--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+
+                                <c:if test="${sessionScope.user.role.name == 'STAFF'}">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="inputHelpText">Cửa hàng</label>
+                                        <div class="col-md-6">
+                                            <input name="balance" value="${sessionScope.store.name}"
+                                                   class="form-control" id="inputHelpText" readonly="true"/>
+                                        </div>
                                     </div>
-                                </div>
+                                </c:if>
+                                <c:if test="${sessionScope.user.role.name == 'OWNER'}">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="inputHelpText">Cửa hàng</label>
+                                        <div class="col-md-6">
+                                            <select name="storeId">
+                                                <c:forEach items="${listStore}" var="store">
+                                                    <option value="${store.id}">${store.name}</option>
+                                                </c:forEach>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </c:if>
+
+
 
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-3">

@@ -69,6 +69,36 @@
         }
 
 
+
+        .popup {
+            display: none; /* Mặc định ẩn */
+            position: fixed;
+            top: 20px; /* Căn trên */
+            right: 20px; /* Căn phải */
+            background: rgba(255, 0, 0, 0.9); /* Màu đỏ cảnh báo */
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateX(100px); /* Ẩn bên ngoài màn hình */
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        .fade-in {
+            opacity: 1 !important;
+            transform: translateX(0);
+        }
+
+        /* Hiệu ứng mờ dần */
+        .fade-out {
+            opacity: 0 !important;
+            transform: translateX(100px);
+        }
+
+
+
     </style>
 
     <title>Document</title>
@@ -80,7 +110,11 @@
 <%--<jsp:include page="../layout/header.jsp" />--%>
 <!-- end: header -->
 
-
+<div id="popup-message" class="popup">
+    <div class="popup-content">
+        <p>Vui lòng chọn sản phẩm trước khi thanh toán!</p>
+    </div>
+</div>
 <div class="row bg-primary p-2 align-items-center">
     <!-- Search Box -->
     <div class="col-md-3">
@@ -147,15 +181,16 @@
             <option value="desc">Sắp xếp giảm dần</option>
         </select>
     </div>
+
+
 </div>
 <div class="row bg-secondary">
     <div id="product-list" class="col-md-7 overflow-auto">
         <c:forEach var="product" items="${productList}" varStatus="status">
-            <div class="product d-flex justify-content-around align-items-center mb-2 mt-2 bg-light p-1"
+            <div class="product d-flex justify-content-around align-items-center m-2 bg-light p-1 "
                  data-category="${product.category}"
                  data-description="${product.description}"
                  data-price="${product.unitPrice}">
-
 
                 <div class="m-2 product-name col-md-3">${product.name}</div>
 
@@ -250,7 +285,7 @@
 
     <div class="col-md-5 mt-2 ">
         <div class="p-3 bg-light rounded bill">
-            <form action="/createbill" method="post">
+            <form action="/createbill" method="post" id="form-sender">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <span>${user.name}</span>
@@ -264,12 +299,13 @@
                 </ul>
                 <div class="list-product-bill" >
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="text-primary col-md-2 text-center">Sản phẩm</h5>
+                        <h5 class="text-primary col-md-2 text-center">Tên</h5>
                         <h5 class="text-primary col-md-2 text-center">Loại</h5>
                         <h5 class="text-primary col-md-2 text-center">Số lượng</h5>
                         <h5 class="text-primary col-md-2 text-center">Gía</h5>
-                        <h5 class="text-primary col-md-2 text-center">Giamr</h5>
+                        <h5 class="text-primary col-md-2 text-center">Giảm</h5>
                         <h5 class="text-primary col-md-2 text-center">Tổng</h5>
+
                     </div>
                     <div id="bill-list">
 
@@ -316,6 +352,7 @@
                     </div>
                     <div id="suggestion-box" class="border bg-white mt-1" style="display: none; position: absolute; z-index: 1000;"></div>
                 </div>
+                <input id="cus-add" name="customerAddress" hidden="hidden">
 
                 <!-- Modal Thêm Khách Hàng -->
                 <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
@@ -351,18 +388,13 @@
 
 
                 <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-success btn-block pay-button" style="height: 50px">
+                    <button type="submit" class="btn btn-success btn-block pay-button" id="submit-but" style="height: 50px">
                         Thanh toán
                     </button>
                 </div>
             </form>
 
         </div>
-    </div>
-</div>
-<div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
-    <div id="toast" class="toast">
-        Không đủ số lượng sản phẩm trong kho!
     </div>
 </div>
 
@@ -579,26 +611,41 @@
             html += '<div >' +
 
                 '<div class="d-flex justify-content-between align-items-center mb-3">' +
-                '<input class="col-md-2 text-center" value="' + parseInt(productId) + '" readonly style="border: none;" hidden="hidden" name="billDetails['+ i +'].product.id">'+
+                '<input class="col-md-2 text-center" value="' + parseInt(productId) + '" readonly style="border: none;" hidden="hidden" name="billDetails[' + i + '].product.id">' +
                 '<input class="col-md-2 text-center" value="' + nameProduct + '" readonly style="border: none;">' +
                 '<input class="col-md-2 text-center" value="' + packaging + '" readonly style="border: none;" name="billDetails[' + i + '].packaging.packageType">' +
-                '<input class="col-md-2 text-center" value="' + quantity + '" ' +
+                '<input class="col-md-2 text-center" id="input-quantity-' +i +'" value="' + quantity + '" ' +
                 'style="border: none;" type="number" name="billDetails[' + i + '].quantity" ' +
                 'max="' + maxQuan + '" ' +
-                'oninput="if(this.value > ' + maxQuan + ') { showAttention(\'' + nameProduct + '\'); this.value = ' + quantity + '; } else {updateQuantity(' + i + ', this.value, '+ unitPer +' ,' + quantity +');}">' +
-                '<input class="col-md-2 text-center" value="' + parseFloat(unitPrice*unitPer) + '" readonly style="border: none;" name="billDetails[' + i + '].listedPrice">' +
-                '<input class="col-md-2 text-center" value="' + actualSellPrice +'" readonly style="border: none;" name="billDetails[' + i + '].actualSellPrice" hidden="hidden">' +
-                '<input class="col-md-2 text-center" value="' + salePrice + '" readonly style="border: none;">' +
-                '<input class="col-md-2 text-center" value="' + total + '" readonly style="border: none;" name="billDetails[' + i + '].actualSellPrice">'+
-                '<input class="col-md-2 text-center" value="' + liftTotal + '" readonly hidden="hidden"  style="border: none;" name="billDetails[' + i + '].liftPrice">'+
+                'oninput="if(this.value > ' + maxQuan + ') { showAttention(\'' + nameProduct + '\'); this.value = ' + quantity + '; } else {updateQuantity(' + i + ', this.value, ' + unitPer + ' ,' + quantity + ');}">' +
+                '<input class="col-md-2 text-center" value="' + parseFloat(unitPrice * unitPer) + '" readonly style="border: none;" name="billDetails[' + i + '].listedPrice">' +
+                '<input class="col-md-2 text-center" value="' + actualSellPrice + '" readonly style="border: none;" name="billDetails[' + i + '].actualSellPrice" hidden="hidden">' +
+                '<input class="col-md-1 text-center" value="' + salePrice + '" readonly style="border: none;">' +
+                '<input class="col-md-2 text-center" value="' + total + '" readonly style="border: none;" name="billDetails[' + i + '].actualSellPrice">' +
+                '<input class="col-md-2 text-center" value="' + liftTotal + '" readonly hidden="hidden"  style="border: none;" name="billDetails[' + i + '].liftPrice">' +
+                '<button type="button" class="col-md-1 btn btn-danger btn-sm d-flex align-items-center justify-content-center" style="width: 15px; height: 20px" onClick="removeFromBill('+i+', '+unitPer+')">x</button>'+
                 '</div>' +
-                '</div>'
-                ;
+
+            '</div>'
+            ;
         }
 
 
         totalPayment(totalPrice, sale, pay, totalLift);
         billList.innerHTML= html;
+    }
+    function removeFromBill(index, unitPer) {
+        const inputQuanDelete = document.getElementById("input-quantity-"+index);
+        console.log(typeof parseFloat(inputQuanDelete.value));
+        const inputQuan = parseFloat(inputQuanDelete.value);
+        const modal = document.getElementById('productModal'+index);
+        let quantityOfProduct = modal.querySelector('input[name="quantity"]').getAttribute('data-quantity');
+        let quantityUpdate = parseFloat(quantityOfProduct) + unitPer * inputQuan;
+        modal.querySelector('input[name="quantity"]').setAttribute('data-quantity', quantityUpdate);
+        let quantityOfProductNew = modal.querySelector('input[name="quantity"]').getAttribute('data-quantity');
+        // console.log(quantityOfProduct);
+            listSender.splice(index, 1);
+            generate(listSender);
     }
     function totalPayment(total, sale, pay, lift){
         const totalPrice = document.getElementById('total-price');
@@ -704,11 +751,11 @@
         const name = document.getElementById('customer-name').value;
         const phone = document.getElementById('customer-phone').value;
         const address = document.getElementById('customer-address').value;
-
+        const inputAddress = document.getElementById('cus-add');
         if (name && phone && address) {
             const searchPhoneInput = document.getElementById('search-phone');
             searchPhoneInput.value = name + ' - ' + phone;
-
+            inputAddress.value = address;
 
             let myModal = bootstrap.Modal.getInstance(document.getElementById('customerModal'));
             myModal.hide();
@@ -718,9 +765,29 @@
     });
 
     // check all quantity before payment
-    document.getElementById('pay-button').addEventListener('click', function () {
+    document.getElementById('submit-but').addEventListener('click', function (event) {
+        const formSender = document.getElementById("form-sender");
 
-    })
+        if (listSender.length === 0) {
+            event.preventDefault(); // Ngăn form submit
+
+            const popup = document.getElementById("popup-message");
+            popup.style.display = "block";
+            popup.classList.add("fade-in");
+
+            setTimeout(() => {
+                popup.classList.remove("fade-in");
+                popup.classList.add("fade-out");
+
+                setTimeout(() => {
+                    popup.style.display = "none";
+                    popup.classList.remove("fade-out");
+                }, 1000);
+            }, 3000);
+        } else {
+            formSender.submit();
+        }
+    });
 
 
 
