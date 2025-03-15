@@ -97,6 +97,15 @@
 
                         </li>
                     </c:if>
+                    <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
+                        <li>
+                            <a href="/transpayments">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <span>Lịch sử nạp tiền </span>
+                            </a>
+
+                        </li>
+                    </c:if>
 
 
 
