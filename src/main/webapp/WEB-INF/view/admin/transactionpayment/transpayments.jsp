@@ -262,17 +262,15 @@
                         <div class="panel-body">
                             <div class="row mb-md">
                                 <div class="col-sm-6">
-                                    <form action="/transpayments" method="get">
+                                    <form id="dateForm" action="/transpayments" method="get">
                                         <div class="form-group">
                                             <label for="startDate">Từ ngày:</label>
-                                            <input type="date" id="startDate" name="startDate" class="form-control" 
-                                                   value="${startDate}">
+                                            <input type="date" id="startDate" name="startDate" class="form-control" value="${startDate}">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="endDate">Đến ngày:</label>
-                                            <input type="date" id="endDate" name="endDate" class="form-control"
-                                                   value="${endDate}">
+                                            <input type="date" id="endDate" name="endDate" class="form-control" value="${endDate}">
                                         </div>
 
                                         <div class="form-group">
@@ -289,7 +287,7 @@
                                             <label for="status">Trạng thái giao dịch:</label>
                                             <select id="status" name="status" class="form-control">
                                                 <option ${status == "ALL" ? "selected" : ""} value="ALL">Tất cả</option>
-                                                <option ${status == "COMLETED" ? "selected" : ""} value="COMPLETED">Hoàn thành</option>
+                                                <option ${status == "COMPLETED" ? "selected" : ""} value="COMPLETED">Hoàn thành</option>
                                                 <option ${status == "PENDING" ? "selected" : ""} value="PENDING">Đang chờ</option>
                                                 <option ${status == "FAILURE" ? "selected" : ""} value="FAILURE">Thất bại</option>
                                             </select>
@@ -301,10 +299,10 @@
 
 
                                 </div>
-                                <div class="col-sm-6">
 
-                                </div>
                             </div>
+                            ${emptyList}
+                            <c:if test="${emptyList == null}">
 
                             <table>
                                 <thead>
@@ -343,28 +341,29 @@
 
                             <c:set var="c" value="${transactions.number}"></c:set>
                                 <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
-                                    <li class="page-item ${c==0 ?'disabled':''} ">
-                                        <a class="page-link" href="transpayments?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
+                                    <li class="page-item ${c==0 ?'disabled':''}">
+                                        <a class="page-link" href="transpayments?page=${c==0 ? 0 : (c - 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">Trước</a>
                                     </li>
 
                                     <c:forEach begin="0" end="${transactions.totalPages - 1}" var="i">
                                         <c:if test="${i >= c - 1 && i <= c + 1}">
-                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="transpayments?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a>
-
-
+                                            <li class="page-item ${c == i ? 'active' : ''}">
+                                                <a class="page-link" href="transpayments?page=${i}&input=${input != null ? input : ''}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">${i + 1}</a>
                                             </li>
                                         </c:if>
-                                        <c:if test="${i == c- 2 || i == c+ 2}">
+                                        <c:if test="${i == c - 2 || i == c + 2}">
                                             <li><span>...</span></li>
                                         </c:if>
                                     </c:forEach>
-                                    <li class="page-item ${c== transactions.totalPages -1?'disabled':''} ">
-                                        <a class="page-link" href="transpayments?page=${c== transactions.totalPages -1? transactions.totalPages -1: (c + 1)}&input=${input}&active=${active}&role=${roleId}">Sau</a>
+
+                                    <li class="page-item ${c == transactions.totalPages - 1 ? 'disabled' : ''}">
+                                        <a class="page-link" href="transpayments?page=${c == transactions.totalPages - 1 ? transactions.totalPages - 1 : (c + 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">Sau</a>
                                     </li>
 
-                                </ul>
 
-                            </div>
+                                </ul>
+                            </c:if>
+                        </div>
                     </section>
                 </div>
             </div>
@@ -448,6 +447,35 @@
         if(status == null) alert("Không có giá trị");
         else window.location.href = "/transpayments?status="+status;
     }
+    document.addEventListener("DOMContentLoaded", function () {
+        function formatToDDMMYYYY(dateStr) {
+            if (!dateStr) return "";
+            let parts = dateStr.split("-");
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+
+        function formatToYYYYMMDD(dateStr) {
+            if (!dateStr) return "";
+            let parts = dateStr.split("/");
+            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+
+        let startDateInput = document.getElementById("startDate");
+        let endDateInput = document.getElementById("endDate");
+
+        // Lấy giá trị từ server (giả sử giá trị là YYYY-MM-DD)
+        let startDateValue = "${startDate}";
+        let endDateValue = "${endDate}";
+
+        // Hiển thị dưới dạng DD/MM/YYYY
+        startDateInput.value = formatToDDMMYYYY(startDateValue);
+        endDateInput.value = formatToDDMMYYYY(endDateValue);
+
+        document.getElementById("dateForm").addEventListener("submit", function () {
+            startDateInput.value = formatToYYYYMMDD(startDateInput.value);
+            endDateInput.value = formatToYYYYMMDD(endDateInput.value);
+        });
+    });
 </script>
 
 
