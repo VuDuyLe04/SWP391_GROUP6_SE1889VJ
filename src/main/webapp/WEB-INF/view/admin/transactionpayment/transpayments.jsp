@@ -104,6 +104,8 @@
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             margin-bottom: 25px;
+
+
         }
 
         .form-group {
@@ -293,6 +295,8 @@
         .content-body {
             padding: 25px;
             background: #f4f7fa;
+            overflow-y: auto;
+            height: calc(100vh - 60px);
         }
 
         /* Card Layout */
@@ -313,8 +317,8 @@
         }
 
         .page-header h2 {
-            font-size: 24px;
-            color: #344767;
+            /*color: #344767;*/
+            font-size: 2rem;
             margin: 0;
         }
 
@@ -332,7 +336,7 @@
             display: grid;
             grid-template-columns: 3fr 1fr;
             gap: 25px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         /* Search Box */
@@ -378,7 +382,7 @@
         /* Filter Form */
         .filter-form {
             background: #fff;
-            padding: 25px;
+            padding: 15px;
             border-radius: 15px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.08);
         }
@@ -416,7 +420,7 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-            margin-bottom: 0;
+            margin-bottom: 80px;
         }
 
         .table {
@@ -468,10 +472,15 @@
 
         /* Pagination */
         .pagination-section {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-            border-top: none;
+            position: relative;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 5px 0;
+            margin-top: -8px;
+            z-index: 1;
+            border-radius: 0 0 15px 15px;
         }
 
         .pagination {
@@ -510,6 +519,21 @@
                 overflow-x: auto;
             }
         }
+
+        /* Table Responsive - Đảm bảo bảng không bị overflow */
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 0;
+        }
+
+        /* Fixed Body - Bỏ overflow hidden */
+        html.fixed {
+            overflow-y: auto !important;
+        }
+
+        body {
+            overflow: auto !important;
+        }
     </style>
 </head>
 <body>
@@ -527,12 +551,18 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2><i class="fa fa-history mr-xs"></i> Lịch sử nạp tiền</h2>
-                <ol class="breadcrumbs">
-                    <li><a href="/"><i class="fa fa-home"></i></a></li>
-                    <li><span>Quản lý người dùng</span></li>
-                    <li><span>Lịch sử nạp tiền</span></li>
-                </ol>
+                <h2><i class="fa fa-users mr-xs"></i> Lịch sử nạp tiền </h2>
+                <div class="right-wrapper pull-right">
+                    <ol class="breadcrumbs">
+                        <li>
+                            <a href="/">
+                                <i class="fa fa-home"></i>
+                            </a>
+                        </li>
+                        <li><span>Lịch sử nạp tiền </span></li>
+                    </ol>
+                    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+                </div>
             </header>
 
             <div class="controls-section">
@@ -669,66 +699,7 @@
     </div>
 </section>
 
-
-
-<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="margin-top:330px">
-            <div class="modal-header">
-                <h4 class="modal-title" id="userModalLabel">
-                    <i class="fa fa-user-circle mr-xs"></i> Thông tin chi tiết
-                </h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="user-info">
-                    <div class="info-group">
-                        <label><i class="fa fa-user mr-xs"></i> Tên:</label>
-                        <span id="modal-name" class="info-value"></span>
-                    </div>
-                    <div class="info-group">
-                        <label><i class="fa fa-phone mr-xs"></i> Số điện thoại:</label>
-                        <span id="modal-phone" class="info-value"></span>
-                    </div>
-                    <div class="info-group">
-                        <label><i class="fa fa-users mr-xs"></i> Vai trò:</label>
-                        <span id="modal-role" class="info-value"></span>
-                    </div>
-                    <div class="info-group">
-                        <label><i class="fa fa-check-circle mr-xs"></i> Trạng thái:</label>
-                        <span id="modal-status" class="info-value"></span>
-                    </div>
-                    <div class="info-group">
-                        <label><i class="fa fa-calendar mr-xs"></i> Tạo ngày:</label>
-                        <span id="modal-createdAt" class="info-value"></span>
-                    </div>
-                    <div class="info-group">
-                        <label><i class="fa fa-user-plus mr-xs"></i> Tạo bởi:</label>
-                        <span id="modal-createdBy" class="info-value"></span>
-                    </div>
-                    <div class="info-group">
-                        <label><i class="fa fa-calendar-plus-o mr-xs"></i> Cập nhật ngày:</label>
-                        <span id="modal-updatedAt" class="info-value"></span>
-                    </div>
-                    <div class="info-group">
-                        <label><i class="fa fa-user-plus mr-xs"></i> Cập nhật bởi:</label>
-                        <span id="modal-updatedBy" class="info-value"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">
-                    <i class="fa fa-times mr-xs"></i>Đóng
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Đoạn mã JavaScript của bạn -->
+->
 
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
@@ -780,7 +751,7 @@
 
 
 <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
-<script src="/client/auth/assets/vendor/nanoscroller/nanoscroller.js"></script>
+
 <script src="/client/auth/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script src="/client/auth/assets/vendor/magnific-popup/magnific-popup.js"></script>
 <script src="/client/auth/assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
