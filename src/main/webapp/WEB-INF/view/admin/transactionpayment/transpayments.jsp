@@ -43,161 +43,485 @@
     <!-- Head Libs -->
     <script src="/client/auth/assets/vendor/modernizr/modernizr.js"></script>
     <style>
+        /* Modern Dashboard Styles */
+        body {
+            background: #f4f7fa;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        /* Panel Styling */
         .panel-featured-primary {
+            border: none;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        /* Header Styling */
+        .panel-heading {
+            background: linear-gradient(135deg, #0088cc, #1e4f78) !important;
+            padding: 20px !important;
+            border-radius: 12px 12px 0 0 !important;
+        }
+
+        .panel-title {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Search Box Styling */
+        .input-search {
+            position: relative;
+            max-width: 400px;
+            margin-left: auto;
+        }
+
+        .input-search input {
+            height: 45px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            padding: 0 45px 0 20px;
+            font-size: 14px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .input-search .btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 45px;
+            width: 45px;
+            border-radius: 0 8px 8px 0;
+            background: #0088cc;
+        }
+
+        /* Filter Form Styling */
+        .filter-section {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: #344767;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-control {
+            height: 45px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
             border-color: #0088cc;
+            box-shadow: 0 0 0 3px rgba(0,136,204,0.15);
         }
-        .panel-featured-primary .panel-heading {
-            background-color: #0088cc;
-            color: #FFF;
-            border-radius: 5px 5px 0 0;
+
+        /* Table Styling */
+        .table-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-top: 25px;
         }
-        .input-group-addon {
-            background-color: #0088cc;
-            color: #FFF;
-            border-color: #0088cc;
+
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
         }
-        .table > thead > tr > th {
-            background-color: #f5f5f5;
+
+        .table th {
+            background: #f8fafc;
+            color: #344767;
+            font-weight: 600;
+            padding: 15px;
+            font-size: 13px;
+            text-transform: uppercase;
             border-bottom: 2px solid #0088cc;
         }
-        .btn-primary {
-            background-color: #0088cc;
-            border-color: #0088cc;
+
+        .table td {
+            padding: 15px;
+            vertical-align: middle;
+            border-bottom: 1px solid #e0e6ed;
+            color: #506690;
+            font-size: 14px;
         }
-        .btn-primary:hover {
-            background-color: #006699;
-            border-color: #006699;
+
+        .table tr:hover {
+            background-color: #f8fafc;
         }
-        .label-sm {
-            font-size: 90%;
-            padding: 3px 8px;
-        }
-        .mr-xs {
-            margin-right: 5px;
-        }
-        .mb-xs {
-            margin-bottom: 5px;
-        }
-        .mt-xs {
-            margin-top: 5px;
-        }
-        .status-label {
+
+        /* Status Badge Styling */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
             display: inline-block;
-            min-width: 85px;
             text-align: center;
-            padding: 5px 10px;
         }
+
+        .status-completed {
+            background: #dcf5e7;
+            color: #0d6832;
+        }
+
+        .status-pending {
+            background: #fff4de;
+            color: #946300;
+        }
+
+        .status-failure {
+            background: #ffe4e4;
+            color: #d12946;
+        }
+
+        /* Amount Styling */
+        .amount {
+            font-weight: 600;
+            color: #2ecc71;
+        }
+
+        /* Transaction ID Styling */
+        .transaction-id {
+            font-weight: 600;
+            color: #0088cc;
+        }
+
+        /* Pagination Styling */
         .pagination {
-            margin: 20px auto;
-            display: inline-flex;
+            margin: 25px 0 10px;
+            display: flex;
             justify-content: center;
-            padding-left: 0;
-        }
-        /* Existing modal styles */
-        html, body {
-            overflow-y: scroll !important;
-            margin-right: 0 !important;
-            padding-right: 0 !important;
-            width: 100% !important;
+            gap: 5px;
         }
 
-        /* Update modal styles */
-        .modal {
-            text-align: center;
-            padding: 0 !important;
+        .page-link {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #e0e6ed;
+            color: #506690;
+            font-weight: 500;
+            transition: all 0.3s;
         }
 
-        .modal:before {
-            content: '';
-            display: inline-block;
-            height: 15vh; /* Giảm khoảng cách từ top để modal nằm gần nút Filter */
-            vertical-align: middle;
-            margin-right: -4px;
-        }
-
-        .modal-dialog {
-            display: inline-block;
-            text-align: left;
-            vertical-align: middle;
-            max-width: 800px !important;
-            width: 95% !important;
-            margin: 0 auto !important;
-            transform: translate(0, -25%) !important;
-        }
-
-        .modal-content {
-            border: none;
-            border-radius: 4px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            height: auto !important;
-            max-height: 500px !important;
-        }
-
-        .modal-body {
-            padding: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
-        .user-info {
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        .info-group {
-            width: calc(50% - 10px);
-            margin-bottom: 12px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-        }
-
-        .info-group label {
-            width: 120px;
-            font-size: 14px;
-            margin-bottom: 0;
-            white-space: nowrap;
-        }
-
-        .info-value {
-            font-size: 14px;
-            flex: 1;
-        }
-
-        .modal-header {
+        .page-item.active .page-link {
             background: #0088cc;
-            color: white;
-            border-radius: 4px 4px 0 0;
-            padding: 10px 15px;
-            height: 50px;
+            border-color: #0088cc;
+            color: #fff;
         }
 
-        .modal-header .close {
-            display: none !important;
+        .page-link:hover:not(.active) {
+            background: #f8fafc;
+            border-color: #0088cc;
+            color: #0088cc;
         }
 
-        .modal-title {
-            font-size: 14px;
+        /* Button Styling */
+        .btn-primary {
+            background: #0088cc;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #006699;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,136,204,0.2);
+        }
+
+        /* User Info Styling */
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #344767;
+        }
+
+        .user-phone {
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .panel-body {
+                padding: 15px;
+            }
+
+            .filter-section {
+                padding: 15px;
+            }
+
+            .table-container {
+                padding: 10px;
+                overflow-x: auto;
+            }
+
+            .input-search {
+                margin: 15px 0;
+                width: 100%;
+            }
+        }
+
+        /* Dashboard Layout */
+        .content-body {
+            padding: 25px;
+            background: #f4f7fa;
+        }
+
+        /* Card Layout */
+        .dashboard-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        /* Header Section */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 0;
+        }
+
+        .page-header h2 {
+            font-size: 24px;
+            color: #344767;
             margin: 0;
         }
 
-        .modal-footer {
-            padding: 10px 15px;
-            border-top: 1px solid #dee2e6;
-            background: #f8f9fa;
-            border-radius: 0 0 4px 4px;
-            height: 50px;
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
         }
 
-        .modal-footer .btn {
-            padding: 5px 15px;
+        /* Search and Filter Layout */
+        .controls-section {
+            display: grid;
+            grid-template-columns: 2fr 3fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        /* Search Box */
+        .search-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+
+        .search-form {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 50px;
+            padding: 0 60px 0 20px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #0088cc;
+            box-shadow: 0 0 0 3px rgba(0,136,204,0.15);
+        }
+
+        .search-button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            height: 40px;
+            width: 40px;
+            border-radius: 8px;
+            background: #0088cc;
+            color: #fff;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        /* Filter Form */
+        .filter-form {
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            color: #344767;
+            font-weight: 600;
             font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-control {
+            height: 45px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        /* Table Section */
+        .table-section {
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table th {
+            background: #f8fafc;
+            color: #344767;
+            font-weight: 600;
+            padding: 15px;
+            font-size: 13px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #0088cc;
+        }
+
+        .table td {
+            padding: 15px;
+            vertical-align: middle;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .status-completed {
+            background: #dcf5e7;
+            color: #0d6832;
+        }
+
+        .status-pending {
+            background: #fff4de;
+            color: #946300;
+        }
+
+        .status-failure {
+            background: #ffe4e4;
+            color: #d12946;
+        }
+
+        /* Pagination */
+        .pagination-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 8px;
+            margin: 0;
+        }
+
+        .page-link {
+            height: 40px;
+            min-width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 15px;
+            border-radius: 10px;
+            border: 2px solid #e0e6ed;
+            color: #506690;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .page-item.active .page-link {
+            background: #0088cc;
+            border-color: #0088cc;
+            color: #fff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .controls-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-section {
+                padding: 15px;
+            }
+            
+            .table {
+                display: block;
+                overflow-x: auto;
+            }
         }
     </style>
 </head>
@@ -216,156 +540,142 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2><i class="fa fa-users mr-xs"></i> Lịch sử nạp tiền </h2>
-                <div class="right-wrapper pull-right">
-                    <ol class="breadcrumbs">
-                        <li>
-                            <a href="/">
-                                <i class="fa fa-home"></i>
-                            </a>
-                        </li>
-                        <li><span>Quản lí người dùng</span></li>
-                    </ol>
-                    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
-                </div>
+                <h2><i class="fa fa-history mr-xs"></i> Lịch sử nạp tiền</h2>
+                <ol class="breadcrumbs">
+                    <li><a href="/"><i class="fa fa-home"></i></a></li>
+                    <li><span>Quản lý người dùng</span></li>
+                    <li><span>Lịch sử nạp tiền</span></li>
+                </ol>
             </header>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <section class="panel panel-featured panel-featured-primary">
-                        <header class="panel-heading">
-                            <div class="panel-actions">
-                                <a href="#" class="panel-action panel-action-toggle" data-panel-toggle></a>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <h2 class="panel-title"><i class="fa fa-list-alt mr-xs"></i>User List</h2>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="pull-right">
-                                        <form id="search-form" action="transpayments" method="get" class="search nav-form">
-                                            <div class="input-group input-search">
-                                                <input type="text" class="form-control" name="input"
-                                                       placeholder="Tìm kiếm theo mã giao dịch,số điện thoại người dùng " value="${input}" >
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-primary" type="submit">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </header>
-
-                        <div class="panel-body">
-                            <div class="row mb-md">
-                                <div class="col-sm-6">
-                                    <form id="dateForm" action="/transpayments" method="get">
-                                        <div class="form-group">
-                                            <label for="startDate">Từ ngày:</label>
-                                            <input type="date" id="startDate" name="startDate" class="form-control" value="${startDate}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="endDate">Đến ngày:</label>
-                                            <input type="date" id="endDate" name="endDate" class="form-control" value="${endDate}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="minAmount">Số tiền tối thiểu:</label>
-                                            <input type="number" id="minAmount" name="minAmount" class="form-control" value="${minAmount}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="maxAmount">Số tiền tối đa:</label>
-                                            <input type="number" id="maxAmount" name="maxAmount" class="form-control" value="${maxAmount}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="status">Trạng thái giao dịch:</label>
-                                            <select id="status" name="status" class="form-control">
-                                                <option ${status == "ALL" ? "selected" : ""} value="ALL">Tất cả</option>
-                                                <option ${status == "COMPLETED" ? "selected" : ""} value="COMPLETED">Hoàn thành</option>
-                                                <option ${status == "PENDING" ? "selected" : ""} value="PENDING">Đang chờ</option>
-                                                <option ${status == "FAILURE" ? "selected" : ""} value="FAILURE">Thất bại</option>
-                                            </select>
-                                        </div>
-
-                                        <button type="submit" class="btn btn-primary">Lọc</button>
-                                    </form>
-
-
-
-                                </div>
-
-                            </div>
-                            ${emptyList}
-                            <c:if test="${emptyList == null}">
-
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>Mã giao dịch</th>
-                                    <th>Số tiền</th>
-                                    <th>Nội dung</th>
-                                    <th>Ngày giao dịch</th>
-                                    <th>Tài khoản nhận</th>
-                                    <th>Cổng thanh toán</th>
-                                    <th>Trạng thái</th>
-                                    <th>ID người dùng</th>
-                                    <th>Tên người dùng</th>
-                                    <th>Số điện thoại</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="transaction" items="${transactions.content}">
-                                    <tr>
-
-                                        <td>${transaction.transactionId}</td>
-                                        <td>${transaction.amount}đ</td>
-                                        <td>${transaction.content}</td>
-                                        <td>${transaction.formattedDate}</td>
-                                        <td>${transaction.accountReceiver}</td>
-                                        <td>${transaction.gate}</td>
-                                        <td>${transaction.transactionStatus}</td>
-                                        <td>${transaction.user.id}</td>
-                                        <td>${transaction.user.name}</td>
-                                        <td>${transaction.user.phone}</td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-
-
-                            <c:set var="c" value="${transactions.number}"></c:set>
-                                <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
-                                    <li class="page-item ${c==0 ?'disabled':''}">
-                                        <a class="page-link" href="transpayments?page=${c==0 ? 0 : (c - 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">Trước</a>
-                                    </li>
-
-                                    <c:forEach begin="0" end="${transactions.totalPages - 1}" var="i">
-                                        <c:if test="${i >= c - 1 && i <= c + 1}">
-                                            <li class="page-item ${c == i ? 'active' : ''}">
-                                                <a class="page-link" href="transpayments?page=${i}&input=${input != null ? input : ''}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">${i + 1}</a>
-                                            </li>
-                                        </c:if>
-                                        <c:if test="${i == c - 2 || i == c + 2}">
-                                            <li><span>...</span></li>
-                                        </c:if>
-                                    </c:forEach>
-
-                                    <li class="page-item ${c == transactions.totalPages - 1 ? 'disabled' : ''}">
-                                        <a class="page-link" href="transpayments?page=${c == transactions.totalPages - 1 ? transactions.totalPages - 1 : (c + 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">Sau</a>
-                                    </li>
-
-
-                                </ul>
-                            </c:if>
-                        </div>
-                    </section>
+            <div class="controls-section">
+                <div class="search-box">
+                    <form id="search-form" action="transpayments" method="get" class="search-form">
+                        <input type="text" class="search-input" name="input" 
+                               placeholder="Tìm kiếm theo mã giao dịch, số điện thoại..." 
+                               value="${input}">
+                        <button type="submit" class="search-button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </form>
                 </div>
+
+                <div class="filter-form">
+                    <form id="dateForm" action="/transpayments" method="get">
+                        <div class="filter-grid">
+                            <div class="form-group">
+                                <label for="startDate">Từ ngày</label>
+                                <input type="date" id="startDate" name="startDate" 
+                                       class="form-control" value="${startDate}">
+                            </div>
+                            <div class="form-group">
+                                <label for="endDate">Đến ngày</label>
+                                <input type="date" id="endDate" name="endDate" 
+                                       class="form-control" value="${endDate}">
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Trạng thái</label>
+                                <select id="status" name="status" class="form-control">
+                                    <option ${status == "ALL" ? "selected" : ""} value="ALL">Tất cả</option>
+                                    <option ${status == "COMPLETED" ? "selected" : ""} value="COMPLETED">Hoàn thành</option>
+                                    <option ${status == "PENDING" ? "selected" : ""} value="PENDING">Đang chờ</option>
+                                    <option ${status == "FAILURE" ? "selected" : ""} value="FAILURE">Thất bại</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="minAmount">Số tiền tối thiểu</label>
+                                <input type="number" id="minAmount" name="minAmount" 
+                                       class="form-control" value="${minAmount}">
+                            </div>
+                            <div class="form-group">
+                                <label for="maxAmount">Số tiền tối đa</label>
+                                <input type="number" id="maxAmount" name="maxAmount" 
+                                       class="form-control" value="${maxAmount}">
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fa fa-filter mr-xs"></i> Lọc
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="table-section">
+                <c:if test="${emptyList != null}">
+                    <div class="alert alert-info">
+                        <i class="fa fa-info-circle mr-xs"></i> ${emptyList}
+                    </div>
+                </c:if>
+                
+                <c:if test="${emptyList == null}">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Mã giao dịch</th>
+                                <th>Số tiền</th>
+                                <th>Nội dung</th>
+                                <th>Ngày giao dịch</th>
+                                <th>Tài khoản nhận</th>
+                                <th>Cổng thanh toán</th>
+                                <th>Trạng thái</th>
+                                <th>Thông tin người dùng</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="transaction" items="${transactions.content}">
+                                <tr>
+                                    <td><span class="transaction-id">${transaction.transactionId}</span></td>
+                                    <td><span class="amount">${transaction.amount}đ</span></td>
+                                    <td>${transaction.content}</td>
+                                    <td>${transaction.formattedDate}</td>
+                                    <td>${transaction.accountReceiver}</td>
+                                    <td>${transaction.gate}</td>
+                                    <td>
+                                        <span class="status-badge ${transaction.transactionStatus == 'COMPLETED' ? 'status-completed' : 
+                                              transaction.transactionStatus == 'PENDING' ? 'status-pending' : 
+                                              'status-failure'}">
+                                            ${transaction.transactionStatus}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="user-info">
+                                            <div class="user-name">${transaction.user.name}</div>
+                                            <div class="user-phone">${transaction.user.phone}</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pagination-section">
+                        <c:set var="c" value="${transactions.number}"></c:set>
+                        <ul class="pagination">
+                            <li class="page-item ${c==0 ?'disabled':''}">
+                                <a class="page-link" href="transpayments?page=${c==0 ? 0 : (c - 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">Trước</a>
+                            </li>
+
+                            <c:forEach begin="0" end="${transactions.totalPages - 1}" var="i">
+                                <c:if test="${i >= c - 1 && i <= c + 1}">
+                                    <li class="page-item ${c == i ? 'active' : ''}">
+                                        <a class="page-link" href="transpayments?page=${i}&input=${input != null ? input : ''}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">${i + 1}</a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${i == c - 2 || i == c + 2}">
+                                    <li><span>...</span></li>
+                                </c:if>
+                            </c:forEach>
+
+                            <li class="page-item ${c == transactions.totalPages - 1 ? 'disabled' : ''}">
+                                <a class="page-link" href="transpayments?page=${c == transactions.totalPages - 1 ? transactions.totalPages - 1 : (c + 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">Sau</a>
+                            </li>
+                        </ul>
+                    </div>
+                </c:if>
             </div>
         </section>
     </div>
