@@ -171,14 +171,16 @@
             background-color: #f8fafc;
         }
 
-        /* Status Badge Styling */
+        /* Status Badge Styling - Điều chỉnh kích thước cố định */
         .status-badge {
-            padding: 6px 12px;
+            padding: 4px 8px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            display: inline-block;
             text-align: center;
+            display: inline-block;
+            min-width: 100px; /* Thêm chiều rộng cố định tối thiểu */
+            width: 100px; /* Thêm chiều rộng cố định */
         }
 
         .status-completed {
@@ -291,12 +293,12 @@
             }
         }
 
-        /* Dashboard Layout */
+        /* Content Body - Bỏ scroll */
         .content-body {
             padding: 25px;
             background: #f4f7fa;
-            overflow-y: auto;
-            height: calc(100vh - 60px);
+            overflow: visible; /* Thay đổi từ auto sang visible */
+            height: auto; /* Bỏ height cố định */
         }
 
         /* Card Layout */
@@ -414,13 +416,14 @@
             transition: all 0.3s;
         }
 
-        /* Table Section */
+        /* Table Section - Điều chỉnh margin */
         .table-section {
             background: #fff;
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-            margin-bottom: 80px;
+            margin-bottom: 25px; /* Giảm margin bottom */
+            position: relative; /* Thêm position relative */
         }
 
         .table {
@@ -470,15 +473,12 @@
             color: #d12946;
         }
 
-        /* Pagination */
+        /* Pagination Section - Điều chỉnh vị trí */
         .pagination-section {
-            position: relative;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            position: relative; /* Thay đổi từ absolute sang relative */
             background: #fff;
-            padding: 5px 0;
-            margin-top: -8px;
+            padding: 15px 0;
+            margin-top: -30px;
             z-index: 1;
             border-radius: 0 0 15px 15px;
         }
@@ -520,19 +520,19 @@
             }
         }
 
-        /* Table Responsive - Đảm bảo bảng không bị overflow */
+        /* Table Responsive */
         .table-responsive {
             overflow-x: auto;
-            margin-bottom: 0;
+            margin-bottom: 15px; /* Thêm margin bottom */
         }
 
-        /* Fixed Body - Bỏ overflow hidden */
+        /* Fixed Body và HTML */
         html.fixed {
-            overflow-y: auto !important;
+            overflow: hidden !important; /* Giữ nguyên overflow hidden */
         }
 
         body {
-            overflow: auto !important;
+            overflow: hidden !important; /* Giữ nguyên overflow hidden */
         }
     </style>
 </head>
@@ -611,7 +611,7 @@
                 <div class="search-box">
                     <form id="search-form" action="transpayments" method="get" class="search-form">
                         <input type="text" class="search-input" name="input"
-                               placeholder="Tìm kiếm theo mã giao dịch, số điện thoại..."
+                               placeholder="Tìm mã giao dịch hoặc sđt"
                                value="${input}">
                         <button type="submit" class="search-button">
                             <i class="fa fa-search"></i>
