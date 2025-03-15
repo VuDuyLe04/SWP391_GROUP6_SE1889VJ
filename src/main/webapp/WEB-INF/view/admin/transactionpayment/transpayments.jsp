@@ -326,7 +326,7 @@
                                         <td>${transaction.transactionId}</td>
                                         <td>${transaction.amount}đ</td>
                                         <td>${transaction.content}</td>
-                                        <td>${transaction.date}</td>
+                                        <td>${transaction.formattedDate}</td>
                                         <td>${transaction.accountReceiver}</td>
                                         <td>${transaction.gate}</td>
                                         <td>${transaction.transactionStatus}</td>

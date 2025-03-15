@@ -38,7 +38,7 @@ public String transpayments(
         Model model
 ) {
     Sort sort = Sort.by(Sort.Direction.DESC, "date");
-    Pageable pageable = PageRequest.of(page, 5, sort);
+    Pageable pageable = PageRequest.of(page, 2, sort);
     Page<TransactionPayment> list = transactionPaymentService.findAll(pageable);
 
     if (input != null && !input.trim().isEmpty()) {

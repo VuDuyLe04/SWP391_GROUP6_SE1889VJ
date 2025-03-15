@@ -38,6 +38,11 @@ public class TransactionPayment {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    public String getFormattedDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return (date != null) ? date.format(formatter) : null;
+    }
+
 
 }
 
