@@ -330,7 +330,7 @@
         /* Search and Filter Layout */
         .controls-section {
             display: grid;
-            grid-template-columns: 2fr 3fr;
+            grid-template-columns: 3fr 1fr;
             gap: 25px;
             margin-bottom: 25px;
         }
@@ -349,11 +349,11 @@
 
         .search-input {
             width: 100%;
-            height: 50px;
-            padding: 0 60px 0 20px;
-            border: 2px solid #e0e6ed;
-            border-radius: 10px;
-            font-size: 15px;
+            height: 40px;
+            padding: 0 50px 0 15px;
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 13px;
             transition: all 0.3s;
         }
 
@@ -364,10 +364,10 @@
 
         .search-button {
             position: absolute;
-            right: 5px;
-            top: 5px;
-            height: 40px;
-            width: 40px;
+            right: 3px;
+            top: 3px;
+            height: 34px;
+            width: 34px;
             border-radius: 8px;
             background: #0088cc;
             color: #fff;
@@ -396,26 +396,27 @@
         .form-group label {
             color: #344767;
             font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 8px;
+            font-size: 13px;
+            margin-bottom: 5px;
             display: block;
         }
 
         .form-control {
-            height: 45px;
+            height: 36px;
             border: 2px solid #e0e6ed;
-            border-radius: 10px;
-            padding: 8px 15px;
-            font-size: 14px;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 13px;
             transition: all 0.3s;
         }
 
         /* Table Section */
         .table-section {
             background: #fff;
-            padding: 25px;
+            padding: 20px;
             border-radius: 15px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 0;
         }
 
         .table {
@@ -428,23 +429,23 @@
             background: #f8fafc;
             color: #344767;
             font-weight: 600;
-            padding: 15px;
-            font-size: 13px;
+            padding: 12px;
+            font-size: 12px;
             text-transform: uppercase;
             border-bottom: 2px solid #0088cc;
         }
 
         .table td {
-            padding: 15px;
+            padding: 12px;
             vertical-align: middle;
             border-bottom: 1px solid #e0e6ed;
         }
 
         /* Status Badges */
         .status-badge {
-            padding: 8px 15px;
+            padding: 4px 8px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             text-align: center;
             display: inline-block;
@@ -469,33 +470,19 @@
         .pagination-section {
             display: flex;
             justify-content: center;
-            margin-top: 25px;
+            margin-top: 10px;
+            border-top: none;
         }
 
         .pagination {
-            display: flex;
-            gap: 8px;
             margin: 0;
         }
 
         .page-link {
-            height: 40px;
-            min-width: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 15px;
-            border-radius: 10px;
-            border: 2px solid #e0e6ed;
-            color: #506690;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .page-item.active .page-link {
-            background: #0088cc;
-            border-color: #0088cc;
-            color: #fff;
+            padding: 5px 10px;
+            font-size: 12px;
+            height: 30px;
+            min-width: 30px;
         }
 
         /* Responsive Design */
@@ -549,28 +536,19 @@
             </header>
 
             <div class="controls-section">
-                <div class="search-box">
-                    <form id="search-form" action="transpayments" method="get" class="search-form">
-                        <input type="text" class="search-input" name="input" 
-                               placeholder="Tìm kiếm theo mã giao dịch, số điện thoại..." 
-                               value="${input}">
-                        <button type="submit" class="search-button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </form>
-                </div>
+
 
                 <div class="filter-form">
                     <form id="dateForm" action="/transpayments" method="get">
                         <div class="filter-grid">
                             <div class="form-group">
                                 <label for="startDate">Từ ngày</label>
-                                <input type="date" id="startDate" name="startDate" 
+                                <input type="date" id="startDate" name="startDate"
                                        class="form-control" value="${startDate}">
                             </div>
                             <div class="form-group">
                                 <label for="endDate">Đến ngày</label>
-                                <input type="date" id="endDate" name="endDate" 
+                                <input type="date" id="endDate" name="endDate"
                                        class="form-control" value="${endDate}">
                             </div>
                             <div class="form-group">
@@ -584,12 +562,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="minAmount">Số tiền tối thiểu</label>
-                                <input type="number" id="minAmount" name="minAmount" 
+                                <input type="number" id="minAmount" name="minAmount"
                                        class="form-control" value="${minAmount}">
                             </div>
                             <div class="form-group">
                                 <label for="maxAmount">Số tiền tối đa</label>
-                                <input type="number" id="maxAmount" name="maxAmount" 
+                                <input type="number" id="maxAmount" name="maxAmount"
                                        class="form-control" value="${maxAmount}">
                             </div>
                             <div class="form-group" style="display: flex; align-items: flex-end;">
@@ -598,6 +576,16 @@
                                 </button>
                             </div>
                         </div>
+                    </form>
+                </div>
+                <div class="search-box">
+                    <form id="search-form" action="transpayments" method="get" class="search-form">
+                        <input type="text" class="search-input" name="input"
+                               placeholder="Tìm kiếm theo mã giao dịch, số điện thoại..."
+                               value="${input}">
+                        <button type="submit" class="search-button">
+                            <i class="fa fa-search"></i>
+                        </button>
                     </form>
                 </div>
             </div>
