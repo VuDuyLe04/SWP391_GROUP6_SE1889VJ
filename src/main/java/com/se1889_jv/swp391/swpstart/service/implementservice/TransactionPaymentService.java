@@ -39,7 +39,7 @@ public class TransactionPaymentService implements ITransactionPaymentService {
     }
 
     @Override
-    public Page<TransactionPayment> filterTransactions(LocalDateTime startDate, LocalDateTime endDate, Integer minAmount, Integer maxAmount, TransactionStatus status, Pageable pageable) {
+    public Page<TransactionPayment> filterTransactions(LocalDateTime startDate, LocalDateTime endDate, Double minAmount, Double maxAmount, TransactionStatus status, Pageable pageable) {
         return transactionPaymentRepository.filterTransactions(startDate, endDate, minAmount, maxAmount, status, pageable);
     }
 }

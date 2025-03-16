@@ -18,8 +18,8 @@ public interface ITransactionPaymentService {
     Page<TransactionPayment> filterTransactions(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
-            @Param("minAmount") Integer minAmount,
-            @Param("maxAmount") Integer maxAmount,
+            @Param("minAmount") Double minAmount,
+            @Param("maxAmount") Double  maxAmount,
             @Param("status") TransactionStatus status,
             Pageable pageable
 

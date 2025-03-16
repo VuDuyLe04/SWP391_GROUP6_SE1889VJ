@@ -30,8 +30,8 @@ public class TransactionPaymentController {
 public String transpayments(
         @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
         @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-        @RequestParam(value = "minAmount", required = false) Integer minAmount,
-        @RequestParam(value = "maxAmount", required = false) Integer maxAmount,
+        @RequestParam(value = "minAmount", required = false) Double minAmount,
+        @RequestParam(value = "maxAmount", required = false) Double maxAmount,
         @RequestParam(value = "status", required = false, defaultValue = "ALL") String status,
         @RequestParam(value = "input", required = false) String input,
         @RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -66,14 +66,15 @@ public String transpayments(
 
     if (list.hasContent()) {
         model.addAttribute("transactions", list);
-        model.addAttribute("startDate", startDate);
-        model.addAttribute("endDate", endDate);
-        model.addAttribute("minAmount", minAmount);
-        model.addAttribute("maxAmount", maxAmount);
-        model.addAttribute("status", status);
+
     } else {
         model.addAttribute("emptyList", "Không có giao dịch nào được tìm thấy!");
     }
+    model.addAttribute("startDate", startDate);
+    model.addAttribute("endDate", endDate);
+    model.addAttribute("minAmount", minAmount);
+    model.addAttribute("maxAmount", maxAmount);
+    model.addAttribute("status", status);
 
     return "admin/transactionpayment/transpayments";
 }

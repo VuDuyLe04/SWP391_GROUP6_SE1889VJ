@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -24,11 +25,8 @@ public class TransactionService {
     private String serviceName;
     private int durationMonths;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Ho_Chi_Minh")
-    private Instant transactionDate;
+
+    private LocalDateTime transactionDate;
     private double amount;
     @Enumerated(EnumType.STRING)
     private TransactionStatus transactionStatus;
@@ -40,21 +38,10 @@ public class TransactionService {
     @ManyToOne
     @JoinColumn(name = "service_id")
     private Service service;
-
-    public Date getCreatedAtAsDate() {
-        return transactionDate != null ? Date.from(transactionDate) : null;
+    public String getFormattedDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return (transactionDate != null) ? transactionDate.format(formatter) : null;
     }
 
 
-    public String getCreatedAtFormatted() {
-        return formatInstant(transactionDate);
-    }
-
-
-    private String formatInstant(Instant instant) {
-        if (instant == null) return "";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                .withZone(ZoneId.of("Asia/Ho_Chi_Minh"));
-        return formatter.format(instant);
-    }
 }

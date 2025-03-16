@@ -9,7 +9,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Giao dịch thanh toán </title>
+    <title>Lịch sử mua dịch vụ hệ thống  </title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -551,7 +551,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2><i class="fa fa-users mr-xs"></i> Giao dịch thanh toán </h2>
+                <h2><i class="fa fa-users mr-xs"></i> Giao dịch dịch vụ  </h2>
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
                         <li>
@@ -559,7 +559,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Giao dịch thanh toán</span></li>
+                        <li><span>Giao dịch dịch vụ </span></li>
                     </ol>
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
@@ -569,7 +569,7 @@
 
 
                 <div class="filter-form">
-                    <form id="dateForm" action="/transpayments" method="get">
+                    <form id="dateForm" action="/transervices" method="get">
                         <div class="filter-grid">
                             <div class="form-group">
                                 <label for="startDate">Từ ngày</label>
@@ -600,6 +600,9 @@
                                 <input type="number" id="maxAmount" name="maxAmount"
                                        class="form-control" value="${maxAmount}">
                             </div>
+
+                                <input type="text" name="input"
+                                       value="${input}" hidden="">
                             <div class="form-group" style="display: flex; align-items: flex-end;">
                                 <button type="submit" class="btn btn-primary w-100">
                                     <i class="fa fa-filter mr-xs"></i> Lọc
@@ -609,9 +612,9 @@
                     </form>
                 </div>
                 <div class="search-box">
-                    <form id="search-form" action="transpayments" method="get" class="search-form">
+                    <form id="search-form" action="transervices" method="get" class="search-form">
                         <input type="text" class="search-input" name="input"
-                               placeholder="Tìm mã giao dịch hoặc sđt"
+                               placeholder="Tìm tên dịch vụ hoặc sđt"
                                value="${input}">
                         <button type="submit" class="search-button">
                             <i class="fa fa-search"></i>
@@ -633,37 +636,30 @@
                             <thead>
                             <tr>
                                 <th>Mã giao dịch</th>
+                                <th>Tên dịch vụ</th>
+                                <th>Khách hàng</th>
+                                <th>Số điện thoại</th>
                                 <th>Số tiền</th>
-                                <th>Nội dung</th>
                                 <th>Ngày giao dịch</th>
-                                <th>Tài khoản nhận</th>
-                                <th>Cổng thanh toán</th>
                                 <th>Trạng thái</th>
-                                <th>Thông tin người dùng</th>
                             </tr>
                             </thead>
                             <tbody>
                             <c:forEach var="transaction" items="${transactions.content}">
                                 <tr>
-                                    <td><span class="transaction-id">${transaction.transactionId}</span></td>
-                                    <td><span class="amount">${transaction.amount}đ</span></td>
-                                    <td>${transaction.content}</td>
-                                    <td>${transaction.formattedDate}</td>
-                                    <td>${transaction.accountReceiver}</td>
-                                    <td>${transaction.gate}</td>
+                                    <td><span class="transaction-id">${transaction.id}</span></td> <!-- Mã giao dịch -->
+                                    <td>${transaction.serviceName}</td> <!-- Tên dịch vụ -->
+                                    <td>${transaction.user.name}</td> <!-- Khách hàng -->
+                                    <td>${transaction.user.phone}</td> <!-- Số điện thoại -->
+                                    <td><span class="amount">${transaction.amount}đ</span></td> <!-- Số tiền -->
+                                    <td>${transaction.formattedDate}</td> <!-- Ngày giao dịch -->
                                     <td>
-                                        <span class="status-badge ${transaction.transactionStatus == 'COMPLETED' ? 'status-completed' : 
-                                              transaction.transactionStatus == 'PENDING' ? 'status-pending' : 
-                                              'status-failure'}">
-                                            ${transaction.transactionStatus}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="user-info">
-                                            <div class="user-name">${transaction.user.name}</div>
-                                            <div class="user-phone">${transaction.user.phone}</div>
-                                        </div>
-                                    </td>
+                    <span class="status-badge ${transaction.transactionStatus == 'COMPLETED' ? 'status-completed' :
+                          transaction.transactionStatus == 'PENDING' ? 'status-pending' :
+                          'status-failure'}">
+                            ${transaction.transactionStatus}
+                    </span>
+                                    </td> <!-- Trạng thái -->
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -674,13 +670,13 @@
                         <c:set var="c" value="${transactions.number}"></c:set>
                         <ul class="pagination">
                             <li class="page-item ${c==0 ?'disabled':''}">
-                                <a class="page-link" href="transpayments?page=${c==0 ? 0 : (c - 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">Trước</a>
+                                <a class="page-link" href="transervices?page=${c==0 ? 0 : (c - 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">Trước</a>
                             </li>
 
                             <c:forEach begin="0" end="${transactions.totalPages - 1}" var="i">
                                 <c:if test="${i >= c - 1 && i <= c + 1}">
                                     <li class="page-item ${c == i ? 'active' : ''}">
-                                        <a class="page-link" href="transpayments?page=${i}&input=${input != null ? input : ''}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">${i + 1}</a>
+                                        <a class="page-link" href="transervices?page=${i}&input=${input != null ? input : ''}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">${i + 1}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${i == c - 2 || i == c + 2}">
@@ -689,7 +685,7 @@
                             </c:forEach>
 
                             <li class="page-item ${c == transactions.totalPages - 1 ? 'disabled' : ''}">
-                                <a class="page-link" href="transpayments?page=${c == transactions.totalPages - 1 ? transactions.totalPages - 1 : (c + 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">Sau</a>
+                                <a class="page-link" href="transervices?page=${c == transactions.totalPages - 1 ? transactions.totalPages - 1 : (c + 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">Sau</a>
                             </li>
                         </ul>
                     </div>
