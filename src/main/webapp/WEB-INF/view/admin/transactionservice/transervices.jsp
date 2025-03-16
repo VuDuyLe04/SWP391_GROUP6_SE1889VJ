@@ -651,7 +651,7 @@
                                     <td>${transaction.serviceName}</td> <!-- Tên dịch vụ -->
                                     <td>${transaction.user.name}</td> <!-- Khách hàng -->
                                     <td>${transaction.user.phone}</td> <!-- Số điện thoại -->
-                                    <td><span class="amount">${transaction.amount}đ</span></td> <!-- Số tiền -->
+                                    <td><span class="amount"><fmt:formatNumber value="${transaction.amount}" type="number" pattern="#,###"/>₫</span></td> <!-- Số tiền -->
                                     <td>${transaction.formattedDate}</td> <!-- Ngày giao dịch -->
                                     <td>
                     <span class="status-badge ${transaction.transactionStatus == 'COMPLETED' ? 'status-completed' :

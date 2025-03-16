@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%--<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
 <!doctype html>
 <html class="fixed" style="overflow: hidden">
 <head>
@@ -646,7 +647,7 @@
                             <c:forEach var="transaction" items="${transactions.content}">
                                 <tr>
                                     <td><span class="transaction-id">${transaction.transactionId}</span></td>
-                                    <td><span class="amount">${transaction.amount}đ</span></td>
+                                    <td><span class="amount"><fmt:formatNumber value="${transaction.amount}" type="number" pattern="#,###"/>₫</span></td>
                                     <td>${transaction.content}</td>
                                     <td>${transaction.formattedDate}</td>
                                     <td>${transaction.accountReceiver}</td>
