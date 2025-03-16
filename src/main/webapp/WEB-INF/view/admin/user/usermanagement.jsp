@@ -304,6 +304,8 @@
                                     </div>
                                 </div>
                             </div>
+${EmptyList}
+                            <c:if test="${EmptyList == null}">
 
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover mb-none">
@@ -398,7 +400,7 @@
                                 </ul>
 
                             </div>
-
+                            </c:if>
                         </div>
                     </section>
                 </div>

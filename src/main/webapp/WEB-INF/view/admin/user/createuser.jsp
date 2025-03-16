@@ -358,7 +358,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <section class="panel panel-featured panel-featured-primary">
-                        <form action="/createuser" method="post" >
+                        <form action="/createuser" method="get" >
                             <!-- Phone -->
                             <label for="phone">Số điện thoại:</label>
                             <input
@@ -499,7 +499,7 @@
         const button = document.getElementById("submitBtn");
 
         // Biểu thức chính quy kiểm tra tên hợp lệ
-        const nameRegex = /^[a-zA-Z\s]+$/;
+        const nameRegex = /^[A-Za-zÀ-Ỹà-ỹ\s]+$/;
 
         if (name.length > 0 && !nameRegex.test(name.trim())) {
             nameError.textContent = "Tên không đuợc chứa số và các kí tự đặc biệt! ";

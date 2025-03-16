@@ -64,11 +64,16 @@ public class UserController {
                 users = userService.getAll(pageable);
             }
         }
-
+        if(users.hasContent()){
+            model.addAttribute("userPage", users);
+        }
+        else{
+            model.addAttribute("EmptyList", "Không có tài khoản nào được tìm thấy!");
+        }
         model.addAttribute("input", input != null ? input : "");
         model.addAttribute("active", active);
         model.addAttribute("roleId", roleId);
-        model.addAttribute("userPage", users);
+//        model.addAttribute("userPage", users);
         model.addAttribute("roles", roleService.getAllRoles());
 
         return "admin/user/usermanagement";
@@ -107,7 +112,8 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/createuser", method = {RequestMethod.GET, RequestMethod.POST})
+
+    @GetMapping("/createuser")
     public String createUser(@RequestParam(value = "phone", required = false) String phone,
                              @RequestParam(value = "password", required = false) String password,
                              @RequestParam(value = "name", required = false) String name,
@@ -129,7 +135,7 @@ public class UserController {
                 model.addAttribute("error", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
                 return "admin/user/createuser";
             }
-            if (!name.matches("^[a-zA-Z\s]+$")) {
+            if (!name.trim().matches("^[\\p{L}\\s]+$")){
                 model.addAttribute("error", "Tên không được chứa số và các kí tự đặc biệt! ");
                 return "admin/user/createuser";
             }
