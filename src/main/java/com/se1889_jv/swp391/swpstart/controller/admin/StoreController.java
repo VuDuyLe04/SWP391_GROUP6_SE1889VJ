@@ -124,7 +124,12 @@ public class    StoreController {
         model.addAttribute("input", input != null ? input : "");
         model.addAttribute("status", status != null ? status : "");
         model.addAttribute("sort", sortcreatedAt != null ? sortcreatedAt : "");
-        model.addAttribute("storePage", stores);
+        if (stores== null || stores.getContent().isEmpty()) {
+            model.addAttribute("emptyList", "Không tồn tại cửa hàng nào!");
+        } else {
+            model.addAttribute("storePage", stores);
+        }
+
 //        model.addAttribute("roles", roleService.getAllRoles());
 
         return "admin/store/liststore";
