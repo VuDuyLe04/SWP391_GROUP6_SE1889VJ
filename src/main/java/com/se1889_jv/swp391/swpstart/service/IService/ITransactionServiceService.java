@@ -18,8 +18,7 @@ public interface ITransactionServiceService {
             @Param("minAmount") Double minAmount,
             @Param("maxAmount") Double maxAmount,
             @Param("status") TransactionStatus status,
-            @Param("serviceName") String serviceName,
-            @Param("phone") String phone,
+            @Param("input") String input,
             Pageable pageable
     );
 }

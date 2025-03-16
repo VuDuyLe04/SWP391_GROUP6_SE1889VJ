@@ -22,9 +22,11 @@ public class TransactionServiceSerivice implements ITransactionServiceService {
     }
 
     @Override
-    public Page<TransactionService> filterTransactions(LocalDateTime startDate, LocalDateTime endDate, Double minAmount, Double maxAmount, TransactionStatus status, String serviceName, String phone, Pageable pageable) {
-        return transactionServiceRepository.filterTransactions(startDate, endDate, minAmount, maxAmount, status, serviceName, phone, pageable);
+    public Page<TransactionService> filterTransactions(LocalDateTime startDate, LocalDateTime endDate, Double minAmount, Double maxAmount, TransactionStatus status, String input, Pageable pageable) {
+        return transactionServiceRepository.filterTransactions(startDate, endDate, minAmount, maxAmount, status, input, pageable);
     }
+
+
 
 
 

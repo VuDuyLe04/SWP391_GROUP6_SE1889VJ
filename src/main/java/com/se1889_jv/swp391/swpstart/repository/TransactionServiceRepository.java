@@ -13,21 +13,21 @@ import java.time.LocalDateTime;
 
 public interface TransactionServiceRepository extends JpaRepository<TransactionService, Integer> {
     @Query("SELECT t FROM TransactionService t JOIN t.user u " +
-            "WHERE (:startDate IS NULL OR t.transactionDate >= :startDate) " +
-            "AND (:endDate IS NULL OR t.transactionDate <= :endDate) " +
-            "AND (:minAmount IS NULL OR t.amount >= :minAmount) " +
-            "AND (:maxAmount IS NULL OR t.amount <= :maxAmount) " +
-            "AND (:status IS NULL OR t.transactionStatus = :status) " +
-            "AND (:serviceName IS NULL OR LOWER(t.serviceName) LIKE LOWER(CONCAT('%', :serviceName, '%'))) " + // Thêm space ở cuối
-            "AND (:phone IS NULL OR (u.phone IS NOT NULL AND u.phone LIKE CONCAT('%', :phone, '%'))) ") // Đóng đúng 2 ngoặc và thêm space
+           "WHERE (:startDate IS NULL OR t.transactionDate >= :startDate) " +
+           "AND (:endDate IS NULL OR t.transactionDate <= :endDate) " +
+           "AND (:minAmount IS NULL OR t.amount >= :minAmount) " +
+           "AND (:maxAmount IS NULL OR t.amount <= :maxAmount) " +
+           "AND (:status IS NULL OR t.transactionStatus = :status) " +
+           "AND (:input IS NULL OR " + 
+               "LOWER(t.serviceName) LIKE LOWER(CONCAT('%', :input, '%')) OR " +
+               "LOWER(u.phone) LIKE LOWER(CONCAT('%', :input, '%')))")
     Page<TransactionService> filterTransactions(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             @Param("minAmount") Double minAmount,
             @Param("maxAmount") Double maxAmount,
             @Param("status") TransactionStatus status,
-            @Param("serviceName") String serviceName,
-            @Param("phone") String phone,
+            @Param("input") String input,
             Pageable pageable
     );
 

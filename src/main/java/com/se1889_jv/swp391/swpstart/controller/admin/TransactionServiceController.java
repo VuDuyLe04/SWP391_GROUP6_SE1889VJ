@@ -49,7 +49,15 @@ public class TransactionServiceController {
         if(input != null && !input.isEmpty()) {
             input = input.trim();
         }
-        Page<TransactionService> list = transactionServiceSerivice.filterTransactions(startDateTime,endDateTime,minAmount,maxAmount,transactionStatus,input,input,pageable);
+        Page<TransactionService> list = transactionServiceSerivice.filterTransactions(
+            startDateTime,
+            endDateTime,
+            minAmount,
+            maxAmount,
+            transactionStatus,
+            input,
+            pageable
+        );
         if (list.hasContent()) {
             model.addAttribute("transactions", list);
 
