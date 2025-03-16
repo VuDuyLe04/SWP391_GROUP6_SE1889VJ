@@ -80,7 +80,7 @@
 
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
-                            <a>
+                            <a href="/stores">
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <span>Cửa hàng</span>
                             </a>

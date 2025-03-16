@@ -32,8 +32,23 @@ public class UserStoreService implements IUserStoreService {
     }
 
     @Override
+    public UserStore findByUser_PhoneAndStore_CreatedBy(String phone, String storeId) {
+        return userStoreRepository.findByUser_PhoneAndStore_CreatedBy(phone, storeId);
+    }
+
+    @Override
+    public UserStore getUserStoreByPhoneAndStore(String phone,Long storeId) {
+        return userStoreRepository.findByUser_PhoneAndStore_Id(phone, storeId);
+    }
+
+    @Override
     public UserStore findUserStore(long userId) {
-        return null;
+        return userStoreRepository.findById(userId);
+    }
+
+    @Override
+    public UserStore saveUserStore(UserStore userStore) {
+       return userStoreRepository.save(userStore);
     }
 
 

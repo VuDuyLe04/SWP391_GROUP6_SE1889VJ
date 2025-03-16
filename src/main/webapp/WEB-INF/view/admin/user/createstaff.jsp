@@ -44,104 +44,6 @@
     <script src="/client/auth/assets/vendor/modernizr/modernizr.js"></script>
 
     <style>
-        /* Form styles */
-        .form-horizontal .control-label {
-            padding-top: 7px;
-            margin-bottom: 0;
-            text-align: right;
-            color: #444;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .form-control {
-            display: block;
-            width: 100%;
-            height: 34px;
-            padding: 6px 12px;
-            font-size: 14px;
-            line-height: 1.42857143;
-            color: #555;
-            background-color: #fff;
-            background-image: none;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        }
-
-        .form-control:focus {
-            border-color: #0088cc;
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 136, 204, 0.25);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .panel {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-        }
-
-        .panel-heading {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            background-color: #f5f5f5;
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
-        }
-
-        .panel-title {
-            margin-top: 0;
-            margin-bottom: 0;
-            font-size: 16px;
-            color: #333;
-        }
-
-        .panel-body {
-            padding: 15px;
-        }
-
-        /* Error message styles */
-        .text-danger {
-            color: #dc3545;
-            font-size: 12px;
-            margin-top: 5px;
-            display: block;
-        }
-
-        /* Button styles */
-        .btn-primary {
-            color: #fff;
-            background-color: #0088cc;
-            border-color: #0088cc;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 4px;
-        }
-
-        .btn-primary:hover {
-            background-color: #006699;
-            border-color: #006699;
-        }
-
-        /* Success message styles */
-        .alert-success {
-            color: #155724;
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-            padding: 12px;
-            border-radius: 4px;
-            margin-top: 15px;
-        }
-
         .panel-featured-primary {
             background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
             border-radius: 16px;
@@ -504,7 +406,7 @@
                     <a href="usermanagement" style="color: inherit; text-decoration: none;">
                         <i class="fa fa-arrow-left mr-xs" style="cursor: pointer;"></i>
                     </a>
-                    Tạo người dùng
+                    Tạo nhân viên
                 </h2>
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -513,7 +415,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Tạo người dùng</span></li>
+                        <li><span>Tạo nhân viên </span></li>
                     </ol>
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
@@ -524,42 +426,50 @@
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="panel-actions"></div>
-                            <h2 class="panel-title">Tạo mới người dùng</h2>
+                            <h2 class="panel-title">Tạo nhân viên </h2>
                         </header>
                         <div class="panel-body">
-                            <form action="createuser" class="form-horizontal form-bordered">
-                                <!-- Phone -->
+                            <form:form action="/createstaff" method="post" modelAttribute="StaffDTO" class="form-horizontal form-bordered">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Số điện thoại</label>
+                                    <label class="col-md-3 control-label">Tên nhân viên</label>
                                     <div class="col-md-6">
-                                        <input type="text" 
+                                        <form:input path="name" 
                                                class="form-control"
-                                               id="phone"
-                                               name="phone"
-                                               placeholder="Nhập số điện thoại"
-                                               value="${phone != null ? phone : param.phone}"
-                                               onblur="checkPhone(this.value)">
-                                        <span class="text-danger">${error}</span>
-                                        <span class="text-danger" id="phoneError" style="display:none">Số điện thoại không hợp lệ. Xin vui lòng nhập lại!</span>
+                                               id="name"
+                                               placeholder="Nhập tên nhân viên"
+                                               onblur="checkName()"/>
+                                        <form:errors path="name" cssClass="text-danger"/>
+                                        <span class="text-danger" id="nameError">${nameError}</span>
                                     </div>
                                 </div>
 
-                                <!-- Password -->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Số điện thoại</label>
+                                    <div class="col-md-6">
+                                        <form:input path="phone"
+                                               class="form-control"
+                                               id="phone"
+                                               placeholder="Nhập số điện thoại"
+                                               onblur="checkPhone(this.value)"/>
+                                        <form:errors path="phone" cssClass="text-danger"/>
+                                        <span class="text-danger" id="phoneError" style="display:none">Số điện thoại không hợp lệ. Xin vui lòng nhập lại!</span>
+                                        <span class="text-danger">${phoneError}</span>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Mật khẩu</label>
                                     <div class="col-md-6">
-                                        <input type="password"
+                                        <form:password path="password"
                                                class="form-control"
                                                id="password"
-                                               name="password"
                                                placeholder="Nhập mật khẩu"
-                                               onblur="checkPassword()"
-                                               value="${param.password != null ? param.password : ''}">
+                                               onblur="checkPassword()"/>
+                                        <form:errors path="password" cssClass="text-danger"/>
                                         <span class="text-danger" id="passError"></span>
                                     </div>
                                 </div>
 
-                                <!-- Confirm Password -->
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Nhập lại mật khẩu</label>
                                     <div class="col-md-6">
@@ -568,66 +478,32 @@
                                                id="repassword"
                                                name="repassword"
                                                placeholder="Nhập lại mật khẩu"
-                                               onblur="checkRePassword()"
-                                               value="${param.repassword != null ? param.repassword : ''}">
+                                               onblur="checkRePassword()">
                                         <span class="text-danger" id="repassError"></span>
                                     </div>
                                 </div>
 
-                                <!-- Name -->
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Tên</label>
+                                    <label class="col-md-3 control-label">Chọn cửa hàng</label>
                                     <div class="col-md-6">
-                                        <input type="text"
-                                               class="form-control"
-                                               id="name"
-                                               name="name"
-                                               placeholder="Nhập tên"
-                                               value="${param.name != null ? param.name : ''}"
-                                               onblur="checkName()">
-                                        <span class="text-danger" id="nameError"></span>
+                                        <form:select path="storeId" class="form-control">
+                                            <form:options items="${stores}" itemValue="id" itemLabel="name"/>
+                                        </form:select>
+                                        <form:errors path="storeId" cssClass="text-danger"/>
                                     </div>
                                 </div>
 
-                                <!-- Status -->
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Trạng thái</label>
-                                    <div class="col-md-6">
-                                        <c:if test="${sessionScope.user.role.id == 1}">
-                                            <div class="status-wrapper">
-                                                <div class="switch-status">
-                                                    <input type="checkbox" 
-                                                           id="activeSwitch" 
-                                                           name="active" 
-                                                           value="true" 
-                                                           ${param.active == 'true' ? 'checked' : ''}>
-                                                    <label for="activeSwitch"></label>
-                                                </div>
-                                                <span class="status-text">Hoạt động</span>
-                                            </div>
-                                        </c:if>
-                                        <c:if test="${sessionScope.user.role.id == 2}">
-                                            <select class="form-control status-select" id="active" name="active" required>
-                                                <option value="true" ${param.active == 'true' ? 'selected' : ''}>Hoạt động</option>
-                                                <option value="false" ${param.active == 'false' ? 'selected' : ''}>Cấm</option>
-                                            </select>
-                                        </c:if>
-                                    </div>
-                                </div>
-
-                                <!-- Submit Button -->
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-3">
                                         <button type="submit" 
                                                 class="btn btn-primary" 
                                                 id="submitBtn" 
                                                 ${success != null || error != null ? 'disabled' : ''}>
-                                            Tạo người dùng
+                                            Tạo nhân viên
                                         </button>
                                     </div>
                                 </div>
 
-                                <!-- Success Message -->
                                 <c:if test="${success != null}">
                                     <div class="form-group">
                                         <div class="col-md-6 col-md-offset-3">
@@ -635,7 +511,7 @@
                                         </div>
                                     </div>
                                 </c:if>
-                            </form>
+                            </form:form>
                         </div>
                     </section>
                 </div>
@@ -657,9 +533,7 @@
         } else {
             phoneError.style.display = "none";
             button.disabled = false;
-            if (phone.length > 0) {
-                window.location.href = "checkphone?createdPhone=" + phone;
-            }
+
         }
     }
 
@@ -698,7 +572,7 @@
         const button = document.getElementById("submitBtn");
 
         // Biểu thức chính quy kiểm tra tên hợp lệ
-        const nameRegex = /^[a-zA-Z\s]+$/;
+        const nameRegex = /^[a-zA-ZÀ-ỹ\s]+$/;
 
         if (name.length > 0 && !nameRegex.test(name.trim())) {
             nameError.textContent = "Tên không đuợc chứa số và các kí tự đặc biệt! ";
@@ -724,32 +598,32 @@
 
         // Kiểm tra số điện thoại
         if (phone === "") {
-        document.getElementById("phoneError").innerText = "Vui lòng nhập số điện thoại!";
-        document.getElementById("phoneError").style.display = "block";
-        isValid = false;
-    }
+            document.getElementById("phoneError").innerText = "Vui lòng nhập số điện thoại!";
+            document.getElementById("phoneError").style.display = "block";
+            isValid = false;
+        }
 
         // Kiểm tra mật khẩu
         if (password === "") {
-        document.getElementById("passError").innerText = "Vui lòng nhập mật khẩu!";
-        isValid = false;
-    }
+            document.getElementById("passError").innerText = "Vui lòng nhập mật khẩu!";
+            isValid = false;
+        }
 
         // Kiểm tra nhập lại mật khẩu
         if (repassword === "") {
-        document.getElementById("repassError").innerText = "Vui lòng nhập lại mật khẩu!";
-        isValid = false;
-    }
+            document.getElementById("repassError").innerText = "Vui lòng nhập lại mật khẩu!";
+            isValid = false;
+        }
         // Kiểm tra tên
         if (name === "") {
             document.getElementById("nameError").innerText = "Vui lòng nhập tên!";
-        isValid = false;
-    }
+            isValid = false;
+        }
 
         // Nếu có lỗi, ngăn form submit
         if (!isValid) {
-        event.preventDefault();
-    }
+            event.preventDefault();
+        }
     });
 
 

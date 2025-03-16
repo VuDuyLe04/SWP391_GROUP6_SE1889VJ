@@ -13,8 +13,11 @@ import java.util.List;
 @Repository
 public interface UserStoreRepository extends JpaRepository<UserStore, Long> {
     List<UserStore> findAllByUserId(Long userId);
-
+    List<UserStore>  findUserStoreByUserId(Long userId);
     UserStore findByUserAndStore(User user, Store store);
 
     List<UserStore> findAllByStoreIn(List<Store> stores);
+    UserStore findByUser_PhoneAndStore_Id(String phone , Long storeId);
+    UserStore findByUser_PhoneAndStore_CreatedBy(String phone , String storeId);
+    UserStore findById(long id);
 }
