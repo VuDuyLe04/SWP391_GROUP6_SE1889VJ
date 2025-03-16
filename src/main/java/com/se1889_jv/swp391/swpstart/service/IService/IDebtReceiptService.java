@@ -12,5 +12,5 @@ import java.time.LocalDate;
 public interface IDebtReceiptService {
     PageResponse<DebtReceipt> getDebtsByCustomer(long id,int page);
     DebtReceiptCreationResponse createDebtReceipt(DebtReceiptCreationRequest request);
-    PageResponse<DebtReceiptDetailResponse> getAllWithSearch(Long customerId, int page, Instant from, Instant to);
+    PageResponse<DebtReceiptDetailResponse> getAllWithSearch(Long customerId, int page, Instant from, Instant to, Double debtAmount);
 }

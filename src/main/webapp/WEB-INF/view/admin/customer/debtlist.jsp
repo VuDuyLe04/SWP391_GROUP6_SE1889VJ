@@ -84,6 +84,10 @@
                                 <div class="col-md-6">
                                     <form method="GET" action="/debt-receipt/search/${customer.id}" class="form-inline">
                                         <div class="form-group">
+                                            <label>Số tiền nợ:</label>
+                                            <input type="number" name="debtAmount" class="form-control" value="${param.debtAmount}" step="0.01"/>
+                                        </div>
+                                        <div class="form-group">
                                             <label>Ngày bắt đầu:</label>
                                             <input type="date" name="from" class="form-control" value="${param.from}"/>
                                         </div>
@@ -139,6 +143,9 @@
                                     <c:if test="${not empty param.to}">
                                         <c:set var="searchQuery" value="${searchQuery}&to=${param.to}" />
                                     </c:if>
+                                    <c:if test="${not empty param.debtAmount}">
+                                        <c:set var="searchQuery" value="${searchQuery}&debtAmount=${param.debtAmount}" />
+                                    </c:if>
 
                                     <!-- Previous page -->
                                     <c:if test="${currentPage > 1}">
@@ -178,6 +185,7 @@
                                     </c:if>
                                 </ul>
                             </div>
+
 
 
                             <a href="/customer" class="btn btn-primary">

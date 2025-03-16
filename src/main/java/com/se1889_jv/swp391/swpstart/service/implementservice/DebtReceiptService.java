@@ -103,12 +103,18 @@ public class DebtReceiptService implements IDebtReceiptService {
     }
 
     @Override
-    public PageResponse<DebtReceiptDetailResponse> getAllWithSearch(Long customerId, int page, Instant from, Instant to) {
+    public PageResponse<DebtReceiptDetailResponse> getAllWithSearch(Long customerId, int page, Instant from, Instant to, Double debtAmount) {
         customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
-        Pageable pageable = PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Pageable pageable;
 
         Specification<DebtReceipt> specification = DebtReceiptSpecification.findByCustomer(customerId);
+        if(debtAmount != null) {
+            pageable = PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.ASC, "debtAmount"));
+            specification = specification.and(DebtReceiptSpecification.findByDebtAmount(debtAmount));
+        } else {
+            pageable = PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.DESC, "createdAt"));
+        }
         if (from != null && to != null) {
             specification = specification.and(DebtReceiptSpecification.findByCreatedAtBetween(from, to));
         }

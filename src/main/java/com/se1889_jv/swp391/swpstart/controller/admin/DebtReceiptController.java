@@ -44,7 +44,7 @@ public class DebtReceiptController {
 
         DebtReceiptCreationResponse result = debtReceiptService.createDebtReceipt(request);
         model.addAttribute("debtReceipt", result);
-        return "redirect:/customer/debt-history/" + request.getCustomerId();
+        return "redirect:/debt-receipt/search/" + request.getCustomerId();
     }
 
 
@@ -71,6 +71,7 @@ public class DebtReceiptController {
             @RequestParam(required = false, defaultValue = "1") int page,
             @RequestParam(required = false) String from,
             @RequestParam(required = false) String to,
+            @RequestParam(required = false) Double debtAmount,
             Model model
     ) {
         var customer = customerRepository.findById(id)
@@ -92,7 +93,7 @@ public class DebtReceiptController {
         } catch (DateTimeParseException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format. Use dd-MM-yyyy (e.g., 07-03-2025)");
         }
-        var result = debtReceiptService.getAllWithSearch(id, page, fromInstant, toInstant);
+        var result = debtReceiptService.getAllWithSearch(id, page, fromInstant, toInstant, debtAmount);
 
         model.addAttribute("deptList", result.getData());
         model.addAttribute("customer", customer);
