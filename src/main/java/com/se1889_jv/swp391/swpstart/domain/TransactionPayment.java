@@ -17,6 +17,7 @@ public class TransactionPayment {
     private long id;
 
     private String transactionId;
+
     private Integer amount;
     private String content;
     private LocalDateTime date;

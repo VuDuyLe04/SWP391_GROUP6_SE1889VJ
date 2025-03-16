@@ -125,7 +125,7 @@ public class PaymentService {
                     id = id.replaceAll("ricechicken", "").trim();
 
                     // Check if id is not empty or null
-                    if (id.isEmpty()) {
+                    if (id.isEmpty() || id.equals("")) {
                         transactionPayment.setTransactionStatus(TransactionStatus.FAILURE);
 
                         transactionPaymentRepository.save(transactionPayment);

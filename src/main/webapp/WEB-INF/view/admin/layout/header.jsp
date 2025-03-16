@@ -88,6 +88,9 @@
                         <li>
                             <a role="menuitem" tabindex="-1" href="/payment/history"><i class="fa fa-history"></i> Lịch sử nạp tiền</a>
                         </li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="/payment/history"><i class="fa fa-history"></i> Lịch sử thuê dịch vụ</a>
+                        </li>
                     </c:if>
                     <li>
                         <form id="logoutForm" method="post" action="/logout">

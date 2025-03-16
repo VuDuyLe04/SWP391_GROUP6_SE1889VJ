@@ -4,34 +4,39 @@ import com.se1889_jv.swp391.swpstart.domain.Product;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.WareHouse;
+import com.se1889_jv.swp391.swpstart.service.UploadImageService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.WareHouseService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class
-ProductController {
+public class ProductController {
     @Autowired
     private ProductService productService;
-
     @Autowired
     private WareHouseService wareHouseService;
+    @Autowired
+    private UploadImageService uploadImageService;
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/product")
     public String getListProductPage(
             @RequestParam(defaultValue = "0") int page,
@@ -68,8 +73,11 @@ ProductController {
 
 
     @GetMapping("/product/createProduct")
-    public String getCreateProductPage(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public String getCreateProductPage(
+            Model model, HttpSession session
+    ) {
+        User userSession = Utility.getUserInSession();
+        User user = this.userService.findById(userSession.getId());
 
         if (user == null) {
             return "redirect:/login";
@@ -87,11 +95,13 @@ ProductController {
             @Valid @ModelAttribute("product") Product product,
             BindingResult result,
             Model model,
-            HttpSession session
+            HttpSession session,
+            @RequestParam("imageFile") MultipartFile file
     ) {
         if (result.hasErrors()) {
 
-            User user = (User) session.getAttribute("user");
+            User userSession = Utility.getUserInSession();
+            User user = this.userService.findById(userSession.getId());
             List<Store> stores = Utility.getListStoreOfOwner(user);
             List<WareHouse> wareHouses = wareHouseService.getAllWareHouseByListStore(stores);
             model.addAttribute("store1", product.getStore());
@@ -99,11 +109,11 @@ ProductController {
             model.addAttribute("wareHouses", wareHouses);
             return "admin/product/create";
         }
+        String image = this.uploadImageService.handleSaveUploadFile(file, "images");
+        product.setImage(image);
         productService.saveProduct(product);
         return "redirect:/product";
     }
-
-
 
 
     @PostMapping("/product/delete")

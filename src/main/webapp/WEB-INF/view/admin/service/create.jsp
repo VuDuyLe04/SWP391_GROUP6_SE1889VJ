@@ -148,7 +148,7 @@
                                     <label class="col-md-3 control-label" >Trạng thái</label>
                                     <div class="col-md-2">
                                         <form:select path="active" class="form-control">
-                                            <form:option value="true"  >Active</form:option>
+                                            <form:option value="true" >Active</form:option>
                                             <form:option value="false">Banned</form:option>
                                         </form:select>
                                     </div>

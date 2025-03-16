@@ -48,6 +48,8 @@
             padding: 3px 8px;
         }
     </style>
+
+
 </head>
 <body>
 
@@ -96,17 +98,15 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <form id="search-form" action="#" method="get" class="search nav-form">
-                                            <div class="input-group input-search">
-                                                <input type="text" class="form-control" name="input"
-                                                       placeholder="Tìm kiếm theo tên hoặc giá tiền" value="${input}" >
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-primary" type="submit">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </form>
+                                        <div class="input-group input-search">
+                                            <input type="text" class="form-control" id="name"
+                                                   placeholder="Tìm kiếm theo tên">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary" id="btnSearch">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -115,40 +115,37 @@
                         <div class="panel-body">
                             <div class="row mb-md">
                                 <div class="col-sm-6">
-<%--                                    <form action="usermanagement" method="get" class="form-inline">--%>
-<%--                                        <c:if test="${sessionScope.user.role.id == 1}">--%>
-<%--                                            <div class="form-group mr-md">--%>
-<%--                                                <div class="input-group">--%>
-<%--                                                    <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>--%>
-<%--                                                    <select id="role" name="role" class="form-control">--%>
-<%--                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >Thời gian</option>--%>
-<%--                                                        <c:forEach items="${roles}" var="r">--%>
-<%--                                                        <option ${roleId == r.id ? "selected" : ""} value="${r.id}">--%>
-<%--                                                            <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>--%>
-<%--                                                            <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>--%>
-<%--                                                            <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>--%>
+                                    <div class="form-inline">
+                                        <div class="form-group mr-md">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                                                <select id="durationMonths" class="form-control">
+                                                    <option value="" id="tatca">Tất cả</option>
+                                                    <option value="1" id="1-thang">1 tháng</option>
+                                                    <option value="3" id="3-thang">3 tháng</option>
+                                                    <option value="6" id="6-thang">6 tháng</option>
+                                                    <option value="12" id="12-thang">12 tháng</option>
+                                                </select>
+                                            </div>
+                                        </div>
 
-<%--                                                            </c:forEach>--%>
+                                        <div class="form-group mr-md">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
+                                                <select id="status" class="form-control">
+                                                    <option value="" id="status-1">Các trạng thái</option>
+                                                    <option value="true" id="status-2">Hoạt động</option>
+                                                    <option value="false" id="status-3">Bị cấm</option>
+                                                </select>
+                                            </div>
+                                        </div>
 
-<%--                                                    </select>--%>
-<%--                                                </div>--%>
-<%--                                            </div>--%>
-<%--                                            <div class="form-group mr-md">--%>
-<%--                                                <div class="input-group">--%>
-<%--                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>--%>
-<%--                                                    <select id="active" name="active" class="form-control">--%>
-<%--                                                        <option ${active == -1 ? "selected" : ""} value="-1">Các trạng thái</option>--%>
-<%--                                                        <option ${active == 1 ? "selected" : ""} value="1">Hoạt động</option>--%>
-<%--                                                        <option ${active == 0 ? "selected" : ""} value="0">Bị cấm</option>--%>
-<%--                                                    </select>--%>
-<%--                                                </div>--%>
-<%--                                            </div>--%>
-<%--                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>--%>
-<%--                                        </c:if>--%>
-
-
-<%--                                    </form>--%>
+                                        <button class="btn btn-primary" id="btnFilter"><i
+                                                class="fa fa-filter mr-xs"></i>Lọc
+                                        </button>
+                                    </div>
                                 </div>
+
                                 <div class="col-sm-6">
                                     <div class="pull-right">
                                         <a href="/service/create" class="btn btn-primary mb-xs mt-xs mr-xs">
@@ -305,5 +302,57 @@
 
 <!-- Examples -->
 <script src="/client/auth/assets/javascripts/dashboard/examples.dashboard.js"></script>
+
+<script>
+    // Your JavaScript code here
+    document.getElementById('btnFilter').addEventListener('click', function (event) {
+        event.preventDefault();
+
+        let durationMonths = document.getElementById('durationMonths').value;
+        let status = document.getElementById('status').value;
+        const currentUrl = new URL("http://localhost:8080/service/table");
+        const searchParams = currentUrl.searchParams;
+
+        searchParams.set('durationMonths', durationMonths);
+        searchParams.set('status', status);
+
+        window.location.href = currentUrl.toString();
+    });
+
+    // Auto select values after page load
+    document.addEventListener('DOMContentLoaded', function () {
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.has('durationMonths')) {
+            document.getElementById('durationMonths').value = params.get('durationMonths');
+        }
+        if (params.has('status')) {
+            document.getElementById('status').value = params.get('status');
+        }
+    });
+
+
+    // Gán sự kiện khi nhấn nút tìm kiếm
+    document.getElementById('btnSearch').addEventListener('click', function(event) {
+        event.preventDefault();  // Ngăn không cho form được gửi đi mặc định
+
+        // Lấy giá trị từ ô input tìm kiếm
+        let name = document.getElementById('name').value;
+
+        // Lấy URL hiện tại
+        const currentUrl = new URL("http://localhost:8080/service/table");
+        const searchParams = currentUrl.searchParams;
+
+        // Cập nhật tham số 'name' trong URL
+        searchParams.set('name', name);
+
+        // Cập nhật lại URL và reload trang
+        window.location.href = currentUrl.toString();
+    });
+
+    // Xử lý khi trang load lại để tự động điền lại giá trị tìm kiếm từ URL
+
+
+</script>
 </body>
 </html>

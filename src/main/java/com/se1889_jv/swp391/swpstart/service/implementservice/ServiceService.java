@@ -3,8 +3,10 @@ package com.se1889_jv.swp391.swpstart.service.implementservice;
 import com.se1889_jv.swp391.swpstart.domain.Service;
 import com.se1889_jv.swp391.swpstart.domain.Service_;
 import com.se1889_jv.swp391.swpstart.domain.User;
+import com.se1889_jv.swp391.swpstart.domain.dto.ServiceCriteriaDTO;
 import com.se1889_jv.swp391.swpstart.repository.ServiceRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IServiceService;
+import com.se1889_jv.swp391.swpstart.service.specification.ServiceSpecs;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,16 +44,35 @@ public class ServiceService implements IServiceService {
         return null;
     }
 
-    private Specification<Service> nameLike(String name){
-        return (root, query, criteriaBuilder)
-                -> criteriaBuilder.like(root.get(Service_.NAME), "%"+name+"%");
-    }
+
 
 
     
-    public Page<Service> findAllServices(Pageable pageable, String name) {
-        return this.serviceRepository.findAll(this.nameLike(name),pageable);
+    public Page<Service> findAllServices(Pageable pageable, ServiceCriteriaDTO serviceCriteriaDTO) {
+        if (serviceCriteriaDTO.getName() == null
+                && serviceCriteriaDTO.getStatus() == null
+                && serviceCriteriaDTO.getDurationMonths() == null) {
+            return this.serviceRepository.findAll(pageable);
+        }
+
+
+        Specification<Service> combined = Specification.where(null);
+        if ( serviceCriteriaDTO.getName() != null && serviceCriteriaDTO.getName().isPresent()) {
+            Specification<Service> currentSpecs = ServiceSpecs.nameLike(serviceCriteriaDTO.getName().get());
+            combined = combined.and(currentSpecs);
+        }
+        if (serviceCriteriaDTO.getStatus() != null && serviceCriteriaDTO.getStatus().isPresent()) {
+            Specification<Service> currentSpecs = ServiceSpecs.statusEqual(serviceCriteriaDTO.getStatus().get());
+            combined = combined.and(currentSpecs);
+        }
+        if (serviceCriteriaDTO.getDurationMonths() != null && serviceCriteriaDTO.getDurationMonths().isPresent()) {
+            Specification<Service> currentSpecs = ServiceSpecs.durationMonthsEqual(serviceCriteriaDTO.getDurationMonths().get());
+            combined = combined.and(currentSpecs);
+        }
+        return this.serviceRepository.findAll(combined,pageable);
     }
+
+
 
     @Override
     public boolean existByName(String serviceName) {

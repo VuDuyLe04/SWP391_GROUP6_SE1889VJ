@@ -158,7 +158,7 @@
 
 
 
-                                <input type="hidden" value="${service.name}" name="oldName"/>
+                                <input type="hidden" value="${oldName}" name="oldName"/>
 
 
                                 <div class="form-group">

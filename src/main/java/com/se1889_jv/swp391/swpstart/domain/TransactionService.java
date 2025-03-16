@@ -6,17 +6,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "transaction_services")
 @Getter
 @Setter
 public class TransactionService {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String serviceName;
     private int durationMonths;
-    private Instant transactionDate;
+    private LocalDateTime transactionDate;
     private double amount;
     @Enumerated(EnumType.STRING)
     private TransactionStatus transactionStatus;

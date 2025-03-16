@@ -4,6 +4,7 @@ import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.repository.StoreRepository;
 import com.se1889_jv.swp391.swpstart.repository.UserRepository;
+import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class Utility {
     @Autowired
     private static UserRepository userRepository;
+
 
     public static Store getStoreInSession() {
         HttpServletRequest request =

@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Dashboard | JSOFT Themes | JSOFT-Admin</title>
+    <title>Tạo mới sản phẩm</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -41,7 +41,17 @@
 
     <!-- Head Libs -->
     <script src="/client/auth/assets/vendor/modernizr/modernizr.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            const avatarFile = $("#avatarFile");
+            avatarFile.change(function (e) {
+                const imgURL = URL.createObjectURL(e.target.files[0]);
+                $("#avatarPreview").attr("src", imgURL);
+                $("#avatarPreview").css({ "display": "block" });
+            });
+        });
+    </script>
 </head>
 <body>
 
@@ -90,29 +100,16 @@
                             <h2 class="panel-title">Sản phẩm mới</h2>
                         </header>
                         <div class="panel-body">
-                            <form:form class="form-horizontal form-bordered" action="/product/create" modelAttribute="product" method="post">
-
-<%--                                <div class="form-group">--%>
-<%--                                    <label class="col-md-3 control-label" for="inputId">Id</label>--%>
-<%--                                    <div class="col-md-6">--%>
-<%--                                        <form:input path="id" type="number" class="form-control" id="inputId" />--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
+                            <form:form class="form-horizontal form-bordered" action="/product/create"
+                                       modelAttribute="product" method="post"
+                                       enctype="multipart/form-data"
+                            >
 
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputDefault">Tên gạo</label>
                                     <div class="col-md-6">
                                         <form:input path="name" type="text" class="form-control" id="inputDefault"/>
                                         <form:errors path="name" cssClass="text-danger"/>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputImage">Hình ảnh</label>
-                                    <div class="col-md-6">
-                                        <form:input path="image" class="form-control" id="inputImage" type="text" readonly="true"/>
-<%--                                        <form:errors path="image" cssClass="text-danger"/>--%>
-
                                     </div>
                                 </div>
 
@@ -147,6 +144,7 @@
 
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputDescription">Cửa hàng</label>
                                     <div class="col-md-6">
@@ -162,6 +160,7 @@
                                         <form:errors path="store" cssClass="text-danger"/>
                                     </div>
                                 </div>
+
                                 <div class="form-group" id="warehouseGroup" style="display: none;">
                                     <label class="col-md-3 control-label" for="inputWarehouse">Kho hàng</label>
                                     <div class="col-md-6">
@@ -173,6 +172,19 @@
                                                 </form:option>
                                             </c:forEach>
                                         </form:select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="imageFile">Hình ảnh</label>
+                                    <div class="col-md-3">
+                                        <input class="form-control" type="file" id="avatarFile"
+                                               accept=".png, .jpg, .jpeg" name="imageFile" />
+<%--                                        <form:input path="image" class="form-control" id="inputImage" type="text" readonly="true"/>--%>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <img style="max-height: 250px; display: none;" alt="avatar preview"
+                                             id="avatarPreview" />
                                     </div>
                                 </div>
                                 <!-- Nút Create -->
@@ -201,7 +213,6 @@
 
 
 </section>
-
 <script>
     function filterWarehouses() {
         var storeSelect = document.getElementById("inputStore");

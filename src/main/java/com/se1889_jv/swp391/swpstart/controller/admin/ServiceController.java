@@ -2,6 +2,7 @@ package com.se1889_jv.swp391.swpstart.controller.admin;
 
 import com.se1889_jv.swp391.swpstart.domain.Service;
 import com.se1889_jv.swp391.swpstart.domain.User;
+import com.se1889_jv.swp391.swpstart.domain.dto.ServiceCriteriaDTO;
 import com.se1889_jv.swp391.swpstart.service.implementservice.ServiceService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.servlet.http.HttpSession;
@@ -56,19 +57,27 @@ public class ServiceController {
 
     @GetMapping("/service/table")
     public String serviceTable(
-            Model model,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam("name")Optional<String> nameOptional) {
-        String name ="";
-        if (nameOptional.isPresent()) {
-             name = nameOptional.get();
-        } else {
-            name = "";
+            Model model, ServiceCriteriaDTO serviceCriteriaDTO) {
+        int page = 0;
+        try {
+            if (serviceCriteriaDTO.getPage() == null) {
+                page = 0;
+            } else {
+                if (serviceCriteriaDTO.getPage().isPresent()){
+                    page = Integer.parseInt(serviceCriteriaDTO.getPage().get());
+                } else {
+                    page = 0;
+                }
+            }
+
+
+        } catch (NumberFormatException e) {
+
         }
 
-
         Pageable pageable = PageRequest.of(page, 5);
-        Page<Service> servicePage = this.serviceService.findAllServices(pageable, name);
+
+        Page<Service> servicePage = this.serviceService.findAllServices(pageable, serviceCriteriaDTO);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", servicePage.getTotalPages());
         model.addAttribute("listService", servicePage.getContent());
@@ -80,6 +89,7 @@ public class ServiceController {
 
        Service service = this.serviceService.findServiceById(id);
         model.addAttribute("service", service);
+        model.addAttribute("oldName", service.getName() );
         return "admin/service/update";
     }
 
@@ -88,11 +98,14 @@ public class ServiceController {
             @Valid @ModelAttribute("service") Service service,
                                       BindingResult bindingResult,
             HttpSession session,
-            @RequestParam(value = "oldName") String oldName) {
+            @RequestParam(value = "oldName") String oldName,
+            Model model) {
         if (this.serviceService.existsByNameExcludingOldName(service.getName(), oldName) == true) {
             bindingResult.rejectValue("name","service.name.exists", "Tên dịch vụ đã tồn tại");
+            model.addAttribute("oldName", oldName );
         }
         if (bindingResult.hasErrors()) {
+            model.addAttribute("oldName", oldName );
             return "admin/service/update";
         }
         this.serviceService.updateService(service);
