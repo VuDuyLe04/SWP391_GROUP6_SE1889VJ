@@ -21,15 +21,15 @@
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
     <!-- Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css"/>
 
     <!-- Specific Page Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css"/>
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme.css" />
@@ -46,6 +46,7 @@
         .panel-featured-primary {
             border-color: #0088cc;
         }
+
         .panel-featured-primary .panel-heading {
             background-color: #0088cc;
             color: #FFF;
@@ -56,18 +57,22 @@
             color: #FFF;
             border-color: #0088cc;
         }
+
         .table > thead > tr > th {
             background-color: #f5f5f5;
             border-bottom: 2px solid #0088cc;
         }
+
         .btn-primary {
             background-color: #0088cc;
             border-color: #0088cc;
         }
+
         .btn-primary:hover {
             background-color: #006699;
             border-color: #006699;
         }
+
         .label-sm {
             font-size: 90%;
             padding: 3px 8px;
@@ -75,24 +80,29 @@
         .mr-xs {
             margin-right: 5px;
         }
+
         .mb-xs {
             margin-bottom: 5px;
         }
+
         .mt-xs {
             margin-top: 5px;
         }
+
         .status-label {
             display: inline-block;
             min-width: 85px;
             text-align: center;
             padding: 5px 10px;
         }
+
         .pagination {
             margin: 20px auto;
             display: inline-flex;
             justify-content: center;
             padding-left: 0;
         }
+
         /* Existing modal styles */
         html, body {
             overflow-y: scroll !important;
@@ -100,13 +110,13 @@
             padding-right: 0 !important;
             width: 100% !important;
         }
-        
+
         /* Update modal styles */
         .modal {
             text-align: center;
             padding: 0 !important;
         }
-        
+
         .modal:before {
             content: '';
             display: inline-block;
@@ -132,7 +142,7 @@
             height: auto !important;
             max-height: 500px !important;
         }
-        
+
         .modal-body {
             padding: 20px;
             display: flex;
@@ -164,7 +174,7 @@
             margin-bottom: 0;
             white-space: nowrap;
         }
-        
+
         .info-value {
             font-size: 14px;
             flex: 1;
@@ -211,7 +221,7 @@
 
     <div class="inner-wrapper">
         <!-- start: sidebar -->
-        <jsp:include page="../layout/sidebar.jsp" />
+        <jsp:include page="../layout/sidebar.jsp"/>
         <!-- end: sidebar -->
 
         <section role="main" class="content-body">
@@ -243,10 +253,12 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <form id="search-form" action="usermanagement" method="get" class="search nav-form">
+                                        <form id="search-form" action="usermanagement" method="get"
+                                              class="search nav-form">
                                             <div class="input-group input-search">
-                                                <input type="text" class="form-control" name="input" 
-                                                       placeholder="Tìm kiếm theo tên hoặc số điện thoại" value="${input}" >
+                                                <input type="text" class="form-control" name="input"
+                                                       placeholder="Tìm kiếm theo tên hoặc số điện thoại"
+                                                       value="${input}">
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-primary" type="submit">
                                                         <i class="fa fa-search"></i>
@@ -258,7 +270,7 @@
                                 </div>
                             </div>
                         </header>
-                        
+
                         <div class="panel-body">
                             <div class="row mb-md">
                                 <div class="col-sm-6">
@@ -266,9 +278,12 @@
                                         <c:if test="${sessionScope.user.role.id == 1}">
                                             <div class="form-group mr-md">
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                                                    <span class="input-group-addon"><i
+                                                            class="fa fa-user-circle"></i></span>
                                                     <select id="role" name="role" class="form-control">
-                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >Các vai trò</option>
+                                                        <option ${roleId == -1 ? "selected" : ""} value="-1">Các vai
+                                                            trò
+                                                        </option>
                                                         <c:forEach items="${roles}" var="r">
                                                             <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
                                                                 <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>
@@ -289,15 +304,24 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>
+                                            <button type="submit" class="btn btn-primary"><i
+                                                    class="fa fa-filter mr-xs"></i>Lọc
+                                            </button>
                                         </c:if>
-
+                                                                                <c:if test="${sessionScope.user.role.id == 2}">
+                                                                                    <select id="store" name="store" class="form-control">
+                                                                                        <option value="0">All Status</option>
+                                                                                        <c:forEach items="${stores}" var="s">
+                                                                                            <option value="${s.id}">${s.name}</option>
+                                                                                        </c:forEach>
+                                                                                    </select>
+                                                                                </c:if>
 
                                     </form>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <a href="/createuser" class="btn btn-primary mb-xs mt-xs mr-xs">
+                                        <a href="createuser" class="btn btn-primary mb-xs mt-xs mr-xs">
                                             <i class="fa fa-plus mr-xs"></i>Tạo chủ cửa hàng
                                         </a>
 
@@ -332,6 +356,7 @@ ${EmptyList}
                                             <c:if test="${sessionScope.user.role.id == 1}">
                                                 <td><span class="text-primary">
                                                         <c:choose>
+                                                            <c:when test="${u.role.name == 'ADMIN'}">Quản trị viên</c:when>
                                                             <c:when test="${u.role.name == 'OWNER'}">Chủ cửa hàng</c:when>
                                                             <c:when test="${u.role.name == 'STAFF'}">Nhân viên</c:when>
                                                             <c:otherwise>${u.role.name}</c:otherwise>
