@@ -46,7 +46,6 @@ public class HomePageController {
         model.addAttribute("registerUser", new RegisterDTO());
         return "client/auth/register";
     }
-
     @PostMapping("/register")
     public String handleRegister(
             @ModelAttribute("registerUser") @Valid RegisterDTO registerDTO,
