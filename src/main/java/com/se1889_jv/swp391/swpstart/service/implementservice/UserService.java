@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 
+
 import com.se1889_jv.swp391.swpstart.domain.Role;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 
@@ -30,7 +31,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 
 @Service
 public class UserService implements IUserService {
@@ -97,12 +97,12 @@ public class UserService implements IUserService {
 
     @Override
     public Page<User> getAll(Pageable pageable){
-        return this.userRepository.findAll(pageable);
+        return this.userRepository.findByRoleIdNot(1L,pageable);
     }
 
     @Override
-    public Page<User> getUsersBySearch(String name, String phone, Pageable pageable) {
-        return this.userRepository.findUsersByNameContainingOrPhoneContaining(name,phone,pageable);
+    public Page<User> getUsersBySearch(String name, String phone,Long roleId, Pageable pageable) {
+        return this.userRepository.findByNameContainingOrPhoneContainingAndRole_IdNot(name,phone,roleId,pageable);
 
     }
     @Override
@@ -194,18 +194,20 @@ public class UserService implements IUserService {
     @Override
     public User updateUser(User user) {
         User user1 = findById(user.getId());
-
         if(user1 != null){
             user1.setName(user.getName());
             user1.setUpdatedAt(Instant.now());
             user1.setUpdatedBy(user.getName());
         }
-
         return this.userRepository.save(user1);
     }
     @Override
      public  Page<User> findDistinctUsersByUserStores_Store_CreatedBy(String createdBy, Pageable pageable){
         return userRepository.findDistinctUsersByStoreCreatedBy( createdBy, pageable);
-    };
+    }
+
+
+
+    ;
 
 }

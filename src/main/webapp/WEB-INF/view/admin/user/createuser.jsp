@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
@@ -44,104 +44,6 @@
     <script src="/client/auth/assets/vendor/modernizr/modernizr.js"></script>
 
     <style>
-        /* Form styles */
-        .form-horizontal .control-label {
-            padding-top: 7px;
-            margin-bottom: 0;
-            text-align: right;
-            color: #444;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .form-control {
-            display: block;
-            width: 100%;
-            height: 34px;
-            padding: 6px 12px;
-            font-size: 14px;
-            line-height: 1.42857143;
-            color: #555;
-            background-color: #fff;
-            background-image: none;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        }
-
-        .form-control:focus {
-            border-color: #0088cc;
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 136, 204, 0.25);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .panel {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-        }
-
-        .panel-heading {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            background-color: #f5f5f5;
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
-        }
-
-        .panel-title {
-            margin-top: 0;
-            margin-bottom: 0;
-            font-size: 16px;
-            color: #333;
-        }
-
-        .panel-body {
-            padding: 15px;
-        }
-
-        /* Error message styles */
-        .text-danger {
-            color: #dc3545;
-            font-size: 12px;
-            margin-top: 5px;
-            display: block;
-        }
-
-        /* Button styles */
-        .btn-primary {
-            color: #fff;
-            background-color: #0088cc;
-            border-color: #0088cc;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 4px;
-        }
-
-        .btn-primary:hover {
-            background-color: #006699;
-            border-color: #006699;
-        }
-
-        /* Success message styles */
-        .alert-success {
-            color: #155724;
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-            padding: 12px;
-            border-radius: 4px;
-            margin-top: 15px;
-        }
-
         .panel-featured-primary {
             background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
             border-radius: 16px;
@@ -416,72 +318,6 @@
             color: #2c3345;
             margin-left: 5px;
         }
-
-        /* Thêm style cho switch */
-        .switch-status {
-            position: relative;
-            display: flex;
-            align-items: center;
-            vertical-align: middle;
-            margin: 0;
-            height: 34px; /* Căn chỉnh chiều cao giống form-control */
-        }
-
-        .switch-status input[type="checkbox"] {
-            display: none;
-        }
-
-        .switch-status label {
-            display: block;
-            width: 48px;
-            height: 24px;
-            border-radius: 24px;
-            cursor: pointer;
-            background: #e6e6e6;
-            transition: all 0.3s ease;
-            position: relative;
-            margin: 0;
-        }
-
-        .switch-status label:after {
-            content: '';
-            position: absolute;
-            left: 2px;
-            top: 2px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: white;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .switch-status input[type="checkbox"]:checked + label {
-            background: #0088cc;
-        }
-
-        .switch-status input[type="checkbox"]:checked + label:after {
-            left: 26px;
-        }
-
-        .status-text {
-            display: inline-block;
-            margin-left: 10px;
-            font-weight: 500;
-            color: #444;
-            line-height: 24px; /* Căn chỉnh chiều cao text */
-        }
-
-        /* Style cho select trong trường hợp role.id == 2 */
-        .status-select {
-            max-width: 200px;
-        }
-
-        .status-wrapper {
-            display: flex;
-            align-items: center;
-            height: 34px; /* Căn chỉnh chiều cao giống form-control */
-        }
     </style>
 
 </head>
@@ -520,123 +356,90 @@
             </header>
 
             <div class="row">
-                <div class="col-lg-12">
-                    <section class="panel">
-                        <header class="panel-heading">
-                            <div class="panel-actions"></div>
-                            <h2 class="panel-title">Tạo mới người dùng</h2>
-                        </header>
-                        <div class="panel-body">
-                            <form action="createuser" class="form-horizontal form-bordered">
-                                <!-- Phone -->
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Số điện thoại</label>
-                                    <div class="col-md-6">
-                                        <input type="text" 
-                                               class="form-control"
-                                               id="phone"
-                                               name="phone"
-                                               placeholder="Nhập số điện thoại"
-                                               value="${phone != null ? phone : param.phone}"
-                                               onblur="checkPhone(this.value)">
-                                        <span class="text-danger">${error}</span>
-                                        <span class="text-danger" id="phoneError" style="display:none">Số điện thoại không hợp lệ. Xin vui lòng nhập lại!</span>
-                                    </div>
-                                </div>
+                <div class="col-md-12">
+                    <section class="panel panel-featured panel-featured-primary">
+                        <form action="/createuser" method="get" >
+                            <!-- Phone -->
+                            <label for="phone">Số điện thoại:</label>
+                            <input
+                                    type="text"
+                                    id="phone"
+                                    name="phone"
+                                    placeholder="Nhập số điện thoại"
+                                    value="${phone != null ? phone : param.phone}"
+                                    onblur="checkPhone(this.value)"
 
-                                <!-- Password -->
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Mật khẩu</label>
-                                    <div class="col-md-6">
-                                        <input type="password"
-                                               class="form-control"
-                                               id="password"
-                                               name="password"
-                                               placeholder="Nhập mật khẩu"
-                                               onblur="checkPassword()"
-                                               value="${param.password != null ? param.password : ''}">
-                                        <span class="text-danger" id="passError"></span>
-                                    </div>
-                                </div>
+                            >
 
-                                <!-- Confirm Password -->
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Nhập lại mật khẩu</label>
-                                    <div class="col-md-6">
-                                        <input type="password"
-                                               class="form-control"
-                                               id="repassword"
-                                               name="repassword"
-                                               placeholder="Nhập lại mật khẩu"
-                                               onblur="checkRePassword()"
-                                               value="${param.repassword != null ? param.repassword : ''}">
-                                        <span class="text-danger" id="repassError"></span>
-                                    </div>
-                                </div>
+                       <p style="color: red">
+                           ${error}
+                       </p>
+                            <p id="phoneError" style="display:none;color:red"> "Số điện thoại không hợp lệ. Xin vui lòng nhập lại!"</p>
+                            <!-- Password -->
+                            <label for="password">Mật khẩu:</label>
+                            <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Nhập mật khẩu"
+                                    onblur="checkPassword()"
+                                    value="${param.password != null ? param.password : ''}"
 
-                                <!-- Name -->
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Tên</label>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                               class="form-control"
-                                               id="name"
-                                               name="name"
-                                               placeholder="Nhập tên"
-                                               value="${param.name != null ? param.name : ''}"
-                                               onblur="checkName()">
-                                        <span class="text-danger" id="nameError"></span>
-                                    </div>
-                                </div>
+                            >
+                            <p id="passError" style="color: red" > </p>
+                            <label for="repassword">Nhập lại mật khẩu:</label>
+                            <input
+                                    type="password"
+                                    id="repassword"
+                                    name="repassword"
+                                    placeholder="Nhập lại mật khẩu"
+                                    onblur="checkRePassword()"
+                                    value="${param.repassword != null ? param.repassword : ''}"
 
-                                <!-- Status -->
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Trạng thái</label>
-                                    <div class="col-md-6">
-                                        <c:if test="${sessionScope.user.role.id == 1}">
-                                            <div class="status-wrapper">
-                                                <div class="switch-status">
-                                                    <input type="checkbox" 
-                                                           id="activeSwitch" 
-                                                           name="active" 
-                                                           value="true" 
-                                                           ${param.active == 'true' ? 'checked' : ''}>
-                                                    <label for="activeSwitch"></label>
-                                                </div>
-                                                <span class="status-text">Hoạt động</span>
-                                            </div>
-                                        </c:if>
-                                        <c:if test="${sessionScope.user.role.id == 2}">
-                                            <select class="form-control status-select" id="active" name="active" required>
-                                                <option value="true" ${param.active == 'true' ? 'selected' : ''}>Hoạt động</option>
-                                                <option value="false" ${param.active == 'false' ? 'selected' : ''}>Cấm</option>
-                                            </select>
-                                        </c:if>
-                                    </div>
-                                </div>
+                            >
+<p id="repassError"  style="color: red"></p>
 
-                                <!-- Submit Button -->
-                                <div class="form-group">
-                                    <div class="col-md-6 col-md-offset-3">
-                                        <button type="submit" 
-                                                class="btn btn-primary" 
-                                                id="submitBtn" 
-                                                ${success != null || error != null ? 'disabled' : ''}>
-                                            Tạo người dùng
-                                        </button>
-                                    </div>
+                            <!-- Name -->
+                            <label for="name">Tên:</label>
+                            <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    placeholder="Nhập tên"
+                                    value="${param.name != null ? param.name : ''}"
+                                    onblur="checkName()"
+
+                            >
+
+                            <p id="nameError"  style="color: red"></p>
+
+                            <!-- Role-based Active Status -->
+                            <c:if test="${sessionScope.user.role.id == 1}">
+                                <div class="status-container">
+                                    <label>Trạng thái:</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox"  name="active" value="true" ${param.active == 'true' ? 'checked' : ''}>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="status-label">Hoạt động</span>
                                 </div>
+                            </c:if>
+
+                            <c:if test="${sessionScope.user.role.id == 2}">
+                                <label for="active">Trạng thái :</label>
+                                <select id="active" name="active" required>
+                                    <option value="true" ${param.active == 'true' ? 'selected' : ''}>Hoạt động</option>
+                                    <option value="false" ${param.active == 'false' ? 'selected' : ''}>Cấm</option>
+                                </select>
+                            </c:if>
+                            <p style="color: limegreen">${success}</p>
+                            <!-- Submit Button -->
+                            <button  id="submitBtn" type="submit" ${success != null || error != null ? 'disabled' : ''}>Tạo </button>
 
                                 <!-- Success Message -->
-                                <c:if test="${success != null}">
-                                    <div class="form-group">
-                                        <div class="col-md-6 col-md-offset-3">
-                                            <div class="alert alert-success">${success}</div>
-                                        </div>
-                                    </div>
-                                </c:if>
+
                             </form>
-                        </div>
+
                     </section>
                 </div>
             </div>
@@ -698,7 +501,7 @@
         const button = document.getElementById("submitBtn");
 
         // Biểu thức chính quy kiểm tra tên hợp lệ
-        const nameRegex = /^[a-zA-Z\s]+$/;
+        const nameRegex = /^[A-Za-zÀ-Ỹà-ỹ\s]+$/;
 
         if (name.length > 0 && !nameRegex.test(name.trim())) {
             nameError.textContent = "Tên không đuợc chứa số và các kí tự đặc biệt! ";

@@ -21,15 +21,15 @@
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
     <!-- Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css"/>
 
     <!-- Specific Page Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css" />
+    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css"/>
+    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css"/>
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme.css" />
@@ -56,6 +56,7 @@
             color: #FFF;
             border-color: #0088cc;
         }
+
         .table > thead > tr > th {
             background-color: #f5f5f5;
             border-bottom: 2px solid #0088cc;
@@ -68,6 +69,7 @@
             background-color: #006699;
             border-color: #006699;
         }
+
         .label-sm {
             font-size: 90%;
             padding: 3px 8px;
@@ -252,11 +254,11 @@
                                     <div class="pull-right">
                                         <form id="search-form" action="usermanagement" method="get" class="search nav-form">
                                             <div class="input-group input-search">
-                                                <input type="text" class="form-control" name="input"
+                                                <input type="text" class="form-control" name="input" 
                                                        placeholder="Tìm kiếm theo tên hoặc số điện thoại" value="${input}" >
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-primary" type="submit">
-                                                        <i class="fa fa-search"></i>
+
                                                     </button>
                                                 </span>
                                             </div>
@@ -265,7 +267,7 @@
                                 </div>
                             </div>
                         </header>
-
+                        
                         <div class="panel-body">
                             <div class="row mb-md">
                                 <div class="col-sm-6">
@@ -273,16 +275,18 @@
                                         <c:if test="${sessionScope.user.role.id == 1}">
                                             <div class="form-group mr-md">
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                                                    <span class="input-group-addon"><i
+                                                            class="fa fa-user-circle"></i></span>
                                                     <select id="role" name="role" class="form-control">
-                                                        <option ${roleId == -1 ? "selected" : ""} value="-1" >Các vai trò</option>
+                                                        <option ${roleId == -1 ? "selected" : ""} value="-1">Các vai
+                                                            trò
+                                                        </option>
                                                         <c:forEach items="${roles}" var="r">
-                                                        <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
-                                                            <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>
-                                                            <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>
-                                                            <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>
-
-                                                            </c:forEach>
+                                                            <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
+                                                                <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>
+                                                                <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>
+                                                            </option>
+                                                        </c:forEach>
 
                                                     </select>
                                                 </div>
@@ -329,6 +333,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <c:if test="${emptyList != null}">
+                                <div class="alert alert-info">
+                                    <i class="fa fa-info-circle mr-xs"></i> ${emptyList}
+                                </div>
+                            </c:if>
+                            <c:if test="${emptyList == null}">
 
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover mb-none">
@@ -403,26 +413,20 @@
                                             </td>
                                         </tr>
                                     </c:forEach>
-
+                                    </c:if>
                                     </tbody>
                                 </table>
                                 <c:if test="${not empty userPage}">
                                 <c:set var="c" value="${userPage.number}"></c:set>
                                 <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
-
-                                        <c:if test="${sessionScope.user.role.id == 1}">
-                                            <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
-                                        </c:if>
-                                        <c:if test="${sessionScope.user.role.id == 2}">
-                                            <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&storeId=${storeId}">Trước</a>
-                                        </c:if>
+                                        <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
                                     </li>
 
                                     <c:forEach begin="0" end="${userPage.totalPages - 1}" var="i">
                                         <c:if test="${i >= c - 1 && i <= c + 1}">
                                             <c:if test="${sessionScope.user.role.id == 1}">
-                                                <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a>
+                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a>
 
                                             </c:if>
                                             <c:if test="${sessionScope.user.role.id == 2}">
@@ -433,13 +437,11 @@
 
                                             </li>
                                         </c:if>
-                                        <c:if test="${i == c- 2 || i == c+ 2}">
-                                            <li><span>...</span></li>
-                                        </c:if>
+
                                     </c:forEach>
+                                    <c:if test="${i == c- 2 || i == c+ 2}">
+                                        <li><span>...</span></li>
                                     </c:if>
-
-
 
                                     <li class="page-item ${c== userPage.totalPages -1?'disabled':''} ">
                                         <c:if test="${sessionScope.user.role.id == 1}">
@@ -455,7 +457,7 @@
                                 </c:if>
 
                             </div>
-
+                            </c:if>
                         </div>
                     </section>
                 </div>
@@ -543,9 +545,9 @@
 
 
             const status = $(this).data('status');
-            //   const createdAt = $(this).data('createdAt');
+         //   const createdAt = $(this).data('createdAt');
             const createdBy = $(this).data('createdBy');
-            //  const updatedAt = $(this).data('updatedAt');
+          //  const updatedAt = $(this).data('updatedAt');
             const updatedBy = $(this).data('updatedBy');
             const userStores = $(this).data('userStores');
 
