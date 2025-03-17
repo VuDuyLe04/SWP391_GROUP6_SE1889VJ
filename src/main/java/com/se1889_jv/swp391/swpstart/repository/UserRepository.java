@@ -36,4 +36,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     Page<User> findUsersByActive(boolean active, Pageable pageable);
     Page<User> findUsersByRoleId(Long roleId,Pageable pageable);
     Page<User> findUsersByRoleIdAndActive(Long roleId, boolean active, Pageable pageable);
+
+
+    List<User> findAllByUserStoresIn(List<UserStore> userStores);
 }

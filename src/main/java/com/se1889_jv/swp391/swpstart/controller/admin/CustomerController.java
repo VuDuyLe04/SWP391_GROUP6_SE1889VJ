@@ -79,7 +79,26 @@ public class CustomerController {
         return "redirect:/customer";
     }
 
-//    @GetMapping("/customer")
+    @GetMapping("/customer/detail/{id}")
+    public String getCustomerDetail(@PathVariable("id") long id, Model model) {
+
+        // Check session
+        if (Utility.getUserInSession() == null) {
+            return "redirect:/login";
+        }
+
+        // Get customer by ID
+        Customer customer = customerService.getCustomerById(id);
+        if (customer == null) {
+            return "redirect:/customer";
+        }
+
+        // Add customer to model
+        model.addAttribute("customer", customer);
+        return "admin/customer/customerdetail";
+    }
+
+    //    @GetMapping("/customer")
 //    public String getCustomerTable(Model model ) {
 //        Store store = Utility.getStoreInSession();
 //        User user = Utility.getUserInSession();
@@ -171,6 +190,7 @@ public class CustomerController {
         }
 
 //        model.addAttribute("listCustomer", customers);
+
         return "admin/customer/table";
     }
 
@@ -208,5 +228,6 @@ public class CustomerController {
 
         return "admin/customer/table";
     }
+
 
 }

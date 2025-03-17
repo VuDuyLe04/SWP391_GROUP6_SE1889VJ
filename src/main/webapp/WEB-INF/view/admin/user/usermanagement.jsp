@@ -9,7 +9,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Dashboard | JSOFT Themes | JSOFT-Admin</title>
+    <title>Quản lí người dùng</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -252,7 +252,7 @@
                                     <div class="pull-right">
                                         <form id="search-form" action="usermanagement" method="get" class="search nav-form">
                                             <div class="input-group input-search">
-                                                <input type="text" class="form-control" name="input" 
+                                                <input type="text" class="form-control" name="input"
                                                        placeholder="Tìm kiếm theo tên hoặc số điện thoại" value="${input}" >
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-primary" type="submit">
@@ -265,7 +265,7 @@
                                 </div>
                             </div>
                         </header>
-                        
+
                         <div class="panel-body">
                             <div class="row mb-md">
                                 <div class="col-sm-6">
@@ -277,12 +277,12 @@
                                                     <select id="role" name="role" class="form-control">
                                                         <option ${roleId == -1 ? "selected" : ""} value="-1" >Các vai trò</option>
                                                         <c:forEach items="${roles}" var="r">
-                                                            <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
-                                                                <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>
-                                                                <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>
-                                                                <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>
+                                                        <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
+                                                            <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>
+                                                            <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>
+                                                            <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>
 
-                                                        </c:forEach>
+                                                            </c:forEach>
 
                                                     </select>
                                                 </div>
@@ -333,16 +333,16 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
-                                        <tr>
-                                            <th><i class="fa"></i>STT</th>
-                                            <th><i class="fa fa-user mr-xs"></i>Tên</th>
-                                            <th><i class="fa fa-phone mr-xs"></i>Số điện thoại</th>
-                                            <c:if test="${sessionScope.user.role.id == 1}">
-                                                <th><i class="fa fa-users mr-xs"></i>Vai trò</th>
-                                                <th><i class="fa fa-check-circle mr-xs"></i>Trạng thái</th>
-                                            </c:if>
-                                            <th><i class="fa fa-cogs mr-xs"></i>Hành động</th>
-                                        </tr>
+                                    <tr>
+                                        <th><i class="fa"></i>STT</th>
+                                        <th><i class="fa fa-user mr-xs"></i>Tên</th>
+                                        <th><i class="fa fa-phone mr-xs"></i>Số điện thoại</th>
+                                        <c:if test="${sessionScope.user.role.id == 1}">
+                                            <th><i class="fa fa-users mr-xs"></i>Vai trò</th>
+                                            <th><i class="fa fa-check-circle mr-xs"></i>Trạng thái</th>
+                                        </c:if>
+                                        <th><i class="fa fa-cogs mr-xs"></i>Hành động</th>
+                                    </tr>
                                     </thead>
                                     ${emptyList}
                                     <tbody>
@@ -543,9 +543,9 @@
 
 
             const status = $(this).data('status');
-         //   const createdAt = $(this).data('createdAt');
+            //   const createdAt = $(this).data('createdAt');
             const createdBy = $(this).data('createdBy');
-          //  const updatedAt = $(this).data('updatedAt');
+            //  const updatedAt = $(this).data('updatedAt');
             const updatedBy = $(this).data('updatedBy');
             const userStores = $(this).data('userStores');
 

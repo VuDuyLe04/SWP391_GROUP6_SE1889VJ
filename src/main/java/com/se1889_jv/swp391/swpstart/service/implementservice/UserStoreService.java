@@ -27,6 +27,11 @@ public class UserStoreService implements IUserStoreService {
     }
 
     @Override
+    public List<UserStore> getAllUserStoresByStoreIn(List<Store> stores) {
+        return this.userStoreRepository.findAllByStoreIn(stores);
+    }
+
+    @Override
     public UserStore findByUser_PhoneAndStore_CreatedBy(String phone, String storeId) {
         return userStoreRepository.findByUser_PhoneAndStore_CreatedBy(phone, storeId);
     }
@@ -45,4 +50,7 @@ public class UserStoreService implements IUserStoreService {
     public UserStore saveUserStore(UserStore userStore) {
        return userStoreRepository.save(userStore);
     }
+
+
+
 }

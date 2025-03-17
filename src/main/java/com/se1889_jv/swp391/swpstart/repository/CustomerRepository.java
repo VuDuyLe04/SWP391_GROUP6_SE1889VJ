@@ -35,6 +35,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     boolean existsByPhoneAndStore(String phone, Store store);
     boolean existsCustomerByNameAndPhone(String name, String phone);
 
+
+
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END " +
             "FROM Customer c " +
             "WHERE c.phone = :newPhone " +

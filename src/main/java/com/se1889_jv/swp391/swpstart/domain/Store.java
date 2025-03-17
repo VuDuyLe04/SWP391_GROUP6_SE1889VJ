@@ -42,8 +42,7 @@ public class Store {
     @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Ho_Chi_Minh")
     private Instant updatedAt;
     private String updatedBy;
-//    private Instant renewalDate;
-//    private Instant expirationDate;
+
     @Enumerated(EnumType.STRING)
     private StatusStoreEnum status;
 

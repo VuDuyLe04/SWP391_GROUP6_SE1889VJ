@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <header class="header">
     <div class="logo-container">
         <a href="../" class="logo">
@@ -39,6 +40,13 @@
             </div>
         </c:if>
 
+<%--    <c:if test="${sessionScope.user.role.name == 'OWNER'}">--%>
+<%--        <div class="notification">--%>
+<%--            Số dư: <fmt:formatNumber value="${sessionScope.user.balance}" type="currency"--%>
+<%--                                     currencySymbol="₫"/>--%>
+<%--        </div>--%>
+<%--    </c:if>--%>
+
         <span class="separator"></span>
 
         <div id="userbox" class="userbox">
@@ -73,7 +81,17 @@
                     <li>
                         <a role="menuitem" tabindex="-1" href="/profile"><i class="fa fa-user"></i> Thông tin cá nhân</a>
                     </li>
-
+                    <c:if test="${sessionScope.user.role.name == 'OWNER'}">
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="/payment"><i class="fa fa-money"></i> Nạp tiền</a>
+                        </li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="/payment/history"><i class="fa fa-history"></i> Lịch sử nạp tiền</a>
+                        </li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="/payment/history"><i class="fa fa-history"></i> Lịch sử thuê dịch vụ</a>
+                        </li>
+                    </c:if>
                     <li>
                         <form id="logoutForm" method="post" action="/logout">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

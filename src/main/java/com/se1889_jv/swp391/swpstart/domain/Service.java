@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.se1889_jv.swp391.swpstart.util.validator.annotation.ValidDouble;
 import com.se1889_jv.swp391.swpstart.util.validator.annotation.ValidInteger;
 import jakarta.persistence.*;
@@ -9,6 +10,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Instant;
 import java.util.List;
@@ -28,11 +32,19 @@ public class Service {
     @Column(columnDefinition = "MEDIUMTEXT")
     private String description;
 
-    @ValidDouble(message = "Giá dịch vụ phải lớn hơn bằng 0 và là số thập phân")
+    @ValidDouble(message = "Giá dịch vụ phải lớn hơn bằng 0")
     private Double price;
-    private boolean active;
+    private Boolean active;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Ho_Chi_Minh")
     private Instant createdAt;
     private String createdBy;
+    @UpdateTimestamp
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Ho_Chi_Minh")
     private Instant updatedAt;
     private String updatedBy;
 

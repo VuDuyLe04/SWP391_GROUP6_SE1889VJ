@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <style>
     /* Nút popup */
     .btn-getstarted {
@@ -69,28 +70,12 @@
                 <li><a href="#hero" class="active">Trang chủ</a></li>
                 <li><a href="#about">Giới thiệu</a></li>
                 <li><a href="#services">Dịch vụ</a></li>
-<%--                <li><a href="#portfolio">Portfolio</a></li>--%>
                 <li><a href="#team">Thành viên</a></li>
-<%--                <li class="dropdown"><a href="#"><span>Dropdown</span> <i--%>
-<%--                        class="bi bi-chevron-down toggle-dropdown"></i></a>--%>
-<%--                    <ul>--%>
-<%--                        <li><a href="#">Dropdown 1</a></li>--%>
-<%--                        <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i--%>
-<%--                                class="bi bi-chevron-down toggle-dropdown"></i></a>--%>
-<%--                            <ul>--%>
-<%--                                <li><a href="#">Deep Dropdown 1</a></li>--%>
-<%--                                <li><a href="#">Deep Dropdown 2</a></li>--%>
-<%--                                <li><a href="#">Deep Dropdown 3</a></li>--%>
-<%--                                <li><a href="#">Deep Dropdown 4</a></li>--%>
-<%--                                <li><a href="#">Deep Dropdown 5</a></li>--%>
-<%--                            </ul>--%>
-<%--                        </li>--%>
-<%--                        <li><a href="#">Dropdown 2</a></li>--%>
-<%--                        <li><a href="#">Dropdown 3</a></li>--%>
-<%--                        <li><a href="#">Dropdown 4</a></li>--%>
-<%--                    </ul>--%>
-<%--                </li>--%>
+
                 <li><a href="#contact">Liên hệ</a></li>
+                <c:if test="${sessionScope.user.role.name == 'OWNER'}">
+                    <li><a href="/payment">Nạp tiền</a></li>
+                </c:if>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
@@ -102,6 +87,10 @@
 
                 <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                     <a class="btn-getstarted" href="/dashboard">Quản lý các cửa hàng</a>
+                    <a class="btn-getstarted" href="#">
+                        Số dư: <fmt:formatNumber value="${sessionScope.user.balance}" type="currency"
+                                                 currencySymbol="₫"/>
+                    </a>
                 </c:if>
 
                 <c:if test="${sessionScope.user.role.name == 'STAFF'}">

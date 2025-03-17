@@ -80,7 +80,7 @@
 
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
-                            <a>
+                            <a href="/stores">
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <span>Cửa hàng</span>
                             </a>
@@ -93,6 +93,24 @@
                             <a href="/service/table">
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <span>Dịch vụ</span>
+                            </a>
+
+                        </li>
+                    </c:if>
+                    <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
+                        <li>
+                            <a href="/transpayments">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <span>Giao dịch thanh toán  </span>
+                            </a>
+
+                        </li>
+                    </c:if>
+                    <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
+                        <li>
+                            <a href="/transervices">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <span>Giao dịch dịch vụ </span>
                             </a>
 
                         </li>

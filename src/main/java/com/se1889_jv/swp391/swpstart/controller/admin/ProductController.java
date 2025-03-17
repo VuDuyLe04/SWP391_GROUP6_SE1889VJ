@@ -4,31 +4,39 @@ import com.se1889_jv.swp391.swpstart.domain.Product;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.WareHouse;
+import com.se1889_jv.swp391.swpstart.service.UploadImageService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.WareHouseService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class
-ProductController {
+public class ProductController {
     @Autowired
     private ProductService productService;
-
     @Autowired
     private WareHouseService wareHouseService;
+    @Autowired
+    private UploadImageService uploadImageService;
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/product")
     public String getListProductPage(
             @RequestParam(defaultValue = "0") int page,
@@ -46,7 +54,7 @@ ProductController {
             if("0".equals(store)) {
                 productPage = productService.getAllProducts(pageable);
             } else {
-                Long storeId = Long.parseLong(store);
+                Long storeId =  Long.parseLong(store);
                 productPage = productService.getProductByStoreId(storeId, pageable);
             }
             model.addAttribute("listProduct", productPage.getContent());
@@ -65,13 +73,15 @@ ProductController {
 
 
     @GetMapping("/product/createProduct")
-    public String getCreateProductPage(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public String getCreateProductPage(
+            Model model, HttpSession session
+    ) {
+        User userSession = Utility.getUserInSession();
+        User user = this.userService.findById(userSession.getId());
 
         if (user == null) {
             return "redirect:/login";
         }
-
         List<Store> stores = Utility.getListStoreOfOwner(user);
         List<WareHouse> wareHouses = wareHouseService.getAllWareHouseByListStore(stores);
         model.addAttribute("product", new Product());
@@ -81,11 +91,29 @@ ProductController {
     }
 
     @PostMapping("/product/create")
-    public String createProduct(@ModelAttribute("product") Product product) {
+    public String createProduct(
+            @Valid @ModelAttribute("product") Product product,
+            BindingResult result,
+            Model model,
+            HttpSession session,
+            @RequestParam("imageFile") MultipartFile file
+    ) {
+        if (result.hasErrors()) {
+
+            User userSession = Utility.getUserInSession();
+            User user = this.userService.findById(userSession.getId());
+            List<Store> stores = Utility.getListStoreOfOwner(user);
+            List<WareHouse> wareHouses = wareHouseService.getAllWareHouseByListStore(stores);
+            model.addAttribute("store1", product.getStore());
+            model.addAttribute("listStore", stores);
+            model.addAttribute("wareHouses", wareHouses);
+            return "admin/product/create";
+        }
+        String image = this.uploadImageService.handleSaveUploadFile(file, "images");
+        product.setImage(image);
         productService.saveProduct(product);
         return "redirect:/product";
     }
-
 
 
     @PostMapping("/product/delete")
@@ -106,16 +134,26 @@ ProductController {
         return "admin/product/update";
     }
 
+
     @PostMapping("/product/update")
-    public String updateProduct(@ModelAttribute("product") Product product, RedirectAttributes redirectAttributes) {
+    public String updateProduct(@ModelAttribute("product") @Valid Product product,
+                                BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("product", product); // Giữ ttin
+            return "admin/product/update";
+        }
+
         try {
             productService.updateProduct(product);
-            redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully.");
+            model.addAttribute("successMessage", "Cập nhật sản phẩm thành công.");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error updating product: " + e.getMessage());
+            model.addAttribute("errorMessage", "Lỗi khi cập nhật sản phẩm: " + e.getMessage());
         }
         return "redirect:/product";
     }
+
+
+
 
     @GetMapping("/product/search")
     public String searchProduct(

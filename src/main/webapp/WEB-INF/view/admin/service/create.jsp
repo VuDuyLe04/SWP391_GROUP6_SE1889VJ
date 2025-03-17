@@ -41,7 +41,15 @@
 
     <!-- Head Libs -->
     <script src="/client/auth/assets/vendor/modernizr/modernizr.js"></script>
+    <script src="https://cdn.tiny.cloud/1/lvgs67xu2g25m7j6ktwusssxob0p0q7tyxczpuz4oc9m764u/tinymce/5/tinymce.min.js"></script>
 
+    <script>
+        tinymce.init({
+            selector: '#address', // ID của textarea
+            plugins: 'advlist autolink lists link image charmap print preview anchor',
+            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image'
+        });
+    </script>
 </head>
 <body>
 
@@ -58,7 +66,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Tạo mới dịch vụ</h2>
+                <h2>Tạo dịch vụ mới</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -67,7 +75,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Tạo mới dịch vụ</span></li>
+                        <li><span>Tạo dịch vụ mới</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -85,7 +93,7 @@
 
                             </div>
 
-                            <h2 class="panel-title">Tạo mới dịch vụ</h2>
+                            <h2 class="panel-title">Tạo dịch vụ mới</h2>
                         </header>
                         <div class="panel-body">
                             <form:form modelAttribute="service" class="form-horizontal form-bordered" method="post" action="/service/create">
@@ -119,28 +127,32 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputHelpText">Thời gian gói dịch vụ</label>
-                                    <div class="col-md-6">
-                                        <form:input path="durationMonths" class="form-control ${not empty errorDurationMonths ? 'is-invalid' : ''}" id="inputHelpText" />
+                                    <div class="col-md-1">
+                                        <form:input path="durationMonths" type="number"  class="form-control ${not empty errorDurationMonths ? 'is-invalid' : ''}" id="inputHelpText" />
                                             ${errorDurationMonths}
+                                    </div>
+                                    <label class="col-md-2 control-label" for="inputReadOnly">Giá dịch vụ</label>
+                                    <div class="col-md-3">
+                                        <form:input path="price" type="number" class="form-control ${not empty errorPrice ? 'is-invalid' : ''}" id="inputReadOnly" />
+                                            ${errorPrice}
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" >Mô tả chi tiết</label>
                                     <div class="col-md-6">
-                                        <form:input path="description" class="form-control ${not empty errorDescription ? 'is-invalid' : ''}"  />
+                                        <form:textarea path="description" class="form-control ${not empty errorDescription ? 'is-invalid' : ''}"  id="address"/>
                                             ${errorDescription}
                                     </div>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputReadOnly">Giá dịch vụ</label>
-                                    <div class="col-md-6">
-                                        <form:input path="price" class="form-control ${not empty errorPrice ? 'is-invalid' : ''}" id="inputReadOnly" />
-                                        ${errorPrice}
+                                    <label class="col-md-3 control-label" >Trạng thái</label>
+                                    <div class="col-md-2">
+                                        <form:select path="active" class="form-control">
+                                            <form:option value="true" >Active</form:option>
+                                            <form:option value="false">Banned</form:option>
+                                        </form:select>
                                     </div>
                                 </div>
-
-
 
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-3">
