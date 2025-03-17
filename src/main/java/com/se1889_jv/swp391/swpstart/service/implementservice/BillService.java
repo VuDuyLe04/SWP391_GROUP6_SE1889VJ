@@ -1,16 +1,20 @@
 package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 import com.se1889_jv.swp391.swpstart.domain.Bill;
+import com.se1889_jv.swp391.swpstart.domain.BillDetail;
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
+import com.se1889_jv.swp391.swpstart.domain.dto.BillRequest;
 import com.se1889_jv.swp391.swpstart.exception.AppException;
 import com.se1889_jv.swp391.swpstart.exception.ErrorException;
+import com.se1889_jv.swp391.swpstart.repository.BillDetailRepository;
 import com.se1889_jv.swp391.swpstart.repository.BillRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class BillService implements IBillService {
@@ -21,6 +25,8 @@ public class BillService implements IBillService {
     private StoreService storeService;
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private BillDetailRepository billDetailRepository;
     @Override
     public Bill createBill(BillDTO billDTO) {
         Bill bill = new Bill();
@@ -53,6 +59,45 @@ public class BillService implements IBillService {
     public Bill createBillForFirstDetail(Bill bill) {
         return billRepository.save(bill);
     }
+
+    @Override
+    public void updateTotalPriceBill(double totalPrice, Long billId) {
+        Optional<Bill> bill = billRepository.findById(billId);
+        if (bill.isPresent()) {
+            Bill b = bill.get();
+            b.setTotalBillPrice(totalPrice);
+            billRepository.save(b);
+        } else {
+            throw new AppException(ErrorException.BILL_NOT_FOUND);
+        }
+    }
+
+    @Override
+    public double getTotalPriceBill(Long billId) {
+        return billDetailRepository.findAllByBillId(billId).stream().map(BillDetail::getTotalProductPrice).reduce(0.0, Double::sum);
+    }
+
+    @Override
+    public Bill updateBill(BillRequest request, Long billId) {
+        Optional<Bill> bill = billRepository.findById(billId);
+        if (bill.isPresent()) {
+
+            Bill b = bill.get();
+            b.setNote(request.getDescription());
+            if(request.getCustomerInfor().isEmpty()){
+                b.setCustomer(null);
+            } else {
+                Customer c = customerService.getCustomerByNameAndPhone(request.getCustomerInfor());
+                b.setCustomer(c);
+            }
+
+            b.setTotalBillPrice(getTotalPriceBill(billId));
+            return billRepository.save(b);
+        } else {
+            throw new AppException(ErrorException.BILL_NOT_FOUND);
+        }
+    }
+
     public Bill findBillById(Long id) {
         return billRepository.findById(id).orElseThrow(() ->  new AppException(ErrorException.BILL_NOT_FOUND));
     }

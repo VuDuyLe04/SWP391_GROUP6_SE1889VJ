@@ -116,9 +116,9 @@ public class CustomerService implements ICustomerService {
     @Override
     public Customer getCustomerByNameAndPhone(String infor) {
         String [] part  = infor.split(" - ");
-        String name = part[0].trim();
-        String phone = part[1].trim();
-        return customerRepository.getCustomersByNameAndPhone(name,phone);
+        String phone = part[0].trim();
+        String name = part[1].trim();
+        return customerRepository.getCustomersByPhoneAndName(phone,name);
     }
 
     @Override

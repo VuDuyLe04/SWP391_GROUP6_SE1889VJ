@@ -186,47 +186,47 @@
                 </div>
 
                 <div class="bill-summary">
-                    <div class="summary-row">
-                        <span>Tổng tiền hàng</span>
-                        <span>200,000đ</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Giảm giá</span>
-                        <span class="text-danger">-10,000đ</span>
-                    </div>
+
                     <div class="summary-row">
                         <span class="fw-bold">Khách cần trả</span>
-                        <span class="fw-bold text-success">190,000đ</span>
+                        <span class="fw-bold text-success">0đ</span>
                     </div>
                     <div class="mb-3 position-relative">
-                        <label for="search-phone" class="form-label">Khách hàng</label>
-                        <div class="d-flex">
-                            <input name="customerInformation" type="text" class="form-control" id="search-phone" placeholder="Nhập số điện thoại" >
-                            <button id="add-customer-btn" class="btn btn-outline-primary ms-2" type="button" data-bs-toggle="modal" data-bs-target="#customerModal">
-                                <i class="bi bi-plus-circle">+</i>
-                            </button>
-                        </div>
-                        <div id="suggestion-box" class="border bg-white mt-1" style="display: none; position: absolute;"></div>
+                    <label for="search-phone" class="form-label">Khách hàng</label>
+                    <div class="d-flex">
+                        <input name="customerInformation" type="text" class="form-control" id="search-phone" placeholder="Nhập số điện thoại">
+                        <button id="add-customer-btn" class="btn btn-outline-primary ms-2" type="button" data-bs-toggle="modal" data-bs-target="#customerModal">
+                            <i class="bi bi-plus-circle">+</i>
+                        </button>
                     </div>
-                    <textarea class="form-control mt-3" rows="2" placeholder="Ghi chú đơn hàng..."></textarea>
+                    <div id="suggestion-box" class="border bg-white mt-1" style="display: none; position: absolute;"></div>
+                </div>
+
+                    <!-- Thẻ hiển thị số dư -->
+                    <div id="debt-info" class="alert mt-2" style="display: none;"></div>
+
+                    <textarea id="description" class="form-control mt-3" rows="2" placeholder="Ghi chú đơn hàng..."></textarea>
                     <div class="mt-4">
                         <div class="d-flex align-items-center">
-
-                            <select class="form-select me-3" id="paymentOptions"  style="width: 200px;">
+                            <select class="form-select me-3" id="paymentOptions" style="width: 200px;">
                                 <option selected disabled>Chọn hành động</option>
-                                <option value="debt">Trả tiền nợ</option>
+
                                 <option value="order">Trả đơn hàng</option>
                                 <option value="all">Trả tất cả</option>
+                                <option value="partial">Trả một phần</option>
                             </select>
-
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="bocVacCheckbox">
-                                <label class="form-check-label fw-bold text-primary" for="bocVacCheckbox">
-                                    Bốc vác
-                                </label>
-                            </div>
                         </div>
                     </div>
+
+                    <!-- Ô nhập tiền -->
+                    <div id="paymentInputs" class="mt-3" style="display: none;">
+                        <label for="amountDue" class="form-label">Số tiền phải trả</label>
+                        <input type="text" class="form-control" id="amountDue" disabled>
+
+                        <label for="customerPayment" class="form-label mt-2">Số tiền khách trả</label>
+                        <input type="text" class="form-control" id="customerPayment">
+                    </div>
+
                     <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -259,7 +259,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="payment-button">
+                    <button class="payment-button" id="create-bill">
                         THANH TOÁN
                     </button>
                 </div>

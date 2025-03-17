@@ -235,28 +235,28 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("search-phone");
     const suggestionBox = document.getElementById("suggestion-box");
+    const debtInfo = document.getElementById("debt-info");
+    const paymentOptions = document.getElementById("paymentOptions");
+    const paymentInputs = document.getElementById("paymentInputs");
+    const amountDue = document.getElementById("amountDue");
+    const customerPayment = document.getElementById("customerPayment");
+    const billTotalElement = document.querySelector(".bill-summary .text-success");
+    let customerBalance = 0;
 
-    // Hàm gọi API tìm kiếm khách hàng theo số điện thoại
     async function searchCustomer(phone) {
         if (phone.length < 3) {
             suggestionBox.style.display = "none";
             return;
         }
-
         try {
             const response = await fetch(`/api/customers/search?phone=${phone}`);
-            if (!response.ok) {
-                throw new Error(`API trả về lỗi: ${response.status}`);
-            }
-
+            if (!response.ok) throw new Error(`API trả về lỗi: ${response.status}`);
             const result = await response.json();
-            console.log(result);
-            // Kiểm tra nếu `result.data` không phải là một mảng
+            console.log(result)
             if (!result.data || !Array.isArray(result.data)) {
-                console.error("Lỗi: API không trả về danh sách khách hàng hợp lệ!", result);
+                console.error("API không trả về danh sách khách hàng hợp lệ!", result);
                 return;
             }
-
             showSuggestions(result.data);
         } catch (error) {
             console.error("Lỗi khi tìm khách hàng:", error);
@@ -264,39 +264,178 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function showSuggestions(customers) {
-        suggestionBox.innerHTML = ""; // Xóa dữ liệu cũ
+        suggestionBox.innerHTML = "";
         if (customers.length === 0) {
             suggestionBox.style.display = "none";
             return;
         }
-
         customers.slice(0, 5).forEach(customer => {
             const option = document.createElement("div");
             option.classList.add("suggestion-item", "p-2", "border-bottom");
             option.textContent = `${customer.phone} - ${customer.name}`;
             option.style.cursor = "pointer";
-
-            // Khi click vào một gợi ý -> Điền vào ô input
-            option.addEventListener("click", () => {
+            option.addEventListener("click", async () => {
                 searchInput.value = `${customer.phone} - ${customer.name}`;
-                suggestionBox.style.display = "none"; // Ẩn gợi ý sau khi chọn
+                suggestionBox.style.display = "none";
+                console.log()
+                await getCustomerBalance(customer.phone);
             });
-
             suggestionBox.appendChild(option);
         });
-
-        suggestionBox.style.display = "block"; // Hiển thị box
+        suggestionBox.style.display = "block";
     }
 
+    async function getCustomerBalance(phone) {
+        try {
+            const response = await fetch(`/api/getbalance?phone=${phone}`);
+            if (!response.ok) throw new Error(`Lỗi API: ${response.status}`);
+            const result = await response.json();
+            if (typeof result.data !== "number") {
+                console.error("API không trả về số dư hợp lệ!", result);
+                return;
+            }
+            customerBalance = result.data;
+            updateDebtInfo();
+            updatePaymentOptions();
+            updateAmountDue();
+        } catch (error) {
+            console.error("Lỗi khi lấy số dư khách hàng:", error);
+        }
+    }
+
+    function updateDebtInfo() {
+        if (customerBalance > 0) {
+            debtInfo.textContent = `Khách còn nợ: ${customerBalance.toLocaleString()} VND`;
+            debtInfo.className = "alert alert-danger";
+        } else {
+            debtInfo.textContent = "Không có nợ!";
+            debtInfo.className = "alert alert-secondary";
+        }
+        debtInfo.style.display = "block";
+    }
+
+    function updatePaymentOptions() {
+        paymentOptions.innerHTML = "";
+
+        const defaultOption = document.createElement("option");
+        defaultOption.textContent = "Chọn hành động";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        paymentOptions.appendChild(defaultOption);
+
+        const orderOption = document.createElement("option");
+        orderOption.value = "order";
+        orderOption.textContent = "Trả đơn hàng";
+        paymentOptions.appendChild(orderOption);
+
+        if (searchInput.value.trim() !== "" && customerBalance !== 0) {
+            const allOption = document.createElement("option");
+            allOption.value = "all";
+            allOption.textContent = "Trả tất cả";
+            paymentOptions.appendChild(allOption);
+
+            const partialOption = document.createElement("option");
+            partialOption.value = "partial";
+            partialOption.textContent = "Trả một phần";
+            paymentOptions.appendChild(partialOption);
+        }
+    }
+
+    function updateAmountDue() {
+        const selectedOption = paymentOptions.value;
+        const billTotal = getAmount(billTotalElement);
+        let amountToPay = 0;
+        let allowInput = false;
+
+        switch (selectedOption) {
+            case "order":
+                amountToPay = billTotal;
+                break;
+            case "all":
+                amountToPay = billTotal + customerBalance;
+                break;
+            case "partial":
+                amountToPay = billTotal;
+                allowInput = true;
+                break;
+            default:
+                paymentInputs.style.display = "none";
+                return;
+        }
+        paymentInputs.style.display = "block";
+        amountDue.value = formatCurrency(amountToPay);
+        customerPayment.value = allowInput ? "" : formatCurrency(amountToPay);
+        customerPayment.disabled = !allowInput;
+    }
+
+    function getAmount(element) {
+        return element ? parseInt(element.textContent.replace(/[^\d]/g, ""), 10) || 0 : 0;
+    }
+
+    function formatCurrency(amount) {
+        return amount.toLocaleString("vi-VN") + " VND";
+    }
 
     searchInput.addEventListener("input", () => {
-        const phone = searchInput.value.trim();
-        searchCustomer(phone);
+        searchCustomer(searchInput.value.trim());
     });
-
+    paymentOptions.addEventListener("change", updateAmountDue);
     document.addEventListener("click", function (event) {
         if (!suggestionBox.contains(event.target) && event.target !== searchInput) {
             suggestionBox.style.display = "none";
         }
     });
+
+    updatePaymentOptions();
 });
+
+
+function getBillRequest() {
+    const descriptionInput = document.getElementById("description");
+    const customerInput = document.getElementById("search-phone");
+    const typeSelect = document.getElementById("paymentOptions");
+
+    return {
+        description: descriptionInput ? descriptionInput.value.trim() : "",
+        customerInfor: customerInput ? customerInput.value.trim() : "",
+        type: typeSelect ? typeSelect.value : "",
+        isCreateDebt: typeSelect && typeSelect.value !== "order",
+    };
+}
+
+// Ví dụ sử dụng
+async function updateFinalBill() {
+    const billRequest = getBillRequest(); // Lấy dữ liệu từ giao diện
+    console.log(billRequest);
+    try {
+        const response = await fetch("/api/updatefinalbill", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(billRequest),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert("Cập nhật hóa đơn thành công!");
+            location.reload();
+        } else {
+            alert("Lỗi cập nhật hóa đơn: " + result.message);
+        }
+    } catch (error) {
+        console.error("Lỗi khi gửi yêu cầu cập nhật hóa đơn:", error);
+        alert("Đã xảy ra lỗi trong quá trình gửi yêu cầu!");
+    }
+}
+
+// Gọi hàm khi nhấn nút cập nhật
+document.getElementById("create-bill").addEventListener("click", updateFinalBill);
+
+
+
+
+
+
+
+

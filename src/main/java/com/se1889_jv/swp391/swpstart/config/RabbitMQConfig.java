@@ -12,9 +12,9 @@ import java.util.Map;
 
 @Configuration
 public class RabbitMQConfig {
-    public static final String REQUEST_QUEUE = "billDetailRequestQueue";
-    public static final String RESPONSE_QUEUE = "billDetailResponseQueue";
+
     public static final String BILL_QUEUE = "BILL_QUEUE";
+    public static final String DEBT_QUEU = "DEBT_QUEU";
     @Bean
     public Jackson2JsonMessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
@@ -27,21 +27,19 @@ public class RabbitMQConfig {
     }
 
 
-    @Bean
-    public Queue requestQueue() {
-        return new Queue(REQUEST_QUEUE, true);
-    }
 
-    @Bean
-    public Queue responseQueue() {
-        return new Queue(RESPONSE_QUEUE, true);
-    }
 
     @Bean
     public Queue billQueue() {
         Map<String, Object> args = new HashMap<>();
         args.put("x-max-priority", 1);
         return new Queue(BILL_QUEUE, true, false, false, args);
+    }
+    @Bean
+    public Queue debtQueue() {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-max-priority", 1);
+        return new Queue(DEBT_QUEU, true, false, false, args);
     }
 
 }

@@ -269,3 +269,11 @@ body {
     padding: 10px;
     cursor: pointer;
 }
+#bill-items {
+    max-height: 400px; /* Chiều cao tối đa */
+    overflow-y: auto; /* Thanh cuộn khi nội dung quá dài */
+    border: 1px solid #ddd; /* Viền nhẹ để phân tách */
+    padding: 10px; /* Khoảng cách bên trong */
+
+    border-radius: 5px; /* Bo góc nhẹ */
+}

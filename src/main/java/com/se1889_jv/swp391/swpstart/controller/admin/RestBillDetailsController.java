@@ -38,10 +38,9 @@ public class RestBillDetailsController {
     RabbitTemplate rabbitTemplate;
     @Autowired
     ProductService productService;
-    @GetMapping("")
-    public String hello() {
-        return "Hello World";
-    }
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/addBillDetail")
     public ApiResponse<String> addBillDetail(@RequestBody BillDetailRequest billDetail, HttpSession session) {
         Long billId = (Long) session.getAttribute("currentBillId");
@@ -192,5 +191,32 @@ public class RestBillDetailsController {
 
         return response;
     }
-    
+
+    @GetMapping("gettotalprice/{id}")
+    public ApiResponse<Double> getTotalPrice(@PathVariable("id") Long billId) {
+        ApiResponse<Double> response = new ApiResponse<>();
+        response.setCode(200);
+        response.setMessage("Success");
+        response.setData(billDetailService.getTotalPrice(billId));
+        return response;
+    }
+    @GetMapping("getbalance")
+    public ApiResponse<Double> getBalance(@RequestParam String phone) {
+        ApiResponse<Double> response = new ApiResponse<>();
+        response.setCode(200);
+        response.setMessage("Success");
+        response.setData(userService.getBalanceFromUser(phone));
+        return response;
+    }
+    @PutMapping("updatefinalbill")
+    public ApiResponse<Bill> updateBill(@RequestBody BillRequest request, HttpSession session) {
+        Long billId = (Long) session.getAttribute("currentBillId");
+        ApiResponse<Bill> response = new ApiResponse<>();
+        response.setCode(200);
+        response.setMessage("Success");
+        response.setData(billService.updateBill(request, billId));
+        session.removeAttribute("currentBillId");
+        return response;
+    }
+
 }

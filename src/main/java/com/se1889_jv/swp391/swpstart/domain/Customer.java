@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import com.se1889_jv.swp391.swpstart.util.validator.annotation.ValidPhone;
 import jakarta.persistence.*;
@@ -41,6 +42,7 @@ public class Customer {
     private List<DebtReceipt> debtReceipts;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Bill> bills;
     // tự động thêm khi tạo
     @PrePersist

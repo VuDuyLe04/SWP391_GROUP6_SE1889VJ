@@ -117,6 +117,11 @@ public class UserService implements IUserService {
         return this.userRepository.findUsersByRoleIdAndActive(id, active,pageable);
     }
 
+    @Override
+    public Double getBalanceFromUser(String phone) {
+        return userRepository.getBalanceByPhone(phone);
+    }
+
 
     @Override
     public List<UserStore> getAllUserStores(User user) {

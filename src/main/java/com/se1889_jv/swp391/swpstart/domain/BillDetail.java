@@ -54,4 +54,6 @@ public class BillDetail {
     @JsonBackReference
     private Bill bill;
 
+    private String packagingName;
+    private double quantityPerPackage;
 }

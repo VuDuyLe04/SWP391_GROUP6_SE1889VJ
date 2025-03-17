@@ -79,14 +79,13 @@ async function addBillDetail(button) {
             await new Promise(resolve => setTimeout(resolve, 300));
 
             await loadBillDetails();
+            getBillDetailsAndCalculate();
         } else {
 
             showToast(responseData.message, false)
         }
-
     } catch (error) {
-        console.error("Lỗi khi thêm chi tiết hóa đơn:", error);
-        alert("⚠️ Đã xảy ra lỗi. Vui lòng thử lại!");
+        // console.error("Lỗi khi thêm chi tiết hóa đơn:", error);
     }
 }
 
@@ -129,12 +128,12 @@ async function loadBillDetails() {
 
         <!-- Giảm giá -->
         <div class="col-2 text-danger text-center">
-            <span class="text-nowrap">Giảm: ${detail.discount}đ</span>
+            <span class="text-nowrap">Gía bán: ${detail.actualSellPrice}đ</span>
         </div>
 
         <!-- Tổng giá -->
         <div class="col-2 fw-bold text-end">
-            ${detail.totalPrice ? detail.totalPrice + "đ" : "0đ"}
+            ${detail.totalProductPrice + "đ" }
         </div>
 
         <!-- Nút xóa -->
@@ -152,7 +151,7 @@ async function loadBillDetails() {
             billDetailsContainer.appendChild(billItem);
         });
 
-
+        getBillDetailsAndCalculate()
 
     } catch (error) {
         console.error("Lỗi khi tải danh sách hóa đơn:", error);
@@ -176,12 +175,12 @@ async function removeBillDetail(id) {
             await new Promise(resolve => setTimeout(resolve, 300));
 
             await loadBillDetails();
+            getBillDetailsAndCalculate();
         } else {
             alert(billData.message || "Có lỗi xảy ra khi xóa chi tiết hóa đơn.");
         }
     } catch (error) {
-        console.error("Lỗi khi xóa chi tiết hóa đơn:", error);
-        alert("Không thể kết nối đến máy chủ.");
+        // console.error("Lỗi khi xóa chi tiết hóa đơn:", error);
     }
 }
 
@@ -191,7 +190,7 @@ async function updateQuantity(billDetailId, newQuantity, inputElement, oldQuan) 
     // Kiểm tra số lượng hợp lệ
     if (newQuantity < 1) {
         showToast("Số lượng không hợp lệ!", false);
-        inputElement.value = oldQuantity; // Khôi phục giá trị cũ
+        inputElement.value = oldQuan; // Khôi phục giá trị cũ
         return;
     }
 
@@ -207,15 +206,57 @@ async function updateQuantity(billDetailId, newQuantity, inputElement, oldQuan) 
             showToast("Cập nhật thành công!", true);
             inputElement.dataset.oldValue = newQuantity;
             await loadBillDetails();
+            getBillDetailsAndCalculate();
         } else {
             showToast("Cập nhật thất bại: " + data.message, false);
             inputElement.value = oldQuan;
         }
     } catch (error) {
+        console.log(error);
         showToast("Lỗi kết nối! Hãy thử lại.", false);
-        inputElement.value = oldQuantity;
-        console.error("Lỗi kết nối khi cập nhật số lượng:", error);
+        inputElement.value = oldQuan;
+        // console.error("Lỗi kết nối khi cập nhật số lượng:", error);
     }
 }
+function getBillDetailsAndCalculate() {
+    let billDetails = [];
+    let totalPrice = 0;
+    let totalDiscount = 0;
+
+    document.querySelectorAll(".container .row").forEach(row => {
+        let nameProduct = row.querySelector("h6").textContent.trim();
+        let packageType = row.querySelector("small").textContent.replace("Loại: ", "").trim();
+        let quantity = parseInt(row.querySelector("input[type='number']").value);
+        let listedPrice = parseInt(row.querySelector(".text-nowrap").textContent.replace("x ", "").replace("đ", "").replace(/,/g, "").trim());
+        let discount = parseInt(row.querySelector(".text-danger span").textContent.replace("Giảm: ", "").replace("đ", "").replace(/,/g, "").trim());
+        let totalProductPrice = parseInt(row.querySelector(".fw-bold.text-end").textContent.replace("đ", "").replace(/,/g, "").trim());
+
+        billDetails.push({
+            nameProduct,
+            packageType,
+            quantity,
+            listedPrice,
+            discount,
+            totalProductPrice
+        });
+
+        totalPrice += totalProductPrice;
+        totalDiscount += discount;
+    });
+
+    let totalPayable = totalPrice - totalDiscount;
+
+    // Cập nhật vào giao diện
+    document.querySelector(".summary-row:nth-child(1) span:nth-child(2)").textContent = totalPrice.toLocaleString() + "đ";
+
+    return {
+        billDetails,
+        totalPrice,
+        totalDiscount,
+        totalPayable
+    };
+}
+
+
 
 

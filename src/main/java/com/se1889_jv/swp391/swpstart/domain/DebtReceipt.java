@@ -23,7 +23,7 @@ public class DebtReceipt {
     private String debtReason;
     private Instant createdAt;
     private String createdBy;
-
+    private Boolean isProcess;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

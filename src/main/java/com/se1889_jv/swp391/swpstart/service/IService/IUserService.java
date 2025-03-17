@@ -30,4 +30,6 @@ public interface IUserService {
     Page<User> getUsersByActive(boolean active, Pageable pageable);
 
     Page<User> getUsersByRoleIDAndActive(Long id, boolean active, Pageable pageable);
+
+    Double getBalanceFromUser(String phone);
 }
