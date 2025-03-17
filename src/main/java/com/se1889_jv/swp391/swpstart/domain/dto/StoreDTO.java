@@ -26,9 +26,6 @@ public class StoreDTO {
     public StatusStoreEnum getStatusEnum() {
         return StatusStoreEnum.valueOf(status.toUpperCase());
     }
-    public String getName(){
-        return StringUtils.formatName(name);
-    }
     public String getAddress(){
         return StringUtils.formatName(address);
     }

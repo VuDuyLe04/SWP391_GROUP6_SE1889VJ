@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.swing.text.html.Option;
@@ -26,5 +28,7 @@ public interface StoreRepository extends JpaRepository<Store, Long>, JpaSpecific
             String createdBy2, StatusStoreEnum status2, String address,
             Pageable pageable);
     Page<Store> findByStatusAndCreatedBy(StatusStoreEnum status,String createdBy, Pageable pageable);
-    Store findByName(String name);
+
+    Store findByNameAndCreatedBy( String name, String createdBy);
+
 }

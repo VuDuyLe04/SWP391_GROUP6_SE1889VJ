@@ -58,7 +58,7 @@ public class    StoreController {
         User user1 = userService.findById(user.getId());
         List<Store> stores = Utility.getListStoreOfOwner(user1);
         for(Store store : stores) {
-            if (store.getName().equalsIgnoreCase(storeDTO.getName())) {
+            if (store.getName().equals(storeDTO.getName())) {
                 model.addAttribute("StoreDTO", storeDTO);
                 model.addAttribute("nameError", "Tên cửa hàng đã tồn tại!");
                 return "admin/store/createstore";
@@ -96,16 +96,12 @@ public class    StoreController {
         }
         User user = Utility.getUserInSession();
         String userId = String.valueOf(user.getId());
-        Page<Store> stores;
+        Page<Store> stores = null;
         try {
             if (input != null && !input.isEmpty()) {
+                input = input.trim();
                 stores = storeService.findStoresbyNameOrAddressOfOwner(userId, input, userId, input, pageable);
-                if (stores.isEmpty()) {
-                    // Nếu không tìm thấy kết quả, lấy tất cả stores và thêm thông báo
-                    stores = storeService.findStoresByCreatedBy(userId, pageable);
-                    model.addAttribute("searchMessage", "Không tìm thấy cửa hàng phù hợp với từ khóa: " + input);
-                }
-                else if (status != null && !status.isEmpty() && (status.equals("ACTIVE") || status.equals("INACTIVE"))){
+              if (status != null && !status.isEmpty() && (status.equals("ACTIVE") || status.equals("INACTIVE"))){
                     stores = storeService.findStoresByStatusAndNameOrAdress(userId,StatusStoreEnum.valueOf(status),
                             input,userId,StatusStoreEnum.valueOf(status),input,pageable);
                 }
@@ -117,8 +113,6 @@ public class    StoreController {
                 else stores = storeService.findStoresByCreatedBy(userId, pageable);
             }
         } catch (Exception e) {
-            // Xử lý lỗi nếu có
-            stores = storeService.findStoresByCreatedBy(userId, pageable);
             model.addAttribute("errorMessage", "Đã xảy ra lỗi khi tìm kiếm. Vui lòng thử lại!");
         }
         model.addAttribute("input", input != null ? input : "");
@@ -130,7 +124,7 @@ public class    StoreController {
             model.addAttribute("storePage", stores);
         }
 
-//        model.addAttribute("roles", roleService.getAllRoles());
+//      ;
 
         return "admin/store/liststore";
     }
@@ -152,8 +146,10 @@ public class    StoreController {
             model.addAttribute("error", "ID cửa hàng không hợp lệ!");
             return "admin/store/updatestore";
         }
+        User user = Utility.getUserInSession();
+        String userId = String.valueOf(user.getId());
 
-        Store store = storeService.findByName(storeDTO.getName());
+        Store store = storeService.findByName(storeDTO.getName(),userId);
         if(store != null && store.getId() != storeDTO.getId()) {
             model.addAttribute("StoreDTO", storeDTO);
             model.addAttribute("nameError", "Tên cửa hàng đã tồn tại!");
