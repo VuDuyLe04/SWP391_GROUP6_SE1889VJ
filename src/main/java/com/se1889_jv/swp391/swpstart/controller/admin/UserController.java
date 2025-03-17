@@ -89,8 +89,10 @@ public class UserController {
             if (storeId != null && !storeId.isEmpty() && !storeId.equals("-1")) {
                 users = userService.findDistinctUsersByCreatedByAndStore(userId, Long.valueOf(storeId), pageable);
                 model.addAttribute("storeId", storeId);
-            } else
+            } else{
                 users = userService.findDistinctUsersByUserStores_Store_CreatedBy(userId, pageable);
+            }
+
 
 
         }

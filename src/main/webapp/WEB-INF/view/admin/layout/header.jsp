@@ -86,10 +86,10 @@
                             <a role="menuitem" tabindex="-1" href="/payment"><i class="fa fa-money"></i> Nạp tiền</a>
                         </li>
                         <li>
-                            <a role="menuitem" tabindex="-1" href="/payment/history"><i class="fa fa-history"></i> Lịch sử nạp tiền</a>
+                            <a role="menuitem" tabindex="-1" href="/owner/payment/history"><i class="fa fa-history"></i> Lịch sử nạp tiền</a>
                         </li>
                         <li>
-                            <a role="menuitem" tabindex="-1" href="/payment/history"><i class="fa fa-history"></i> Lịch sử thuê dịch vụ</a>
+                            <a role="menuitem" tabindex="-1" href="/owner/service/history"><i class="fa fa-history"></i> Lịch sử thuê dịch vụ</a>
                         </li>
                     </c:if>
                     <li>

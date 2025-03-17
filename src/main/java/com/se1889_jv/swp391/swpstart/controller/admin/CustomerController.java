@@ -45,11 +45,13 @@ public class CustomerController {
         return "admin/customer/create";
     }
 
+
     @PostMapping("/customer/create")
     public String createCustomer(Model model,
                                  @ModelAttribute("customer") @Valid Customer customer,
                                  BindingResult result, @RequestParam( value = "storeId", required = false) String storeId
     ) {
+
         User user = Utility.getUserInSession();
         if (result.hasErrors()) {
             model.addAttribute("listStore", Utility.getListStoreOfOwner(user));

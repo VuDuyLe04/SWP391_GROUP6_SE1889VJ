@@ -65,7 +65,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Lịch sử nạp tiền</h2>
+                <h2>Lịch sử thuê dịch vụ</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -74,7 +74,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Lịch sử nạp tiền</span></li>
+                        <li><span>Lịch sử thuê dịch vụ</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -99,7 +99,7 @@
                                         <form id="search-form" action="#" method="get" class="search nav-form">
                                             <div class="input-group input-search">
                                                 <input type="text" class="form-control" name="input"
-                                                       placeholder="Tìm kiếm theo tên hoặc giá tiền" value="${input}" >
+                                                       placeholder="Tìm kiếm theo tên hoặc tiền" value="${input}" >
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-primary" type="submit">
                                                         <i class="fa fa-search"></i>
@@ -157,26 +157,22 @@
 
                                     <tr>
                                         <th>STT</th>
-                                        <th class="text-center">Mã giao dịch</th>
+                                        <th class="text-center">Tên dịch vụ</th>
+                                        <th class="text-center">Thời gian sử dụng</th>
                                         <th class="text-center">Tiền</th>
-                                        <th class="text-center">Nội dung</th>
                                         <th class="text-center">Thời gian</th>
-                                        <th class="text-center">Tài khoản nhận tiền</th>
-                                        <th class="text-center">Cổng thanh toán</th>
                                         <th class="text-center">Trạng thái</th>
                                     </tr>
 
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${listTransactionPayment}" var="t" varStatus="status">
+                                    <c:forEach items="${listTransactionService}" var="t" varStatus="status">
                                         <tr>
                                             <td>${status.index + 1}</td>
-                                            <td class="text-center">${t.transactionId}</td>
+                                            <td class="text-center">${t.serviceName}</td>
+                                            <td class="text-center">${t.durationMonths}</td>
                                             <td class="text-center">${t.amount}</td>
-                                            <td class="text-center">${t.content}</td>
-                                            <td class="text-center">${t.date}</td>
-                                            <td class="text-center">${t.accountReceiver}</td>
-                                            <td class="text-center">${t.gate}</td>
+                                            <td class="text-center">${t.transactionDate}</td>
                                             <td class="text-center">${t.transactionStatus}</td>
                                         </tr>
                                     </c:forEach>
@@ -188,7 +184,7 @@
                                     <ul class="pagination justify-content-center">
                                         <c:if test="${currentPage > 0}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/owner/payment/history?page=${currentPage - 1}"
+                                                <a class="page-link" href="/owner/service/history?page=${currentPage - 1}"
                                                    aria-label="Previous">
                                                     <span aria-hidden="true">&laquo; Trước</span>
                                                 </a>
@@ -197,13 +193,13 @@
                                         <c:if test="${totalPages > 0}">
                                             <c:forEach begin="0" end="${totalPages - 1}" var="i">
                                                 <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                    <a class="page-link" href="/owner/payment/history?page=${i}">${i + 1}</a>
+                                                    <a class="page-link" href="/owner/service/history?page=${i}">${i + 1}</a>
                                                 </li>
                                             </c:forEach>
                                         </c:if>
                                         <c:if test="${currentPage < totalPages - 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/owner/payment/history?page=${currentPage + 1}"
+                                                <a class="page-link" href="/owner/service/history?page=${currentPage + 1}"
                                                    aria-label="Next">
                                                     <span aria-hidden="true">Sau &raquo;</span>
                                                 </a>

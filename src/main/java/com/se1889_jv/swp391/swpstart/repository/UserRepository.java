@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.repository;
 
+import com.se1889_jv.swp391.swpstart.domain.Role;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.UserStore;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
             "   GROUP BY u2.phone" +
             ")")
     Page<User> findDistinctUsersByStoreCreatedBy(@Param("createdBy") String createdBy, Pageable pageable);
+
+    Page<User> findByCreatedByAndRole(String createdBy, Role role);
 //    Page<User> findDistinctUsersByUserStores_Store_CreatedByAndByNameContainingOrPhoneContaining(String createdBy,String name,String phone, Pageable pageable);
     Page<User> findUsersByActive(boolean active, Pageable pageable);
     Page<User> findUsersByRoleId(Long roleId,Pageable pageable);

@@ -4,8 +4,8 @@ import com.se1889_jv.swp391.swpstart.domain.TransactionPayment;
 import com.se1889_jv.swp391.swpstart.domain.TransactionService;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.dto.PaymentDTO;
-import com.se1889_jv.swp391.swpstart.service.PaymentService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.TransactionPaymentService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.TransactionServiceService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.validation.Valid;
@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 
 @Controller
 public class PaymentController {
@@ -32,6 +30,8 @@ public class PaymentController {
     @Autowired
     private TransactionPaymentService transactionPaymentService;
 
+    @Autowired
+    private TransactionServiceService transactionServiceService;
     @GetMapping("/payment")
     public String paymentPage(Model model) {
 
@@ -71,8 +71,8 @@ public class PaymentController {
         return "admin/payment/qr";
     }
 
-    @GetMapping("/payment/history")
-    public String historyPage(Model model,
+    @GetMapping("/owner/payment/history")
+    public String historyPayemtPage(Model model,
                               @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 5);
         User userInSession = Utility.getUserInSession();
@@ -84,4 +84,19 @@ public class PaymentController {
         return "admin/payment/history";
 
     }
+
+    @GetMapping("/owner/service/history")
+    public String historyServicePage(Model model,
+                              @RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        User userInSession = Utility.getUserInSession();
+        User user = this.userService.findById(userInSession.getId());
+        Page<TransactionService> transactionServicePage = this.transactionServiceService.allTransactionsServiceOfUser(user, pageable);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", transactionServicePage.getTotalPages());
+        model.addAttribute("listTransactionService", transactionServicePage.getContent());
+        return "admin/service/history";
+
+    }
+
 }
