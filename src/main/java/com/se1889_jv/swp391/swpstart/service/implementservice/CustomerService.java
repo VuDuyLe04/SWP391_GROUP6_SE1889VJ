@@ -25,7 +25,7 @@ public class CustomerService implements ICustomerService {
     private CustomerRepository customerRepository;
 
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
     @Override
     public Customer createCustomer(Customer customer, Store store) {
         customer.setStore(store);
@@ -116,9 +116,9 @@ public class CustomerService implements ICustomerService {
     @Override
     public Customer getCustomerByNameAndPhone(String infor) {
         String [] part  = infor.split(" - ");
-        String phone = part[0].trim();
-        String name = part[1].trim();
-        return customerRepository.getCustomersByPhoneAndName(phone,name);
+        String name = part[0].trim();
+        String phone = part[1].trim();
+        return customerRepository.getCustomersByNameAndPhone(name,phone);
     }
 
     @Override

@@ -2,9 +2,12 @@ package com.se1889_jv.swp391.swpstart.controller.admin;
 
 
 import com.se1889_jv.swp391.swpstart.domain.Customer;
+import com.se1889_jv.swp391.swpstart.domain.DebtReceipt;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
+import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import com.se1889_jv.swp391.swpstart.service.implementservice.CustomerService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.DebtReceiptService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.validation.Valid;
@@ -24,7 +27,11 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
     @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
     private StoreService storeService;
+    @Autowired
+    private DebtReceiptService debtReceiptService;
     @GetMapping("/customer/create")
     public String getCreateCustomerPage(Model model) {
         model.addAttribute("customer", new Customer());
@@ -75,22 +82,23 @@ public class CustomerController {
 
         return "redirect:/customer";
     }
+    @GetMapping("/customer/detail/{id}")
+    public String getCustomerDetail(@PathVariable("id") long id, Model model) {
+        // Check session
+        if (Utility.getUserInSession() == null) {
+            return "redirect:/login";
+        }
 
-//    @GetMapping("/customer")
-//    public String getCustomerTable(Model model ) {
-//        Store store = Utility.getStoreInSession();
-//        User user = Utility.getUserInSession();
-//        if (user.getRole().getName().equals("STAFF")) {
-//            if (store == null) {
-//                return "redirect:/dashboard";
-//            }
-//        }
-//
-//
-//        model.addAttribute("listCustomer", this.customerService.getAllCustomers(store));
-//        return "admin/customer/table";
-//    }
+        // Get customer by ID
+        Customer customer = customerService.getCustomerById(id);
+        if (customer == null) {
+            return "redirect:/customer";
+        }
 
+        // Add customer to model
+        model.addAttribute("customer", customer);
+        return "admin/customer/customerdetail";
+    }
 
     @GetMapping("/customer/update/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
@@ -110,8 +118,14 @@ public class CustomerController {
     @PostMapping("/customer/update")
     public String updateCustomer(
             @Valid @ModelAttribute("customer") Customer customer,
-            BindingResult result
-                                 ) {
+            @RequestParam(value = "oldPhone") String oldPhone,
+            BindingResult result) {
+        if (this.customerRepository.existsByPhoneAndStoreExcludingOldPhone(customer.getPhone(),oldPhone,customer.getStore())== true){
+            result.rejectValue("phone", "error.customer", "Số điện thoại đã tồn tại trong khách hàng khác");
+            customer.setPhone(oldPhone);
+        }
+
+
         if (result.hasErrors()) {
             return "admin/customer/update";
         }
@@ -161,7 +175,8 @@ public class CustomerController {
             model.addAttribute("totalPages", customers.getTotalPages());
         }
 
-//        model.addAttribute("listCustomer", customers);
+
+
         return "admin/customer/table";
     }
 
@@ -177,11 +192,11 @@ public class CustomerController {
                 return "redirect:/dashboard";
             }
         }
-        if (user.getRole().getName().equals("OWNER")){
-            if (user.getUserStores().isEmpty()) {
-                return "redirect:/dashboard";
-            }
-        }
+//        if (user.getRole().getName().equals("OWNER")){
+//            if (user.getUserStores().isEmpty()) {
+//                return "redirect:/dashboard";
+//            }
+//        }
         Pageable pageable = PageRequest.of(page, 5); // 5 sản phẩm mỗi trang
         if (user.getRole().getName().equals("OWNER")) {
             Page<Customer> customerPage = this.customerService.getAllCustomersRoleOwner(Utility.getListStoreOfOwner(user), pageable);
@@ -199,5 +214,6 @@ public class CustomerController {
 
         return "admin/customer/table";
     }
+
 
 }

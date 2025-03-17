@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Cập nhật khách hàng</title>
+    <title>Dashboard | JSOFT Themes | JSOFT-Admin</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -44,119 +44,45 @@
 
 </head>
 <body>
-
 <section class="body">
-
-    <!-- start: header -->
-    <jsp:include page="../layout/header.jsp" />
-    <!-- end: header -->
-
+    <jsp:include page="../layout/header.jsp"/>
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <jsp:include page="../layout/sidebar.jsp" />
-        <!-- end: sidebar -->
-
+        <jsp:include page="../layout/sidebar.jsp"/>
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Cập nhật khách hàng</h2>
-
-                <div class="right-wrapper pull-right">
-                    <ol class="breadcrumbs">
-                        <li>
-                            <a href="/">
-                                <i class="fa fa-home"></i>
-                            </a>
-                        </li>
-                        <li><span>Cập nhật khách hàng</span></li>
-                    </ol>
-
-                    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
-                </div>
+                <h2>Tạo phiếu nợ cho khách hàng: ${customer.name}</h2>
             </header>
 
-
-
-            <!-- start: page -->
             <div class="row">
                 <div class="col-lg-12">
                     <section class="panel">
-                        <header class="panel-heading">
-                            <div class="panel-actions">
-
-                            </div>
-
-                            <h2 class="panel-title">Cập nhật khách hàng</h2>
-                        </header>
-                        <div class="panel-body " >
-                            <form:form modelAttribute="customer" class="form-horizontal" method="post" action="/customer/update">
-                                <c:set var="errorName">
-                                    <form:errors path="name"
-                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
-                                </c:set>
-
-                                <c:set var="errorPhone">
-                                    <form:errors path="phone"
-                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
-                                </c:set>
-
-                                <div class="form-group row" hidden="hidden">
-                                    <label class="col-sm-3 col-form-label" for="name">Id</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="id" class="form-control" id="id" />
-                                    </div>
+                        <div class="panel-body">
+                            <form action="/debt-receipt/creation" method="POST" id="createDebtReceiptForm">
+                                <div class="form-group">
+                                    <label for="debtType">Loại nợ:</label>
+                                    <select id="debtType" name="debtType" class="form-control">
+                                        <option value="DEBIT">Thêm Nợ</option>
+                                        <option value="DEBTREPAY">Trả Nợ</option>
+                                    </select>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="name">Tên</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="name" class="form-control ${not empty errorName ? 'is-invalid' : ''}" id="name" />
-                                        ${errorName}
-                                    </div>
+                                <div class="form-group">
+                                    <label for="debtReason">Lý do:</label>
+                                    <input type="text" id="debtReason" name="debtReason" class="form-control" placeholder="Nhập lý do" required>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="phone">Số điện thoại</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="phone" class="form-control ${not empty errorPhone ? 'is-invalid' : ''}" id="phone" />
-                                        ${errorPhone}
-                                    </div>
+                                <div class="form-group">
+                                    <label for="debtAmount">Số tiền:</label>
+                                    <input type="number" id="debtAmount" name="debtAmount" class="form-control" placeholder="Nhập số tiền" required>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="address">Địa chỉ</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="address" class="form-control" id="address" />
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="balance">Cửa hàng</label>
-                                    <div class="col-sm-9">
-                                        <input value="${customer.store.name}" class="form-control" id="balance" readonly/>
-                                    </div>
-                                </div>
-                                <input value="${customer.phone}" type="hidden" name="oldPhone">
-                                <form:hidden path="store"/>
-
-                                <div class="form-group row">
-                                    <div class="col-sm-9 offset-sm-3">
-                                        <button type="submit" class="btn btn-primary">Cập nhật</button>
-                                        <a href="/customer" class="btn btn-secondary">Hủy</a>
-                                    </div>
-                                </div>
-                            </form:form>
+                                <input type="hidden" name="customerId" value="${customer.id}">
+                                <button type="submit" class="btn btn-primary">Lưu phiếu nợ</button>
+                            </form>
                         </div>
                     </section>
-
-
-
                 </div>
             </div>
-            <!-- end: page -->
         </section>
     </div>
-
-
-
 </section>
-
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>

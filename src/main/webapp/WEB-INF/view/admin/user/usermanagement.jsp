@@ -328,6 +328,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <c:if test="${userPage != null }">
                                     <c:forEach var="u" items="${userPage.content}" varStatus="status">
                                         <tr>
                                             <td>${status.index + 1}</td>
@@ -395,6 +396,7 @@
                                             <li><span>...</span></li>
                                         </c:if>
                                     </c:forEach>
+                                    </c:if>
 
 
 

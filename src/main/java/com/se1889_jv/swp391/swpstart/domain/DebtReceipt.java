@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
+import com.se1889_jv.swp391.swpstart.util.Utility;
 import com.se1889_jv.swp391.swpstart.util.constant.DebtTypeEnum;
 import jakarta.persistence.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,16 +9,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Builder;
 
 @Entity
 @Table(name = "debt_receipts")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class DebtReceipt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long debtAmount;
+    private double debtAmount;
     @Enumerated(EnumType.STRING)
     private DebtTypeEnum debtType;
     private String debtReason;
@@ -30,9 +37,8 @@ public class DebtReceipt {
 
     @PrePersist
     public void handleBeforeCreate() {
-        HttpServletRequest request = null;
-        HttpSession session = request.getSession(false);
-        this.createdBy = (String) session.getAttribute("name");
+        User user = Utility.getUserInSession();
+        this.createdBy = user.getName();
         this.createdAt = Instant.now();
     }
 }

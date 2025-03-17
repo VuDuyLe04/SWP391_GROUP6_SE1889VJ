@@ -206,8 +206,7 @@
                         <p href="#" class="stretched-link">
                         <h4>499.000 đồng</h4>
                         </p>
-                        <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic
-                            non ut nesciunt dolorem.</p>
+                        <p>Gói trải nhiệm, để khách hàng có thể sử dụng hệ thống với chi phí rẻ.</p>
                     </div>
                 </div><!-- End Service Item -->
 
@@ -222,8 +221,7 @@
                         <p href="#" class="stretched-link">
                         <h4>899.000 đồng</h4>
                         </p>
-                        <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic
-                            non ut nesciunt dolorem.</p>
+                        <p>Gói trải nhiệm, để khách hàng có thể sử dụng hệ thống với chi phí rẻ.</p>
                     </div>
                 </div><!-- End Service Item -->
 

@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Danh sách người dùng</title>
+    <title>Danh sách dịch vụ</title>
     <meta name="keywords" content="HTML5 Admin Template"/>
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -60,7 +60,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Danh sách khách hàng</h2>
+                <h2>Danh sách dịch vụ</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -69,7 +69,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Danh sách khách hàng</span></li>
+                        <li><span>Danh sách dịch vụ</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -83,7 +83,7 @@
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="panel-actions">
-                                <a href="/customer/create" class="btn btn-success" style="display: inline-flex;
+                                <a href="/service/create" class="btn btn-success" style="display: inline-flex; /* Sử dụng flexbox để căn giữa */
         justify-content: center;
         align-items: center;
         width: 120px;
@@ -96,7 +96,7 @@
         border-radius: 5px;
         text-decoration: none;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;">Tạo khách hàng mới</a>
+        transition: all 0.3s ease;">Thêm dịch vụ mới</a>
                             </div>
 
                             <div class="row mb-3">
@@ -105,12 +105,11 @@
                                           style="margin-bottom: 20px;">
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="name"
-                                                   placeholder="Tìm kiếm bằng tên" value="${param.name}"/>
+                                                   placeholder="Tìm kiếm theo tên" value="${param.name}"/>
                                             <span class="input-group-btn">
-                        <button class="btn btn-primary" type="submit">Tìm</button>
+                        <button class="btn btn-primary" type="submit">Search</button>
                     </span>
                                         </div>
-
                                     </form>
                                 </div>
                                 <div class="col-md-3">
@@ -118,12 +117,11 @@
                                     <form method="GET" action="/customer/search" class="form-inline">
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="phone"
-                                                   placeholder="Tìm kiếm bằng số điện thoại" value="${param.phone}"/>
+                                                   placeholder="Search by phone" value="${param.phone}"/>
                                             <span class="input-group-btn">
-                    <button class="btn btn-primary" type="submit">Tìm</button>
+                    <button class="btn btn-primary" type="submit">Search</button>
                 </span>
                                         </div>
-
                                     </form>
                                 </div>
                             </div>
@@ -133,32 +131,28 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-condensed mb-none">
                                     <thead>
+
                                     <tr>
                                         <th>Số thứ tự</th>
                                         <th>Tên</th>
-                                        <th class="text-right">Số điện thoại</th>
-
-                                        <th class="text-center">Tiền nợ</th>
-                                        <th class="text-right">Cửa hàng</th>
+                                        <th class="text-right">Thời gian dịch vụ</th>
+                                        <th class="text-right">Giá</th>
+                                        <th class="text-right">Trạng thái</th>
                                         <th class="text-right">Hoạt động</th>
-
                                     </tr>
+
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${listCustomer}" var="customer" varStatus="status">
+                                    <c:forEach items="${listService}" var="service" varStatus="status">
                                         <tr>
                                             <td>${status.index + 1}</td>
-                                            <td>${customer.name}</td>
-                                            <td class="text-right">${customer.phone}</td>
-
-                                            <td class="text-center">${customer.balance}</td>
-                                            <td class="text-right">${customer.store.name}</td>
+                                            <td>${service.name}</td>
+                                            <td class="text-right">${service.durationMonths}</td>
+                                            <td class="text-right">${service.price}</td>
+                                            <td class="text-center">${service.active}</td>
                                             <td class="text-right">
-                                                <a href="/customer/detail/${customer.id}" class="btn btn-primary">Xem
-                                                    chi tiết</a>
-                                                <a href="/customer/update/${customer.id}" class="btn btn-primary">Cập
+                                                <a href="/service/update/${service.id}" class="btn btn-primary">Cập
                                                     nhật</a>
-                                                <a href="/debt-receipt/search/${customer.id}" class="btn btn-primary">Nợ</a>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -168,44 +162,31 @@
                                 </table>
                                 <div class="pagination-container text-center mt-3">
                                     <ul class="pagination justify-content-center">
-                                        <!-- Xây dựng query giữ lại thông tin tìm kiếm -->
-                                        <c:set var="searchQuery" value="" />
-                                        <c:if test="${not empty param.name}">
-                                            <c:set var="searchQuery" value="${searchQuery}&name=${param.name}" />
-                                        </c:if>
-                                        <c:if test="${not empty param.phone}">
-                                            <c:set var="searchQuery" value="${searchQuery}&phone=${param.phone}" />
-                                        </c:if>
-
-                                        <!-- Nút "Previous" -->
                                         <c:if test="${currentPage > 0}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customer/search?page=${currentPage - 1}${searchQuery}" aria-label="Previous">
+                                                <a class="page-link" href="/customer?page=${currentPage - 1}"
+                                                   aria-label="Previous">
                                                     <span aria-hidden="true">&laquo; Trước</span>
                                                 </a>
                                             </li>
                                         </c:if>
-
-                                        <!-- Hiển thị danh sách trang -->
                                         <c:if test="${totalPages > 0}">
                                             <c:forEach begin="0" end="${totalPages - 1}" var="i">
                                                 <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                    <a class="page-link" href="/customer/search?page=${i}${searchQuery}">${i + 1}</a>
+                                                    <a class="page-link" href="/service/table?page=${i}">${i + 1}</a>
                                                 </li>
                                             </c:forEach>
                                         </c:if>
-
-                                        <!-- Nút "Next" -->
                                         <c:if test="${currentPage < totalPages - 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customer/search?page=${currentPage + 1}${searchQuery}" aria-label="Next">
+                                                <a class="page-link" href="/service/table?page=${currentPage + 1}"
+                                                   aria-label="Next">
                                                     <span aria-hidden="true">Sau &raquo;</span>
                                                 </a>
                                             </li>
                                         </c:if>
                                     </ul>
                                 </div>
-
                             </div>
                         </div>
 
@@ -222,6 +203,7 @@
 
 </section>
 
+<!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
 <script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>

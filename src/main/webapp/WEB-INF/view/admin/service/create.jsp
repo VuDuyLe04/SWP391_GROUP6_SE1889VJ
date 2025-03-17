@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Cập nhật khách hàng</title>
+    <title>Tạo mới dịch vụ</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -58,7 +58,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Cập nhật khách hàng</h2>
+                <h2>Tạo mới dịch vụ</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
@@ -67,7 +67,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Cập nhật khách hàng</span></li>
+                        <li><span>Tạo mới dịch vụ</span></li>
                     </ol>
 
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -85,63 +85,76 @@
 
                             </div>
 
-                            <h2 class="panel-title">Cập nhật khách hàng</h2>
+                            <h2 class="panel-title">Tạo mới dịch vụ</h2>
                         </header>
-                        <div class="panel-body " >
-                            <form:form modelAttribute="customer" class="form-horizontal" method="post" action="/customer/update">
+                        <div class="panel-body">
+                            <form:form modelAttribute="service" class="form-horizontal form-bordered" method="post" action="/service/create">
+
                                 <c:set var="errorName">
                                     <form:errors path="name"
                                                  cssClass="invalid-feedback" cssStyle="color: red"/>
                                 </c:set>
 
-                                <c:set var="errorPhone">
-                                    <form:errors path="phone"
+                                <c:set var="errorDurationMonths">
+                                    <form:errors path="durationMonths"
                                                  cssClass="invalid-feedback" cssStyle="color: red"/>
                                 </c:set>
 
-                                <div class="form-group row" hidden="hidden">
-                                    <label class="col-sm-3 col-form-label" for="name">Id</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="id" class="form-control" id="id" />
+                                <c:set var="errorDescription">
+                                    <form:errors path="description"
+                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
+                                </c:set>
+
+                                <c:set var="errorPrice">
+                                    <form:errors path="price"
+                                                 cssClass="invalid-feedback" cssStyle="color: red"/>
+                                </c:set>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" >Tên</label>
+                                    <div class="col-md-6">
+                                        <form:input path="name" class="form-control ${not empty errorName ? 'is-invalid' : ''}" />
+                                            ${errorName}
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="name">Tên</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="name" class="form-control ${not empty errorName ? 'is-invalid' : ''}" id="name" />
-                                        ${errorName}
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="inputHelpText">Thời gian gói dịch vụ</label>
+                                    <div class="col-md-6">
+                                        <form:input path="durationMonths" class="form-control ${not empty errorDurationMonths ? 'is-invalid' : ''}" id="inputHelpText" />
+                                            ${errorDurationMonths}
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="phone">Số điện thoại</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="phone" class="form-control ${not empty errorPhone ? 'is-invalid' : ''}" id="phone" />
-                                        ${errorPhone}
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="address">Địa chỉ</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="address" class="form-control" id="address" />
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" >Mô tả chi tiết</label>
+                                    <div class="col-md-6">
+                                        <form:input path="description" class="form-control ${not empty errorDescription ? 'is-invalid' : ''}"  />
+                                            ${errorDescription}
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="balance">Cửa hàng</label>
-                                    <div class="col-sm-9">
-                                        <input value="${customer.store.name}" class="form-control" id="balance" readonly/>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="inputReadOnly">Giá dịch vụ</label>
+                                    <div class="col-md-6">
+                                        <form:input path="price" class="form-control ${not empty errorPrice ? 'is-invalid' : ''}" id="inputReadOnly" />
+                                        ${errorPrice}
                                     </div>
                                 </div>
-                                <input value="${customer.phone}" type="hidden" name="oldPhone">
-                                <form:hidden path="store"/>
 
-                                <div class="form-group row">
-                                    <div class="col-sm-9 offset-sm-3">
-                                        <button type="submit" class="btn btn-primary">Cập nhật</button>
-                                        <a href="/customer" class="btn btn-secondary">Hủy</a>
+
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+
+                                        <button type="submit" class="btn btn-primary ${not empty errorName ? 'is-invalid' : ''}">Tạo</button>
+                                        <div style="color: green">
+                                                ${message}
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </form:form>
+
                         </div>
                     </section>
 
