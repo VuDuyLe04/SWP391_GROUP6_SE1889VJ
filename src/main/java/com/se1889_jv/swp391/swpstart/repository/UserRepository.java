@@ -32,13 +32,22 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
             "   SELECT MIN(u2.id) FROM User u2 " +
             "   JOIN UserStore us ON u2.id = us.user.id " +
             "   JOIN Store s ON us.store.id = s.id " +
-            "   JOIN u2.role r " +  // Thêm join với bảng Role
+            "   JOIN u2.role r " +
             "   WHERE s.createdBy = :createdBy " +
-            "   AND r.name = 'STAFF' " +  // Lọc theo role name STAFF
+            "   AND r.name = 'STAFF' " +
+            "   AND (:storeId IS NULL OR s.id = :storeId) " + // Lọc theo storeId nếu có
+            "   AND (:keyword IS NULL OR :keyword = '' OR " +  // Nếu keyword null hoặc rỗng, bỏ qua
+            "        u2.name LIKE %:keyword% OR u2.phone LIKE %:keyword%) " +
             "   GROUP BY u2.phone" +
             ")")
-    Page<User> findDistinctUsersByStoreCreatedBy(@Param("createdBy") String createdBy, Pageable pageable);
-//    Page<User> findDistinctUsersByUserStores_Store_CreatedByAndByNameContainingOrPhoneContaining(String createdBy,String name,String phone, Pageable pageable);
+    Page<User> findStaffsByCreatedBy(
+            @Param("createdBy") String createdBy,
+            @Param("storeId") Long storeId,
+            @Param("keyword") String keyword,
+            Pageable pageable);
+
+
+    //    Page<User> findDistinctUsersByUserStores_Store_CreatedByAndByNameContainingOrPhoneContaining(String createdBy,String name,String phone, Pageable pageable);
     Page<User> findUsersByActive(boolean active, Pageable pageable);
     Page<User> findUsersByRoleId(Long roleId,Pageable pageable);
     Page<User> findUsersByRoleIdAndActive(Long roleId, boolean active, Pageable pageable);

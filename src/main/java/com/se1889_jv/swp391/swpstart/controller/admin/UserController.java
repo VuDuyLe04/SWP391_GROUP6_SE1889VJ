@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -80,14 +81,14 @@ public class UserController {
         } else if (user.getRole().getName().equals("OWNER")) {
             List<Store> stores = Utility.getListStoreOfOwner(user);
             model.addAttribute("stores", stores);
-            if (input != null && !input.isEmpty()) {
-                users = userService.findDistinctUsersByCreatedByAndByNameOrPhone(userId, input.trim(), pageable);
+            Long storeID = null;
+            if(storeId != null && !storeId.isEmpty() && !"-1".equals(storeId)) {
+                storeID = Long.parseLong(storeId);
+
             }
-            else if  (storeId != null && !storeId.isEmpty() && !storeId.equals("-1")) {
-                users = userService.findDistinctUsersByCreatedByAndStore(userId, Long.valueOf(storeId), pageable);
-                model.addAttribute("storeId", storeId);
-            } else
-                users = userService.findDistinctUsersByUserStores_Store_CreatedBy(userId, pageable);
+            if(input!= null && !input.isEmpty()) input = input.trim();
+            users = userService.findStaffsByCreatedBy(userId,storeID,input,pageable);
+            model.addAttribute("storeId", storeId);
 
         }
         model.addAttribute("input", input != null ? input : "");
@@ -352,19 +353,49 @@ public class UserController {
 
     @GetMapping("/updatestatus")
     public String updateStaffStatus(
-            @RequestParam String userId,
-            @RequestParam String userStoreId,
-            @RequestParam String status
-
+            @RequestParam(value= "userId") String userId,
+            @RequestParam(value = "userStoreId", required = false) String userStoreId,
+            @RequestParam (value = "status", required = false) String status,
+            @RequestParam(value = "active", required = false) String active,
+            @RequestParam(value = "phone", required = false) String phone,
+            RedirectAttributes redirectAttributes
     ) {
-        UserStore updatedUserStore = userStoreService.findUserStore(Long.parseLong(userStoreId));
-        if (updatedUserStore != null) {
-            updatedUserStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf(status));
-            UserStore savedUserStore = userStoreService.saveUserStore(updatedUserStore);
-        }
-        return "redirect:/updatestaff/" + Long.parseLong(userId);
+        // Kiểm tra phone hợp lệ
+        if (phone != null && phone.matches( "^\\s*(0[1-9][0-9]{8,9})\\s*$")) {
+            User user = userService.getUserByPhone(phone.trim());
 
+            if (user != null && user.getId() != Long.parseLong(userId)) {
+                redirectAttributes.addFlashAttribute("error", "Số điện thoại đã tồn tại!");
+            } else {
+                user = userService.findById(Long.parseLong(userId));
+                if (user != null) {
+                    user.setActive(Boolean.parseBoolean(active));
+                    user.setPhone(phone);
+                    userService.updateUser(user);
+                    redirectAttributes.addFlashAttribute("success", "Cập nhật thành công!");
+                }
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Số điện thoại không hợp lệ.");
+        }
+
+        // Kiểm tra xem userStoreId có giá trị không trước khi chuyển đổi
+        if (userStoreId != null && !userStoreId.isEmpty()) {
+            try {
+                UserStore updatedUserStore = userStoreService.findUserStore(Long.parseLong(userStoreId));
+                if (updatedUserStore != null) {
+                    updatedUserStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf(status));
+                    userStoreService.saveUserStore(updatedUserStore);
+                }
+            } catch (NumberFormatException e) {
+                redirectAttributes.addFlashAttribute("error", "ID cửa hàng không hợp lệ.");
+            }
+        }
+
+        // Redirect về trang cập nhật nhân viên
+        return "redirect:/updatestaff/" + userId;
     }
+
     @GetMapping("/savestore")
     public String saveSelectedStores(@RequestParam("selectedStores") List<Long> selectedStoreIds,
                                      @RequestParam("userId") String userId,

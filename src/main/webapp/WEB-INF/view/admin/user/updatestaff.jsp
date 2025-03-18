@@ -386,21 +386,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                   <h2 class="panel-title"></h2>
                         </header>
                         <div class="panel-body">
-                  <!-- Alerts -->
-                  <c:if test="${not empty success}">
-                    <div class="alert alert-success">
-                      <i class="fa fa-check-circle"></i>
-                      ${success}
-                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    </div>
-                  </c:if>
-                  <c:if test="${not empty error}">
-                    <div class="alert alert-danger">
-                      <i class="fa fa-exclamation-circle"></i>
-                      ${error}
-                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    </div>
-                  </c:if>
+
+
 
                   <!-- Staff Info Card -->
                   <div class="info-card">
@@ -409,22 +396,61 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                         <i class="fa fa-user"></i>
                         Thông tin nhân viên: ${user.name}
                       </h3>
+                        <div class="info-item">
+                            <div class="info-item-label">Ngày tạo</div>
+                            <div class="info-item-value">${user.createdAtFormatted}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">Cập nhật lần cuối</div>
+                            <div class="info-item-value">${user.updatedAtFormatted}</div>
+                        </div>
                     </div>
                     <div class="card-body">
                       <div class="staff-info">
                         <div class="info-item">
-                          <div class="info-item-label">Số điện thoại</div>
-                          <div class="info-item-value">${user.phone}</div>
+                            <form action="/updatestatus" method="get">
+                                <label for="phone">Số điện thoại:</label>
+                                <input
+                                        type="text"
+
+                                        name="userId"
+                                        value="${user.id}"
+                                        hidden=""
+                                >
+
+                                <input
+                                        type="text"
+                                        id="phone"
+                                        name="phone"
+                                        placeholder="Nhập số điện thoại"
+                                        value="${user.phone}"
+                                        onblur="checkPhone(this.value)"
+                                >
+                                <p style="color: red">
+                                    ${error}
+                                </p>
+
+                                <div class="status-container">
+                                    <label>Trạng thái:</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" name="active" value="true" ${user.active == 'true' ? 'checked' : ''}>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="status-label">Hoạt động</span>
+                                </div>
+
+                                <button type="submit">Lưu</button>
+                                <c:if test="${not empty success}">
+                                    <div class="alert alert-success">
+                                        <i class="fa fa-check-circle"></i>
+                                            ${success}
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    </div>
+                                </c:if>
+                            </form>
+
+
                         </div>
-                        <div class="info-item">
-                          <div class="info-item-label">Ngày tạo</div>
-                          <div class="info-item-value">${user.createdAtFormatted}</div>
-                        </div>
-                        <div class="info-item">
-                          <div class="info-item-label">Cập nhật lần cuối</div>
-                          <div class="info-item-value">${user.updatedAtFormatted}</div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
@@ -527,6 +553,17 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           userStoreId +
           "&status=" +
           status;
+      }
+      function checkPhone(phone) {
+          const phoneRegex = /^[0-9]{10}$/; // Kiểm tra số điện thoại có đúng 10 chữ số
+          const phoneError = document.getElementById("phoneError");
+          const button = document.getElementById("submitBtn");
+
+          if (phone.length > 0 && !phoneRegex.test(phone.trim())) {
+              phoneError.textContent = "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số!";
+              phoneError.style.display = "block";
+              button.disabled = true;
+          }
       }
 </script>
 
