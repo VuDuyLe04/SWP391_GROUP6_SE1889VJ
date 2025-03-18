@@ -24,8 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     boolean existsByPhone(String phone);
     Page<User> findByNameContainingOrPhoneContainingAndRole_IdNot(String name, String phone, Long roleId, Pageable pageable);
 
-//    List<User> findByUserStore(List<UserStore> userStores);
-
     Page<User> findByRoleIdNot(Long id, Pageable pageable);
 
 

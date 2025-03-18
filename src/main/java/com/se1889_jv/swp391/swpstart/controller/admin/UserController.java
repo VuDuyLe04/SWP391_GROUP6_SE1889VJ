@@ -73,36 +73,29 @@ public class UserController {
             } else {
                 users = userService.getAll(pageable);
             }
+                model.addAttribute("active", active);
+                model.addAttribute("roleId", roleId);
+                model.addAttribute("roles", roleService.getAllRoles());
         }
-        model.addAttribute("active", active);
-        model.addAttribute("roleId", roleId);
-
-        model.addAttribute("roles", roleService.getAllRoles());
-
         } else if (user.getRole().getName().equals("OWNER")) {
             List<Store> stores = Utility.getListStoreOfOwner(user);
             model.addAttribute("stores", stores);
             if (input != null && !input.isEmpty()) {
                 users = userService.findDistinctUsersByCreatedByAndByNameOrPhone(userId, input.trim(), pageable);
             }
-            if (storeId != null && !storeId.isEmpty() && !storeId.equals("-1")) {
+            else if  (storeId != null && !storeId.isEmpty() && !storeId.equals("-1")) {
                 users = userService.findDistinctUsersByCreatedByAndStore(userId, Long.valueOf(storeId), pageable);
                 model.addAttribute("storeId", storeId);
             } else
                 users = userService.findDistinctUsersByUserStores_Store_CreatedBy(userId, pageable);
 
-
         }
-
-
         model.addAttribute("input", input != null ? input : "");
         if (users == null || users.getContent().isEmpty()) {
             model.addAttribute("emptyList", "Không có tài khoản nào được tìm thấy !");
         } else {
             model.addAttribute("userPage", users);
         }
-
-
         return "admin/user/usermanagement";
     }
 
@@ -124,9 +117,7 @@ public class UserController {
                 }
             }
         }
-
         model.addAttribute("error", error);
-        
         if (updatedPhone != null && id != null) {
             User user = userService.findById(Long.parseLong(id));
             user.setPhone(updatedPhone);
@@ -314,7 +305,7 @@ public class UserController {
             return "admin/user/createstaff";
         }
         String userId = String.valueOf(Utility.getUserInSession().getId());
-        User existingUser = userService.getUserByPhone(staffDTO.getPhone());
+        User existingUser = userService.getUserByPhone(staffDTO.getPhone().trim());
         if (existingUser != null) {
             model.addAttribute("phoneError", "Số điện thoại đã tồn tại !");
             List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
@@ -326,9 +317,9 @@ public class UserController {
             user.setPhone(staffDTO.getPhone());
             user.setPassword(passwordEncoder.encode(staffDTO.getPassword()));
             user.setRole(roleService.getRole(3L));
+            user.setActive(true);
             user.setCreatedBy(userId);
             User savedUser = userService.createUser(user);
-
             UserStore userStore = new UserStore();
             userStore.setUser(savedUser);
             userStore.setStore(storeService.findStoreById(staffDTO.getStoreId()));

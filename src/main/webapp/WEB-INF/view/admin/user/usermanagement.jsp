@@ -315,6 +315,7 @@
 
                                     </form>
                                 </div>
+                                ${inputError}
                                 <div class="col-sm-6">
                                     <div class="pull-right">
 

@@ -470,6 +470,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                   </div>
 
                   <!-- Add Store Card -->
+<c:if test="${not empty stores}">
                   <div class="add-store-section">
                     <div class="card-header">
                       <h3>
@@ -494,7 +495,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                         </button>
                       </div>
                                 </form>
-                            </div>
+                  </div>
+</c:if>
                         </div>
                     </section>
                 </div>

@@ -9,7 +9,7 @@ public class StringUtils {
             return "";
         }
         return Arrays.stream(input.toLowerCase().split("\\s+"))
-                .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
+                .map(word -> word.isEmpty() ? "" : Character.toUpperCase(word.charAt(0)) + word.substring(1))
                 .collect(Collectors.joining(" "));
     }
 }

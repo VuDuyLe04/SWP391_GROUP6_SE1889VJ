@@ -22,11 +22,19 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    <c:if test="${sessionScope.user.role.name == 'ADMIN' || sessionScope.user.role.name == 'OWNER'}">
+                    <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
                         <li>
                             <a href="/usermanagement">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 <span>Người dùng</span>
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="${sessionScope.user.role.name == 'OWNER'}">
+                        <li>
+                            <a href="/usermanagement">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <span>Nhân viên </span>
                             </a>
                         </li>
                     </c:if>
