@@ -346,7 +346,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       }
 
       .staff-header {
-
+        background: linear-gradient(135deg, #0088cc, #004d73);
         padding: 25px;
         border-bottom: none;
       }
@@ -374,7 +374,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
       .staff-details h3 {
         color: #2c3e50;
-        font-size: 17px;
+        font-size: 16px;
         margin: 0 0 5px 0;
         font-weight: 600;
       }
@@ -399,8 +399,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
       /* Form Styles */
       .staff-form {
-          margin-left: -4px;
-          padding: 10px;
+        padding: 8px;
       }
 
       .form-grid {
@@ -408,6 +407,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         grid-template-columns: 1.2fr 1.2fr 0.6fr;
         gap: 15px;
         margin-bottom: 15px;
+        align-items: flex-end;
       }
 
       .form-group {
@@ -422,6 +422,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         font-weight: 600;
         margin-bottom: 10px;
         font-size: 14px;
+          margin-left: -9px;
       }
 
       .form-group label i {
@@ -433,13 +434,9 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       }
 
       .form-control {
-        width: 100%;
-        height: 45px;
-        padding: 10px 15px;
-        border: 2px solid #e9ecef;
-        border-radius: 8px;
-        font-size: 14px;
-        transition: all 0.3s ease;
+        height: 35px;
+        font-size: 13px;
+        padding: 8px 12px;
       }
 
       .form-control:focus {
@@ -458,6 +455,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         display: flex;
         align-items: center;
         gap: 15px;
+        height: 35px;
+          margin-left: 10px;
       }
 
       .switch {
@@ -526,24 +525,25 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       }
 
       .btn-submit {
+        height: 35px;
+        padding: 0 15px;
+        font-size: 13px;
         background: #0088cc;
         color: white;
         border: none;
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 600;
+        border-radius: 6px;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         cursor: pointer;
         transition: all 0.3s ease;
+        margin-top: 2px;
       }
 
       .btn-submit:hover {
         background: #006da3;
         transform: translateY(-1px);
-        box-shadow: 0 4px 10px rgba(0,136,204,0.2);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       }
 
       /* Alert Styles */
@@ -572,8 +572,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         
         .staff-meta {
           flex-direction: column;
-          align-items: center;
-          gap: 10px;
+          gap: 5px;
+        }
+        
+        .action-group {
+          margin-top: 10px;
         }
       }
 
@@ -582,38 +585,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-      }
-
-      .btn-submit {
-        height: 35px;
-        padding: 0 20px;
-        font-size: 13px;
-        background: #0088cc;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      .btn-submit:hover {
-        background: #006da3;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      }
-
-      /* Responsive */
-      @media (max-width: 768px) {
-        .form-grid {
-          grid-template-columns: 1fr;
-        }
-        
-        .action-group {
-          margin-top: 10px;
-        }
+        padding-bottom: 0;
       }
     </style>
 </head>
@@ -670,7 +642,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
                   <!-- Staff Info Card -->
                   <div class="info-card">
-                    <div class="card-header staff-header">
+                    <div class="card-header">
                         <div class="staff-main-info">
                             <div class="staff-avatar">
                                 <i class="fa fa-user-circle"></i>
