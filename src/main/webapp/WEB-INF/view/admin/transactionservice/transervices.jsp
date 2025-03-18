@@ -297,8 +297,9 @@
         .content-body {
             padding: 25px;
             background: #f4f7fa;
-            overflow: visible; /* Thay đổi từ auto sang visible */
-            height: auto; /* Bỏ height cố định */
+            overflow: visible;
+            height: 100%;
+            min-height: 100vh;
         }
 
         /* Card Layout */
@@ -528,11 +529,11 @@
 
         /* Fixed Body và HTML */
         html.fixed {
-            overflow: hidden !important; /* Giữ nguyên overflow hidden */
+            overflow: auto !important;
         }
 
         body {
-            overflow: hidden !important; /* Giữ nguyên overflow hidden */
+            overflow: auto !important;
         }
     </style>
 </head>
