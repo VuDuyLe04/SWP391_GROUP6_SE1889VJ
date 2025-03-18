@@ -173,9 +173,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       .switch {
         position: relative;
         display: inline-block;
-        width: 40px;
-        height: 22px;
-        margin: 0;
+        width: 36px;
+        height: 20px;
       }
 
       .slider {
@@ -187,7 +186,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         bottom: 0;
         background-color: #e9ecef;
         transition: 0.3s;
-        border-radius: 22px;
+        border-radius: 20px;
       }
 
       .slider:before {
@@ -195,8 +194,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         content: "";
         height: 16px;
         width: 16px;
-        left: 3px;
-        bottom: 3px;
+        left: 2px;
+        bottom: 2px;
         background-color: white;
         transition: 0.3s;
         border-radius: 50%;
@@ -207,7 +206,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       }
 
       input:checked + .slider:before {
-        transform: translateX(18px);
+        transform: translateX(16px);
       }
 
       .status-text {
@@ -347,7 +346,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       }
 
       .staff-header {
-        background: linear-gradient(135deg, #0088cc, #004d73);
+
         padding: 25px;
         border-bottom: none;
       }
@@ -355,13 +354,13 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       .staff-main-info {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 15px;
       }
 
       .staff-avatar {
-        width: 64px;
-        height: 64px;
-        background: rgba(255,255,255,0.2);
+        width: 40px;
+        height: 40px;
+        background: rgba(0,136,204,0.1);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -369,44 +368,46 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       }
 
       .staff-avatar i {
-        font-size: 32px;
-        color: white;
+        font-size: 20px;
+        color: #0088cc;
       }
 
       .staff-details h3 {
-        color: white;
-        font-size: 24px;
-        margin: 0 0 10px 0;
+        color: #2c3e50;
+        font-size: 17px;
+        margin: 0 0 5px 0;
         font-weight: 600;
       }
 
       .staff-meta {
         display: flex;
-        gap: 20px;
-        color: rgba(255,255,255,0.9);
-        font-size: 14px;
+        gap: 15px;
+        color: #6c757d;
+        font-size: 13px;
       }
 
       .staff-meta span {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
       }
 
       .staff-meta i {
-        font-size: 14px;
+        color: #0088cc;
+        font-size: 13px;
       }
 
       /* Form Styles */
       .staff-form {
-        padding: 25px;
+          margin-left: -4px;
+          padding: 10px;
       }
 
       .form-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-        margin-bottom: 25px;
+        grid-template-columns: 1.2fr 1.2fr 0.6fr;
+        gap: 15px;
+        margin-bottom: 15px;
       }
 
       .form-group {
@@ -462,8 +463,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       .switch {
         position: relative;
         display: inline-block;
-        width: 60px;
-        height: 32px;
+        width: 36px;
+        height: 20px;
       }
 
       .switch input {
@@ -481,16 +482,16 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         bottom: 0;
         background-color: #e9ecef;
         transition: .4s;
-        border-radius: 32px;
+        border-radius: 20px;
       }
 
       .slider:before {
         position: absolute;
         content: "";
-        height: 24px;
-        width: 24px;
-        left: 4px;
-        bottom: 4px;
+        height: 16px;
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
         background-color: white;
         transition: .4s;
         border-radius: 50%;
@@ -501,7 +502,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       }
 
       input:checked + .slider:before {
-        transform: translateX(28px);
+        transform: translateX(16px);
       }
 
       .status-text {
@@ -573,6 +574,45 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           flex-direction: column;
           align-items: center;
           gap: 10px;
+        }
+      }
+
+      /* Style cho nút submit */
+      .action-group {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+
+      .btn-submit {
+        height: 35px;
+        padding: 0 20px;
+        font-size: 13px;
+        background: #0088cc;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-submit:hover {
+        background: #006da3;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .action-group {
+          margin-top: 10px;
         }
       }
     </style>
@@ -685,13 +725,17 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                                         </span>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-actions">
-                                <button type="submit" class="btn-submit">
-                                    <i class="fa fa-save"></i>
-                                    Lưu thay đổi
-                                </button>
+                                <div class="form-group action-group">
+                                    <label style="visibility: hidden;">
+                                        <i class="fa fa-save"></i>
+                                        Action
+                                    </label>
+                                    <button type="submit" class="btn-submit">
+                                        <i class="fa fa-save"></i>
+                                        Lưu thay đổi
+                                    </button>
+                                </div>
                             </div>
                         </form>
 
