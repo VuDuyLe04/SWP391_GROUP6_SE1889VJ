@@ -336,6 +336,245 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       .alert .close:hover {
         opacity: 0.75;
       }
+
+      /* Staff Info Card Styles */
+      .info-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+        overflow: hidden;
+      }
+
+      .staff-header {
+        background: linear-gradient(135deg, #0088cc, #004d73);
+        padding: 25px;
+        border-bottom: none;
+      }
+
+      .staff-main-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .staff-avatar {
+        width: 64px;
+        height: 64px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .staff-avatar i {
+        font-size: 32px;
+        color: white;
+      }
+
+      .staff-details h3 {
+        color: white;
+        font-size: 24px;
+        margin: 0 0 10px 0;
+        font-weight: 600;
+      }
+
+      .staff-meta {
+        display: flex;
+        gap: 20px;
+        color: rgba(255,255,255,0.9);
+        font-size: 14px;
+      }
+
+      .staff-meta span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .staff-meta i {
+        font-size: 14px;
+      }
+
+      /* Form Styles */
+      .staff-form {
+        padding: 25px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 25px;
+      }
+
+      .form-group {
+        margin-bottom: 0;
+      }
+
+      .form-group label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #344767;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+
+      .form-group label i {
+        color: #0088cc;
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+
+      .form-control {
+        width: 100%;
+        height: 45px;
+        padding: 10px 15px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus {
+        border-color: #0088cc;
+        box-shadow: 0 0 0 3px rgba(0,136,204,0.15);
+      }
+
+      .error-message {
+        color: #dc3545;
+        font-size: 13px;
+        margin-top: 5px;
+      }
+
+      /* Status Toggle Styles */
+      .status-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 32px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #e9ecef;
+        transition: .4s;
+        border-radius: 32px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 24px;
+        width: 24px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #0088cc;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(28px);
+      }
+
+      .status-text {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .status-text.active {
+        color: #0088cc;
+      }
+
+      .status-text.inactive {
+        color: #6c757d;
+      }
+
+      /* Form Actions */
+      .form-actions {
+        padding-top: 20px;
+        border-top: 1px solid #e9ecef;
+        text-align: right;
+      }
+
+      .btn-submit {
+        background: #0088cc;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-submit:hover {
+        background: #006da3;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0,136,204,0.2);
+      }
+
+      /* Alert Styles */
+      .alert {
+        margin-top: 20px;
+        border-radius: 8px;
+        border-left: 4px solid;
+      }
+
+      .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border-left-color: #28a745;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .staff-main-info {
+          flex-direction: column;
+          text-align: center;
+        }
+        
+        .staff-meta {
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+        }
+      }
     </style>
 </head>
 <body>
@@ -391,66 +630,78 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
                   <!-- Staff Info Card -->
                   <div class="info-card">
-                    <div class="card-header">
-                      <h3>
-                        <i class="fa fa-user"></i>
-                        Thông tin nhân viên: ${user.name}
-                      </h3>
-                        <div class="info-item">
-                            <div class="info-item-label">Ngày tạo</div>
-                            <div class="info-item-value">${user.createdAtFormatted}</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-item-label">Cập nhật lần cuối</div>
-                            <div class="info-item-value">${user.updatedAtFormatted}</div>
+                    <div class="card-header staff-header">
+                        <div class="staff-main-info">
+                            <div class="staff-avatar">
+                                <i class="fa fa-user-circle"></i>
+                            </div>
+                            <div class="staff-details">
+                                <h3>${user.name}</h3>
+                                <div class="staff-meta">
+                                    <span><i class="fa fa-calendar-plus-o"></i> Ngày tạo: ${user.createdAtFormatted}</span>
+                                    <span><i class="fa fa-refresh"></i> Cập nhật: ${user.updatedAtFormatted}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    
                     <div class="card-body">
-                      <div class="staff-info">
-                        <div class="info-item">
-                            <form action="/updatestatus" method="get">
-                                <label for="phone">Số điện thoại:</label>
-                                <input
-                                        type="text"
-
-                                        name="userId"
-                                        value="${user.id}"
-                                        hidden=""
-                                >
-
-                                <input
-                                        type="text"
-                                        id="phone"
-                                        name="phone"
-                                        placeholder="Nhập số điện thoại"
-                                        value="${user.phone}"
-                                        onblur="checkPhone(this.value)"
-                                >
-                                <p style="color: red">
-                                    ${error}
-                                </p>
-
-                                <div class="status-container">
-                                    <label>Trạng thái:</label>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" name="active" value="true" ${user.active == 'true' ? 'checked' : ''}>
-                                        <span class="toggle-slider"></span>
+                        <form action="/updatestatus" method="get" class="staff-form">
+                            <input type="hidden" name="userId" value="${user.id}">
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="phone">
+                                        <i class="fa fa-phone"></i>
+                                        Số điện thoại
                                     </label>
-                                    <span class="status-label">Hoạt động</span>
+                                    <div class="input-wrapper">
+                                        <input type="text"
+                                               id="phone"
+                                               name="phone"
+                                               class="form-control"
+                                               placeholder="Nhập số điện thoại"
+                                               value="${user.phone}"
+                                               onblur="checkPhone(this.value)">
+                                        <div class="error-message" id="phoneError">${error}</div>
+                                    </div>
                                 </div>
 
-                                <button type="submit">Lưu</button>
-                                <c:if test="${not empty success}">
-                                    <div class="alert alert-success">
-                                        <i class="fa fa-check-circle"></i>
-                                            ${success}
-                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <div class="form-group">
+                                    <label>
+                                        <i class="fa fa-toggle-on"></i>
+                                        Trạng thái tài khoản
+                                    </label>
+                                    <div class="status-wrapper">
+                                        <label class="switch">
+                                            <input type="checkbox" 
+                                                   name="active" 
+                                                   value="true" 
+                                                   ${user.active == 'true' ? 'checked' : ''}>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <span class="status-text ${user.active == 'true' ? 'active' : 'inactive'}">
+                                            ${user.active == 'true' ? 'Đang hoạt động' : 'Ngừng hoạt động'}
+                                        </span>
                                     </div>
-                                </c:if>
-                            </form>
+                                </div>
+                            </div>
 
+                            <div class="form-actions">
+                                <button type="submit" class="btn-submit">
+                                    <i class="fa fa-save"></i>
+                                    Lưu thay đổi
+                                </button>
+                            </div>
+                        </form>
 
-                        </div>
+                        <c:if test="${not empty success}">
+                            <div class="alert alert-success fade in">
+                                <i class="fa fa-check-circle"></i>
+                                ${success}
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            </div>
+                        </c:if>
                     </div>
                   </div>
 
