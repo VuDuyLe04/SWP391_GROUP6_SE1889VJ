@@ -11,9 +11,11 @@ public class ProductUpdateResponse {
     private Long id;
     private String name;
     private String image;
-    private double unitPrice;
-    private boolean storage;
+    private Double unitPrice;
+    private double totalQuantity;
+    private Boolean storage;
     private String category;
     private String description;
     private Long storeId;
+    private Long warehouseId;
 }

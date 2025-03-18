@@ -1,6 +1,7 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -59,9 +60,11 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "store_id")
+    @JsonIgnore
     private Store store;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "warehouse_id")
     private WareHouse warehouse;
 

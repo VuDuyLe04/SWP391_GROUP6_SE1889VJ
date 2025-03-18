@@ -30,4 +30,12 @@ public class UserStoreService implements IUserStoreService {
     public UserStore findUserStore(long userId) {
         return null;
     }
+
+    public List<Store> getStoresForUser(User user) {
+        List<UserStore> userStores = userStoreRepository.findByUser(user);
+        return userStores.stream()
+                .map(UserStore::getStore)
+                .toList();
+    }
+
 }

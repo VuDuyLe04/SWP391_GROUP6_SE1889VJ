@@ -12,4 +12,5 @@ public interface IUserStoreService {
 
     UserStore findUserStoreByUserAndStore(User user, Store store);
     List<UserStore> getAllUserStoresByUserId(long userId);
+    List<Store> getStoresForUser(User user);
 }

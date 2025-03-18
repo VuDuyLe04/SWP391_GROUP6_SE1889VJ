@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.se1889_jv.swp391.swpstart.util.constant.StatusStoreEnum;
 import jakarta.persistence.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,12 +27,10 @@ public class Store {
     private String createdBy;
     private Instant updatedAt;
     private String updatedBy;
-//    private Instant renewalDate;
+    //    private Instant renewalDate;
 //    private Instant expirationDate;
     @Enumerated(EnumType.STRING)
     private StatusStoreEnum status;
-
-
 
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -41,7 +40,8 @@ public class Store {
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Bill> bills;
 
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "store", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<WareHouse> wareHouses;
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

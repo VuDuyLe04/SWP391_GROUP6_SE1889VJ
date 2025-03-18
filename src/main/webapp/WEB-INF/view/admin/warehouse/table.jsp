@@ -183,18 +183,48 @@
                                     <tbody>
                                     <c:forEach items="${listWareHouse}" var="warehouse">
                                         <tr>
-                                            <td class ="text-center" >${warehouse.id}</td>
-                                            <td class ="text-center">${warehouse.name}</td>
-                                            <td class ="text-center">${warehouse.storeName}</td>
+                                            <td class="text-center">${warehouse.id}</td>
+                                            <td class="text-center">${warehouse.name}</td>
+                                            <td class="text-center">${warehouse.storeName}</td>
                                             <td class="text-right">
                                                 <a href="/warehouse/update/${warehouse.id}" class="btn btn-primary">Cập nhật</a>
                                                 <a href="/warehouse/detail/${warehouse.id}" class="btn btn-primary">Chi tiết</a>
-                                              
                                             </td>
                                         </tr>
                                     </c:forEach>
+
                                     </tbody>
                                 </table>
+
+                                <div class="pagination-container">
+                                    <c:if test="${totalPages > 1}">
+                                        <ul class="pagination">
+                                            <!-- Nút Trước -->
+                                            <c:choose>
+                                                <c:when test="${currentPage > 1}">
+                                                    <li><a href="/fetch-all-warehouse?page=${currentPage - 1}" class="btn btn-default">Trước</a></li>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <li><span class="btn btn-default disabled">Trước</span></li>
+                                                </c:otherwise>
+                                            </c:choose>
+
+                                            <!-- Hiển thị trang hiện tại -->
+                                            <li><span class="btn btn-default disabled">${currentPage}</span></li>
+
+                                            <!-- Nút Sau -->
+                                            <c:choose>
+                                                <c:when test="${currentPage < totalPages}">
+                                                    <li><a href="/fetch-all-warehouse?page=${currentPage + 1}" class="btn btn-default">Sau</a></li>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <li><span class="btn btn-default disabled">Sau</span></li>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </ul>
+                                    </c:if>
+                                </div>
+
 
                             </div>
 
