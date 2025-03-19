@@ -2,6 +2,7 @@ package com.se1889_jv.swp391.swpstart.service.IService;
 
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.Store;
+import com.se1889_jv.swp391.swpstart.domain.dto.CustomerCriteriaDTO;
 import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +11,7 @@ import java.util.List;
 
 
 public interface ICustomerService {
-    Customer createCustomer(Customer customer, Store store);
+    Customer createCustomer(Customer customer);
     List<Customer> getAllCustomers(Store store);
     Customer getCustomerById(long id);
     void updateCustomer(Customer customer);
@@ -48,6 +49,14 @@ public interface ICustomerService {
 
     List<Customer> getCustomersByStoreId(Long storeId);
     Customer getCustomerByNameAndPhone(String infor);
-    boolean checkCustomerExistsInStoreByPhone(String phone, Store store);
+
+
+    boolean checkCustomerExistsOfOwnerByPhone(String phone, String createdBy);
+
+
     boolean existsCustomerByNameAndPhone(String infor);
+
+    Page<Customer> getAllCustomerOfOwner(String createdBy, Pageable pageable, CustomerCriteriaDTO customerCriteriaDTO);
+
+
 }

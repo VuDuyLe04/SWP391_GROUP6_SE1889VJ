@@ -1,21 +1,12 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.se1889_jv.swp391.swpstart.util.constant.TransactionStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
-import java.time.LocalDateTime;
 
 
 @Entity

@@ -82,77 +82,62 @@
                 <div class="col-lg-12">
                     <section class="panel">
                         <header class="panel-heading">
+
                             <div class="panel-actions">
-                                <a href="/customer/create" class="btn btn-success" style="display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        width: 120px;
-        height: 40px;
-        font-size: 14px;
-        font-weight: bold;
-        color: #ffffff;
-        background: linear-gradient(90deg, #0093DD, #007ACC);
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;">Tạo khách hàng mới</a>
+                                <a href="#" class="panel-action panel-action-toggle" data-panel-toggle></a>
                             </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <form method="GET" action="/customer/search" class="form-inline"
-                                          style="margin-bottom: 20px;">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" name="name"
-                                                   placeholder="Tìm kiếm bằng tên" value="${param.name}"/>
-                                            <span class="input-group-btn">
-                        <button class="btn btn-primary" type="submit">Tìm</button>
-                    </span>
-                                        </div>
-
-                                    </form>
+                            <div class="row">
+                                <div class="col-sm-6">
                                 </div>
-                                <div class="col-md-3">
-                                    <!-- Form tìm kiếm theo số điện thoại -->
-                                    <form method="GET" action="/customer/search" class="form-inline">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" name="phone"
-                                                   placeholder="Tìm kiếm bằng số điện thoại" value="${param.phone}"/>
+                                <div class="col-sm-6">
+                                    <div class="pull-right">
+                                        <div class="input-group input-search">
+                                            <input type="text" class="form-control" id="nameOrPhone"
+                                                   placeholder="Tìm kiếm theo tên hoặc số điện thoại">
                                             <span class="input-group-btn">
-                    <button class="btn btn-primary" type="submit">Tìm</button>
-                </span>
+                                                <button class="btn btn-primary" id="btnSearch">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </span>
                                         </div>
-
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
 
                         </header>
                         <div class="panel-body">
+                            <div class="row mb-md">
+                                <div class="col-sm-6">
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="pull-right">
+                                        <a href="/customer/create" class="btn btn-primary mb-xs mt-xs mr-xs">
+                                            <i class="fa fa-plus mr-xs"></i>Thêm khách hàng mới
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-condensed mb-none">
                                     <thead>
                                     <tr>
-                                        <th>Số thứ tự</th>
-                                        <th>Tên</th>
-                                        <th class="text-right">Số điện thoại</th>
+                                        <th class="text-center">STT</th>
+                                        <th class="text-center">Tên</th>
+                                        <th class="text-center">Số điện thoại</th>
                                         <th class="text-center">Tiền nợ</th>
-                                        <th class="text-right">Cửa hàng</th>
-                                        <th class="text-right">Hoạt động</th>
-
+                                        <th class="text-center">Hoạt động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <c:forEach items="${listCustomer}" var="customer" varStatus="status">
                                         <tr>
-                                            <td>${status.index + 1}</td>
-                                            <td>${customer.name}</td>
-                                            <td class="text-right">${customer.phone}</td>
-
+                                            <td class="text-center">${status.index + 1}</td>
+                                            <td class="text-center">${customer.name}</td>
+                                            <td class="text-center">${customer.phone}</td>
                                             <td class="text-center">${customer.balance}</td>
-                                            <td class="text-right">${customer.store.name}</td>
-                                            <td class="text-right">
+                                            <td class="text-center">
                                                 <a href="/customer/detail/${customer.id}" class="btn btn-primary">Xem
                                                     chi tiết</a>
                                                 <a href="/customer/update/${customer.id}" class="btn btn-primary">Cập
@@ -167,19 +152,14 @@
                                 </table>
                                 <div class="pagination-container text-center mt-3">
                                     <ul class="pagination justify-content-center">
-                                        <!-- Xây dựng query giữ lại thông tin tìm kiếm -->
-                                        <c:set var="searchQuery" value="" />
-                                        <c:if test="${not empty param.name}">
-                                            <c:set var="searchQuery" value="${searchQuery}&name=${param.name}" />
-                                        </c:if>
-                                        <c:if test="${not empty param.phone}">
-                                            <c:set var="searchQuery" value="${searchQuery}&phone=${param.phone}" />
-                                        </c:if>
+
 
                                         <!-- Nút "Previous" -->
                                         <c:if test="${currentPage > 0}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customer/search?page=${currentPage - 1}${searchQuery}" aria-label="Previous">
+                                                <a class="page-link"
+                                                   href="/customer/table?page=${currentPage - 1}"
+                                                   aria-label="Previous">
                                                     <span aria-hidden="true">&laquo; Trước</span>
                                                 </a>
                                             </li>
@@ -189,7 +169,8 @@
                                         <c:if test="${totalPages > 0}">
                                             <c:forEach begin="0" end="${totalPages - 1}" var="i">
                                                 <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                    <a class="page-link" href="/customer/search?page=${i}${searchQuery}">${i + 1}</a>
+                                                    <a class="page-link"
+                                                       href="/customer/table?page=${i}">${i + 1}</a>
                                                 </li>
                                             </c:forEach>
                                         </c:if>
@@ -197,7 +178,9 @@
                                         <!-- Nút "Next" -->
                                         <c:if test="${currentPage < totalPages - 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/customer/search?page=${currentPage + 1}${searchQuery}" aria-label="Next">
+                                                <a class="page-link"
+                                                   href="/customer/table?page=${currentPage + 1}"
+                                                   aria-label="Next">
                                                     <span aria-hidden="true">Sau &raquo;</span>
                                                 </a>
                                             </li>
@@ -268,5 +251,43 @@
 
 <!-- Examples -->
 <script src="/client/auth/assets/javascripts/dashboard/examples.dashboard.js"></script>
+<script>
+    // Tự động điền lại giá trị tìm kiếm vào ô 'nameOrPhone' khi trang được tải lại
+    document.addEventListener("DOMContentLoaded", function () {
+        const params = new URLSearchParams(window.location.search);
+
+        // Kiểm tra xem URL có chứa tham số 'nameOrPhone' không và tự động điền vào ô tìm kiếm
+        if (params.has('nameOrPhone')) {
+            document.getElementById('nameOrPhone').value = params.get('nameOrPhone');
+        }
+
+        // Hàm xử lý tìm kiếm
+        const applySearch = () => {
+            const nameOrPhone = document.getElementById('nameOrPhone').value.trim();
+
+            // Cập nhật URL với tham số tìm kiếm 'nameOrPhone'
+            const url = new URL(window.location.origin + '/customer/table');  // Thay đổi đường dẫn nếu cần
+            if (nameOrPhone) url.searchParams.set('nameOrPhone', nameOrPhone);
+
+            // Điều hướng tới URL mới với tham số tìm kiếm
+            window.location.href = url;
+        };
+
+        // Thêm sự kiện click cho nút tìm kiếm
+        document.getElementById('btnSearch').addEventListener('click', function (event) {
+            event.preventDefault();  // Ngăn không cho form gửi đi mặc định
+            applySearch();
+        });
+
+        // Cũng có thể xử lý khi nhấn phím Enter để tìm kiếm
+        document.getElementById('nameOrPhone').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                applySearch();
+            }
+        });
+    });
+</script>
+
+
 </body>
 </html>

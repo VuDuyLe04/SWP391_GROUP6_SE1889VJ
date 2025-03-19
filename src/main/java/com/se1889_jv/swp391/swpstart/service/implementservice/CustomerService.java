@@ -2,9 +2,13 @@ package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.Store;
+import com.se1889_jv.swp391.swpstart.domain.dto.CustomerCriteriaDTO;
 import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.ICustomerService;
+import com.se1889_jv.swp391.swpstart.service.specification.CustomerSpecs;
+import com.se1889_jv.swp391.swpstart.service.specification.ServiceSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +22,7 @@ public class CustomerService implements ICustomerService {
     private CustomerRepository customerRepository;
 
     @Override
-    public Customer createCustomer(Customer customer, Store store) {
-        customer.setStore(store);
+    public Customer createCustomer(Customer customer) {
         return this.customerRepository.save(customer);
     }
 
@@ -94,8 +97,8 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public boolean checkCustomerExistsInStoreByPhone(String phone, Store store) {
-        return this.customerRepository.existsByPhoneAndStore(phone, store);
+    public boolean checkCustomerExistsOfOwnerByPhone(String phone, String createdBy) {
+        return this.customerRepository.existsByPhoneAndCreatedBy(phone,createdBy);
     }
 
     @Override
@@ -104,6 +107,24 @@ public class CustomerService implements ICustomerService {
         String name = part[0].trim();
         String phone = part[1].trim();
         return customerRepository.existsCustomerByNameAndPhone(name,phone);
+    }
+
+    @Override
+    public Page<Customer> getAllCustomerOfOwner(String createdBy, Pageable pageable, CustomerCriteriaDTO customerCriteriaDTO) {
+
+        // When nameOrPhone is not provided, use the simpler method
+        if (customerCriteriaDTO.getName() == null) {
+            return this.customerRepository.findAllByCreatedBy(createdBy, pageable);
+        }
+        Specification<Customer> combined = Specification.where(null);
+
+        if ( customerCriteriaDTO.getName() != null && customerCriteriaDTO.getName().isPresent()) {
+            Specification<Customer> currentSpecs = CustomerSpecs.nameOrPhoneLike(customerCriteriaDTO.getName().get());
+            combined = combined.and(currentSpecs);
+        }
+
+        // Pass the specification along with createdBy and pageable
+        return this.customerRepository.findAllByCreatedBy(combined, createdBy, pageable);
     }
 
 }

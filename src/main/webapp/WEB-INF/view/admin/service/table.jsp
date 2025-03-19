@@ -197,27 +197,35 @@
                                     <ul class="pagination justify-content-center">
                                         <c:if test="${currentPage > 0}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/service/table?page=${currentPage - 1}"
+                                                <a class="page-link"
+                                                   href="?page=${currentPage - 1}&durationMonths=${param.durationMonths}&status=${param.status}&name=${param.name}"
                                                    aria-label="Previous">
                                                     <span aria-hidden="true">&laquo; Trước</span>
                                                 </a>
                                             </li>
                                         </c:if>
+
                                         <c:if test="${totalPages > 0}">
-                                            <c:forEach begin="0" end="${totalPages - 1}" var="i">
+                                            <c:forEach var="i" begin="0" end="${totalPages - 1}">
                                                 <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                    <a class="page-link" href="/service/table?page=${i}">${i + 1}</a>
+                                                    <a class="page-link"
+                                                       href="/service/table?page=${i}&durationMonths=${param.durationMonths}&status=${param.status}&name=${param.name}">
+                                                            ${i + 1}
+                                                    </a>
                                                 </li>
                                             </c:forEach>
                                         </c:if>
+
                                         <c:if test="${currentPage < totalPages - 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="/service/table?page=${currentPage + 1}"
+                                                <a class="page-link"
+                                                   href="?page=${currentPage + 1}&durationMonths=${param.durationMonths}&status=${param.status}&name=${param.name}"
                                                    aria-label="Next">
                                                     <span aria-hidden="true">Sau &raquo;</span>
                                                 </a>
                                             </li>
                                         </c:if>
+
                                     </ul>
                                 </div>
                             </div>
@@ -320,16 +328,39 @@
     });
 
     // Auto select values after page load
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener("DOMContentLoaded", function () {
+        // Tự động lấy giá trị filter và tìm kiếm từ URL để điền vào form khi tải trang
         const params = new URLSearchParams(window.location.search);
-
         if (params.has('durationMonths')) {
             document.getElementById('durationMonths').value = params.get('durationMonths');
         }
         if (params.has('status')) {
             document.getElementById('status').value = params.get('status');
         }
+        if (params.has('name')) {
+            document.getElementById('name').value = params.get('name');
+        }
+
+        // Hàm chung để xử lý cả nút lọc và nút tìm kiếm
+        const applyFilters = () => {
+            const durationMonths = document.getElementById('durationMonths').value;
+            const status = document.getElementById('status').value;
+            const name = document.getElementById('name').value.trim();
+
+            const url = new URL(window.location.origin + '/service/table');
+
+            if(durationMonths) url.searchParams.set('durationMonths', durationMonths);
+            if(status) url.searchParams.set('status', status);
+            if(name) url.searchParams.set('name', name);
+
+            window.location.href = url;
+        };
+
+        document.getElementById('btnSearch').addEventListener('click', applyFilters);
+        document.getElementById('btnSearch').addEventListener('click', applyFilters);
+        document.getElementById('btnSearch').addEventListener('click', applyFilters);
     });
+
 
 
     // Gán sự kiện khi nhấn nút tìm kiếm

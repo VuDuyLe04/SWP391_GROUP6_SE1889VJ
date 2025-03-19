@@ -62,7 +62,7 @@ public class PaymentService {
                         // If not, save it in DB with "PENDING" status
                         TransactionPayment transactionPayment = new TransactionPayment();
                         transactionPayment.setTransactionId(transactionId);
-                        transactionPayment.setAmount((Double) payment.get("amount"));
+                        transactionPayment.setAmount((Integer) payment.get("amount"));
                         transactionPayment.setContent((String) payment.get("content"));
 
                         String dateString = (String) payment.get("date");

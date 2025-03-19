@@ -1,17 +1,15 @@
 package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 
-import com.se1889_jv.swp391.swpstart.domain.User;
-import com.se1889_jv.swp391.swpstart.domain.UserStore;
+import com.se1889_jv.swp391.swpstart.domain.*;
+import com.se1889_jv.swp391.swpstart.repository.TransactionServiceRepository;
 import com.se1889_jv.swp391.swpstart.repository.UserRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IUserService;
+import com.se1889_jv.swp391.swpstart.util.constant.TransactionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
-
-import com.se1889_jv.swp391.swpstart.domain.Role;
-import com.se1889_jv.swp391.swpstart.domain.Store;
 
 import com.se1889_jv.swp391.swpstart.domain.dto.RegisterDTO;
 import com.se1889_jv.swp391.swpstart.repository.RoleRepository;
@@ -51,6 +49,9 @@ public class UserService implements IUserService {
 
     @Autowired
     private ServiceService serviceService;
+
+    @Autowired
+    private TransactionServiceRepository transactionServiceRepository;
 
     @Override
     public User getUserByPhone(String phone) {
@@ -159,17 +160,29 @@ public class UserService implements IUserService {
     public User handleBuyService(User user,List<User> users, com.se1889_jv.swp391.swpstart.domain.Service service) {
 
         for (User user1 : users) {
-            user1.setRenewalDate(Instant.now()); // Cập nhật ngày gia hạn hiện tại
+            user1.setRenewalDate(Instant.now());
             LocalDateTime expirationDate = LocalDateTime.now().plus(service.getDurationMonths(), ChronoUnit.MONTHS);
             user1.setExpirationDate(expirationDate.atZone(ZoneId.systemDefault()).toInstant());
             user1.setStatusService(true);
         }
+
+        Instant now = Instant.now();
         user.setBalance(user.getBalance()- service.getPrice());
-        user.setRenewalDate(Instant.now()); // Cập nhật ngày gia hạn hiện tại
-        LocalDateTime expirationDate = LocalDateTime.now().plus(service.getDurationMonths(), ChronoUnit.MONTHS);
+        user.setRenewalDate(now);
+        LocalDateTime expirationDate = now.atZone(ZoneId.systemDefault()).toLocalDateTime().plus(service.getDurationMonths(), ChronoUnit.MONTHS);
         user.setExpirationDate(expirationDate.atZone(ZoneId.systemDefault()).toInstant());
         user.setStatusService(true);
         this.userRepository.save(user);
+
+        TransactionService transactionService = new TransactionService();
+        transactionService.setServiceName(service.getName());
+        transactionService.setAmount(service.getPrice());
+        transactionService.setTransactionDate(now.atZone(ZoneId.systemDefault()).toLocalDateTime());
+        transactionService.setDurationMonths(service.getDurationMonths());
+        transactionService.setTransactionStatus(TransactionStatus.COMPLETED);
+        transactionService.setUser(user);
+        transactionService.setService(service);
+        transactionServiceRepository.save(transactionService);
         return user;
 
     }

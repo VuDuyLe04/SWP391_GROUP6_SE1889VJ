@@ -47,7 +47,7 @@ public class Customer {
     @PrePersist
     public void handleBeforeCreate() {
         User user = Utility.getUserInSession();
-        this.createdBy = user.getName();
+
         this.createdAt = Instant.now();
 
     }

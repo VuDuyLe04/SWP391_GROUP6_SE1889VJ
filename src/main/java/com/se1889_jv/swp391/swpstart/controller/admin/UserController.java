@@ -326,8 +326,9 @@ public class UserController {
             user.setName(staffDTO.getName());
             user.setPhone(staffDTO.getPhone());
             user.setPassword(passwordEncoder.encode(staffDTO.getPassword()));
-            user.setRole(roleService.getRole(3L));
+            user.setRole(roleService.getRole(3));
             user.setCreatedBy(userId);
+            user.setActive(true);
             User savedUser = userService.createUser(user);
 
             UserStore userStore = new UserStore();
