@@ -12,7 +12,7 @@ import java.util.List;
 public class RoleService implements IRoleService {
     @Autowired
     RoleRepository roleRepository;
-    public Role getRole(Long id) {
+    public Role getRole(long id) {
         return roleRepository.getById(id);
     }
 

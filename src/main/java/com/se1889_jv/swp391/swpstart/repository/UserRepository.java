@@ -17,16 +17,10 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
     User findByPhoneAndPassword(String phone, String password);
     User findByPhone(String phone);
-//    Page<User> findUsersByNameContainingOrPhoneContainingAndRoleIdNot(String name, String phone, Long roleId,Pageable pageable);
     List<User> findByRoleIdIn(List<Long> roleIds);
-
+    Page<User> findByNameContainingOrPhoneContainingAndRole_IdNot(String name, String phone, Long roleId, Pageable pageable);
     Page<User> findUsersByNameContainingOrPhoneContaining(String name, String phone, Pageable pageable);
     boolean existsByPhone(String phone);
-    Page<User> findByNameContainingOrPhoneContainingAndRole_IdNot(String name, String phone, Long roleId, Pageable pageable);
-
-    Page<User> findByRoleIdNot(Long id, Pageable pageable);
-
-
     @Query("SELECT u FROM User u " +
             "WHERE u.id IN (" +
             "   SELECT MIN(u2.id) FROM User u2 " +
@@ -45,7 +39,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
             @Param("storeId") Long storeId,
             @Param("keyword") String keyword,
             Pageable pageable);
-
+    Page<User> findByRoleIdNot(Long roleId, Pageable pageable);
+//    findByRoleIdNot(1L,pageable);
 
     //    Page<User> findDistinctUsersByUserStores_Store_CreatedByAndByNameContainingOrPhoneContaining(String createdBy,String name,String phone, Pageable pageable);
     Page<User> findUsersByActive(boolean active, Pageable pageable);

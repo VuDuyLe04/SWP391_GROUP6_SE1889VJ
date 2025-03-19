@@ -2,6 +2,7 @@ package com.se1889_jv.swp391.swpstart.service.IService;
 
 import com.se1889_jv.swp391.swpstart.domain.TransactionPayment;
 import com.se1889_jv.swp391.swpstart.domain.TransactionService;
+import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.util.constant.TransactionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,4 +22,6 @@ public interface ITransactionServiceService {
             @Param("input") String input,
             Pageable pageable
     );
+
+    Page<TransactionService> allTransactionsServiceOfUser(User user, Pageable pageable);
 }

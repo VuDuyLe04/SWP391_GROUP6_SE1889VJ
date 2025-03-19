@@ -136,28 +136,29 @@
 <%--                                    </div>--%>
 <%--                                </div>--%>
 
-                                <c:if test="${sessionScope.user.role.name == 'STAFF'}">
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label" for="inputHelpText">Cửa hàng</label>
-                                        <div class="col-md-6">
-                                            <input name="balance" value="${sessionScope.store.name}"
-                                                   class="form-control" id="inputHelpText" readonly="true"/>
-                                        </div>
-                                    </div>
-                                </c:if>
-                                <c:if test="${sessionScope.user.role.name == 'OWNER'}">
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label" for="inputHelpText">Cửa hàng</label>
-                                        <div class="col-md-6">
-                                            <select name="storeId">
-                                                <c:forEach items="${listStore}" var="store">
-                                                    <option value="${store.id}">${store.name}</option>
-                                                </c:forEach>
-                                            </select>
+<%--                                <c:if test="${sessionScope.user.role.name == 'STAFF'}">--%>
+<%--                                    <div class="form-group">--%>
+<%--                                        <label class="col-md-3 control-label" for="inputHelpText">Cửa hàng</label>--%>
+<%--                                        <div class="col-md-6">--%>
+<%--                                            <input value="${sessionScope.store.name}"--%>
+<%--                                                   class="form-control" id="inputHelpText" readonly="true"/>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                </c:if>--%>
 
-                                        </div>
-                                    </div>
-                                </c:if>
+<%--                                <c:if test="${sessionScope.user.role.name == 'OWNER'}">--%>
+<%--                                    <div class="form-group">--%>
+<%--                                        <label class="col-md-3 control-label" for="inputHelpText">Cửa hàng</label>--%>
+<%--                                        <div class="col-md-6">--%>
+<%--                                            <select name="storeId">--%>
+<%--                                                <c:forEach items="${listStore}" var="store">--%>
+<%--                                                    <option value="${store.id}">${store.name}</option>--%>
+<%--                                                </c:forEach>--%>
+<%--                                            </select>--%>
+
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                </c:if>--%>
 
 
 

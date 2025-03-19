@@ -1,6 +1,7 @@
 package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 import com.se1889_jv.swp391.swpstart.domain.TransactionService;
+import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.repository.TransactionServiceRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.ITransactionServiceService;
 import com.se1889_jv.swp391.swpstart.util.constant.TransactionStatus;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class TransactionServiceSerivice implements ITransactionServiceService {
+public class TransactionServiceService implements ITransactionServiceService {
     @Autowired
    private TransactionServiceRepository transactionServiceRepository;
 
@@ -26,9 +27,10 @@ public class TransactionServiceSerivice implements ITransactionServiceService {
         return transactionServiceRepository.filterTransactions(startDate, endDate, minAmount, maxAmount, status, input, pageable);
     }
 
-
-
-
+    @Override
+    public Page<TransactionService> allTransactionsServiceOfUser(User user, Pageable pageable) {
+        return this.transactionServiceRepository.findByUser(user, pageable);
+    }
 
 
 }

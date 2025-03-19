@@ -19,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +41,8 @@ public class UserController {
     RoleService roleService;
     @Autowired
     UserStoreService userStoreService;
+
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -71,13 +72,14 @@ public class UserController {
                     users = userService.getUsersByActive(isActive, pageable);
                 } else if (roleIdValue != -1 && !"-1".equals(active)) {
                     users = userService.getUsersByRoleIDAndActive(roleIdValue, isActive, pageable);
-            } else {
-                users = userService.getAll(pageable);
+                } else {
+                    users = userService.getAll(pageable);
+                }
             }
-                model.addAttribute("active", active);
-                model.addAttribute("roleId", roleId);
-                model.addAttribute("roles", roleService.getAllRoles());
-        }
+            model.addAttribute("active", active);
+            model.addAttribute("roleId", roleId);
+            model.addAttribute("roles", roleService.getAllRoles());
+
         } else if (user.getRole().getName().equals("OWNER")) {
             List<Store> stores = Utility.getListStoreOfOwner(user);
             model.addAttribute("stores", stores);
@@ -91,12 +93,16 @@ public class UserController {
             model.addAttribute("storeId", storeId);
 
         }
+
+
         model.addAttribute("input", input != null ? input : "");
         if (users == null || users.getContent().isEmpty()) {
             model.addAttribute("emptyList", "Không có tài khoản nào được tìm thấy !");
         } else {
             model.addAttribute("userPage", users);
         }
+
+
         return "admin/user/usermanagement";
     }
 
@@ -118,7 +124,9 @@ public class UserController {
                 }
             }
         }
+
         model.addAttribute("error", error);
+
         if (updatedPhone != null && id != null) {
             User user = userService.findById(Long.parseLong(id));
             user.setPhone(updatedPhone);
@@ -129,6 +137,7 @@ public class UserController {
             return "admin/user/createuser";
         }
     }
+
     @GetMapping("/createuser")
     public String createUser(@RequestParam(value = "phone", required = false) String phone,
                              @RequestParam(value = "password", required = false) String password,
@@ -145,17 +154,16 @@ public class UserController {
                 model.addAttribute("error", "Số điện thoại đã tồn tại.");
                 return "admin/user/createuser";
             }
-
             // Kiểm tra định dạng mật khẩu
             if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
                 model.addAttribute("error", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
                 return "admin/user/createuser";
             }
-            if (!name.trim().matches("^[\\p{L}\\s]+$")){
+
+            if (!name.matches("^[a-zA-ZÀ-ỹ\\s]+$")) {
                 model.addAttribute("error", "Tên không được chứa số và các kí tự đặc biệt! ");
                 return "admin/user/createuser";
             }
-
             User sessionUser = Utility.getUserInSession();
             User user = new User();
             user.setPhone(phone);
@@ -169,27 +177,26 @@ public class UserController {
             user.setCreatedBy(sessionUser.getName());
             user.setRole(roleService.getRole(2L));
             user.setUserStores(null);
-
-            // Kiểm tra xem tạo user có thành công không
-            boolean isCreated = userService.createUser(user)!=null;
+            boolean isCreated = userService.createUser(user) != null;
             if (isCreated) {
                 model.addAttribute("success", "Tạo người dùng thành công.");
             } else {
                 model.addAttribute("error", "Không thể tạo người dùng, vui lòng thử lại.");
             }
+        } else {
+
         }
 
         return "admin/user/createuser";
     }
 
-
     @GetMapping("/updateuser")
-    public String updateUser(@RequestParam (value="id", required = false) String id,
-                             @RequestParam(value="phone",required = false) String phone,
+    public String updateUser(@RequestParam(value = "id", required = false) String id,
+                             @RequestParam(value = "phone", required = false) String phone,
 //                             @RequestParam(value="password",required = false) String password,
-                             @RequestParam(value="name",required = false) String name,
-                             @RequestParam(value="active",defaultValue = "false") boolean active,
-                             Model model){
+                             @RequestParam(value = "name", required = false) String name,
+                             @RequestParam(value = "active", defaultValue = "false") boolean active,
+                             Model model) {
         User user = new User();
         user = userService.findById(Long.parseLong(id));
         if (phone != null && phone.matches("^[0-9]{10}$") && name != null && name.matches("^[\\p{L}\\s]+$")) {
@@ -306,7 +313,7 @@ public class UserController {
             return "admin/user/createstaff";
         }
         String userId = String.valueOf(Utility.getUserInSession().getId());
-        User existingUser = userService.getUserByPhone(staffDTO.getPhone().trim());
+        User existingUser = userService.getUserByPhone(staffDTO.getPhone());
         if (existingUser != null) {
             model.addAttribute("phoneError", "Số điện thoại đã tồn tại !");
             List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
@@ -321,6 +328,7 @@ public class UserController {
             user.setActive(true);
             user.setCreatedBy(userId);
             User savedUser = userService.createUser(user);
+
             UserStore userStore = new UserStore();
             userStore.setUser(savedUser);
             userStore.setStore(storeService.findStoreById(staffDTO.getStoreId()));
@@ -361,23 +369,30 @@ public class UserController {
             RedirectAttributes redirectAttributes
     ) {
         // Kiểm tra phone hợp lệ
-        if (phone != null && phone.matches( "^\\s*(0[1-9][0-9]{8,9})\\s*$")) {
-            User user = userService.getUserByPhone(phone.trim());
+if(status == null){
+    if (phone != null && phone.matches( "^\\s*(0[1-9][0-9]{8,9})\\s*$") ) {
+        User user = userService.getUserByPhone(phone.trim());
 
-            if (user != null && user.getId() != Long.parseLong(userId)) {
-                redirectAttributes.addFlashAttribute("error", "Số điện thoại đã tồn tại!");
-            } else {
-                user = userService.findById(Long.parseLong(userId));
-                if (user != null) {
-                    user.setActive(Boolean.parseBoolean(active));
-                    user.setPhone(phone);
-                    userService.updateUser(user);
-                    redirectAttributes.addFlashAttribute("success", "Cập nhật thành công!");
-                }
-            }
+        if (user != null && user.getId() != Long.parseLong(userId)) {
+            redirectAttributes.addFlashAttribute("error", "Số điện thoại đã tồn tại!");
         } else {
-            redirectAttributes.addFlashAttribute("error", "Số điện thoại không hợp lệ.");
+            user = userService.findById(Long.parseLong(userId));
+            if (user != null) {
+                user.setActive(Boolean.parseBoolean(active));
+                user.setPhone(phone);
+                userService.updateUser(user);
+                redirectAttributes.addFlashAttribute("success", "Cập nhật thành công!");
+            }
         }
+    } else {
+        redirectAttributes.addFlashAttribute("error", "Số điện thoại không hợp lệ.");
+    }
+
+
+}
+
+
+
 
         // Kiểm tra xem userStoreId có giá trị không trước khi chuyển đổi
         if (userStoreId != null && !userStoreId.isEmpty()) {
@@ -391,11 +406,9 @@ public class UserController {
                 redirectAttributes.addFlashAttribute("error", "ID cửa hàng không hợp lệ.");
             }
         }
+        return "redirect:/updatestaff/" + Long.parseLong(userId);
 
-        // Redirect về trang cập nhật nhân viên
-        return "redirect:/updatestaff/" + userId;
     }
-
     @GetMapping("/savestore")
     public String saveSelectedStores(@RequestParam(value = "selectedStores", required = false) List<Long> selectedStoreIds,
                                      @RequestParam("userId") String userId,

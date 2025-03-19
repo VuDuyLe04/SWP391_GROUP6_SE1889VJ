@@ -29,11 +29,13 @@ public interface TransactionPaymentRepository extends JpaRepository<TransactionP
             @Param("maxAmount") Double maxAmount,
             @Param("status") TransactionStatus status,
             Pageable pageable
-
     );
     Page<TransactionPayment> findByTransactionStatus(TransactionStatus transactionStatus, Pageable pageable);
     Optional<TransactionPayment> findByTransactionId(String transactionId);
     Page<TransactionPayment> findByUser(User user, Pageable pageable);
     Page<TransactionPayment> findAll(Pageable pageable);
     Page<TransactionPayment> findByTransactionIdContainingOrUser_PhoneContaining(String transactionId, String phone, Pageable pageable);
+
+
+
 }

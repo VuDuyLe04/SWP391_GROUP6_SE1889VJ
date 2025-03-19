@@ -1,14 +1,13 @@
 package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 
-import com.se1889_jv.swp391.swpstart.domain.User;
-import com.se1889_jv.swp391.swpstart.domain.UserStore;
+import com.se1889_jv.swp391.swpstart.domain.*;
+import com.se1889_jv.swp391.swpstart.repository.TransactionServiceRepository;
 import com.se1889_jv.swp391.swpstart.repository.UserRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IUserService;
+import com.se1889_jv.swp391.swpstart.util.constant.TransactionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
-
 
 
 import com.se1889_jv.swp391.swpstart.domain.Role;
@@ -29,7 +28,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 public class UserService implements IUserService {
@@ -50,6 +49,9 @@ public class UserService implements IUserService {
 
     @Autowired
     private ServiceService serviceService;
+
+    @Autowired
+    private TransactionServiceRepository transactionServiceRepository;
 
     @Override
     public User getUserByPhone(String phone) {
@@ -100,17 +102,13 @@ public class UserService implements IUserService {
     }
 
 
-    @Override
-    public Page<User> getUsersBySearch(String name, String phone,Long roleId, Pageable pageable) {
-        return this.userRepository.findByNameContainingOrPhoneContainingAndRole_IdNot(name,phone,roleId,pageable);
-
-    }
 
     @Override
     public Page<User> getUsersbyRoleID(Long id, Pageable pageable) {
 
         return this.userRepository.findUsersByRoleId(id,pageable);
     }
+
 
     @Override
     public Page<User> getUsersByActive(boolean active, Pageable pageable) {
@@ -142,12 +140,23 @@ public class UserService implements IUserService {
             user1.setExpirationDate(expirationDate.atZone(ZoneId.systemDefault()).toInstant());
             user1.setStatusService(true);
         }
+        Instant now = Instant.now();
         user.setBalance(user.getBalance()- service.getPrice());
-        user.setRenewalDate(Instant.now()); // Cập nhật ngày gia hạn hiện tại
-        LocalDateTime expirationDate = LocalDateTime.now().plus(service.getDurationMonths(), ChronoUnit.MONTHS);
+        user.setRenewalDate(now);
+        LocalDateTime expirationDate = now.atZone(ZoneId.systemDefault()).toLocalDateTime().plus(service.getDurationMonths(), ChronoUnit.MONTHS);
         user.setExpirationDate(expirationDate.atZone(ZoneId.systemDefault()).toInstant());
         user.setStatusService(true);
         this.userRepository.save(user);
+
+        TransactionService transactionService = new TransactionService();
+        transactionService.setServiceName(service.getName());
+        transactionService.setAmount(service.getPrice());
+        transactionService.setTransactionDate(now.atZone(ZoneId.systemDefault()).toLocalDateTime());
+        transactionService.setDurationMonths(service.getDurationMonths());
+        transactionService.setTransactionStatus(TransactionStatus.COMPLETED);
+        transactionService.setUser(user);
+        transactionService.setService(service);
+        transactionServiceRepository.save(transactionService);
         return user;
 
     }
@@ -164,19 +173,28 @@ public class UserService implements IUserService {
         return userRepository.findByPhoneAndPassword(phone, password);
     }
 
+
+
+
+    @Override
+    public Page<User> getUsersBySearch(String name, String phone, Long roleId, Pageable pageable) {
+        return this.userRepository.findByNameContainingOrPhoneContainingAndRole_IdNot(name,phone,roleId,pageable);
+
+    }
+
+
     @Override
     public User updateUser(User user) {
         User user1 = findById(user.getId());
+
         if(user1 != null){
             user1.setName(user.getName());
             user1.setUpdatedAt(Instant.now());
             user1.setUpdatedBy(user.getName());
         }
+
         return this.userRepository.save(user1);
     }
 
-
-
-    ;
 
 }

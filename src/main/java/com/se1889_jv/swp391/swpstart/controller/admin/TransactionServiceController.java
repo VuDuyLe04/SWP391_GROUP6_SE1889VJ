@@ -1,9 +1,7 @@
 package com.se1889_jv.swp391.swpstart.controller.admin;
 
-import com.se1889_jv.swp391.swpstart.domain.TransactionPayment;
 import com.se1889_jv.swp391.swpstart.domain.TransactionService;
-import com.se1889_jv.swp391.swpstart.service.implementservice.TransactionPaymentService;
-import com.se1889_jv.swp391.swpstart.service.implementservice.TransactionServiceSerivice;
+import com.se1889_jv.swp391.swpstart.service.implementservice.TransactionServiceService;
 import com.se1889_jv.swp391.swpstart.util.constant.TransactionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -15,12 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Controller
 public class TransactionServiceController {
     @Autowired
-    private TransactionServiceSerivice transactionServiceSerivice;
+    private TransactionServiceService transactionServiceSerivice;
     @GetMapping("/transervices")
     public String transpayments(
             @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,

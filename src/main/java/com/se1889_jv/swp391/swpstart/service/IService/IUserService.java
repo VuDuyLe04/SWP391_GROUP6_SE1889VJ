@@ -19,7 +19,10 @@ public interface IUserService {
     List<UserStore> getAllUserStores(User user);
     User findByPhoneAndPassword(String phone, String password);
 
-     Page<User> getUsersBySearch(String name, String phone,Long roleId, Pageable pageable) ;
+
+
+    Page<User> getUsersBySearch(String name, String phone, Long roleId, Pageable pageable);
+
     User updateUser(User user);
 
     Page<User> getAll(Pageable pageable);

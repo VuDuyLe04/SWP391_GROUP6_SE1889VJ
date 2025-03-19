@@ -30,11 +30,15 @@ public class SignUpServiceController {
             Model model,
             HttpSession session) {
         User us = Utility.getUserInSession();
+        if (us == null) {
+            session.setAttribute("message", "Vui lòng đăng nhập để sử dụng dịch vụ");
+            return "redirect:/#services";
+        }
+
         User user = userService.findById(us.getId());
         if (user.getRole().getName().equals("STAFF") || user.getRole().getName().equals("ADMIN")) {
             session.setAttribute("message", "Tài khoản bạn không được phép mua dịch vụ");
             return "redirect:/#services";
-
         }
 
         List<Store> stores = Utility.getListStoreOfOwner(user);

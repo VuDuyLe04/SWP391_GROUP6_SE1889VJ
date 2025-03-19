@@ -2,6 +2,29 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<style>
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Khoảng cách giữa các phần tử */
+    }
+
+    .notifications {
+        margin-right: 10px; /* Để nút Bán hàng không quá sát với dropdown */
+    }
+
+    .notifications select {
+        max-width: 200px; /* Đảm bảo rằng dropdown không quá rộng */
+    }
+
+    .btn-primary {
+        padding: 10px 15px; /* Tăng padding cho nút Bán hàng */
+        font-size: 14px; /* Đảm bảo chữ trong nút rõ ràng và vừa phải */
+        white-space: nowrap; /* Đảm bảo chữ không bị xuống dòng */
+    }
+
+</style>
 <header class="header">
     <div class="logo-container">
         <a href="../" class="logo">
@@ -15,16 +38,8 @@
     <!-- start: search & user box -->
     <div class="header-right">
 
-<%--        <form action="pages-search-results.html" class="search nav-form">--%>
-<%--            <div class="input-group input-search">--%>
-<%--                <input type="text" class="form-control" name="q" id="q" placeholder="Search...">--%>
-<%--                <span class="input-group-btn">--%>
-<%--								<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>--%>
-<%--							</span>--%>
-<%--            </div>--%>
-<%--        </form>--%>
-<%--        <span class="separator"></span>--%>
         <c:if test="${sessionScope.user.role.name == 'STAFF'}">
+
             <div class="notifications">
                 <form id="storeSwitcher" method="post" action="/storesession">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -38,14 +53,59 @@
                     </select>
                 </form>
             </div>
+
+            <!-- Thêm nút "Bán hàng" -->
+            <a href="/saleproduct" class="btn btn-primary" style="margin-left: 15px;">
+                Bán hàng
+            </a>
+        </c:if>
+        <c:if test="${sessionScope.user.role.name == 'OWNER'}">
+            <a href="javascript:void(0)" class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#saleModal">
+                Bán hàng
+            </a>
         </c:if>
 
-<%--    <c:if test="${sessionScope.user.role.name == 'OWNER'}">--%>
-<%--        <div class="notification">--%>
-<%--            Số dư: <fmt:formatNumber value="${sessionScope.user.balance}" type="currency"--%>
-<%--                                     currencySymbol="₫"/>--%>
-<%--        </div>--%>
-<%--    </c:if>--%>
+        <!-- Modal -->
+        <div class="modal fade" id="saleModal" tabindex="-1" role="dialog" aria-labelledby="saleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h5 class="modal-title" id="saleModalLabel">Chọn cửa hàng </h5>
+                    </div>
+
+                    <form action="/storesession" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="hidden" id="storeIdInput" name="storeId" value=""/>
+                        <div class="modal-body">
+                            <ul>
+                                <c:forEach items="${sessionScope.user.userStores}" var="userStore">
+                                    <li>
+                                        <a href="#" onclick="submitStore('${userStore.store.id}'); return false;">
+                                                ${userStore.store.name}
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </form>
+
+                    <script>
+                        function submitStore(storeId) {
+                            document.getElementById('storeIdInput').value = storeId;
+                            document.forms[0].submit();
+                        }
+                    </script>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <span class="separator"></span>
 
@@ -86,10 +146,10 @@
                             <a role="menuitem" tabindex="-1" href="/payment"><i class="fa fa-money"></i> Nạp tiền</a>
                         </li>
                         <li>
-                            <a role="menuitem" tabindex="-1" href="/payment/history"><i class="fa fa-history"></i> Lịch sử nạp tiền</a>
+                            <a role="menuitem" tabindex="-1" href="/owner/payment/history"><i class="fa fa-history"></i> Lịch sử nạp tiền</a>
                         </li>
                         <li>
-                            <a role="menuitem" tabindex="-1" href="/payment/history"><i class="fa fa-history"></i> Lịch sử thuê dịch vụ</a>
+                            <a role="menuitem" tabindex="-1" href="/owner/service/history"><i class="fa fa-history"></i> Lịch sử thuê dịch vụ</a>
                         </li>
                     </c:if>
                     <li>

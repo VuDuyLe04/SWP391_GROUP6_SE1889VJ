@@ -2,9 +2,11 @@ package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 import com.se1889_jv.swp391.swpstart.domain.Bill;
 import com.se1889_jv.swp391.swpstart.domain.Customer;
+import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
 import com.se1889_jv.swp391.swpstart.repository.BillRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IBillService;
+import com.se1889_jv.swp391.swpstart.util.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,12 @@ public class BillService implements IBillService {
     private StoreService storeService;
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private UserService userService;
     @Override
     public Bill createBill(BillDTO billDTO) {
+        User userInSession = Utility.getUserInSession();
+        User user = this.userService.findById(userInSession.getId());
         Bill bill = new Bill();
         bill.setNote(billDTO.getDes());
         bill.setStore(storeService.findStoreById(billDTO.getStoreId()));
@@ -40,7 +46,12 @@ public class BillService implements IBillService {
                 String phone = part[1].trim();
                 customer.setName(name);
                 customer.setPhone(phone);
-                Customer cus = customerService.createCustomer(customer, storeService.findStoreById(billDTO.getStoreId()));
+                if (user.getRole().getName().equals("STAFF")) {
+                    customer.setCreatedBy(user.getCreatedBy());
+                } else {
+                    customer.setCreatedBy(String.valueOf(user.getId()));
+                }
+                Customer cus = customerService.createCustomer(customer);
                 bill.setCustomer(cus);
             }
 
