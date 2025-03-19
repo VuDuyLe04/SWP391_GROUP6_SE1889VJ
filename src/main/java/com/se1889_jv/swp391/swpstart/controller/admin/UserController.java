@@ -397,17 +397,20 @@ public class UserController {
     }
 
     @GetMapping("/savestore")
-    public String saveSelectedStores(@RequestParam("selectedStores") List<Long> selectedStoreIds,
+    public String saveSelectedStores(@RequestParam(value = "selectedStores", required = false) List<Long> selectedStoreIds,
                                      @RequestParam("userId") String userId,
                                      Model model) {
         // In ra danh sách ID của các store đã chọn
-       for (Long selectedStoreId : selectedStoreIds) {
-           UserStore userStore = new UserStore();
-           userStore.setStore(storeService.findStoreById(selectedStoreId));
-           userStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf("ACCESSED"));
-           userStore.setUser(userService.findById(Long.parseLong(userId)));
-           userStoreService.saveUserStore(userStore);
-       }
+        if (selectedStoreIds != null && selectedStoreIds.size() > 0) {
+            for (Long selectedStoreId : selectedStoreIds) {
+                UserStore userStore = new UserStore();
+                userStore.setStore(storeService.findStoreById(selectedStoreId));
+                userStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf("ACCESSED"));
+                userStore.setUser(userService.findById(Long.parseLong(userId)));
+                userStoreService.saveUserStore(userStore);
+            }
+        }
+
 
         return "redirect:/updatestaff/" + Long.parseLong(userId);
     }
