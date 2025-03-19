@@ -33,6 +33,27 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme.css"/>
+<style>
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-right: 10px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 200px; /* Điều chỉnh chiều rộng input theo mong muốn */
+    }
+
+    .d-flex.gap-2 {
+        gap: 15px; /* Tạo khoảng cách đều giữa các input */
+    }
+
+</style>
 
     <!-- Skin CSS -->
     <link rel="stylesheet" href="/client/auth/assets/stylesheets/skins/default.css"/>
@@ -84,7 +105,7 @@
                                 <div class="col-md-6">
                                     <form method="GET" action="/debt-receipt/search/${customer.id}" class="form-inline">
                                         <div class="form-group">
-                                            <label>Số tiền nợ:</label>
+                                            <label>Nhập Số Tiền:</label>
                                             <input type="number" name="debtAmount" class="form-control" value="${param.debtAmount}" step="0.01"/>
                                         </div>
                                         <div class="form-group">
