@@ -122,7 +122,7 @@ public class WareHouseController {
 
     @GetMapping("/fetch-all-warehouse")
     public String getAllWareHouse(@RequestParam(required = false, defaultValue = "1") int page,
-                                  @RequestParam(required = false, defaultValue = "3") int size,
+                                  @RequestParam(required = false, defaultValue = "10") int size,
                                   Model model) {
         var result = wareHouseService.getAll(page, size);
         model.addAttribute("listWareHouse", result.getData());

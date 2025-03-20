@@ -67,19 +67,17 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Pricing Tables</h2>
+                <h2>Đăng ký dịch vụ</h2>
 
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
                         <li>
-                            <a href="index.html">
+                            <a href="/">
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Tables</span></li>
-                        <li><span>Pricing</span></li>
+                        <li><span>Đăng ký dịch vụ</span></li>
                     </ol>
-
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
             </header>
@@ -99,7 +97,7 @@
                                     <!-- Input ẩn chứa id của dịch vụ -->
                                     <input type="hidden" name="id" value="${service.id}">
                                     <!-- Nút button để submit form riêng biệt -->
-                                    <button type="submit" class="btn btn-lg btn-primary">Sign up</button>
+                                    <button type="submit" class="btn btn-lg btn-primary">Đăng ký</button>
                                     <ul>
                                         <li><b>${service.durationMonths}</b> tháng sử dụng</li>
                                         <li><b><fmt:formatNumber type="number" value="${service.price}" /></b> đ</li>
