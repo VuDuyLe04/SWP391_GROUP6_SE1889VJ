@@ -52,7 +52,7 @@
                     </c:if>
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
-                            <a href="/warehouse">
+                            <a href="/fetch-all-warehouse">
                                 <i class="fa fa-table" aria-hidden="true"></i>
                                 <span>Kho hàng</span>
                             </a>

@@ -3,6 +3,7 @@ package com.se1889_jv.swp391.swpstart.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.se1889_jv.swp391.swpstart.util.RequestUtils;
 import com.se1889_jv.swp391.swpstart.util.Utility;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.se1889_jv.swp391.swpstart.util.constant.StatusStoreEnum;
 import jakarta.persistence.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,8 +48,6 @@ public class Store {
     private StatusStoreEnum status;
 
 
-
-
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Customer> customers;
 
@@ -56,7 +55,8 @@ public class Store {
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Bill> bills;
 
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "store", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<WareHouse> wareHouses;
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
