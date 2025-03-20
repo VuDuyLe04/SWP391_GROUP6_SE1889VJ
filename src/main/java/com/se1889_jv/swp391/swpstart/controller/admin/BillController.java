@@ -147,18 +147,10 @@ public class BillController {
         if( user != null){
             Store store = storeService.findStoreById(storeId);
             if(store != null){
-//                List<Product> productList = productService.getAllProductsByStoreIdAndIsStorage(storeId);
-//                List<String> categoryList = productService.getAllCategories();
                 List<List<Packaging>> packagingList = new ArrayList<>();
                 List<WareHouse> wareHouseList = new ArrayList<>();
                 List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
-//                for(Product product : productList){
-//                    packagingList.add(packagingService.getAllPackagingForQuantityProduct(product.getTotalQuantity(), storeId));
-//                    wareHouseList.add(wareHouseService.getWareHouseById(product.getWarehouse().getId()));
-//                }
                 model.addAttribute("warehouse", wareHouseList);
-//                model.addAttribute("productList", productList);
-//                model.addAttribute("categoryList", categoryList);
                 model.addAttribute("packagingList", packagingList);
                 model.addAttribute("user", user);
                 model.addAttribute("storeId", storeId);
@@ -182,6 +174,41 @@ public class BillController {
         session.setAttribute("store",store);
         return "admin/sale/saleproduct";
     }
+    @GetMapping("/importproduct/{id}")
+    public String importProduct(@PathVariable(name = "id") long storeId,HttpServletRequest request, Model model){
+        HttpSession session = request.getSession(false);
 
+        User user = (User) session.getAttribute("user");
+
+        if( user != null){
+            Store store = storeService.findStoreById(storeId);
+            if(store != null){
+                List<List<Packaging>> packagingList = new ArrayList<>();
+                List<WareHouse> wareHouseList = new ArrayList<>();
+                List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
+                model.addAttribute("warehouse", wareHouseList);
+                model.addAttribute("packagingList", packagingList);
+                model.addAttribute("user", user);
+                model.addAttribute("storeId", storeId);
+                model.addAttribute("customerList", customerList);
+
+            } else {
+                return "redirect:/access-deny";
+            }
+        } else {
+            return "redirect:/access-deny";
+        }
+
+
+        Store store = this.storeService.findStoreById(storeId);
+
+        UserStore userStore = this.userStoreService.findUserStoreByUserAndStore(user,store );
+
+        if (userStore == null || userStore.getAccessStoreStatus().equals("ACCESSDENY")) {
+            return "redirect:/access-deny";
+        }
+        session.setAttribute("store",store);
+        return "admin/sale/importproduct";
+    }
 
 }

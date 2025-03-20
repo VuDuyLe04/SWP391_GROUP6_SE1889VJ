@@ -19,41 +19,29 @@
 </head>
 <body>
 <!-- Thêm vào ngay trước bill-section -->
-<div class="tab-container">
-    <div class="tab-list">
-        <div class="tab active" data-tab-id="1">
-            <span>Hóa đơn #1</span>
-            <button class="tab-close">&times;</button>
-        </div>
-        <button class="tab-add-btn">
-            <i class="fas fa-plus"></i>
-        </button>
-    </div>
-</div>
+
 <div class="container-fluid">
     <div class="row">
         <!-- Left Panel - Products -->
         <div class="col-md-8">
             <div class="top-bar">
-                <div class="row">
-                    <div class="col-md-4 d-flex">
-                        <div class="search-container">
+                <div class="row d-flex align-items-center p-2">
+                    <div class="dropdown col-md-2">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="transactionDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Chọn loại
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="transactionDropdown">
+                            <li><a class="dropdown-item" href="http://localhost:8080/saleproduct/${storeId}" data-value="banhang">Bán hàng</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:8080/importproduct/${storeId}" data-value="nhaphang">Nhập hàng</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-8 d-flex">
+                        <div class="search-container col-md-10">
                             <i class="fas fa-search search-icon"></i>
                             <input type="text" id="searchInput" class="search-input" placeholder="Tìm kiếm sản phẩm...">
 
                         </div>
                         <button id="searchBut" class="btn btn-primary">Tìm</button>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="filter-section">
-
-                            <select class="filter-select" id="categorySelect">
-                                <option value="all">All</option>
-                                <c:forEach var="cate" items="${categoryList}">
-                                    <option value="${cate}">${cate}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -67,8 +55,20 @@
                     </div>
                 </div>
             </div>
+            <div class="bill-items-con">
+                <div class="row fw-bold bg-light py-2 border-bottom">
+                    <div class="col-3">Sản phẩm</div>
+                    <div class="col-3 text-center">Số lượng & Giá</div>
+                    <div class="col-2 text-center">Giá thực</div>
+                    <div class="col-3 text-center">Tổng</div>
+                    <div class="col-1 text-center">Xóa</div>
+                </div>
+                <div id="bill-items">
+                    <!-- Các sản phẩm trong hóa đơn sẽ được thêm vào đây -->
+                </div>
+            </div>
 
-            <div class="product-grid" id="product-list">
+            <div class="product-grid d-block" id="product-list">
                 <!-- Mẫu sản phẩm -->
 <%--&lt;%&ndash;                <c:forEach var="product" items="${productList}" varStatus="status">&ndash;%&gt;--%>
 <%--                    <div class="product-card product" data-id="${product.id}" data-name="${product.name}" data-price="${product.unitPrice}" data-category="${product.category}">--%>
@@ -169,18 +169,7 @@
             </div>
 
 
-            <div class="bill-items-con">
-                <div class="row fw-bold bg-light py-2 border-bottom">
-                    <div class="col-3">Sản phẩm</div>
-                    <div class="col-3 text-center">Số lượng & Giá</div>
-                    <div class="col-2 text-center">Giá thực</div>
-                    <div class="col-3 text-center">Tổng</div>
-                    <div class="col-1 text-center">Xóa</div>
-                </div>
-                <div id="bill-items">
-                    <!-- Các sản phẩm trong hóa đơn sẽ được thêm vào đây -->
-                </div>
-            </div>
+
 
         </div>
 
@@ -195,7 +184,7 @@
                     </div>
                     <div class="summary-row">
                         <span class="fw-bold">Khách cần trả</span>
-                        <span class="fw-bold text-success">0đ</span>
+                        <span class="fw-bold text-success total-need-pay">0đ</span>
                     </div>
                     <div class="mb-3 position-relative">
                     <label for="search-phone" class="form-label">Khách hàng</label>
@@ -281,15 +270,15 @@
 <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>--%>
 <script>
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const storeId = "<%= request.getAttribute("storeId") %>";
-        if (storeId && storeId !== "null") {
-            loadProducts(storeId);
-            console.log(storeId);
-        } else {
-            console.error("Store ID không hợp lệ!");
-        }
-    });
+    <%--document.addEventListener("DOMContentLoaded", function() {--%>
+    <%--    const storeId = "<%= request.getAttribute("storeId") %>";--%>
+    <%--    if (storeId && storeId !== "null") {--%>
+    <%--        loadProducts(storeId);--%>
+    <%--        console.log(storeId);--%>
+    <%--    } else {--%>
+    <%--        console.error("Store ID không hợp lệ!");--%>
+    <%--    }--%>
+    <%--});--%>
 
     const searchInputKey = document.getElementById("searchInput");
     const searchButton = document.getElementById("searchBut");
@@ -302,68 +291,15 @@
                 console.warn("Vui lòng nhập từ khóa tìm kiếm.");
             }
     });
-
-    <%--const customerList = [--%>
-    <%--    <%--%>
-    <%--        for (int i = 0; i < ((List<Customer>) request.getAttribute("customerList")).size(); i++) {--%>
-    <%--            Customer customer = ((List<Customer>) request.getAttribute("customerList")).get(i);--%>
-    <%--            out.print("{");--%>
-    <%--            out.print("\"id\": \"" + customer.getId() + "\",");--%>
-    <%--            out.print("\"name\": \"" + customer.getName() + "\",");--%>
-    <%--            out.print("\"phone\": \"" + customer.getPhone() + "\"");--%>
-    <%--            out.print("}");--%>
-    <%--            if (i < ((List<Customer>) request.getAttribute("customerList")).size() - 1) {--%>
-    <%--                out.print(",");--%>
-    <%--            }--%>
-    <%--        }--%>
-    <%--    %>--%>
-    <%--];--%>
-    // console.log(customerList);
-
-    // document.getElementById('add-customer-btn').addEventListener('click', function() {
-    //
-    //     document.getElementById('suggestion-box').style.display = 'none';
-    //     document.getElementById('customer-form').style.display = 'block';
-    // });
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     const searchInput = document.getElementById("search-phone");
-    //     const suggestionBox = document.getElementById("suggestion-box");
-    //
-    //     searchInput.addEventListener("input", function () {
-    //         const query = searchInput.value.trim().toLowerCase();
-    //         suggestionBox.innerHTML = "";
-    //
-    //         if (query.length > 0) {
-    //             const suggestions = customerList.filter(customer =>
-    //                 customer.phone.toLowerCase().includes(query)
-    //             );
-    //
-    //             if (suggestions.length > 0) {
-    //                 suggestionBox.style.display = "block";
-    //                 suggestions.forEach(cust => {
-    //                     const suggestionItem = document.createElement("div");
-    //                     suggestionItem.className = "suggestion-item";
-    //                     suggestionItem.textContent = cust.name + ' - ' +cust.phone;
-    //                     suggestionItem.addEventListener("click", function () {
-    //                         searchInput.value = cust.name + ' - ' +cust.phone;
-    //                         suggestionBox.style.display = "none";
-    //                     });
-    //                     suggestionBox.appendChild(suggestionItem);
-    //                 });
-    //             } else {
-    //                 suggestionBox.style.display = "none";
-    //             }
-    //         } else {
-    //             suggestionBox.style.display = "none";
-    //         }
-    //     });
-
-    //     document.addEventListener("click", function (event) {
-    //         if (!suggestionBox.contains(event.target) && event.target !== searchInput) {
-    //             suggestionBox.style.display = "none";
-    //         }
-    //     });
-    // });
+    document.addEventListener("DOMContentLoaded", function () {
+        let currentPath = window.location.pathname;
+        console.log(currentPath);
+        if (currentPath.includes("/saleproduct/")) {
+            document.getElementById("banhang").classList.add("active");
+        } else if (currentPath.includes("/importproduct/")) {
+            document.getElementById("nhaphang").classList.add("active");
+        }
+    });
 
 
 </script>
