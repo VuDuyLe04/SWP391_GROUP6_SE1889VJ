@@ -21,6 +21,7 @@ public interface IStoreService {
             String createdBy,StatusStoreEnum status, String name,
             String createdBy2, StatusStoreEnum status2, String address,
             Pageable pageable);
-    Store findByName(String name);
 
+
+    Store findByName(String name, String createdBy);
 }

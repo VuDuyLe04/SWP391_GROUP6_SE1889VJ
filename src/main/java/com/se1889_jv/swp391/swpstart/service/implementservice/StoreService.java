@@ -66,8 +66,9 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    public Store findByName(String name) {
-        return  storeRepository.findByName(name);
+    public Store findByName(String name, String createdBy) {
+        return  storeRepository.findByNameAndCreatedBy(  name, createdBy);
+
     }
 
 

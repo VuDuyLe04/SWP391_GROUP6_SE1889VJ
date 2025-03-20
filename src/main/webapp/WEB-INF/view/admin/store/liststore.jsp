@@ -274,7 +274,7 @@
                                                        placeholder="Tìm kiếm theo tên hoặc địa chỉ cửa hàng" value="${input}" >
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-primary" type="submit">
-                                                        <i class="fa fa-search"></i>
+
                                                     </button>
                                                 </span>
                                             </div>
@@ -348,6 +348,7 @@
                                         <i class="fa fa-exclamation-circle mr-xs"></i> ${errorMessage}
                                     </div>
                                 </c:if>
+                                <c:if test="${emptyList == null}">
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
                                     <tr>
@@ -419,6 +420,7 @@
                                         <a class="page-link" href="stores?page=${c== storePage.totalPages -1? storePage.totalPages -1: (c + 1)}&input=${input}&sort=${sort}&status=${status}">Sau</a>
                                     </li>
                                 </ul>
+                                </c:if>
                                 </c:if>
                             </div>
 

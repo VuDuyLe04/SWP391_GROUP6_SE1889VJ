@@ -61,7 +61,7 @@ public class UserController {
         String userId = String.valueOf(user.getId());
         if (user.getRole().getName().equals("ADMIN")) {
             if (input != null && !input.isEmpty()) {
-                users = userService.getUsersBySearch(input.trim(), input.trim(), pageable);
+                users = userService.getUsersBySearch(input.trim(), input.trim(),1L, pageable);
             } else {
                 long roleIdValue = "-1".equals(roleId) ? -1 : Long.parseLong(roleId);
                 boolean isActive = "1".equals(active);
@@ -83,17 +83,14 @@ public class UserController {
         } else if (user.getRole().getName().equals("OWNER")) {
             List<Store> stores = Utility.getListStoreOfOwner(user);
             model.addAttribute("stores", stores);
-            if (input != null && !input.isEmpty()) {
-                users = userService.findDistinctUsersByCreatedByAndByNameOrPhone(userId, input.trim(), pageable);
-            }
-            if (storeId != null && !storeId.isEmpty() && !storeId.equals("-1")) {
-                users = userService.findDistinctUsersByCreatedByAndStore(userId, Long.valueOf(storeId), pageable);
-                model.addAttribute("storeId", storeId);
-            } else{
-                users = userService.findDistinctUsersByUserStores_Store_CreatedBy(userId, pageable);
-            }
+            Long storeID = null;
+            if(storeId != null && !storeId.isEmpty() && !"-1".equals(storeId)) {
+                storeID = Long.parseLong(storeId);
 
-
+            }
+            if(input!= null && !input.isEmpty()) input = input.trim();
+            users = userService.findStaffsByCreatedBy(userId,storeID,input,pageable);
+            model.addAttribute("storeId", storeId);
 
         }
 
@@ -162,7 +159,8 @@ public class UserController {
                 model.addAttribute("error", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
                 return "admin/user/createuser";
             }
-            if (!name.matches("^[a-zA-Z\s]+$")) {
+
+            if (!name.matches("^[a-zA-ZÀ-ỹ\\s]+$")) {
                 model.addAttribute("error", "Tên không được chứa số và các kí tự đặc biệt! ");
                 return "admin/user/createuser";
             }
@@ -201,7 +199,7 @@ public class UserController {
                              Model model) {
         User user = new User();
         user = userService.findById(Long.parseLong(id));
-        if (phone != null && phone.matches("^[0-9]{10}$") && name != null && name.matches("^[a-zA-Z\s]+$")) {
+        if (phone != null && phone.matches("^[0-9]{10}$") && name != null && name.matches("^[\\p{L}\\s]+$")) {
             if (userService.getUserByPhone(phone) == null) user.setPhone(phone);
             user.setName(name);
             user.setActive(active);
@@ -326,9 +324,9 @@ public class UserController {
             user.setName(staffDTO.getName());
             user.setPhone(staffDTO.getPhone());
             user.setPassword(passwordEncoder.encode(staffDTO.getPassword()));
-            user.setRole(roleService.getRole(3));
-            user.setCreatedBy(userId);
+            user.setRole(roleService.getRole(3L));
             user.setActive(true);
+            user.setCreatedBy(userId);
             User savedUser = userService.createUser(user);
 
             UserStore userStore = new UserStore();
@@ -363,31 +361,69 @@ public class UserController {
 
     @GetMapping("/updatestatus")
     public String updateStaffStatus(
-            @RequestParam String userId,
-            @RequestParam String userStoreId,
-            @RequestParam String status
-
+            @RequestParam(value= "userId") String userId,
+            @RequestParam(value = "userStoreId", required = false) String userStoreId,
+            @RequestParam (value = "status", required = false) String status,
+            @RequestParam(value = "active", required = false) String active,
+            @RequestParam(value = "phone", required = false) String phone,
+            RedirectAttributes redirectAttributes
     ) {
-        UserStore updatedUserStore = userStoreService.findUserStore(Long.parseLong(userStoreId));
-        if (updatedUserStore != null) {
-            updatedUserStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf(status));
-            UserStore savedUserStore = userStoreService.saveUserStore(updatedUserStore);
+        // Kiểm tra phone hợp lệ
+if(status == null){
+    if (phone != null && phone.matches( "^\\s*(0[1-9][0-9]{8,9})\\s*$") ) {
+        User user = userService.getUserByPhone(phone.trim());
+
+        if (user != null && user.getId() != Long.parseLong(userId)) {
+            redirectAttributes.addFlashAttribute("error", "Số điện thoại đã tồn tại!");
+        } else {
+            user = userService.findById(Long.parseLong(userId));
+            if (user != null) {
+                user.setActive(Boolean.parseBoolean(active));
+                user.setPhone(phone);
+                userService.updateUser(user);
+                redirectAttributes.addFlashAttribute("success", "Cập nhật thành công!");
+            }
+        }
+    } else {
+        redirectAttributes.addFlashAttribute("error", "Số điện thoại không hợp lệ.");
+    }
+
+
+}
+
+
+
+
+        // Kiểm tra xem userStoreId có giá trị không trước khi chuyển đổi
+        if (userStoreId != null && !userStoreId.isEmpty()) {
+            try {
+                UserStore updatedUserStore = userStoreService.findUserStore(Long.parseLong(userStoreId));
+                if (updatedUserStore != null) {
+                    updatedUserStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf(status));
+                    userStoreService.saveUserStore(updatedUserStore);
+                }
+            } catch (NumberFormatException e) {
+                redirectAttributes.addFlashAttribute("error", "ID cửa hàng không hợp lệ.");
+            }
         }
         return "redirect:/updatestaff/" + Long.parseLong(userId);
 
     }
     @GetMapping("/savestore")
-    public String saveSelectedStores(@RequestParam("selectedStores") List<Long> selectedStoreIds,
+    public String saveSelectedStores(@RequestParam(value = "selectedStores", required = false) List<Long> selectedStoreIds,
                                      @RequestParam("userId") String userId,
                                      Model model) {
         // In ra danh sách ID của các store đã chọn
-       for (Long selectedStoreId : selectedStoreIds) {
-           UserStore userStore = new UserStore();
-           userStore.setStore(storeService.findStoreById(selectedStoreId));
-           userStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf("ACCESSED"));
-           userStore.setUser(userService.findById(Long.parseLong(userId)));
-           userStoreService.saveUserStore(userStore);
-       }
+        if (selectedStoreIds != null && selectedStoreIds.size() > 0) {
+            for (Long selectedStoreId : selectedStoreIds) {
+                UserStore userStore = new UserStore();
+                userStore.setStore(storeService.findStoreById(selectedStoreId));
+                userStore.setAccessStoreStatus(UserAccessStoreStatusEnum.valueOf("ACCESSED"));
+                userStore.setUser(userService.findById(Long.parseLong(userId)));
+                userStoreService.saveUserStore(userStore);
+            }
+        }
+
 
         return "redirect:/updatestaff/" + Long.parseLong(userId);
     }

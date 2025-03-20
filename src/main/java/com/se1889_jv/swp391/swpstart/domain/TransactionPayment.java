@@ -40,9 +40,11 @@ public class TransactionPayment {
     @JoinColumn(name = "user_id")
     private User user;
     public String getFormattedDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         return (date != null) ? date.format(formatter) : null;
     }
+
+
 
 
 }

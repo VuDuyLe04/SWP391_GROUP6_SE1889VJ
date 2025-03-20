@@ -27,6 +27,14 @@ public class Utility {
     @Autowired
     private static UserRepository userRepository;
 
+    @Autowired
+    public void setUserRepository(UserRepository repository) {
+        Utility.userRepository = repository;
+    }
+
+
+
+
     public static Store getStoreInSession() {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -60,9 +68,16 @@ public class Utility {
     }
 
     public static List<Store> getListStoreOfOwner(User user) {
-        List<Store> stores = new ArrayList<>();
-        stores = user.getUserStores().stream().map(item -> item.getStore()).collect(Collectors.toList());
+        if (userRepository == null) {
+            throw new IllegalStateException("UserRepository has not been initialized.");
+        }
 
+        List<Store> stores = new ArrayList<>();
+        Optional<User> userOptional = userRepository.findById(user.getId());
+        if (userOptional.isPresent()) {
+            stores = userOptional.get().getUserStores().stream()
+                    .map(item -> item.getStore()).collect(Collectors.toList());
+        }
         return stores;
     }
 

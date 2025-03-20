@@ -19,9 +19,12 @@ public interface ITransactionPaymentService {
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             @Param("minAmount") Double minAmount,
-            @Param("maxAmount") Double  maxAmount,
+            @Param("maxAmount") Double maxAmount,
             @Param("status") TransactionStatus status,
+            @Param("userId") Long userId,
             Pageable pageable
-
     );
+
+    Page<TransactionPayment> findByTransactionIdContainingAndUser(String transactionId, User user, Pageable pageable);
+
 }

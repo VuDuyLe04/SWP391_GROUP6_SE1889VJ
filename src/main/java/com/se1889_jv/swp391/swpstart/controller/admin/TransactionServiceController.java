@@ -52,6 +52,7 @@ public class TransactionServiceController {
             minAmount,
             maxAmount,
             transactionStatus,
+            null,
             input,
             pageable
         );

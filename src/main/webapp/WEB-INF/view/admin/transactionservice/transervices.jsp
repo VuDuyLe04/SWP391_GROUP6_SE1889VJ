@@ -297,8 +297,9 @@
         .content-body {
             padding: 25px;
             background: #f4f7fa;
-            overflow: visible; /* Thay đổi từ auto sang visible */
-            height: auto; /* Bỏ height cố định */
+            overflow: visible;
+            height: 100%;
+            min-height: 100vh;
         }
 
         /* Card Layout */
@@ -528,11 +529,11 @@
 
         /* Fixed Body và HTML */
         html.fixed {
-            overflow: hidden !important; /* Giữ nguyên overflow hidden */
+            overflow: auto !important;
         }
 
         body {
-            overflow: hidden !important; /* Giữ nguyên overflow hidden */
+            overflow: auto !important;
         }
     </style>
 </head>
@@ -563,6 +564,7 @@
                     </ol>
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
+
             </header>
 
             <div class="controls-section">
@@ -651,7 +653,17 @@
                                     <td>${transaction.serviceName}</td> <!-- Tên dịch vụ -->
                                     <td>${transaction.user.name}</td> <!-- Khách hàng -->
                                     <td>${transaction.user.phone}</td> <!-- Số điện thoại -->
-                                    <td><span class="amount"><fmt:formatNumber value="${transaction.amount}" type="number" pattern="#,###"/>₫</span></td> <!-- Số tiền -->
+
+                                    <td >   <fmt:setLocale value="vi_VN"/>
+                                        <c:choose>
+                                            <c:when test="${transaction.amount % 1 == 0}">
+                                                <fmt:formatNumber value="${transaction.amount}" type="number" groupingUsed="true"/>₫
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatNumber value="${transaction.amount}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td><!-- Số tiền -->
                                     <td>${transaction.formattedDate}</td> <!-- Ngày giao dịch -->
                                     <td>
                     <span class="status-badge ${transaction.transactionStatus == 'COMPLETED' ? 'status-completed' :

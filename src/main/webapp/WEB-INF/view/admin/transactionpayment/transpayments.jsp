@@ -298,8 +298,9 @@
         .content-body {
             padding: 25px;
             background: #f4f7fa;
-            overflow: visible; /* Thay đổi từ auto sang visible */
-            height: auto; /* Bỏ height cố định */
+            overflow: visible;
+            height: 100%;
+            min-height: 100vh;
         }
 
         /* Card Layout */
@@ -529,11 +530,11 @@
 
         /* Fixed Body và HTML */
         html.fixed {
-            overflow: hidden !important; /* Giữ nguyên overflow hidden */
+            overflow: auto !important;
         }
 
         body {
-            overflow: hidden !important; /* Giữ nguyên overflow hidden */
+            overflow: auto !important;
         }
     </style>
 </head>
@@ -647,8 +648,18 @@
                             <c:forEach var="transaction" items="${transactions.content}">
                                 <tr>
                                     <td><span class="transaction-id">${transaction.transactionId}</span></td>
-                                    <td><span class="amount"><fmt:formatNumber value="${transaction.amount}" type="number" pattern="#,###"/>₫</span></td>
-                                    <td>${transaction.content}</td>
+
+                                    <td >   <fmt:setLocale value="vi_VN"/>
+                                        <c:choose>
+                                            <c:when test="${transaction.amount % 1 == 0}">
+                                                <fmt:formatNumber value="${transaction.amount}" type="number" groupingUsed="true"/>₫
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatNumber value="${transaction.amount}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                     <td>${transaction.content}</td>
                                     <td>${transaction.formattedDate}</td>
                                     <td>${transaction.accountReceiver}</td>
                                     <td>${transaction.gate}</td>

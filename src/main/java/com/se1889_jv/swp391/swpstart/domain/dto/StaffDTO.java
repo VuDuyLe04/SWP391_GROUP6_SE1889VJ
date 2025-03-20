@@ -19,8 +19,10 @@ public class StaffDTO {
     private String name;
 
     @NotBlank(message = "Số điện thoại không được để trống")
-    @Pattern(regexp = "^(0[1-9][0-9]{8,9})$", message = "Số điện thoại không hợp lệ")
+    @Pattern(regexp = "^\\s*(0[1-9][0-9]{8,9})\\s*$", message = "Số điện thoại không hợp lệ")
     private String phone;
+
+
 
     @NotBlank(message = "Mật khẩu không được để trống")
     @Size(min = 8, message = "Mật khẩu phải có ít nhất 8 ký tự")
@@ -29,7 +31,6 @@ public class StaffDTO {
             message = "Mật khẩu phải có ít nhất một chữ hoa, một chữ thường, một số và một ký tự đặc biệt"
     )
     private String password;
-
     private Long storeId;
     public String getName(){
         return StringUtils.formatName(name);

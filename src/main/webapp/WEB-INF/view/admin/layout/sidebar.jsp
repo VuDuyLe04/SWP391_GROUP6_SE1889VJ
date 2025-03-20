@@ -22,7 +22,6 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-
                     <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
                         <li>
                             <a href="/usermanagement">
@@ -31,12 +30,11 @@
                             </a>
                         </li>
                     </c:if>
-
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
                             <a href="/usermanagement">
                                 <i class="fa fa-user" aria-hidden="true"></i>
-                                <span>Nhân viên</span>
+                                <span>Nhân viên </span>
                             </a>
                         </li>
                     </c:if>
@@ -50,6 +48,7 @@
 
                         </li>
                     </c:if>
+
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
                             <a href="/fetch-all-warehouse">
@@ -58,6 +57,7 @@
                             </a>
                         </li>
                     </c:if>
+
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
                             <a href="/product">
@@ -67,6 +67,7 @@
 
                         </li>
                     </c:if>
+
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
                             <a href="/packaings">
@@ -104,6 +105,7 @@
 
                         </li>
                     </c:if>
+
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
                             <a href="/service/signup">
@@ -113,6 +115,7 @@
 
                         </li>
                     </c:if>
+
                     <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
                         <li>
                             <a href="/transpayments">
@@ -122,6 +125,7 @@
 
                         </li>
                     </c:if>
+
                     <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
                         <li>
                             <a href="/transervices">

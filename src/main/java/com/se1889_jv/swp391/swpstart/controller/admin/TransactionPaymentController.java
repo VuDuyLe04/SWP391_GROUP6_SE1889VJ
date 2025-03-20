@@ -54,7 +54,7 @@ public String transpayments(
         }
 
         list = transactionPaymentService.filterTransactions(
-                startDateTime, endDateTime, minAmount, maxAmount, transactionStatus, pageable
+                startDateTime, endDateTime, minAmount, maxAmount, transactionStatus,null, pageable
         );
 
 
