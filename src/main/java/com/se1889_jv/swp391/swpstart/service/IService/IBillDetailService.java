@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.se1889_jv.swp391.swpstart.domain.Bill;
 import com.se1889_jv.swp391.swpstart.domain.BillDetail;
 import com.se1889_jv.swp391.swpstart.domain.Product;
+import com.se1889_jv.swp391.swpstart.domain.dto.BillDetailImportRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDetailRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDetailResponse;
 
@@ -17,4 +18,5 @@ public interface IBillDetailService {
     List<BillDetailResponse> getBillDetails(Long billId);
     double getTotalPrice(Long billId);
     BillDetailResponse updateActualPrice(Long billId, Double actualPrice);
+    BillDetailResponse createBillDetailImport(BillDetailImportRequest request);
 }

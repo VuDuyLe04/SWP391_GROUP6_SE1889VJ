@@ -7,6 +7,7 @@ import com.se1889_jv.swp391.swpstart.domain.BillDetail;
 import com.se1889_jv.swp391.swpstart.domain.Packaging;
 import com.se1889_jv.swp391.swpstart.domain.Product;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
+import com.se1889_jv.swp391.swpstart.domain.dto.BillDetailImportRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDetailRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDetailResponse;
 import com.se1889_jv.swp391.swpstart.exception.AppException;
@@ -236,6 +237,37 @@ public class BillDetailService implements IBillDetailService {
         } else {
             throw new AppException(ErrorException.BILL_DETAIL_NOT_FOUND);
         }
+    }
+
+    @Override
+    public BillDetailResponse createBillDetailImport(BillDetailImportRequest request) {
+        Optional<Product> productOptional = productRepository.findById(request.getProductId());
+        if(productOptional.isPresent()){
+            Product product = productOptional.get();
+            Bill bill = billRepository.findById(request.getBillId())
+                    .orElseThrow(() -> new RuntimeException("Bill not found with ID: " + request.getBillId()));
+            if(request.getQuantity() < 0){
+                throw new AppException(ErrorException.NOT_POSITIVE);
+            }
+            if (request.getImportPrice() < 0){
+                throw new AppException(ErrorException.ACTUAL_PRICE_NOT_POSITIVE);
+            }
+
+            BillDetail billDetail = new BillDetail();
+            billDetail.setQuantity(request.getQuantity());
+            billDetail.setQuantityPerPackage(1);
+            billDetail.setNameProduct(product.getName());
+            billDetail.setProduct(product);
+            billDetail.setActualSellPrice(request.getImportPrice());
+            billDetail.setBill(bill);
+            billDetail.setTotalProductPrice(billDetail.getQuantity()*billDetail.getQuantityPerPackage()*request.getImportPrice());
+            product.setTotalQuantity(product.getTotalQuantity() + request.getQuantity());
+            productRepository.save(product);
+            return mapperConfig.map(billDetailRepository.save(billDetail), BillDetailResponse.class) ;
+        } else {
+            throw new AppException(ErrorException.PRODUCT_NOT_FOUND);
+        }
+
     }
 }
 

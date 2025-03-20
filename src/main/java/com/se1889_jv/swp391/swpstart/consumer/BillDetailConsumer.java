@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.se1889_jv.swp391.swpstart.config.RabbitMQConfig;
 import com.se1889_jv.swp391.swpstart.controller.admin.DebtRequest;
 import com.se1889_jv.swp391.swpstart.domain.*;
-import com.se1889_jv.swp391.swpstart.domain.dto.ApiResponse;
-import com.se1889_jv.swp391.swpstart.domain.dto.BillDetailRequest;
-import com.se1889_jv.swp391.swpstart.domain.dto.BillDetailResponse;
-import com.se1889_jv.swp391.swpstart.domain.dto.UpdateQuantityRequest;
+import com.se1889_jv.swp391.swpstart.domain.dto.*;
 import com.se1889_jv.swp391.swpstart.exception.AppException;
 import com.se1889_jv.swp391.swpstart.exception.ErrorException;
 import com.se1889_jv.swp391.swpstart.repository.*;
@@ -44,17 +41,13 @@ public class BillDetailConsumer {
         try {
             log.info("Nhận request từ queue: {}", message);
 
-            // Lấy nội dung của message dưới dạng byte[]
             byte[] body = message.getBody();
 
-            // Chuyển byte[] thành JSON string
             String json = new String(body, StandardCharsets.UTF_8);
             log.info("JSON nhận được: {}", json);
 
-            // Chuyển đổi JSON thành Object
             ObjectMapper objectMapper = new ObjectMapper();
 
-            // Xác định kiểu dữ liệu dựa trên headers của RabbitMQ
             MessageProperties properties = message.getMessageProperties();
             String typeId = (String) properties.getHeaders().get("__TypeId__");
 
@@ -67,6 +60,11 @@ public class BillDetailConsumer {
                 UpdateQuantityRequest updateRequest = objectMapper.readValue(json, UpdateQuantityRequest.class);
                 billDetailService.updateQuantityBillDetail(updateRequest.getBillId(), updateRequest.getQuantity());
                 return new ApiResponse<>(200, "Cập nhật số lượng thành công", null);
+            }else if ("com.se1889_jv.swp391.swpstart.domain.dto.BillDetailImportRequest".equals(typeId)) {
+                BillDetailImportRequest billDetailImportRequest = objectMapper.readValue(json, BillDetailImportRequest.class);
+                billDetailService.createBillDetailImport(billDetailImportRequest);
+                log.info("Thêm BillDetailImportRequest thành công: {}", billDetailImportRequest);
+                return new ApiResponse<>(200, "Nhập kho thành công", null);
             }
 
             return new ApiResponse<>(400, "Yêu cầu không hợp lệ", null);

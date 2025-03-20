@@ -6,11 +6,14 @@ import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillRequest;
+import com.se1889_jv.swp391.swpstart.domain.dto.ImportRequest;
 import com.se1889_jv.swp391.swpstart.exception.AppException;
 import com.se1889_jv.swp391.swpstart.exception.ErrorException;
 import com.se1889_jv.swp391.swpstart.repository.BillDetailRepository;
 import com.se1889_jv.swp391.swpstart.repository.BillRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IBillService;
+import com.se1889_jv.swp391.swpstart.util.Utility;
+import com.se1889_jv.swp391.swpstart.util.constant.BillTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -96,6 +99,18 @@ public class BillService implements IBillService {
                 b.setCustomer(c);
             }
             b.setTotalBillPrice(getTotalPriceBill(billId));
+            if(request.getActualPay() > b.getTotalBillPrice()){
+                b.setPaid(b.getTotalBillPrice());
+            } else {
+                b.setPaid(request.getActualPay());
+            }
+
+            if(b.getTotalBillPrice() > request.getActualPay()){
+                b.setInDebt(b.getTotalBillPrice() - request.getActualPay());
+            } else {
+                b.setInDebt(0);
+            }
+            b.setBillType(BillTypeEnum.EXPORT);
             return billRepository.save(b);
         } else {
             throw new AppException(ErrorException.BILL_NOT_FOUND);
@@ -107,8 +122,44 @@ public class BillService implements IBillService {
         return billRepository.findAllByStoreIn(stores, pageable);
     }
 
+    @Override
+    public Bill createBillForImport(ImportRequest request) {
+        Bill b = new Bill();
+        b.setNote(request.getDescription());
+        if(request.getCustomerInfor().isEmpty() || request.getCustomerInfor() == null){
+            throw new AppException(ErrorException.CUSTOMER_INFOR_IS_NULL);
+        } else {
+            Customer cus = customerService.getCustomerByNameAndPhone(request.getCustomerInfor());
+            b.setCustomer(cus);
+        }
+        b.setBillType(BillTypeEnum.IMPORT);
+        b.setStore(Utility.getStoreInSession());
+        return billRepository.save(b);
+    }
+    public Bill updateImportBill(Long billId, ImportRequest request) {
+        Optional<Bill> bill = billRepository.findById(billId);
+        if (bill.isPresent()) {
+            Bill b = bill.get();
+            b.setTotalBillPrice(getTotalPriceBill(billId));
+            if(request.getActualPay() > b.getTotalBillPrice()){
+                b.setPaid(b.getTotalBillPrice());
+            } else {
+                b.setPaid(request.getActualPay());
+            }
+            if(b.getTotalBillPrice() > request.getActualPay()){
+                b.setInDebt(b.getTotalBillPrice() - request.getActualPay());
+            } else {
+                b.setInDebt(0);
+            }
+            return billRepository.save(b);
+        } else {
+            throw new AppException(ErrorException.BILL_NOT_FOUND);
+        }
+
+    }
 
     public Bill findBillById(Long id) {
         return billRepository.findById(id).orElseThrow(() ->  new AppException(ErrorException.BILL_NOT_FOUND));
     }
+
 }

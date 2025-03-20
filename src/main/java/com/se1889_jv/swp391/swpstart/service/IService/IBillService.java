@@ -4,6 +4,7 @@ import com.se1889_jv.swp391.swpstart.domain.Bill;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillRequest;
+import com.se1889_jv.swp391.swpstart.domain.dto.ImportRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,4 +17,5 @@ public interface IBillService {
     double getTotalPriceBill(Long billId);
     Bill updateBill(BillRequest request, Long billId);
     Page<Bill> getBillsByAllStore(List<Store> stors, Pageable pageable);
+    Bill createBillForImport(ImportRequest request);
 }
