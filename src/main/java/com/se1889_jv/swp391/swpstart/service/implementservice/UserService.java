@@ -76,7 +76,8 @@ public class UserService implements IUserService {
 
     @Override
     public Role getRoleByName(String name) {
-        return this.roleRepository.findByName(name);
+        return this.roleRepository.findByName(name)
+                .orElse(null);
     }
 
     @Override
@@ -217,7 +218,7 @@ public class UserService implements IUserService {
         return this.userRepository.save(user1);
     }
     @Override
-     public  Page<User> findDistinctUsersByUserStores_Store_CreatedBy(String createdBy, Pageable pageable){
+    public  Page<User> findDistinctUsersByUserStores_Store_CreatedBy(String createdBy, Pageable pageable){
         return userRepository.findDistinctUsersByStoreCreatedBy( createdBy, pageable);
     };
 

@@ -32,7 +32,7 @@ public class CustomerController {
     @Autowired
     private UserService userService;
 
-    @CheckPermission(condition = "statusService")
+//    @CheckPermission(condition = "statusService")
     @GetMapping("/customer/create")
     public String getCreateCustomerPage(Model model) {
         model.addAttribute("customer", new Customer());
@@ -51,7 +51,7 @@ public class CustomerController {
         return "admin/customer/create";
     }
 
-    @CheckPermission(condition = "statusService")
+//    @CheckPermission(condition = "statusService")
     @PostMapping("/customer/create")
     public String createCustomer(Model model,
                                  @ModelAttribute("customer") @Valid Customer customer,
@@ -89,7 +89,7 @@ public class CustomerController {
         return "redirect:/customer/table";
     }
 
-    @CheckPermission(condition = "statusService")
+//    @CheckPermission(condition = "statusService")
     @GetMapping("/customer/detail/{id}")
     public String getCustomerDetail(@PathVariable("id") long id, Model model) {
 
@@ -122,7 +122,7 @@ public class CustomerController {
 //        return "admin/customer/table";
 //    }
 
-    @CheckPermission(condition = "statusService")
+//    @CheckPermission(condition = "statusService")
     @GetMapping("/customer/update/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
         Store store = Utility.getStoreInSession();
@@ -138,7 +138,7 @@ public class CustomerController {
         return "admin/customer/update";
     }
 
-    @CheckPermission(condition = "statusService")
+//    @CheckPermission(condition = "statusService")
     @PostMapping("/customer/update")
     public String updateCustomer(
             @Valid @ModelAttribute("customer") Customer customer,

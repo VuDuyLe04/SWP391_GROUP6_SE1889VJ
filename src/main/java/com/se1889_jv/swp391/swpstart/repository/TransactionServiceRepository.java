@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface TransactionServiceRepository extends JpaRepository<TransactionService, Long> {
@@ -36,5 +37,12 @@ public interface TransactionServiceRepository extends JpaRepository<TransactionS
 
 
     Page<TransactionService> findByUser(User user, Pageable pageable);
+
+    @Query("SELECT t FROM TransactionService t WHERE t.transactionStatus = :status " +
+            "AND t.transactionDate >= :startDate AND t.transactionDate <= :endDate ")
+    List<TransactionService> findByStatusAndDateRange(
+            @Param("status") TransactionStatus status,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
 
 }
