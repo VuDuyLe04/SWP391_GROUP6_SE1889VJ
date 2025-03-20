@@ -197,7 +197,6 @@ public class CustomerController {
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", customerPage.getTotalPages());
         }
-
         return "admin/customer/table";
     }
 

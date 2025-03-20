@@ -178,7 +178,6 @@ ProductController {
         return "redirect:/product/update/" + response.getId();
     }
 
-
     @GetMapping("/product/search")
     public String searchProduct(
             @RequestParam(value = "name", required = false) String name,
@@ -207,7 +206,6 @@ ProductController {
 
         return "admin/product/table";
     }
-
 
     @GetMapping("/product/view/{id}")
     public String viewProduct(@PathVariable("id") Long id, Model model) {
