@@ -218,7 +218,7 @@
                         <label for="amountDue" class="form-label">Số tiền phải trả</label>
                         <input type="text" class="form-control" id="amountDue" disabled>
 
-                        <label for="customerPayment" class="form-label mt-2">Số tiền khách trả</label>
+                        <label for="customerPayment" class="form-label mt-2">Số tiền trả</label>
                         <input type="text" class="form-control" id="customerPayment">
                     </div>
 
@@ -263,8 +263,9 @@
     </div>
 </div>
 <%--<script src="${pageContext.request.contextPath}/client/homepage/assets/js/sale.js"></script>--%>
-<script src="${pageContext.request.contextPath}/client/homepage/assets/js/addsale.js"></script>
+<%--<script src="${pageContext.request.contextPath}/client/homepage/assets/js/addsale.js"></script>--%>
 <script src="${pageContext.request.contextPath}/client/homepage/assets/js/renderdata.js"></script>
+<script src="${pageContext.request.contextPath}/client/homepage/assets/js/importdata.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>--%>

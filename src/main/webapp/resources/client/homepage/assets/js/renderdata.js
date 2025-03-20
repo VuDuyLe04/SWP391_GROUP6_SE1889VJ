@@ -143,7 +143,7 @@ function renderModals(productList) {
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">${product.name}</h5>
+                            <h5 class="modal-title" id="product-name">${product.name}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -152,11 +152,10 @@ function renderModals(productList) {
                                 <label class="form-label">Số lượng:</label>
                                 <input type="number" class="form-control quantity-input" name="quantity" min="1" value="1" data-quantity="${product.totalQuantity}">
                             </div>
-                            <div class="mb-3" hidden>
-                                <label class="form-label">Hidden</label>
+                            <div class="mb-3">
+                                <label class="form-label">Gía nhập</label>
                                 <input type="number" class="form-control listed-input" name="hide" min="1" value="${product.unitPrice}" data-listed="${product.unitPrice}">
                             </div>
-                            
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
@@ -202,9 +201,8 @@ function searchProducts(keyword, storeId) {
                 if(pathCurrent.includes('saleproduct')){
                     attachEventListeners();
                 } else {
-                    console.log("dang nhap hang");
+                    attackEventAddBillImportProduct();
                 }
-
             } else {
                 console.error("Lỗi khi tìm kiếm sản phẩm:", data.message);
             }

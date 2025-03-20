@@ -270,15 +270,7 @@
 <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>--%>
 <script>
 
-    <%--document.addEventListener("DOMContentLoaded", function() {--%>
-    <%--    const storeId = "<%= request.getAttribute("storeId") %>";--%>
-    <%--    if (storeId && storeId !== "null") {--%>
-    <%--        loadProducts(storeId);--%>
-    <%--        console.log(storeId);--%>
-    <%--    } else {--%>
-    <%--        console.error("Store ID không hợp lệ!");--%>
-    <%--    }--%>
-    <%--});--%>
+
 
     const searchInputKey = document.getElementById("searchInput");
     const searchButton = document.getElementById("searchBut");
@@ -293,11 +285,12 @@
     });
     document.addEventListener("DOMContentLoaded", function () {
         let currentPath = window.location.pathname;
-        console.log(currentPath);
+        let transactionDropdown = document.getElementById("transactionDropdown");
+
         if (currentPath.includes("/saleproduct/")) {
-            document.getElementById("banhang").classList.add("active");
+            transactionDropdown.textContent = "Bán hàng";
         } else if (currentPath.includes("/importproduct/")) {
-            document.getElementById("nhaphang").classList.add("active");
+            transactionDropdown.textContent = "Nhập hàng";
         }
     });
 

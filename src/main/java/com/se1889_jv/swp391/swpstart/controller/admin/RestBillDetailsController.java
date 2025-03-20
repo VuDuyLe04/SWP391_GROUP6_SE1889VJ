@@ -19,10 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.se1889_jv.swp391.swpstart.exception.ErrorException.*;
 
 @RestController
 @RequestMapping("/api")
@@ -266,6 +265,35 @@ public class RestBillDetailsController {
         return response;
     }
 
+    @PostMapping("/importproduct")
+    public ApiResponse<String> createBillDetailImport(@RequestBody ImportRequest billDetail, HttpSession session) {
+        log.info(billDetail.getBillDetailsList().toString());
+        Bill bill = billService.createBillForImport(billDetail);
+
+        // Xử lý từng chi tiết đơn hàng
+        List<ApiResponse<String>> responses = new ArrayList<>();
+        for (BillDetailImportRequest detail : billDetail.getBillDetailsList()) {
+            detail.setBillId(bill.getId());
+
+            ApiResponse<String> response = (ApiResponse<String>) rabbitTemplate.convertSendAndReceive(
+                    RabbitMQConfig.BILL_QUEUE, detail
+            );
+
+            if (response == null) {
+                responses.add(new ApiResponse<>(202, "Request is being processed...", null));
+            } else {
+                responses.add(response);
+            }
+        }
+
+        for (ApiResponse<String> response : responses) {
+            if (response.getCode() != 200) {
+                return response;
+            }
+        }
+        Bill b = billService.updateImportBill(bill.getId(), billDetail);
+        return new ApiResponse<>(200, "Đã nhập kho thành công", null);
+    }
 
 
 

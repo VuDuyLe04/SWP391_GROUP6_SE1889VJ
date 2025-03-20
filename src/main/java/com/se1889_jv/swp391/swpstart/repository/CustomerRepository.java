@@ -40,7 +40,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     Page<Customer> findAllByPhoneContainingAndStore(String phone,Store store, Pageable pageable);
 
-
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END " +
             "FROM Customer c " +
             "WHERE c.phone = :newPhone " +

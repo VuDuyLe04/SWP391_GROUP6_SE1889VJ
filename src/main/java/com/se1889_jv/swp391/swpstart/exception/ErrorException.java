@@ -19,6 +19,8 @@ public enum ErrorException {
     NOT_POSITIVE(108, "Số lượng không thể âm"),
     DEBT_DONT_HAVE_CUSTOMER(109,"Hãy thêm khách hàng vào phiếu nợ"),
     ACTUAL_PRICE_NOT_POSITIVE(110, "Gía bán thực tế không thể âm"),
+    PAY_NOT_POSITIVE(111, "Tiền trả ko thể âm"),
+    CUSTOMER_INFOR_IS_NULL(112, "Thông tin khách hàng đang trống")
     ;
     private int code;
     private String message;

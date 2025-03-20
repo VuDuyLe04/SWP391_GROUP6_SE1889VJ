@@ -3,7 +3,9 @@ package com.se1889_jv.swp391.swpstart.service.implementservice;
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.DebtReceipt;
 import com.se1889_jv.swp391.swpstart.domain.User;
+import com.se1889_jv.swp391.swpstart.domain.dto.BillDetailImportRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillRequest;
+import com.se1889_jv.swp391.swpstart.domain.dto.ImportRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.request.DebtReceiptCreationRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.response.DebtReceiptCreationResponse;
 import com.se1889_jv.swp391.swpstart.domain.dto.response.DebtReceiptDetailResponse;
@@ -174,6 +176,33 @@ public class DebtReceiptService implements IDebtReceiptService {
         } else if(request.getActualPay() > request.getTotalNeedPay()){
             debtReceipt.setDebtAmount(request.getActualPay() - request.getTotalNeedPay());
             debtReceipt.setDebtType(DebtTypeEnum.DEBTREPAY);
+        } else if (request.getActualPay().equals(request.getTotalNeedPay())) {
+            Customer c = customerService.getCustomerByNameAndPhone(request.getCustomerInfor());
+            debtReceipt.setDebtAmount(c.getBalance());
+            debtReceipt.setDebtType(DebtTypeEnum.DEBTREPAY);
+        }
+        debtReceipt.setCustomer(customerService.getCustomerByNameAndPhone(request.getCustomerInfor()));
+        debtReceipt.setCreatedBy(user.getName());
+        debtReceipt.setIsProcess(false);
+        return debtReceiptRepository.save(debtReceipt);
+    }
+
+    @Override
+    public DebtReceipt createDebtForImport(ImportRequest request, User user) {
+        if(request.getCustomerInfor().isEmpty() || request.getCustomerInfor() == null) {
+            throw new AppException(ErrorException.DEBT_DONT_HAVE_CUSTOMER);
+        }
+        DebtReceipt debtReceipt = new DebtReceipt();
+        if(request.getActualPay() < request.getTotalNeedPay()){
+            debtReceipt.setDebtAmount(request.getTotalNeedPay() - request.getActualPay());
+            debtReceipt.setDebtType(DebtTypeEnum.DEBTREPAY);
+        } else if(request.getActualPay() > request.getTotalNeedPay()){
+            debtReceipt.setDebtAmount(request.getActualPay() - request.getTotalNeedPay());
+            debtReceipt.setDebtType(DebtTypeEnum.DEBIT);
+        } else if (request.getActualPay().equals(request.getTotalNeedPay())) {
+            Customer c = customerService.getCustomerByNameAndPhone(request.getCustomerInfor());
+            debtReceipt.setDebtAmount(c.getBalance());
+            debtReceipt.setDebtType(DebtTypeEnum.DEBIT);
         }
         debtReceipt.setCustomer(customerService.getCustomerByNameAndPhone(request.getCustomerInfor()));
         debtReceipt.setCreatedBy(user.getName());
