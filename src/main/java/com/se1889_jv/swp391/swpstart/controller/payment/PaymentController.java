@@ -8,11 +8,14 @@ import com.se1889_jv.swp391.swpstart.service.implementservice.TransactionPayment
 import com.se1889_jv.swp391.swpstart.service.implementservice.TransactionServiceService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
+import com.se1889_jv.swp391.swpstart.util.constant.TransactionStatus;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +23,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Controller
@@ -72,18 +78,75 @@ public class PaymentController {
     }
 
     @GetMapping("/owner/payment/history")
-    public String historyPayemtPage(Model model,
-                              @RequestParam(defaultValue = "0") int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+    public String transpayments(
+            @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(value = "minAmount", required = false) Double minAmount,
+            @RequestParam(value = "maxAmount", required = false) Double maxAmount,
+            @RequestParam(value = "status", required = false, defaultValue = "ALL") String status,
+            @RequestParam(value = "input", required = false) String input,
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            Model model
+    ) {
+
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "date");
+        Pageable pageable = PageRequest.of(page, 5, sort);
         User userInSession = Utility.getUserInSession();
         User user = this.userService.findById(userInSession.getId());
-        Page<TransactionPayment> transactionPaymentPage = this.transactionPaymentService.findAllByUser(user, pageable);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", transactionPaymentPage.getTotalPages());
-        model.addAttribute("listTransactionPayment", transactionPaymentPage.getContent());
-        return "admin/payment/history";
+        Page<TransactionPayment> list = this.transactionPaymentService.findAllByUser(user, pageable);
 
+        if (input != null && !input.trim().isEmpty()) {
+            model.addAttribute("input", input);
+            list = transactionPaymentService.findByTransactionIdContainingAndUser(input,user,pageable);
+        } else {
+            LocalDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay() : null;
+            LocalDateTime endDateTime = (endDate != null) ? endDate.atTime(23, 59, 59) : null;
+
+            TransactionStatus transactionStatus = null;
+            if (!"ALL".equalsIgnoreCase(status)) {
+                try {
+                    transactionStatus = TransactionStatus.valueOf(status);
+                } catch (IllegalArgumentException e) {
+                    model.addAttribute("errorMessage", "Trạng thái không hợp lệ!");
+                }
+            }
+
+            list = transactionPaymentService.filterTransactions(
+                    startDateTime, endDateTime, minAmount, maxAmount, transactionStatus, user.getId(), pageable
+            );
+
+
+        }
+
+        if (list.hasContent()) {
+            model.addAttribute("transactions", list);
+
+        } else {
+            model.addAttribute("emptyList", "Không có giao dịch nào được tìm thấy!");
+        }
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("minAmount", minAmount);
+        model.addAttribute("maxAmount", maxAmount);
+        model.addAttribute("status", status);
+
+        return "admin/payment/history";
     }
+
+
+//    public String historyPayemtPage(Model model,
+//                              @RequestParam(defaultValue = "0") int page) {
+//        Pageable pageable = PageRequest.of(page, 5);
+//        User userInSession = Utility.getUserInSession();
+//        User user = this.userService.findById(userInSession.getId());
+//        Page<TransactionPayment> transactionPaymentPage = this.transactionPaymentService.findAllByUser(user, pageable);
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("totalPages", transactionPaymentPage.getTotalPages());
+//        model.addAttribute("listTransactionPayment", transactionPaymentPage.getContent());
+//        return "admin/payment/history";
+//
+//    }
 
     @GetMapping("/owner/service/history")
     public String historyServicePage(Model model,

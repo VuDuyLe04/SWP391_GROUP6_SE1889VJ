@@ -16,20 +16,25 @@ import java.util.Optional;
 
 @Repository
 public interface TransactionPaymentRepository extends JpaRepository<TransactionPayment, Long>, JpaSpecificationExecutor<TransactionPayment> {
+
     @Query("SELECT t FROM TransactionPayment t " +
             "WHERE (:startDate IS NULL OR t.date >= :startDate) " +
             "AND (:endDate IS NULL OR t.date <= :endDate) " +
             "AND (:minAmount IS NULL OR t.amount >= :minAmount) " +
             "AND (:maxAmount IS NULL OR t.amount <= :maxAmount) " +
-            "AND (:status IS NULL OR t.transactionStatus = :status) " )
+            "AND (:status IS NULL OR t.transactionStatus = :status) " +
+            "AND (:userId IS NULL OR t.user.id = :userId)")
     Page<TransactionPayment> filterTransactions(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             @Param("minAmount") Double minAmount,
             @Param("maxAmount") Double maxAmount,
             @Param("status") TransactionStatus status,
+            @Param("userId") Long userId,
             Pageable pageable
     );
+
+    Page<TransactionPayment> findByTransactionIdContainingAndUser(String transactionId, User user, Pageable pageable);
     Page<TransactionPayment> findByTransactionStatus(TransactionStatus transactionStatus, Pageable pageable);
     Optional<TransactionPayment> findByTransactionId(String transactionId);
     Page<TransactionPayment> findByUser(User user, Pageable pageable);

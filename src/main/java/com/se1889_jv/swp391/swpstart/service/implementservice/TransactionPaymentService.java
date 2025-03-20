@@ -38,8 +38,15 @@ public class TransactionPaymentService implements ITransactionPaymentService {
         return transactionPaymentRepository.findByTransactionIdContainingOrUser_PhoneContaining(transactionId, userPhone, pageable);
     }
 
+
+
     @Override
-    public Page<TransactionPayment> filterTransactions(LocalDateTime startDate, LocalDateTime endDate, Double minAmount, Double maxAmount, TransactionStatus status, Pageable pageable) {
-        return transactionPaymentRepository.filterTransactions(startDate, endDate, minAmount, maxAmount, status, pageable);
+    public Page<TransactionPayment> filterTransactions(LocalDateTime startDate, LocalDateTime endDate, Double minAmount, Double maxAmount, TransactionStatus status, Long userId,Pageable pageable) {
+        return transactionPaymentRepository.filterTransactions(startDate, endDate, minAmount, maxAmount, status,userId, pageable);
+    }
+
+    @Override
+    public Page<TransactionPayment> findByTransactionIdContainingAndUser(String transactionId, User user, Pageable pageable) {
+        return transactionPaymentRepository.findByTransactionIdContainingAndUser(transactionId, user, pageable);
     }
 }
