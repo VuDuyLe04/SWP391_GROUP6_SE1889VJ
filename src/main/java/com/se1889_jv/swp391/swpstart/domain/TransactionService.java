@@ -5,18 +5,24 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
 @Entity
 @Table(name = "transaction_services")
 @Getter
 @Setter
 public class TransactionService {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String serviceName;
     private int durationMonths;
-    private Instant transactionDate;
+
+
+    private LocalDateTime transactionDate;
     private double amount;
     @Enumerated(EnumType.STRING)
     private TransactionStatus transactionStatus;
@@ -28,5 +34,10 @@ public class TransactionService {
     @ManyToOne
     @JoinColumn(name = "service_id")
     private Service service;
+    public String getFormattedDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return (transactionDate != null) ? transactionDate.format(formatter) : null;
+    }
+
 
 }

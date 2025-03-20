@@ -9,7 +9,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Dashboard | JSOFT Themes | JSOFT-Admin</title>
+    <title>Quản lí người dùng</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -216,7 +216,14 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2><i class="fa fa-users mr-xs"></i> Quản lí người dùng</h2>
+                <h2><i class="fa fa-users mr-xs"></i>
+                    <c:if test="${sessionScope.user.role.id == 1}">
+                        Quản lí người dùng
+                </c:if>
+                    <c:if test="${sessionScope.user.role.id == 2}">
+                        Quản lí nhân viên
+                    </c:if>
+                </h2>
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
                         <li>
@@ -245,7 +252,7 @@
                                     <div class="pull-right">
                                         <form id="search-form" action="usermanagement" method="get" class="search nav-form">
                                             <div class="input-group input-search">
-                                                <input type="text" class="form-control" name="input" 
+                                                <input type="text" class="form-control" name="input"
                                                        placeholder="Tìm kiếm theo tên hoặc số điện thoại" value="${input}" >
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-primary" type="submit">
@@ -258,7 +265,7 @@
                                 </div>
                             </div>
                         </header>
-                        
+
                         <div class="panel-body">
                             <div class="row mb-md">
                                 <div class="col-sm-6">
@@ -270,12 +277,12 @@
                                                     <select id="role" name="role" class="form-control">
                                                         <option ${roleId == -1 ? "selected" : ""} value="-1" >Các vai trò</option>
                                                         <c:forEach items="${roles}" var="r">
-                                                            <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
-                                                                <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>
-                                                                <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>
-                                                                <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>
+                                                        <option ${roleId == r.id ? "selected" : ""} value="${r.id}">
+                                                            <c:if test="${r.name == 'ADMIN'}">Quản trị viên</c:if>
+                                                            <c:if test="${r.name == 'OWNER'}">Chủ cửa hàng</c:if>
+                                                            <c:if test="${r.name == 'STAFF'}">Nhân viên</c:if>
 
-                                                        </c:forEach>
+                                                            </c:forEach>
 
                                                     </select>
                                                 </div>
@@ -292,22 +299,32 @@
                                             </div>
                                             <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>
                                         </c:if>
-<%--                                        <c:if test="${sessionScope.user.role.id == 2}">--%>
-<%--                                            <select id="store" name="store" class="form-control">--%>
-<%--                                                <option value="0">All Status</option>--%>
-<%--                                                <c:forEach items="${stores}" var="s">--%>
-<%--                                                    <option value="${s.id}">${s.name}</option>--%>
-<%--                                                </c:forEach>--%>
-<%--                                            </select>--%>
-<%--                                        </c:if>--%>
+                                        <c:if test="${sessionScope.user.role.id == 2}">
+                                            <select id="storeId" name="storeId" class="form-control" onchange="filterByStore(this.value)">
+                                            <option value="-1" ${storeId == -1 ? 'selected' : ''}>Tất cả cửa hàng</option>
+                                            <c:forEach items="${stores}" var="s">
+                                                <option value="${s.id}" ${storeId == s.id ? 'selected' : ''}>${s.name}</option>
+                                            </c:forEach>
+                                        </select>
+
+                                        </c:if>
 
                                     </form>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="pull-right">
-                                        <a href="createuser" class="btn btn-primary mb-xs mt-xs mr-xs">
-                                            <i class="fa fa-plus mr-xs"></i>Tạo chủ cửa hàng
-                                        </a>
+
+                                        <c:if test="${sessionScope.user.role.id == 1}">
+
+                                            <a href="createuser" class="btn btn-primary mb-xs mt-xs mr-xs">
+                                                <i class="fa fa-plus mr-xs"></i>Tạo chủ sở hữu
+                                            </a>
+                                            </c:if>
+                                        <c:if test="${sessionScope.user.role.id == 2}">
+                                            <a href="createstaff" class="btn btn-primary mb-xs mt-xs mr-xs">
+                                                <i class="fa fa-plus mr-xs"></i>Tạo nhân viên
+                                            </a>
+                                        </c:if>
 
                                     </div>
                                 </div>
@@ -316,18 +333,20 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
-                                        <tr>
-                                            <th><i class="fa"></i>STT</th>
-                                            <th><i class="fa fa-user mr-xs"></i>Tên</th>
-                                            <th><i class="fa fa-phone mr-xs"></i>Số điện thoại</th>
-                                            <c:if test="${sessionScope.user.role.id == 1}">
-                                                <th><i class="fa fa-users mr-xs"></i>Vai trò</th>
-                                                <th><i class="fa fa-check-circle mr-xs"></i>Trạng thái</th>
-                                            </c:if>
-                                            <th><i class="fa fa-cogs mr-xs"></i>Hành động</th>
-                                        </tr>
+                                    <tr>
+                                        <th><i class="fa"></i>STT</th>
+                                        <th><i class="fa fa-user mr-xs"></i>Tên</th>
+                                        <th><i class="fa fa-phone mr-xs"></i>Số điện thoại</th>
+                                        <c:if test="${sessionScope.user.role.id == 1}">
+                                            <th><i class="fa fa-users mr-xs"></i>Vai trò</th>
+                                            <th><i class="fa fa-check-circle mr-xs"></i>Trạng thái</th>
+                                        </c:if>
+                                        <th><i class="fa fa-cogs mr-xs"></i>Hành động</th>
+                                    </tr>
                                     </thead>
+                                    ${emptyList}
                                     <tbody>
+                                    <c:if test="${userPage != null }">
                                     <c:forEach var="u" items="${userPage.content}" varStatus="status">
                                         <tr>
                                             <td>${status.index + 1}</td>
@@ -352,6 +371,7 @@
                                             </c:if>
 
                                             <td>
+                                                <c:if test="${sessionScope.user.role.id == 1}">
                                                 <button
                                                         class="btn btn-default btn-sm mr-xs view-button"
                                                         title="Xem"
@@ -368,25 +388,47 @@
 
                                                     <i class="fa fa-eye"></i>
                                                 </button>
-                                                <a href="updateuser?id=${u.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
-                                                    <i class="fa fa-pencil"></i>
-                                                </a>
+                                                </c:if>
+                                                <c:if test="${sessionScope.user.role.id == 1}">
+                                                    <a href="updateuser?id=${u.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+                                            </c:if>
+                                                <c:if test="${sessionScope.user.role.id == 2}">
+                                                    <a href="updatestaff/${u.id}" class="btn btn-primary btn-sm" title="Chỉnh sửa">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+                                                </c:if>
+
                                             </td>
                                         </tr>
                                     </c:forEach>
 
                                     </tbody>
                                 </table>
-
+                                <c:if test="${not empty userPage}">
                                 <c:set var="c" value="${userPage.number}"></c:set>
                                 <ul class="pagination" style="display: flex; justify-content: center; margin-leftgit:413px">
                                     <li class="page-item ${c==0 ?'disabled':''} ">
-                                        <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
+
+                                        <c:if test="${sessionScope.user.role.id == 1}">
+                                            <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&active=${active}&role=${roleId}">Trước</a>
+                                        </c:if>
+                                        <c:if test="${sessionScope.user.role.id == 2}">
+                                            <a class="page-link" href="usermanagement?page=${c==0 ? 0 : (c - 1)}&input=${input}&storeId=${storeId}">Trước</a>
+                                        </c:if>
                                     </li>
 
                                     <c:forEach begin="0" end="${userPage.totalPages - 1}" var="i">
                                         <c:if test="${i >= c - 1 && i <= c + 1}">
-                                            <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a>
+                                            <c:if test="${sessionScope.user.role.id == 1}">
+                                                <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&active=${active != null ? active : '-1'}&role=${roleId != null ? roleId : '-1'}">${i + 1}</a>
+
+                                            </c:if>
+                                            <c:if test="${sessionScope.user.role.id == 2}">
+                                                <li class="page-item ${c == i ? 'active' : ''}"><a class="page-link" href="usermanagement?page=${i}&input=${input != null ? input : ''}&storeId=${storeId != null ? storeId : '-1'}">${i + 1}</a>
+
+                                            </c:if>
 
 
                                             </li>
@@ -395,14 +437,22 @@
                                             <li><span>...</span></li>
                                         </c:if>
                                     </c:forEach>
+                                    </c:if>
 
 
 
                                     <li class="page-item ${c== userPage.totalPages -1?'disabled':''} ">
+                                        <c:if test="${sessionScope.user.role.id == 1}">
                                         <a class="page-link" href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}&input=${input}&active=${active}&role=${roleId}">Sau</a>
+                                        </c:if>
+                                        <c:if test="${sessionScope.user.role.id == 2}">
+                                            <a class="page-link" href="usermanagement?page=${c== userPage.totalPages -1? userPage.totalPages -1: (c + 1)}&input=${input}&storeId=${storeId}">Sau</a>
+                                        </c:if>
+
                                     </li>
 
                                 </ul>
+                                </c:if>
 
                             </div>
 
@@ -493,9 +543,9 @@
 
 
             const status = $(this).data('status');
-         //   const createdAt = $(this).data('createdAt');
+            //   const createdAt = $(this).data('createdAt');
             const createdBy = $(this).data('createdBy');
-          //  const updatedAt = $(this).data('updatedAt');
+            //  const updatedAt = $(this).data('updatedAt');
             const updatedBy = $(this).data('updatedBy');
             const userStores = $(this).data('userStores');
 
@@ -518,6 +568,16 @@
             document.getElementById("search-form").submit();
         }
     });
+    function filterByStore(value) {
+        const url = new URL(window.location.href);//lay doi tuong url hien tai
+        url.searchParams.delete('page');
+        url.searchParams.set('storeId', value); // Luôn cập nhật giá trị status
+        url.searchParams.delete('input'); // Nếu input rỗng/null thì xóa khỏi URL
+        url.searchParams.delete('page'); // Nếu input rỗng/null thì xóa khỏi URL
+
+
+        window.location.href = url.toString(); // Điều hướng đến URL mới
+    }
 </script>
 
 

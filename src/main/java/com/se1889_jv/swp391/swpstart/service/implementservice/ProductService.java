@@ -151,7 +151,7 @@ public class ProductService implements IProductService {
                 .build();
     }
 
-//lay ra san pham cua chu cua hang
+    //lay ra san pham cua chu cua hang
     @Override
     public Page<Product> getProductsByStoreIds(List<Long> storeIds, Pageable pageable) {
         return productRepository.findByStoreIdIn(storeIds, pageable);

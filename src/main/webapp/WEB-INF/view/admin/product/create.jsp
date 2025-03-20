@@ -155,7 +155,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="warehouseGroup" style="display: none;">
-                                    <label class="col-md-3 control-label" for="inputWarehouse">Kho hàng</label>
+                                    <label class="col-md-3 control-label" for="inputWarehouse">Khu vực</label>
                                     <div class="col-md-6">
                                         <form:select path="warehouse.id" class="form-control" id="inputWarehouse">
                                             <option value="">-- Chọn kho hàng --</option>

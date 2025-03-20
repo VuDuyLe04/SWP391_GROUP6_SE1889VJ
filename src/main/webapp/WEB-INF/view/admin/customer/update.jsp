@@ -126,19 +126,15 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="balance">Tiền nợ</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="balance" class="form-control" id="balance" readonly="true" />
-                                    </div>
-                                </div>
+<%--                                <div class="form-group row">--%>
+<%--                                    <label class="col-sm-3 col-form-label" for="balance">Cửa hàng</label>--%>
+<%--                                    <div class="col-sm-9">--%>
+<%--                                        <input value="${customer.store.name}" class="form-control" id="balance" readonly/>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label" for="balance">Cửa hàng</label>
-                                    <div class="col-sm-9">
-                                        <form:input path="store.name" class="form-control" id="balance" readonly="true" />
-                                    </div>
-                                </div>
+                                <input value="${customer.phone}" type="hidden" name="oldPhone">
+                                
 
                                 <div class="form-group row">
                                     <div class="col-sm-9 offset-sm-3">

@@ -56,9 +56,9 @@ public class WareHouseController {
     @GetMapping("/warehouse")
     public String getTableWarehouse(@RequestParam(defaultValue = "0") int page, Model model) {
         Store store = Utility.getStoreInSession();
-        if (store == null) {
-            return "redirect:/dashboard";
-        }
+//        if (store == null) {
+//            return "redirect:/dashboard";
+//        }
 
         Page<WareHouse> warehousePage = this.wareHouseService.getWareHousesWithPagination(page, 5, store);
         model.addAttribute("listWareHouse", warehousePage.getContent());
@@ -117,8 +117,6 @@ public class WareHouseController {
         model.addAttribute("productList", productList);
         return "admin/warehouse/detail";
     }
-
-
 
     @GetMapping("/fetch-all-warehouse")
     public String getAllWareHouse(@RequestParam(required = false, defaultValue = "1") int page,

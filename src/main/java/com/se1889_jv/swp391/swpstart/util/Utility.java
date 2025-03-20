@@ -4,6 +4,7 @@ import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.repository.StoreRepository;
 import com.se1889_jv.swp391.swpstart.repository.UserRepository;
+import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,18 +43,20 @@ public class Utility {
     }
 
     public static User getUserInSession() {
-        HttpServletRequest request =
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-
-        if (request == null) {
-            return null; // Không thể lấy request
+        // Kiểm tra nếu có request context
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            HttpServletRequest request = attributes.getRequest();
+            if (request != null) {
+                HttpSession session = request.getSession(false); // false để không tạo session mới
+                if (session != null) {
+                    User user = (User) session.getAttribute("user");
+                    return user;
+                }
+            }
         }
-        HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return null;
-        }
-        return user;
+        // Nếu không có request context (chẳng hạn trong scheduled task), trả về null
+        return null;
     }
 
     public static List<Store> getListStoreOfOwner(User user) {
@@ -68,10 +71,11 @@ public class Utility {
      *
      * @return the login of the current user.
      */
-    public static Optional<String> getCurrentUserLogin() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        return Optional.ofNullable(extractPrincipal(securityContext.getAuthentication()));
-    }
+
+//    public static Optional<String> getCurrentUserLogin() {
+//        SecurityContext securityContext = SecurityContextHolder.getContext();
+//        return Optional.ofNullable(extractPrincipal(securityContext.getAuthentication()));
+//    }
 
     private static String extractPrincipal(Authentication authentication) {
         if (authentication == null) {
@@ -82,6 +86,10 @@ public class Utility {
             return s;
         }
         return null;
+    }
+
+    public static boolean checkExpiration(User user) {
+        return user.isStatusService();
     }
 
 }

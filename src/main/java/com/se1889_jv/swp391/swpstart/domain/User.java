@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String phone;
     @NotBlank
     private String password;
@@ -56,13 +58,13 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<UserStore> userStores;
-    public void addUserStore() {
-    User user = new User();
-    user.getUserStores();
-}
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<TransactionService> transactionServices;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<TransactionPayment> transactionPayments;
+
     public Date getCreatedAtAsDate() {
         return createdAt != null ? Date.from(createdAt) : null;
     }
@@ -84,5 +86,13 @@ public class User {
                 .withZone(ZoneId.of("Asia/Ho_Chi_Minh"));
         return formatter.format(instant);
     }
+//    public List<Store> getAllStores() {
+//        List<Store> stores = new ArrayList<>();
+//        for (UserStore userStore : userStores) {
+//            stores.add(userStore.getStore());
+//        }
+//        return stores;
+//    }
+
 
 }

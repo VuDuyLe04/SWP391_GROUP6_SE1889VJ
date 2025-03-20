@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -56,6 +57,7 @@ public class SecurityConfiguration {
     public AuthenticationSuccessHandler customSuccessHandler(UserService userService) {
         return new CustomSuccessHandler(userService);
     }
+
 //
 //
 //    //Don't touch please
@@ -96,39 +98,41 @@ public class SecurityConfiguration {
 //        return http.build();
 //    }
 
-//Don't touch please
-@Bean
-SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    UserService userService1 = null;
-    http
-            .authorizeHttpRequests(authorize -> authorize
-                    .dispatcherTypeMatchers(DispatcherType.FORWARD,
-                            DispatcherType.INCLUDE).permitAll()
+    //Don't touch please
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        UserService userService1 = null;
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorize -> authorize
+                                .dispatcherTypeMatchers(DispatcherType.FORWARD,
+                                        DispatcherType.INCLUDE).permitAll()
 
-                    .requestMatchers("/", "/login", "/register", "/client/**", "/admin/**").permitAll()
+                                .requestMatchers("/","/api/v1/revenue-store/**" ,"/login", "/register", "/client/**", "/admin/**", "/api/**").permitAll()
+                                .requestMatchers("/customer", "/customer/**").hasAnyRole("STAFF", "OWNER")
+                                .requestMatchers("/warehouse", "/warehouse/**", "/product", "/product/**","/payment", "/payment/history").hasRole("OWNER")
 
-                    .requestMatchers("/warehouse", "/warehouse/**").hasRole("OWNER")
-
+                                .requestMatchers("/profile/**").hasAnyRole("ADMIN", "STAFF", "OWNER")
 //                    .requestMatchers("/customer/**", "/product/**").hasRole("OWNER")
+                                .requestMatchers("/service/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                )
 
-                    .anyRequest().authenticated()
-            )
-
-            .sessionManagement((sessionManagement) -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .sessionManagement((sessionManagement) -> sessionManagement
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         .invalidSessionUrl("/logout?expired")
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(false))
-            .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
-            .rememberMe(r -> r.rememberMeServices(rememberMeServices()))
-            .formLogin(formLogin -> formLogin
-                    .loginPage("/login")
-                    .failureUrl("/login?error")
-                    .successHandler(customSuccessHandler(userService1))
-                    .permitAll())
-            .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
-    return http.build();
-}
+                .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
+                .rememberMe(r -> r.rememberMeServices(rememberMeServices()))
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .failureUrl("/login?error")
+                        .successHandler(customSuccessHandler(userService1))
+                        .permitAll())
+                .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
+        return http.build();
+    }
 
 
 }

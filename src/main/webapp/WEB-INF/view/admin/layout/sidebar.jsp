@@ -22,7 +22,8 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    <c:if test="${sessionScope.user.role.name == 'ADMIN' || sessionScope.user.role.name == 'OWNER'}">
+
+                    <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
                         <li>
                             <a href="/usermanagement">
                                 <i class="fa fa-user" aria-hidden="true"></i>
@@ -31,16 +32,32 @@
                         </li>
                     </c:if>
 
-                    <c:if test="${sessionScope.user.role.name == 'OWNER' || sessionScope.user.role.name == 'STAFF'}">
-                        <li >
-                            <a href="/customer">
-                                <i class="fa fa-copy" aria-hidden="true"></i>
-                                <span>Khách hàng</span>
+                    <c:if test="${sessionScope.user.role.name == 'OWNER'}">
+                        <li>
+                            <a href="/usermanagement">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <span>Nhân viên</span>
+                            </a>
+                        </li>
+                    </c:if>
+
+                    <c:if test="${sessionScope.user.role.name == 'OWNER'}">
+                        <li>
+                            <a href="/stores">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <span>Cửa hàng</span>
                             </a>
 
                         </li>
                     </c:if>
-
+                    <c:if test="${sessionScope.user.role.name == 'OWNER'}">
+                        <li>
+                            <a href="/fetch-all-warehouse">
+                                <i class="fa fa-table" aria-hidden="true"></i>
+                                <span>Kho hàng</span>
+                            </a>
+                        </li>
+                    </c:if>
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
                             <a href="/product">
@@ -52,24 +69,6 @@
                     </c:if>
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
-                            <a>
-                                <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                <span>Hóa đơn</span>
-                            </a>
-                        </li>
-                    </c:if>
-
-                    <c:if test="${sessionScope.user.role.name == 'OWNER'}">
-                        <li>
-                            <a href="/fetch-all-warehouse">
-                                <i class="fa fa-table" aria-hidden="true"></i>
-                                <span>Kho hàng</span>
-                            </a>
-                        </li>
-                    </c:if>
-
-                    <c:if test="${sessionScope.user.role.name == 'OWNER'}">
-                        <li>
                             <a href="/packaings">
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <span>Quy cách đóng gói</span>
@@ -77,14 +76,22 @@
 
                         </li>
                     </c:if>
+                    <c:if test="${sessionScope.user.role.name == 'OWNER' || sessionScope.user.role.name == 'STAFF'}">
+                        <li >
+                            <a href="/customer/table">
+                                <i class="fa fa-copy" aria-hidden="true"></i>
+                                <span>Khách hàng</span>
+                            </a>
+
+                        </li>
+                    </c:if>
 
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
                             <a>
-                                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                <span>Cửa hàng</span>
+                                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                <span>Hóa đơn</span>
                             </a>
-
                         </li>
                     </c:if>
 
@@ -93,6 +100,24 @@
                             <a href="/service/table">
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <span>Dịch vụ</span>
+                            </a>
+
+                        </li>
+                    </c:if>
+                    <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
+                        <li>
+                            <a href="/transpayments">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <span>Giao dịch thanh toán  </span>
+                            </a>
+
+                        </li>
+                    </c:if>
+                    <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
+                        <li>
+                            <a href="/transervices">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <span>Giao dịch dịch vụ </span>
                             </a>
 
                         </li>

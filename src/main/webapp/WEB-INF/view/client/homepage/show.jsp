@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -179,53 +180,103 @@
         <div class="container">
 
             <div class="row gy-4">
+                <c:forEach var="service" items="${services}" varStatus="status">
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                        <form id="service-${status.index}" method="post" action="/signupservice">
+                            <div class="service-item position-relative">
+                                <div class="icon">
+                                    <i class="bi bi-broadcast"></i>
+                                </div>
+                                <a href="#" class="stretched-link service-link"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#serviceModal"
+                                   data-id="${service.id}"
+                                   data-name="${service.name}"
+                                   data-price="${service.price}"
+                                   data-description="${service.description}"
+                                   data-duration="${service.durationMonths}">
+                                    <h3>${service.name}</h3>
+                                </a>
+                                <p><fmt:formatNumber type="number" value="${service.price}" /> đ</p>
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="service-item position-relative">
-                        <div class="icon">
-                            <i class="bi bi-broadcast"></i>
-                        </div>
-                        <a href="#" class="stretched-link">
-                            <h3>Gói 1 tháng</h3>
-                        </a>
-                        <p href="#" class="stretched-link">
-                            <h4>199.000 đồng</h4>
-                        </p>
-                        <p>Gói trải nhiệm, để khách hàng có thể sử dụng hệ thống với chi phí rẻ.</p>
+                            </div>
+                        </form>
                     </div>
-                </div><!-- End Service Item -->
+                </c:forEach>
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="service-item position-relative">
-                        <div class="icon">
-                            <i class="bi bi-broadcast"></i>
-                        </div>
-                        <a href="#" class="stretched-link">
-                            <h3>Gói 3 tháng</h3>
-                        </a>
-                        <p href="#" class="stretched-link">
-                        <h4>499.000 đồng</h4>
-                        </p>
-                        <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic
-                            non ut nesciunt dolorem.</p>
-                    </div>
-                </div><!-- End Service Item -->
+                <!-- Modal Bootstrap -->
+                <div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="serviceModalLabel">Chi tiết dịch vụ</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h5><strong>Tên dịch vụ:</strong></h5>
+                                <p id="modalServiceName" class="text-muted"></p>
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="service-item position-relative">
-                        <div class="icon">
-                            <i class="bi bi-broadcast"></i>
+                                <h5><strong>Giá:</strong></h5>
+                                <p id="modalServicePrice" class="text-muted"></p>
+
+                                <h5><strong>Mô tả:</strong></h5>
+                                <div id="modalServiceDescription" class="text-muted"></div>
+
+                                <h5><strong>Thời gian sử dụng:</strong></h5>
+                                <p id="modalServiceDuration" class="text-muted"></p>
+
+                                <!-- Form đăng ký ẩn -->
+                                <form id="serviceForm" action="/signupservice" method="post">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                    <input type="hidden" id="hiddenServiceId" name="id">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn btn-primary" id="registerButton">Đăng ký ngay</button>
+                            </div>
                         </div>
-                        <a href="#" class="stretched-link">
-                            <h3>Gói 6 tháng</h3>
-                        </a>
-                        <p href="#" class="stretched-link">
-                        <h4>899.000 đồng</h4>
-                        </p>
-                        <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic
-                            non ut nesciunt dolorem.</p>
                     </div>
-                </div><!-- End Service Item -->
+                </div>
+
+
+                <!-- JavaScript để cập nhật nội dung modal -->
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        let serviceLinks = document.querySelectorAll(".service-link");
+
+                        serviceLinks.forEach(link => {
+                            link.addEventListener("click", function () {
+                                let id = this.getAttribute("data-id");
+                                let name = this.getAttribute("data-name");
+                                let price = this.getAttribute("data-price");
+                                let description = this.getAttribute("data-description");
+                                let duration = this.getAttribute("data-duration");
+
+                                let formattedPrice = parseFloat(price).toLocaleString('vi-VN') + " đ";
+
+                                document.getElementById("modalServiceName").innerText = name;
+                                document.getElementById("modalServicePrice").innerText = formattedPrice;
+                                document.getElementById("modalServiceDescription").innerHTML = description;
+                                document.getElementById("modalServiceDuration").innerText = duration ? duration + " tháng" : "Không xác định";
+
+                                // Gán giá trị vào input hidden
+                                document.getElementById("hiddenServiceId").value = id;
+
+                            });
+                        });
+
+                        // Submit form khi bấm nút "Đăng ký ngay"
+                        document.getElementById("registerButton").addEventListener("click", function () {
+                            document.getElementById("serviceForm").submit();
+                        });
+                    });
+                </script>
+
+
+
+
+
 
 
             </div>
@@ -534,6 +585,26 @@
     </section><!-- /Contact Section -->
 
 </main>
+
+<%
+    String message = (String) session.getAttribute("message");
+    if (message != null) {
+%>
+<div id="alertMessage" class="alert alert-success text-center"
+     style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 50%;"
+     role="alert">
+    <%= message %>
+</div>
+<script>
+
+    setTimeout(function () {
+        document.getElementById("alertMessage").style.display = 'none';
+    }, 2000);
+</script>
+<%
+        session.removeAttribute("message");
+    }
+%>
 
 <jsp:include page="../layout/footer.jsp" />
 

@@ -100,6 +100,9 @@ public class WareHouseService implements IWareHouseService {
                 .flatMap(store -> store.getWareHouses().stream())
                 .toList();
 
+//        List<WareHouse> allWareHouses = wareHouseRepository.findAllByStoreIn(stores);
+
+
         int totalElements = allWareHouses.size();
         int totalPages = (int) Math.ceil((double) totalElements / size);
         int skip = (page - 1) * size;

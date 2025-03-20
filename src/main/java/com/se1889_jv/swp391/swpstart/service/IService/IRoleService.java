@@ -5,6 +5,6 @@ import com.se1889_jv.swp391.swpstart.domain.Role;
 import java.util.List;
 
 public interface IRoleService {
-    Role getRole(Long id);
+    Role getRole(long id);
     List<Role> getAllRoles();
 }

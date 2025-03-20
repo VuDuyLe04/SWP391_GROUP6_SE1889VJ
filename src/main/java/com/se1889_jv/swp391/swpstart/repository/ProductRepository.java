@@ -20,7 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     List<Product> findAllByStoreIdAndStorageIsTrue(Long storeId);
 
-    List<Product> findByNameContainingIgnoreCase(String name);
+    //List<Product> findByNameContainingIgnoreCase(String name);
     Page<Product> findAllByStoreId(Long storeId, Pageable pageable);
     Page<Product> findAllByNameContainingIgnoreCase(String input, Pageable pageable);
     List<Product> findAllByWarehouseId(Long warehouseId);
