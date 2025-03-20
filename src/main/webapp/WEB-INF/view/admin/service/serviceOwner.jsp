@@ -122,6 +122,25 @@
 
 
 </section>
+<%
+    String message = (String) session.getAttribute("message");
+    if (message != null) {
+%>
+<div id="alertMessage" class="alert alert-success text-center"
+     style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 50%;"
+     role="alert">
+    <%= message %>
+</div>
+<script>
+
+    setTimeout(function () {
+        document.getElementById("alertMessage").style.display = 'none';
+    }, 2000);
+</script>
+<%
+        session.removeAttribute("message");
+    }
+%>
 
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>

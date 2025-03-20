@@ -37,7 +37,12 @@ public class PermissionCheckAspect {
 
         // Kiểm tra quyền dựa trên điều kiện tùy chỉnh
         if (user == null || !hasPermission(user, condition)) {
-            response.sendRedirect("/access-deny");  // Hoặc /login nếu bạn muốn chuyển về trang đăng nhập
+            session.setAttribute("message", "Dịch vụ đã hết hạn vui lòng gia hạn dịch vụ" );
+            if (user.getRole().getName().equals("OWNER")) {
+                response.sendRedirect("/service/signup");
+            } else {
+                response.sendRedirect("/");
+            }
             return;
         }
     }

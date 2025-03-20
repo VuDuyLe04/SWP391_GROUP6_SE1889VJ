@@ -206,7 +206,7 @@ public class CustomerController {
 //        return "admin/customer/table";
 //    }
 
-//    @CheckPermission(condition = "statusService")
+    @CheckPermission(condition = "statusService")
     @GetMapping("/customer/table")
     public String getListCustomerPage(Model model, CustomerCriteriaDTO customerCriteriaDTO) {
         Store store = Utility.getStoreInSession();
