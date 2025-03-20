@@ -185,6 +185,7 @@ public class DebtReceiptService implements IDebtReceiptService {
         debtReceipt.setCreatedBy(user.getName());
         debtReceipt.setIsProcess(false);
         return debtReceiptRepository.save(debtReceipt);
+
     }
 
     @Override
@@ -194,14 +195,24 @@ public class DebtReceiptService implements IDebtReceiptService {
         }
         DebtReceipt debtReceipt = new DebtReceipt();
         if(request.getActualPay() < request.getTotalNeedPay()){
+
             debtReceipt.setDebtAmount(request.getTotalNeedPay() - request.getActualPay());
             debtReceipt.setDebtType(DebtTypeEnum.DEBTREPAY);
+
         } else if(request.getActualPay() > request.getTotalNeedPay()){
+
             debtReceipt.setDebtAmount(request.getActualPay() - request.getTotalNeedPay());
             debtReceipt.setDebtType(DebtTypeEnum.DEBIT);
+
         } else if (request.getActualPay().equals(request.getTotalNeedPay())) {
+
             Customer c = customerService.getCustomerByNameAndPhone(request.getCustomerInfor());
-            debtReceipt.setDebtAmount(c.getBalance());
+            if (c.getBalance() < 0){
+                debtReceipt.setDebtAmount(c.getBalance() * -1);
+            } else {
+                debtReceipt.setDebtAmount(c.getBalance());
+            }
+
             debtReceipt.setDebtType(DebtTypeEnum.DEBIT);
         }
         debtReceipt.setCustomer(customerService.getCustomerByNameAndPhone(request.getCustomerInfor()));

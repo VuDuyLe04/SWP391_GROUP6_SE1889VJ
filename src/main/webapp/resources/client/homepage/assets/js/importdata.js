@@ -208,14 +208,16 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Lỗi khi lấy số dư khách hàng:", error);
         }
     }
-
     function updateDebtInfo() {
         if (customerBalance > 0) {
             debtInfo.textContent = `Khách còn nợ: ${customerBalance.toLocaleString()} VND`;
             debtInfo.className = "alert alert-danger";
-        } else {
+        } else if (customerBalance == 0) {
             debtInfo.textContent = "Không có nợ!";
             debtInfo.className = "alert alert-secondary";
+        } else{
+            debtInfo.textContent = `Cửa hàng còn nợ: ${(customerBalance*(-1)).toLocaleString()} VND`;
+            debtInfo.className = "alert alert-primary";
         }
         debtInfo.style.display = "block";
     }
@@ -258,7 +260,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 amountToPay = billTotal;
                 break;
             case "all":
-                amountToPay = billTotal + customerBalance;
+                if (customerBalance > 0){
+                    amountToPay = billTotal + customerBalance;
+                } else {
+                    amountToPay = billTotal + customerBalance * (-1);
+                }
                 break;
             case "partial":
                 amountToPay = billTotal;
