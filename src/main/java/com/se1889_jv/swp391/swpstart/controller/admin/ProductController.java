@@ -90,6 +90,7 @@ ProductController {
         if (user == null) {
             return "redirect:/login";
         }
+
         List<Store> stores = Utility.getListStoreOfOwner(user);
         List<WareHouse> wareHouses = wareHouseService.getAllWareHouseByListStore(stores);
         model.addAttribute("product", new Product());

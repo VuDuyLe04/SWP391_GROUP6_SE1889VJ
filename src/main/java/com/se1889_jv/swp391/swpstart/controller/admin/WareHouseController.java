@@ -135,6 +135,7 @@ public class WareHouseController {
         model.addAttribute("listWareHouse", warehouses);
         return "admin/warehouse/table";
     }
+    
 
     @GetMapping("/warehouse/{id}")
     @ResponseBody
