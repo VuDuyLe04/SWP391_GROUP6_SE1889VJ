@@ -648,8 +648,18 @@
                             <c:forEach var="transaction" items="${transactions.content}">
                                 <tr>
                                     <td><span class="transaction-id">${transaction.transactionId}</span></td>
-                                    <td><span class="amount"><fmt:formatNumber value="${transaction.amount}" type="number" pattern="#,###"/>₫</span></td>
-                                    <td>${transaction.content}</td>
+
+                                    <td >   <fmt:setLocale value="vi_VN"/>
+                                        <c:choose>
+                                            <c:when test="${transaction.amount % 1 == 0}">
+                                                <fmt:formatNumber value="${transaction.amount}" type="number" groupingUsed="true"/>₫
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatNumber value="${transaction.amount}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                     <td>${transaction.content}</td>
                                     <td>${transaction.formattedDate}</td>
                                     <td>${transaction.accountReceiver}</td>
                                     <td>${transaction.gate}</td>

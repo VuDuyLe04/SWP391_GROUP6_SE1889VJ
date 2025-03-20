@@ -641,7 +641,7 @@
                                 <th>Tài khoản nhận</th>
                                 <th>Cổng thanh toán</th>
                                 <th>Trạng thái</th>
-                                <th>Thông tin người dùng</th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -659,12 +659,6 @@
                                               'status-failure'}">
                                                 ${transaction.transactionStatus}
                                         </span>
-                                    </td>
-                                    <td>
-                                        <div class="user-info">
-                                            <div class="user-name">${transaction.user.name}</div>
-                                            <div class="user-phone">${transaction.user.phone}</div>
-                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>

@@ -19,6 +19,7 @@ public interface ITransactionServiceService {
             @Param("minAmount") Double minAmount,
             @Param("maxAmount") Double maxAmount,
             @Param("status") TransactionStatus status,
+            @Param("userId") Long userId,  // Thêm tham số userId
             @Param("input") String input,
             Pageable pageable
     );

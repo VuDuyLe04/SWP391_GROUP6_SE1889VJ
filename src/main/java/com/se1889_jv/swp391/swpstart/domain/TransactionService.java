@@ -35,9 +35,10 @@ public class TransactionService {
     @JoinColumn(name = "service_id")
     private Service service;
     public String getFormattedDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         return (transactionDate != null) ? transactionDate.format(formatter) : null;
     }
+
 
 
 }

@@ -643,14 +643,24 @@
                                 <th>Tài khoản nhận</th>
                                 <th>Cổng thanh toán</th>
                                 <th>Trạng thái</th>
-                                <th>Thông tin người dùng</th>
+
                             </tr>
                             </thead>
                             <tbody>
                             <c:forEach var="transaction" items="${transactions.content}">
                                 <tr>
                                     <td><span class="transaction-id">${transaction.transactionId}</span></td>
-                                    <td><span class="amount"><fmt:formatNumber value="${transaction.amount}" type="number" pattern="#,###"/>₫</span></td>
+                                    <td >   <fmt:setLocale value="vi_VN"/>
+                                        <c:choose>
+                                            <c:when test="${transaction.amount % 1 == 0}">
+                                                <fmt:formatNumber value="${transaction.amount}" type="number" groupingUsed="true"/>₫
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatNumber value="${transaction.amount}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+
                                     <td>${transaction.content}</td>
                                     <td>${transaction.formattedDate}</td>
                                     <td>${transaction.accountReceiver}</td>
@@ -662,12 +672,7 @@
                                                 ${transaction.transactionStatus}
                                         </span>
                                     </td>
-                                    <td>
-                                        <div class="user-info">
-                                            <div class="user-name">${transaction.user.name}</div>
-                                            <div class="user-phone">${transaction.user.phone}</div>
-                                        </div>
-                                    </td>
+
                                 </tr>
                             </c:forEach>
                             </tbody>
