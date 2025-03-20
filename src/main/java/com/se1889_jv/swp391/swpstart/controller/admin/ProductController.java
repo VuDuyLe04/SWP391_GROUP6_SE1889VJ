@@ -4,11 +4,15 @@ import com.se1889_jv.swp391.swpstart.domain.Product;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.WareHouse;
+import com.se1889_jv.swp391.swpstart.domain.dto.request.ProductUpdateRequest;
+import com.se1889_jv.swp391.swpstart.domain.dto.response.ProductUpdateResponse;
 import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.UserStoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.WareHouseService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -23,15 +27,15 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
+@RequiredArgsConstructor
 public class
 ProductController {
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private WareHouseService wareHouseService;
+    private final ProductService productService;
+    private final WareHouseService wareHouseService;
+    private final UserStoreService userStoreService;
     @GetMapping("/product")
     public String getListProductPage(
             @RequestParam(defaultValue = "0") int page,
@@ -40,31 +44,43 @@ ProductController {
             @RequestParam(defaultValue = "0") String store,
             Model model,
             HttpSession session) {
-        User user =(User) session.getAttribute("user");
+
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/access-deny";
+        }
         Sort.Direction direction = order.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, 5, Sort.by(direction, sort));
-        if(user != null) {
-            List<Store> stores = Utility.getListStoreOfOwner(user);
-            Page<Product> productPage;
-            if("0".equals(store)) {
-                productPage = productService.getAllProducts(pageable);
-            } else {
-                Long storeId =  Long.parseLong(store);
-                productPage = productService.getProductByStoreId(storeId, pageable);
-            }
-            model.addAttribute("listProduct", productPage.getContent());
-            model.addAttribute("currentPage", page);
-            model.addAttribute("totalPages", productPage.getTotalPages());
-            model.addAttribute("sort", sort);
-            model.addAttribute("order", order);
-            model.addAttribute("productPage", productPage);
-            model.addAttribute("stores", stores);
-            model.addAttribute("store", store);
-            return "admin/product/table";
-        }
-        return "redirect:/access-deny";
 
+        // Lấy danh sách cửa hàng mà user sở hữu
+        List<Store> stores = Utility.getListStoreOfOwner(user);
+        List<Long> storeIds = stores.stream().map(Store::getId).collect(Collectors.toList());
+
+        Page<Product> productPage;
+        if ("0".equals(store)) {
+            // Lọc tất cả sản phẩm nhưng chỉ của các cửa hàng mà user sở hữu
+            productPage = productService.getProductsByStoreIds(storeIds, pageable);
+        } else {
+            Long storeId = Long.parseLong(store);
+            // Kiểm tra nếu storeId thuộc về user thì lấy sản phẩm, ngược lại trả về trang lỗi
+            if (!storeIds.contains(storeId)) {
+                return "redirect:/access-deny";
+            }
+            productPage = productService.getProductByStoreId(storeId, pageable);
+        }
+
+        model.addAttribute("listProduct", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("sort", sort);
+        model.addAttribute("order", order);
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("stores", stores);
+        model.addAttribute("store", store);
+
+        return "admin/product/table";
     }
+
 
 
     @GetMapping("/product/createProduct")
@@ -103,9 +119,6 @@ ProductController {
         return "redirect:/product";
     }
 
-
-
-
     @PostMapping("/product/delete")
     public String deleteProduct(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
         try {
@@ -119,11 +132,26 @@ ProductController {
 
     @GetMapping("/product/update/{id}")
     public String getUpdateProductPage(@PathVariable("id") Long id, Model model) {
+        User user = Utility.getUserInSession();
         Product product = productService.getProductById(id);
-        model.addAttribute("product", product);
+        List<Store> stores = userStoreService.getStoresForUser(user);
+
+        ProductUpdateRequest productDTO = new ProductUpdateRequest();
+        productDTO.setId(product.getId());
+        productDTO.setName(product.getName());
+        productDTO.setImage(product.getImage());
+        productDTO.setUnitPrice(product.getUnitPrice());
+        productDTO.setStorage(product.isStorage());
+        productDTO.setTotalQuantity(product.getTotalQuantity());
+        productDTO.setCategory(product.getCategory());
+        productDTO.setDescription(product.getDescription());
+        productDTO.setStoreId(product.getStore() != null ? product.getStore().getId() : null);
+        productDTO.setWarehouseId(product.getWarehouse() != null ? product.getWarehouse().getId() : null);
+
+        model.addAttribute("product", productDTO);
+        model.addAttribute("stores", stores);
         return "admin/product/update";
     }
-
 
     @PostMapping("/product/update")
     public String updateProduct(@ModelAttribute("product") @Valid Product product,
@@ -142,7 +170,13 @@ ProductController {
         return "redirect:/product";
     }
 
-
+    @PostMapping("/update")
+    public String updateProduct(@ModelAttribute("product") ProductUpdateRequest request, RedirectAttributes redirectAttributes) {
+        ProductUpdateResponse response = productService.updateProduct(request);
+        redirectAttributes.addFlashAttribute("product", response);
+        redirectAttributes.addFlashAttribute("message", "Cập nhật sản phẩm thành công!");
+        return "redirect:/product/update/" + response.getId();
+    }
 
 
     @GetMapping("/product/search")
@@ -173,8 +207,6 @@ ProductController {
 
         return "admin/product/table";
     }
-
-
 
 
     @GetMapping("/product/view/{id}")

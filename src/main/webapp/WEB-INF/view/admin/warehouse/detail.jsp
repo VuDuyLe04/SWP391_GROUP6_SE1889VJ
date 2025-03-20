@@ -39,19 +39,19 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Danh sách gạo trong kho:</label>
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
                                             <th>Tên gạo</th>
-                                            <th>Số lượng</th>
+                                            <%--                                            <th>Số lượng</th>--%>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${productList}" var="product">
                                             <tr>
                                                 <td>${product.name}</td>
-                                                <td>${product.totalQuantity}</td>
+                                                    <%--                                                <td>${product.totalQuantity}</td>--%>
                                             </tr>
                                         </c:forEach>
                                         </tbody>

@@ -1,8 +1,15 @@
 package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 import com.se1889_jv.swp391.swpstart.domain.Product;
+import com.se1889_jv.swp391.swpstart.domain.Store;
+import com.se1889_jv.swp391.swpstart.domain.WareHouse;
+import com.se1889_jv.swp391.swpstart.domain.dto.request.ProductUpdateRequest;
+import com.se1889_jv.swp391.swpstart.domain.dto.response.ProductUpdateResponse;
 import com.se1889_jv.swp391.swpstart.repository.ProductRepository;
+import com.se1889_jv.swp391.swpstart.repository.StoreRepository;
+import com.se1889_jv.swp391.swpstart.repository.WareHouseRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +20,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService implements IProductService {
-    @Autowired
-    private ProductRepository productRepository;
+
+    private final ProductRepository productRepository;
+    private final StoreRepository storeRepository;
+    private final WareHouseRepository wareHouseRepository;
 
     @Override
     public List<Product> getAllProducts() {
@@ -90,5 +100,61 @@ public class ProductService implements IProductService {
         return productRepository.findAllByWarehouseId(warehouseId);
     }
 
+    @Override
+    public ProductUpdateResponse updateProduct(ProductUpdateRequest request) {
+        Product product = productRepository.findById(request.getId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        if(request.getName() != null) {
+            product.setName(request.getName());
+        }
+        if(request.getDescription() != null) {
+            product.setDescription(request.getDescription());
+        }
+        if(request.getCategory() != null) {
+            product.setCategory(request.getCategory());
+        }
+        if(request.getStorage()) {
+            product.setStorage(true);
+        }
+        if(!request.getStorage()) {
+            product.setStorage(false);
+        }
+        if(request.getUnitPrice() != null){
+            product.setUnitPrice(request.getUnitPrice());
+        }
+        if(request.getStoreId() != null) {
+            Store store = storeRepository.findById(request.getStoreId())
+                    .orElseThrow(() -> new RuntimeException("Store not found"));
+            product.setStore(store);
+
+        }
+
+        if(request.getWarehouseId() != null) {
+            WareHouse warehouse = wareHouseRepository.findById(request.getWarehouseId())
+                    .orElseThrow(() -> new RuntimeException("Warehouse not found"));
+            product.setWarehouse(warehouse);
+        }
+
+
+        productRepository.save(product);
+        return ProductUpdateResponse.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .image(null)
+                .description(product.getDescription())
+                .category(product.getCategory())
+                .unitPrice(product.getUnitPrice())
+                .storeId(product.getStore().getId())
+                .warehouseId(product.getWarehouse().getId())
+                .storage(product.isStorage())
+                .build();
+    }
+
+//lay ra san pham cua chu cua hang
+    @Override
+    public Page<Product> getProductsByStoreIds(List<Long> storeIds, Pageable pageable) {
+        return productRepository.findByStoreIdIn(storeIds, pageable);
+    }
 
 }
