@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -109,8 +110,8 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                     .requestMatchers("/", "/login", "/register", "/client/**", "/admin/**", "/api/**").permitAll()
                             .requestMatchers("/customer", "/customer/**").hasAnyRole("STAFF", "OWNER")
                             .requestMatchers("/warehouse", "/warehouse/**", "/product", "/product/**","/payment", "/payment/history", "/service/signup").hasRole("OWNER")
-
                             .requestMatchers("/profile/**").hasAnyRole("ADMIN", "STAFF", "OWNER")
+                            .requestMatchers("/api/v1/debt-receipt/**").permitAll()
 //                    .requestMatchers("/customer/**", "/product/**").hasRole("OWNER")
                             .requestMatchers("/service/**").hasRole("ADMIN")
                             .anyRequest().authenticated()

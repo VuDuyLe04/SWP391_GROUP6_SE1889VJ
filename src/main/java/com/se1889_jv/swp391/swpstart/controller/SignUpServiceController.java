@@ -55,9 +55,9 @@ public class SignUpServiceController {
             else {
                 session.setAttribute("message","Bạn không đủ tiền để mua dịch vụ, vui lòng nạp thêm tiền");
             }
-        }
+    }
 
-        return "redirect:/#services";
+        return "redirect:/owner/service/history";
     }
 
 

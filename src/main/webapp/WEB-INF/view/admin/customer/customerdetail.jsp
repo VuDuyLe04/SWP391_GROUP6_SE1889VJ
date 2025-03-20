@@ -31,7 +31,7 @@
                                 <tr><th>Tên</th><td>${customer.name}</td></tr>
                                 <tr><th>Địa chỉ</th><td>${customer.address}</td></tr>
                                 <tr><th>Số điện thoại</th><td>${customer.phone}</td></tr>
-                                <tr><th>Tiền nợ</th><td>${customer.balance}</td></tr>
+                                <tr><th>Số nợ</th><td>${customer.balance}</td></tr>
                                 <tr><th>Ngày tạo</th><td>${customer.createdAt}</td></tr>
                                 <tr><th>Người tạo</th><td>${customer.createdBy}</td></tr>
                                 <tr><th>Ngày cập nhật</th><td>${customer.updatedAt}</td></tr>
