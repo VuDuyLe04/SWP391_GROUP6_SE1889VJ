@@ -42,7 +42,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     Page<User> findByRoleIdNot(Long roleId, Pageable pageable);
 //    findByRoleIdNot(1L,pageable);
 
-    //    Page<User> findDistinctUsersByUserStores_Store_CreatedByAndByNameContainingOrPhoneContaining(String createdBy,String name,String phone, Pageable pageable);
+    //Page<User> findDistinctUsersByUserStores_Store_CreatedByAndByNameContainingOrPhoneContaining(String createdBy,String name,String phone, Pageable pageable);
     Page<User> findUsersByActive(boolean active, Pageable pageable);
     Page<User> findUsersByRoleId(Long roleId,Pageable pageable);
     Page<User> findUsersByRoleIdAndActive(Long roleId, boolean active, Pageable pageable);

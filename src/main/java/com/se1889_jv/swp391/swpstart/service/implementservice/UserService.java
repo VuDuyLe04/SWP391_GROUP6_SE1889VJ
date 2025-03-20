@@ -19,6 +19,7 @@ import com.se1889_jv.swp391.swpstart.repository.StoreRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 
 import java.time.Instant;
@@ -28,6 +29,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -76,7 +78,8 @@ public class UserService implements IUserService {
 
     @Override
     public Role getRoleByName(String name) {
-        return this.roleRepository.findByName(name);
+        return this.roleRepository.findByName(name)
+                .orElse(null);
     }
 
     @Override

@@ -26,6 +26,7 @@ public interface IUserService {
     User updateUser(User user);
 
     Page<User> getAll(Pageable pageable);
+
     Page<User> getUsersbyRoleID(Long id, Pageable pageable);
 
     Page<User> getUsersByActive(boolean active, Pageable pageable);
