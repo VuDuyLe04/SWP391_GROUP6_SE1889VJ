@@ -313,7 +313,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         debtInfo.style.display = "block";
     }
-
     function updatePaymentOptions() {
         paymentOptions.innerHTML = "";
 
@@ -328,18 +327,19 @@ document.addEventListener("DOMContentLoaded", function () {
         orderOption.textContent = "Trả đơn hàng";
         paymentOptions.appendChild(orderOption);
 
+        const partialOption = document.createElement("option");
+        partialOption.value = "partial";
+        partialOption.textContent = "Trả một phần";
+        paymentOptions.appendChild(partialOption);
+
         if (searchInput.value.trim() !== "" && customerBalance !== 0) {
             const allOption = document.createElement("option");
             allOption.value = "all";
             allOption.textContent = "Trả tất cả";
             paymentOptions.appendChild(allOption);
-
-            const partialOption = document.createElement("option");
-            partialOption.value = "partial";
-            partialOption.textContent = "Trả một phần";
-            paymentOptions.appendChild(partialOption);
         }
     }
+
 
     function updateAmountDue() {
         const selectedOption = paymentOptions.value;
@@ -394,20 +394,38 @@ function getBillRequest() {
     const descriptionInput = document.getElementById("description");
     const customerInput = document.getElementById("search-phone");
     const typeSelect = document.getElementById("paymentOptions");
+    const totalNeedPayInput = document.getElementById("amountDue");
+    const actualPayInput = document.getElementById("customerPayment");
 
     return {
         description: descriptionInput ? descriptionInput.value.trim() : "",
         customerInfor: customerInput ? customerInput.value.trim() : "",
         type: typeSelect ? typeSelect.value : "",
-        isCreateDebt: typeSelect && typeSelect.value !== "order",
+        createDebt: typeSelect && typeSelect.value !== "order",
+        totalNeedPay: totalNeedPayInput ? parseInt(totalNeedPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
+        actualPay: actualPayInput ? parseInt(actualPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
     };
 }
 
+
+
 // Ví dụ sử dụng
 async function updateFinalBill() {
-    const billRequest = getBillRequest(); // Lấy dữ liệu từ giao diện
-    console.log(billRequest);
+    // const billRequest = getBillRequest(); // Lấy dữ liệu từ giao diện
+    // console.log(billRequest);
     try {
+        const storeId = parseInt(document.getElementById("storeId").textContent);
+        let billCheckResponse = await fetch(`/api/getCurrentBill?storeId=${encodeURIComponent(storeId)}`);
+        let billCheckData = await billCheckResponse.json();
+
+        if (!billCheckData.data) {
+            showToast("Hãy thêm sản phẩm vào hóa đơn", false);
+            return; // Dừng lại nếu không có hóa đơn
+        }
+
+        const billRequest = getBillRequest(); // Lấy dữ liệu từ giao diện
+        console.log(billRequest);
+
         const response = await fetch("/api/updatefinalbill", {
             method: "PUT",
             headers: {
@@ -415,19 +433,27 @@ async function updateFinalBill() {
             },
             body: JSON.stringify(billRequest),
         });
-
         const result = await response.json();
+        console.log(result);
         if (response.ok) {
-            alert("Cập nhật hóa đơn thành công!");
-            location.reload();
+            if(result.code != 200){
+                showToast(result.message, false)
+            } else {
+                showToast("Hoàn tất đơn hàng", true);
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
+            }
+
         } else {
             alert("Lỗi cập nhật hóa đơn: " + result.message);
         }
     } catch (error) {
         console.error("Lỗi khi gửi yêu cầu cập nhật hóa đơn:", error);
-        alert("Đã xảy ra lỗi trong quá trình gửi yêu cầu!");
+        showToast("Hãy chọn sản phẩm vào đơn hàng", false);
     }
 }
+
 
 // Gọi hàm khi nhấn nút cập nhật
 document.getElementById("create-bill").addEventListener("click", updateFinalBill);

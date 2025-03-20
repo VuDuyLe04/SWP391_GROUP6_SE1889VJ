@@ -3,6 +3,7 @@ package com.se1889_jv.swp391.swpstart.service.implementservice;
 import com.se1889_jv.swp391.swpstart.domain.Bill;
 import com.se1889_jv.swp391.swpstart.domain.BillDetail;
 import com.se1889_jv.swp391.swpstart.domain.Customer;
+import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillRequest;
 import com.se1889_jv.swp391.swpstart.exception.AppException;
@@ -11,9 +12,12 @@ import com.se1889_jv.swp391.swpstart.repository.BillDetailRepository;
 import com.se1889_jv.swp391.swpstart.repository.BillRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IBillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -80,6 +84,7 @@ public class BillService implements IBillService {
     @Override
     public Bill updateBill(BillRequest request, Long billId) {
         Optional<Bill> bill = billRepository.findById(billId);
+
         if (bill.isPresent()) {
 
             Bill b = bill.get();
@@ -90,13 +95,18 @@ public class BillService implements IBillService {
                 Customer c = customerService.getCustomerByNameAndPhone(request.getCustomerInfor());
                 b.setCustomer(c);
             }
-
             b.setTotalBillPrice(getTotalPriceBill(billId));
             return billRepository.save(b);
         } else {
             throw new AppException(ErrorException.BILL_NOT_FOUND);
         }
     }
+
+    @Override
+    public Page<Bill> getBillsByAllStore(List<Store> stores, Pageable pageable) {
+        return billRepository.findAllByStoreIn(stores, pageable);
+    }
+
 
     public Bill findBillById(Long id) {
         return billRepository.findById(id).orElseThrow(() ->  new AppException(ErrorException.BILL_NOT_FOUND));

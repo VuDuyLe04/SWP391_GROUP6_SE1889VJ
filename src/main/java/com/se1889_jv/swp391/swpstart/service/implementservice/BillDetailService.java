@@ -147,6 +147,8 @@ public class BillDetailService implements IBillDetailService {
             billDetail.setTotalProductPrice(
                     request.getActualSellPrice() * request.getQuantity() * packaging.getQuantityPerPackage()
             );
+            billDetail.setPackagingName(packaging.getPackageType());
+            billDetail.setQuantityPerPackage(packaging.getQuantityPerPackage());
             billDetail.setBill(bill);
         }
 
@@ -217,6 +219,23 @@ public class BillDetailService implements IBillDetailService {
     @Override
     public double getTotalPrice(Long billId) {
         return billDetailRepository.findAllByBillId(billId).stream().map(BillDetail::getTotalProductPrice).reduce(0.0, Double::sum);
+    }
+
+    @Override
+    public BillDetailResponse updateActualPrice(Long billId, Double actualPrice) {
+        Optional<BillDetail> billDetailOptional = billDetailRepository.findById(billId);
+        if(actualPrice < 0){
+            throw new AppException(ErrorException.ACTUAL_PRICE_NOT_POSITIVE);
+        }
+        if(billDetailOptional.isPresent()){
+            BillDetail billDetail = billDetailOptional.get();
+            billDetail.setActualSellPrice(actualPrice);
+            billDetail.setTotalProductPrice(billDetail.getQuantity()*billDetail.getQuantityPerPackage()*actualPrice);
+            billDetailRepository.save(billDetail);
+            return mapperConfig.map(billDetail, BillDetailResponse.class);
+        } else {
+            throw new AppException(ErrorException.BILL_DETAIL_NOT_FOUND);
+        }
     }
 }
 

@@ -2,16 +2,19 @@ package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.DebtReceipt;
+import com.se1889_jv.swp391.swpstart.domain.User;
+import com.se1889_jv.swp391.swpstart.domain.dto.BillRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.request.DebtReceiptCreationRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.response.DebtReceiptCreationResponse;
 import com.se1889_jv.swp391.swpstart.domain.dto.response.DebtReceiptDetailResponse;
 import com.se1889_jv.swp391.swpstart.domain.dto.response.PageResponse;
+import com.se1889_jv.swp391.swpstart.exception.AppException;
+import com.se1889_jv.swp391.swpstart.exception.ErrorException;
 import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import com.se1889_jv.swp391.swpstart.repository.DebtReceiptRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IDebtReceiptService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.specification.DebtReceiptSpecification;
 import com.se1889_jv.swp391.swpstart.util.constant.DebtTypeEnum;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,10 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -35,7 +38,8 @@ public class DebtReceiptService implements IDebtReceiptService {
     private DebtReceiptRepository debtReceiptRepository;
     @Autowired
     private  CustomerRepository customerRepository;
-
+    @Autowired
+    private CustomerService customerService;
     @Override
     public PageResponse<DebtReceipt> getDebtsByCustomer(long id, int page) {
         var customer = customerRepository.findById(id)
@@ -53,6 +57,10 @@ public class DebtReceiptService implements IDebtReceiptService {
                 .totalPages(debtReceipts.getTotalPages())
                 .data(debtReceiptList)
                 .build();
+    }
+
+    public DebtReceipt getDebtReceiptById(long id) {
+        return debtReceiptRepository.findById(id).get();
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -151,6 +159,26 @@ public class DebtReceiptService implements IDebtReceiptService {
                 .totalElements(pageData.getTotalElements())
                 .data(debtReceiptList)
                 .build();
+    }
+
+    @Override
+    public DebtReceipt createDebtReceiption(BillRequest request, User user) {
+        if(request.getCustomerInfor().isEmpty() || request.getCustomerInfor() == null) {
+            throw new AppException(ErrorException.DEBT_DONT_HAVE_CUSTOMER);
+        }
+        DebtReceipt debtReceipt = new DebtReceipt();
+        if(request.getActualPay() < request.getTotalNeedPay()){
+            debtReceipt.setDebtAmount(request.getTotalNeedPay() - request.getActualPay());
+            debtReceipt.setDebtType(DebtTypeEnum.DEBIT);
+
+        } else if(request.getActualPay() > request.getTotalNeedPay()){
+            debtReceipt.setDebtAmount(request.getActualPay() - request.getTotalNeedPay());
+            debtReceipt.setDebtType(DebtTypeEnum.DEBTREPAY);
+        }
+        debtReceipt.setCustomer(customerService.getCustomerByNameAndPhone(request.getCustomerInfor()));
+        debtReceipt.setCreatedBy(user.getName());
+        debtReceipt.setIsProcess(false);
+        return debtReceiptRepository.save(debtReceipt);
     }
 
 

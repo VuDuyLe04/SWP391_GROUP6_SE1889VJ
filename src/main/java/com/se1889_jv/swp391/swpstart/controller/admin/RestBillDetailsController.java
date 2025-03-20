@@ -1,15 +1,16 @@
 package com.se1889_jv.swp391.swpstart.controller.admin;
 
 import com.se1889_jv.swp391.swpstart.config.RabbitMQConfig;
-import com.se1889_jv.swp391.swpstart.domain.Bill;
-import com.se1889_jv.swp391.swpstart.domain.BillDetail;
-import com.se1889_jv.swp391.swpstart.domain.Customer;
-import com.se1889_jv.swp391.swpstart.domain.Product;
+import com.se1889_jv.swp391.swpstart.domain.*;
 import com.se1889_jv.swp391.swpstart.domain.dto.*;
 import com.se1889_jv.swp391.swpstart.exception.AppException;
+import com.se1889_jv.swp391.swpstart.exception.ErrorException;
 import com.se1889_jv.swp391.swpstart.repository.BillDetailRepository;
 import com.se1889_jv.swp391.swpstart.service.implementservice.*;
+import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class RestBillDetailsController {
     @Autowired
     CustomerService customerService;
@@ -40,7 +42,8 @@ public class RestBillDetailsController {
     ProductService productService;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private DebtReceiptService debtReceiptService;
     @PostMapping("/addBillDetail")
     public ApiResponse<String> addBillDetail(@RequestBody BillDetailRequest billDetail, HttpSession session) {
         Long billId = (Long) session.getAttribute("currentBillId");
@@ -208,15 +211,62 @@ public class RestBillDetailsController {
         response.setData(userService.getBalanceFromUser(phone));
         return response;
     }
-    @PutMapping("updatefinalbill")
+    @PutMapping("/updatefinalbill")
     public ApiResponse<Bill> updateBill(@RequestBody BillRequest request, HttpSession session) {
         Long billId = (Long) session.getAttribute("currentBillId");
+        if (billId == null) {
+            return new ApiResponse<>(400, "Bill ID is missing in session", null);
+        }
+
         ApiResponse<Bill> response = new ApiResponse<>();
         response.setCode(200);
         response.setMessage("Success");
-        response.setData(billService.updateBill(request, billId));
-        session.removeAttribute("currentBillId");
+
+        try {
+            if (request.isCreateDebt()) {
+                if(request.getCustomerInfor().isEmpty() || request.getCustomerInfor() == null) {
+                    throw new AppException(ErrorException.DEBT_DONT_HAVE_CUSTOMER);
+                }
+                // Tạo DebtReceipt
+                DebtReceipt debtReceipt = debtReceiptService.createDebtReceiption(request, Utility.getUserInSession());
+                log.info("Tạo hóa đơn nợ: {}", debtReceipt.toString());
+
+                // Tạo DebtRequest để gửi đến RabbitMQ
+                DebtRequest debtRequest = new DebtRequest(debtReceipt.getId());
+                log.info("Gửi DebtRequest đến RabbitMQ: {}", debtRequest);
+
+                rabbitTemplate.convertAndSend(RabbitMQConfig.DEBT_QUEUE, debtRequest);
+                log.info("Đã gửi DebtRequest vào RabbitMQ queue");
+
+            }
+
+            // Cập nhật hóa đơn
+            Bill updatedBill = billService.updateBill(request, billId);
+            response.setData(updatedBill);
+
+            // Xóa billId khỏi session sau khi xử lý xong
+            session.removeAttribute("currentBillId");
+
+            return response;
+
+        } catch (AmqpException e) {
+            log.error("Lỗi RabbitMQ khi gửi DebtRequest", e);
+            return new ApiResponse<>(500, "Lỗi khi gửi yêu cầu xử lý nợ: " + e.getMessage(), null);
+        } catch (Exception e) {
+            log.error("Lỗi khi xử lý cập nhật hóa đơn", e);
+            return new ApiResponse<>(500, "Lỗi hệ thống: " + e.getMessage(), null);
+        }
+    }
+    @PutMapping("/updateactual/{id}")
+    public ApiResponse<BillDetailResponse> updateActual(@PathVariable("id") Long billDetailId,@RequestParam  Double actualPrice) {
+        ApiResponse<BillDetailResponse> response = new ApiResponse<>();
+        response.setCode(200);
+        response.setMessage("Success");
+        response.setData(billDetailService.updateActualPrice(billDetailId, actualPrice));
         return response;
     }
+
+
+
 
 }

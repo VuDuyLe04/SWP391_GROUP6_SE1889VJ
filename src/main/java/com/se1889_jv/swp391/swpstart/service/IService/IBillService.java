@@ -1,8 +1,13 @@
 package com.se1889_jv.swp391.swpstart.service.IService;
 
 import com.se1889_jv.swp391.swpstart.domain.Bill;
+import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface IBillService {
     Bill createBill(BillDTO bill);
@@ -10,4 +15,5 @@ public interface IBillService {
     void updateTotalPriceBill(double totalPrice, Long billId);
     double getTotalPriceBill(Long billId);
     Bill updateBill(BillRequest request, Long billId);
+    Page<Bill> getBillsByAllStore(List<Store> stors, Pageable pageable);
 }

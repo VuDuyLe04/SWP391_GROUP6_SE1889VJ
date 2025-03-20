@@ -1,5 +1,7 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import com.se1889_jv.swp391.swpstart.util.validator.annotation.ValidDouble;
@@ -10,6 +12,9 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.Instant;
@@ -31,35 +36,30 @@ public class Customer {
     @ValidPhone
     private String phone;
     private double balance;
+    @CreationTimestamp
+    @Column(updatable = false)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Ho_Chi_Minh")
     private Instant createdAt;
+    @UpdateTimestamp
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Ho_Chi_Minh")
     private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
     @ManyToOne
     @JoinColumn(name = "store_id")
+    @JsonBackReference
     private Store store;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer")
+    @JsonManagedReference
     private List<DebtReceipt> debtReceipts;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer")
     @JsonManagedReference
     private List<Bill> bills;
-    // tự động thêm khi tạo
-    @PrePersist
-    public void handleBeforeCreate() {
-        User user = Utility.getUserInSession();
-        this.createdBy = user.getName();
-        this.createdAt = Instant.now();
 
-    }
-    // tự động thêm khi update
-    @PreUpdate
-    public void handleBeforeUpdate() {
-        User user = Utility.getUserInSession();
-        this.updatedBy = user.getName();
-        this.updatedAt = Instant.now();
 
-    }
     
 }

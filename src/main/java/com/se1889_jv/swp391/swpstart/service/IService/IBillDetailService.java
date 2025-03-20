@@ -16,4 +16,5 @@ public interface IBillDetailService {
     void deleteBillDetail(Long id);
     List<BillDetailResponse> getBillDetails(Long billId);
     double getTotalPrice(Long billId);
+    BillDetailResponse updateActualPrice(Long billId, Double actualPrice);
 }

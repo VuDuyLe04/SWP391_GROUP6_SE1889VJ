@@ -43,11 +43,12 @@ public class Bill {
 
     @ManyToOne
     @JoinColumn(name = "store_id")
+    @JsonBackReference
     private Store store;
 
     @OneToMany(mappedBy = "bill")
     @JsonManagedReference
     private List<BillDetail>  billDetails;
 
-
+    
 }

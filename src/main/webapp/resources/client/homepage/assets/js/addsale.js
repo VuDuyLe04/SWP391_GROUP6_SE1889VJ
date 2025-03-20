@@ -112,10 +112,10 @@ async function loadBillDetails() {
 
             billItem.innerHTML = `
         
-        <div class="container">
+        <div class="container p-0 item-bill-details">
     <div class="row align-items-center g-0 py-2 border-bottom">
         <!-- Tên sản phẩm -->
-        <div class="col-4 overflow-hidden">
+        <div class="col-3 overflow-hidden">
             <h6 class="mb-0 text-truncate">${detail.nameProduct}</h6>
             <small class="text-muted">Loại: ${detail.packageType}</small>
         </div>
@@ -128,11 +128,11 @@ async function loadBillDetails() {
 
         <!-- Giảm giá -->
         <div class="col-2 text-danger text-center">
-            <span class="text-nowrap">Gía bán: ${detail.actualSellPrice}đ</span>
+            <input type="number" class="form-control text-center me-2 flex-shrink-0" style="width: 120px;" value="${detail.actualSellPrice}" onchange="updateActualPrice(${detail.id}, this.value,this, ${detail.actualSellPrice})" />
         </div>
 
         <!-- Tổng giá -->
-        <div class="col-2 fw-bold text-end">
+        <div class="col-3 fw-bold text-center">
             ${detail.totalProductPrice + "đ" }
         </div>
 
@@ -183,6 +183,36 @@ async function removeBillDetail(id) {
         // console.error("Lỗi khi xóa chi tiết hóa đơn:", error);
     }
 }
+async function updateActualPrice(billDetailId, newPrice, inputElement, oldPrice){
+    if(newPrice < 0){
+        showToast("Gía bán thực phải dương", false);
+        inputElement.value = oldPrice;
+        return
+    }
+    try {
+        let response = await fetch(`/api/updateactual/${billDetailId}?actualPrice=${newPrice}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        let data = await response.json();
+
+        if (data.code === 200) {
+            showToast("Cập nhật thành công!", true);
+            inputElement.dataset.oldValue = newPrice;
+            await loadBillDetails();
+            getBillDetailsAndCalculate();
+        } else {
+            showToast("Cập nhật thất bại: " + data.message, false);
+            inputElement.value = oldQuan;
+        }
+    } catch (error) {
+        console.log(error);
+        showToast("Lỗi kết nối! Hãy thử lại.", false);
+        inputElement.value = oldPrice;
+        // console.error("Lỗi kết nối khi cập nhật số lượng:", error);
+    }
+}
 
 async function updateQuantity(billDetailId, newQuantity, inputElement, oldQuan) {
 
@@ -223,13 +253,13 @@ function getBillDetailsAndCalculate() {
     let totalPrice = 0;
     let totalDiscount = 0;
 
-    document.querySelectorAll(".container .row").forEach(row => {
+    document.querySelectorAll(".item-bill-details ").forEach(row => {
         let nameProduct = row.querySelector("h6").textContent.trim();
         let packageType = row.querySelector("small").textContent.replace("Loại: ", "").trim();
         let quantity = parseInt(row.querySelector("input[type='number']").value);
         let listedPrice = parseInt(row.querySelector(".text-nowrap").textContent.replace("x ", "").replace("đ", "").replace(/,/g, "").trim());
-        let discount = parseInt(row.querySelector(".text-danger span").textContent.replace("Giảm: ", "").replace("đ", "").replace(/,/g, "").trim());
-        let totalProductPrice = parseInt(row.querySelector(".fw-bold.text-end").textContent.replace("đ", "").replace(/,/g, "").trim());
+        let discount = parseInt(row.querySelector(".col-2.text-danger.text-center input").value.replace(/,/g, "").trim());
+        let totalProductPrice = parseInt(row.querySelector(".fw-bold.text-center").textContent.replace("đ", "").replace(/,/g, "").trim());
 
         billDetails.push({
             nameProduct,

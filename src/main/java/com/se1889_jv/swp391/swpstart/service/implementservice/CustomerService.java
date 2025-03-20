@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -116,9 +118,9 @@ public class CustomerService implements ICustomerService {
     @Override
     public Customer getCustomerByNameAndPhone(String infor) {
         String [] part  = infor.split(" - ");
-        String name = part[0].trim();
-        String phone = part[1].trim();
-        return customerRepository.getCustomersByNameAndPhone(name,phone);
+        String phone = part[0].trim();
+        String name = part[1].trim();
+        return customerRepository.getCustomersByPhoneAndName(phone,name);
     }
 
     @Override
@@ -143,5 +145,9 @@ public class CustomerService implements ICustomerService {
                 .collect(Collectors.toList());
         return customerResponses;
     }
-
+    @Transactional
+    public void updateBalance(Customer customer, double balance) {
+        customer.setBalance(balance);
+        customerRepository.save(customer);
+    }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
 public class RabbitMQConfig {
 
     public static final String BILL_QUEUE = "BILL_QUEUE";
-    public static final String DEBT_QUEU = "DEBT_QUEU";
+    public static final String DEBT_QUEUE = "DEBT_QUEUE";
     @Bean
     public Jackson2JsonMessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
@@ -39,7 +39,7 @@ public class RabbitMQConfig {
     public Queue debtQueue() {
         Map<String, Object> args = new HashMap<>();
         args.put("x-max-priority", 1);
-        return new Queue(DEBT_QUEU, true, false, false, args);
+        return new Queue(DEBT_QUEUE, true, false, false, args);
     }
 
 }

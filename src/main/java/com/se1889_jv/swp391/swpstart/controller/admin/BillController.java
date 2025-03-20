@@ -4,14 +4,20 @@ package com.se1889_jv.swp391.swpstart.controller.admin;
 import com.se1889_jv.swp391.swpstart.domain.*;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
 import com.se1889_jv.swp391.swpstart.service.implementservice.*;
+import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -37,6 +43,25 @@ public class BillController {
 
     @Autowired
     private UserStoreService userStoreService;
+
+
+    @GetMapping("bill/table")
+    public String showListBill(@RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "5") int size,
+                               Model model) {
+        User user = Utility.getUserInSession();
+        List<Store> stores = Utility.getListStoreOfOwner(user);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Bill> bills = billService.getBillsByAllStore(stores, pageable);
+
+        model.addAttribute("bills", bills.getContent()); // Danh sách bill hiển thị
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", bills.getTotalPages());
+        model.addAttribute("billPage", bills); // Add this line to include the Page object
+
+        return "admin/bill/listbill";
+    }
+
 
     @PostMapping("/createbill")
     public String createBill(HttpSession session, Model model, BillDTO billDTO, RedirectAttributes redirectAttributes){
@@ -158,5 +183,6 @@ public class BillController {
         session.setAttribute("store",store);
         return "admin/sale/saleproduct";
     }
+
 
 }

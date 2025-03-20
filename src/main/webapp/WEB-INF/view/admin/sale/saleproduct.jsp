@@ -33,7 +33,7 @@
 <div class="container-fluid">
     <div class="row">
         <!-- Left Panel - Products -->
-        <div class="col-md-7">
+        <div class="col-md-8">
             <div class="top-bar">
                 <div class="row">
                     <div class="col-md-4 d-flex">
@@ -168,25 +168,31 @@
 <%--                </c:forEach>--%>
             </div>
 
+
+            <div class="bill-items-con">
+                <div class="row fw-bold bg-light py-2 border-bottom">
+                    <div class="col-3">Sản phẩm</div>
+                    <div class="col-3 text-center">Số lượng & Giá</div>
+                    <div class="col-2 text-center">Giá thực</div>
+                    <div class="col-3 text-center">Tổng</div>
+                    <div class="col-1 text-center">Xóa</div>
+                </div>
+                <div id="bill-items">
+                    <!-- Các sản phẩm trong hóa đơn sẽ được thêm vào đây -->
+                </div>
+            </div>
+
         </div>
 
         <!-- Right Panel - Bill -->
-        <div class="col-md-5">
+        <div class="col-md-4">
             <div class="bill-section">
                 <div hidden="hidden" id="storeId">${storeId}</div>
-                <div class="bill-header">
-                    <h4>Hóa đơn #1234</h4>
-                    <span class="text-muted">10:55 01/10/2022</span>
-                </div>
-
-
-                <div class="bill-items" id="bill-items">
-                    <!-- Mẫu item trong bill -->
-
-                </div>
-
-                <div class="bill-summary">
-
+                <div class="bill-summary" style="height: 100%">
+                    <div class="bill-header">
+                        <h4>Hóa đơn #1234</h4>
+                        <span class="text-muted">10:55 01/10/2022</span>
+                    </div>
                     <div class="summary-row">
                         <span class="fw-bold">Khách cần trả</span>
                         <span class="fw-bold text-success">0đ</span>
