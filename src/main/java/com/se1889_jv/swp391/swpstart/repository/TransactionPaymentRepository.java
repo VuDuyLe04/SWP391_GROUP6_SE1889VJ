@@ -36,6 +36,6 @@ public interface TransactionPaymentRepository extends JpaRepository<TransactionP
     Page<TransactionPayment> findAll(Pageable pageable);
     Page<TransactionPayment> findByTransactionIdContainingOrUser_PhoneContaining(String transactionId, String phone, Pageable pageable);
 
-
+//    Page<TransactionPayment> findByUser(User user, Pageable pageable);
 
 }
