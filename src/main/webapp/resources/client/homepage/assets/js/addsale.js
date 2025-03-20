@@ -132,7 +132,7 @@ async function loadBillDetails() {
         </div>
 
         <!-- Tổng giá -->
-        <div class="col-3 fw-bold text-center">
+        <div class="col-3 fw-bold text-center price-detail">
             ${detail.totalProductPrice + "đ" }
         </div>
 
@@ -253,13 +253,14 @@ function getBillDetailsAndCalculate() {
     let totalPrice = 0;
     let totalDiscount = 0;
 
-    document.querySelectorAll(".item-bill-details ").forEach(row => {
+    document.querySelectorAll(".item-bill-details").forEach(row => {
+        console.log(row);
         let nameProduct = row.querySelector("h6").textContent.trim();
         let packageType = row.querySelector("small").textContent.replace("Loại: ", "").trim();
         let quantity = parseInt(row.querySelector("input[type='number']").value);
         let listedPrice = parseInt(row.querySelector(".text-nowrap").textContent.replace("x ", "").replace("đ", "").replace(/,/g, "").trim());
         let discount = parseInt(row.querySelector(".col-2.text-danger.text-center input").value.replace(/,/g, "").trim());
-        let totalProductPrice = parseInt(row.querySelector(".fw-bold.text-center").textContent.replace("đ", "").replace(/,/g, "").trim());
+        let totalProductPrice = parseInt(row.querySelector(".fw-bold.text-center.price-detail").textContent.replace("đ", "").replace(/,/g, "").trim());
 
         billDetails.push({
             nameProduct,
@@ -277,7 +278,7 @@ function getBillDetailsAndCalculate() {
     let totalPayable = totalPrice - totalDiscount;
 
     // Cập nhật vào giao diện
-    document.querySelector(".summary-row:nth-child(1) span:nth-child(2)").textContent = totalPrice.toLocaleString() + "đ";
+    document.querySelector(".total-need-pay").textContent = totalPrice.toLocaleString() + "đ";
 
     return {
         billDetails,

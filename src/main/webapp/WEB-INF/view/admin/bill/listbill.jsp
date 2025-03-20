@@ -170,15 +170,15 @@
                                         <div class="form-group mr-md">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-store"></i></span>
-                                                <select id="store" name="store" class="form-control">
-                                                    <option value="0" ${store == 0 ? "selected" : ""}>Tất cả cửa hàng</option>
+<%--                                                <select id="store" name="store" class="form-control">--%>
+<%--                                                    <option value="0" ${store == 0 ? "selected" : ""}>Tất cả cửa hàng</option>--%>
 
-                                                    <c:forEach items="${stores}" var="storeItem">
-                                                        <option value="${storeItem.id}" ${store == storeItem.id ? "selected" : ""}>
-                                                                ${storeItem.name}
-                                                        </option>
-                                                    </c:forEach>
-                                                </select>
+<%--                                                    <c:forEach items="${stores}" var="storeItem">--%>
+<%--                                                        <option value="${storeItem.id}" ${store == storeItem.id ? "selected" : ""}>--%>
+<%--                                                                ${storeItem.name}--%>
+<%--                                                        </option>--%>
+<%--                                                    </c:forEach>--%>
+<%--                                                </select>--%>
                                             </div>
                                         </div>
 
