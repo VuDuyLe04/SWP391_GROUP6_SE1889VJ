@@ -104,6 +104,15 @@
 
                         </li>
                     </c:if>
+                    <c:if test="${sessionScope.user.role.name == 'OWNER'}">
+                        <li>
+                            <a href="/service/signup">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <span>Đăng ký dịch vụ</span>
+                            </a>
+
+                        </li>
+                    </c:if>
                     <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
                         <li>
                             <a href="/transpayments">

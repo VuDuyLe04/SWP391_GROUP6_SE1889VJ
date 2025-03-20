@@ -113,4 +113,10 @@ public class ServiceController {
         return "redirect:/service/table";
     }
 
+    @GetMapping("/service/signup")
+    public String signupServicePage(Model model) {
+        model.addAttribute("services", this.serviceService.findAllServicesForHomePage());
+        return "admin/service/serviceOwner";
+    }
+
 }
