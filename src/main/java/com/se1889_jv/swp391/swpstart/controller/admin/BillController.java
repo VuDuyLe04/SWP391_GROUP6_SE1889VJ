@@ -138,7 +138,6 @@ public class BillController {
     }
 
 
-
     @GetMapping("/saleproduct/{id}")
     public String sale(@PathVariable(name = "id") long storeId,HttpServletRequest request, Model model){
         HttpSession session = request.getSession(false);
