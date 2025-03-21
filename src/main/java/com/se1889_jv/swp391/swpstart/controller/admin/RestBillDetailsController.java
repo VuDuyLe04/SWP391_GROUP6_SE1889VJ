@@ -285,7 +285,11 @@ public class RestBillDetailsController {
                 responses.add(response);
             }
         }
+        DebtReceipt debtReceipt = debtReceiptService.createDebtForImport(billDetail, Utility.getUserInSession());
+        DebtRequest debtRequest = new DebtRequest(debtReceipt.getId());
+        log.info("Gửi DebtRequest đến RabbitMQ: {}", debtRequest);
 
+        rabbitTemplate.convertAndSend(RabbitMQConfig.DEBT_QUEUE, debtRequest);
         for (ApiResponse<String> response : responses) {
             if (response.getCode() != 200) {
                 return response;
