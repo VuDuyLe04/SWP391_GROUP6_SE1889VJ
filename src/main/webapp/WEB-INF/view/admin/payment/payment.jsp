@@ -650,7 +650,7 @@
                                     <td><span class="transaction-id">${transaction.transactionId}</span></td>
                                     <td><span class="amount"><fmt:formatNumber value="${transaction.amount}" type="number" pattern="#,###"/>₫</span></td>
                                     <td>${transaction.content}</td>
-                                    <td>${transaction.formattedDate}</td>
+
                                     <td>${transaction.accountReceiver}</td>
                                     <td>${transaction.gate}</td>
                                     <td>
