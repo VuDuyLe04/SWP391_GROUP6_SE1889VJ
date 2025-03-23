@@ -929,7 +929,7 @@
 
 
                 <div class="filter-form">
-                    <form id="dateForm" action="bill/table" method="get">
+                    <form id="dateForm" action="/bill/table" method="get">
                         <div class="filter-grid">
                             <div class="form-group">
                                 <label for="startDate">Từ ngày</label>
@@ -942,13 +942,6 @@
                                        class="form-control" value="${endDate}">
                             </div>
                             <div class="form-group">
-                                <label for="status">Trạng thái</label>
-                                <select id="status" name="status" class="form-control">
-                                    <option ${status == "ALL" ? "selected" : ""} value="ALL">Tất cả</option>
-                                    <option ${status == "COMPLETED" ? "selected" : ""} value="COMPLETED">Hoàn thành</option>
-                                    <option ${status == "PENDING" ? "selected" : ""} value="PENDING">Đang chờ</option>
-                                    <option ${status == "FAILURE" ? "selected" : ""} value="FAILURE">Thất bại</option>
-                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="minAmount">Số tiền tối thiểu</label>
@@ -969,9 +962,9 @@
                     </form>
                 </div>
                 <div class="search-box">
-                    <form id="search-form" action="bill/table" method="get" class="search-form">
+                    <form id="search-form" action="/bill/table" method="get" class="search-form">
                         <input type="text" class="search-input" name="input"
-                               placeholder="Tìm theo tên cửa hàng hoặc số điện thoại của khách hàng"
+                               placeholder="Tìm tên cửa hàng hoặc sdt khách hàng"
                                value="${input}">
                         <button type="submit" class="search-button">
                             <i class="fa fa-search"></i>
@@ -986,7 +979,7 @@
                         <i class="fa fa-info-circle mr-xs"></i> ${emptyList}
                     </div>
                 </c:if>
-                ${emptyList}
+
                 <c:if test="${emptyList == null}">
                     <div class="table-responsive">
                         <table class="table">
@@ -1005,26 +998,54 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="bill" items="${bills}" varStatus="status">
+                            <c:forEach var="bill" items="${bills.content}" varStatus="status">
                                 <tr>
                                     <td>${status.index + 1}</td>  <!-- STT --><!-- Bill ID -->
                                     <td >${bill.store.name}</td>  <!-- Store Name -->
                                     <td >${bill.customer.name}
-                                            ${bill.customer.phone}
+                                           (${bill.customer.phone})
                                     </td>  <!-- Customer Name -->
-                                    <td >${bill.formattedDate}</td>  <!-- Created At -->
-                                    <td >${bill.paid}</td>  <!-- Paid Amount -->
-                                    <td >${bill.inDebt}</td>  <!-- Remaining Debt -->
-                                    <td >${bill.totalBillPrice}</td>  <!-- Total Bill Price -->
+                                    <td >${bill.formattedDate}</td>
+
+                                    <td >   <fmt:setLocale value="vi_VN"/>
+                                        <c:choose>
+                                            <c:when test="${bill.paid % 1 == 0}">
+                                                <fmt:formatNumber value="${bill.paid}" type="number" groupingUsed="true"/>₫
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatNumber value="${bill.paid}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td><!-- Created At -->
+                                    <td >   <fmt:setLocale value="vi_VN"/>
+                                        <c:choose>
+                                            <c:when test="${bill.inDebt% 1 == 0}">
+                                                <fmt:formatNumber value="${bill.inDebt}" type="number" groupingUsed="true"/>₫
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatNumber value="${bill.inDebt}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td><!-- Created At -->
+                                    <td >   <fmt:setLocale value="vi_VN"/>
+                                        <c:choose>
+                                            <c:when test="${bill.totalBillPrice % 1 == 0}">
+                                                <fmt:formatNumber value="${bill.totalBillPrice}" type="number" groupingUsed="true"/>₫
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatNumber value="${bill.totalBillPrice}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td><!-- Created At -->
                                     <td >
                                             ${bill.billType}
                                     </td>
                                     <td>${bill.totalLiftPrice}</td>  <!-- Total Lift Price -->
                                     <td class="text-center">
-
-                                        <button class="btn btn-primary btn-sm" title="Update" onclick="window.location.href='/product/update/${bill.id}'">
-                                            <i class="fa fa-pencil"></i>
+                                        <button class="btn btn-default btn-sm view-button" title="Xem" data-id="${bill.id}">
+                                            <i class="fa fa-eye"></i>
                                         </button>
+
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -1037,13 +1058,13 @@
                         <c:set var="c" value="${bills.number}"></c:set>
                         <ul class="pagination">
                             <li class="page-item ${c==0 ?'disabled':''}">
-                                <a class="page-link" href="bills?page=${c==0 ? 0 : (c - 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">Trước</a>
+                                <a class="page-link" href="bills?page=${c==0 ? 0 : (c - 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">Trước</a>
                             </li>
 
                             <c:forEach begin="0" end="${bills.totalPages - 1}" var="i">
                                 <c:if test="${i >= c - 1 && i <= c + 1}">
                                     <li class="page-item ${c == i ? 'active' : ''}">
-                                        <a class="page-link" href="bills?page=${i}&input=${input != null ? input : ''}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">${i + 1}</a>
+                                        <a class="page-link" href="bills?page=${i}&input=${input != null ? input : ''}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">${i + 1}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${i == c - 2 || i == c + 2}">
@@ -1052,7 +1073,7 @@
                             </c:forEach>
 
                             <li class="page-item ${c == bills.totalPages - 1 ? 'disabled' : ''}">
-                                <a class="page-link" href="bills?page=${c == bills.totalPages - 1 ? bills.totalPages - 1 : (c + 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&status=${status}">Sau</a>
+                                <a class="page-link" href="bills?page=${c == bills.totalPages - 1 ? bills.totalPages - 1 : (c + 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">Sau</a>
                             </li>
                         </ul>
                     </div>
@@ -1062,7 +1083,46 @@
     </div>
 </section>
 
-->
+<!-- Modal để hiển thị chi tiết hóa đơn -->
+<div class="modal fade" id="billDetailModal" tabindex="-1" aria-labelledby="billDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="billDetailModalLabel">Bill Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Actual Price</th>
+                        <th>Listed Price</th>
+                        <th>Total Product Price</th>
+                        <th>Packaging</th>
+                        <th>Quantity/Package</th>
+                        <th>Lift Service</th>
+                        <th>Lift Price</th>
+                        <th>Total Lift Price</th>
+                    </tr>
+                    </thead>
+                    <tbody id="billDetailTableBody">
+                    <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+                    </tbody>
+                </table>
+                <h5>Total Amount: <span id="totalBillAmount"></span>₫</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Đoạn mã JavaScript của bạn -->
+
+<script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
+<script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
+
 
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
@@ -1075,10 +1135,53 @@
             document.getElementById("search-form").submit();
         }
     });
-    function changeStatus(status){
-        if(status == null) alert("Không có giá trị");
-        else window.location.href = "/transpayments?status="+status;
-    }
+    $(document).ready(function() {
+        $(".view-button").click(function() {
+            var billId = $(this).data("id"); // Lấy billId từ button
+            $("#billDetailModal").modal("show");
+
+            // Gửi AJAX đến Spring Controller
+            $.ajax({
+                url: "/bill/details",
+                type: "GET",
+                data: { billId: billId },
+                success: function(billDetails) {
+                    let totalAmount = 0;
+                    let tableBody = $("#billDetailTableBody");
+                    tableBody.empty(); // Xóa dữ liệu cũ
+
+                    billDetails.forEach(detail => {
+                        let liftService = detail.isLift ? "Yes" : "No";
+                        let totalProductPrice = detail.quantity * detail.actualSellPrice;
+                        let totalLiftPrice = detail.totalLiftProductPrice || 0;
+                        let row = `
+                        <tr>
+                            <td>${detail.nameProduct}</td>
+                            <td>${detail.quantity}</td>
+                            <td>${detail.actualSellPrice.toLocaleString()}₫</td>
+                            <td>${detail.listedPrice.toLocaleString()}₫</td>
+                            <td>${totalProductPrice.toLocaleString()}₫</td>
+                            <td>${detail.packagingName || '-'}</td>
+                            <td>${detail.quantityPerPackage || '-'}</td>
+                            <td>${liftService}</td>
+                            <td>${detail.liftPrice.toLocaleString()}₫</td>
+                            <td>${totalLiftPrice.toLocaleString()}₫</td>
+                        </tr>
+                    `;
+                        tableBody.append(row);
+                        totalAmount += totalProductPrice + totalLiftPrice;
+                    });
+
+                    $("#totalBillAmount").text(totalAmount.toLocaleString());
+                },
+                error: function(error) {
+                    console.log("Error fetching bill details", error);
+                }
+            });
+        });
+    });
+
+
     document.addEventListener("DOMContentLoaded", function () {
         function formatToDDMMYYYY(dateStr) {
             if (!dateStr) return "";

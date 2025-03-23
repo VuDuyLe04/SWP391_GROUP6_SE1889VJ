@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +52,7 @@ public class BillController {
     private UserStoreService userStoreService;
 
 
-    @GetMapping("bill/table")
+    @GetMapping("/bill/table")
     public String showListBill(
             @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String startDateStr,
             @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  String endDateStr,
@@ -98,6 +99,12 @@ public class BillController {
     }
 
 
+    @GetMapping("/bill/details")
+    public ResponseEntity<List<BillDetail>> getBillDetails(@RequestParam("billId") Long billId) {
+
+        List<BillDetail> billDetails = billService.findBillById(billId).getBillDetails();
+        return ResponseEntity.ok(billDetails);
+    }
 
     @PostMapping("/createbill")
     public String createBill(HttpSession session, Model model, BillDTO billDTO, RedirectAttributes redirectAttributes){

@@ -21,9 +21,9 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             "AND (:endDate IS NULL OR b.createdAt <= :endDate) " +
             "AND (:minAmount IS NULL OR b.totalBillPrice >= :minAmount) " +
             "AND (:maxAmount IS NULL OR b.totalBillPrice <= :maxAmount) " +
-            "AND (:input IS NULL OR LOWER(b.store.name) LIKE LOWER(CONCAT('%', :input, '%'))) " +
-            "AND (:input IS NULL OR b.customer.phone LIKE CONCAT('%', :input, '%')) " +
-            "ORDER BY b.createdAt DESC")
+            "AND (:input IS NULL OR " +
+            "LOWER(b.store.name) LIKE LOWER(CONCAT('%', :input, '%')) OR " +
+            "LOWER(b.customer.phone) LIKE LOWER(CONCAT('%', :input, '%'))) ")
     Page<Bill> filterBills(
             @Param("startDate") Instant startDate,
             @Param("endDate") Instant endDate,
@@ -32,8 +32,5 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             @Param("input") String input,
             Pageable pageable
     );
-
-
-
 
 }
