@@ -136,6 +136,12 @@ public class BillService implements IBillService {
         b.setStore(Utility.getStoreInSession());
         return billRepository.save(b);
     }
+
+    @Override
+    public Page<Bill> filterBills(Instant startDate, Instant endDate, Double minAmount, Double maxAmount, String input,Long storeId, Pageable pageable) {
+        return billRepository.filterBills(startDate, endDate, minAmount, maxAmount, input,storeId, pageable);
+    }
+
     public Bill updateImportBill(Long billId, ImportRequest request) {
         Optional<Bill> bill = billRepository.findById(billId);
         if (bill.isPresent()) {

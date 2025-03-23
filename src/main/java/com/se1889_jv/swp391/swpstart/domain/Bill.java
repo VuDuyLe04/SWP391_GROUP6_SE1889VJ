@@ -13,6 +13,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
@@ -50,5 +53,15 @@ public class Bill {
     @JsonManagedReference
     private List<BillDetail>  billDetails;
 
-    
+    public String getFormattedDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        if (createdAt != null) {
+            LocalDateTime dateTime = LocalDateTime.ofInstant(createdAt, ZoneId.systemDefault());
+            return dateTime.format(formatter);
+        }
+        return null;
+    }
+
+
+
 }
