@@ -138,8 +138,8 @@ public class BillService implements IBillService {
     }
 
     @Override
-    public Page<Bill> filterBills(Instant startDate, Instant endDate, Double minAmount, Double maxAmount, String input, Pageable pageable) {
-        return billRepository.filterBills(startDate, endDate, minAmount, maxAmount, input, pageable);
+    public Page<Bill> filterBills(Instant startDate, Instant endDate, Double minAmount, Double maxAmount, String input,Long storeId, Pageable pageable) {
+        return billRepository.filterBills(startDate, endDate, minAmount, maxAmount, input,storeId, pageable);
     }
 
     public Bill updateImportBill(Long billId, ImportRequest request) {

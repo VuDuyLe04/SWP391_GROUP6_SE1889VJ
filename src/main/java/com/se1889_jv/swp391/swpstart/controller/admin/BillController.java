@@ -60,6 +60,7 @@ public class BillController {
             @RequestParam(value = "maxAmount", required = false) Double maxAmount,
             @RequestParam(value = "status", required = false, defaultValue = "ALL") String status,
             @RequestParam(value = "input", required = false) String input,
+            @RequestParam(value = "storeId", required = false,defaultValue = "0") String storeId,
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             Model model
     ) {
@@ -69,6 +70,7 @@ public class BillController {
         Pageable pageable = PageRequest.of(page, 5, sort);
         Instant startDate = null;
         Instant endDate = null;
+        Long storeID = ("0").equals(storeId) ? null : Long.parseLong(storeId);
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneId.systemDefault());
 
@@ -82,7 +84,7 @@ public class BillController {
         if(input != null && !input.isEmpty()) {
             input = input.trim();
         }
-        Page<Bill> list = billService.filterBills(startDate,endDate,minAmount,maxAmount,input,pageable);
+        Page<Bill> list = billService.filterBills(startDate,endDate,minAmount,maxAmount,input,storeID,pageable);
         if (list.hasContent()) {
             model.addAttribute("bills", list);
 
@@ -93,8 +95,10 @@ public class BillController {
         model.addAttribute("endDate", endDate);
         model.addAttribute("minAmount", minAmount);
         model.addAttribute("maxAmount", maxAmount);
+        model.addAttribute("stores", Utility.getListStoreOfOwner(user));
         model.addAttribute("status", status);
         model.addAttribute("input", input);
+        model.addAttribute("storeId", storeID);
         return "admin/bill/listbill";
     }
 

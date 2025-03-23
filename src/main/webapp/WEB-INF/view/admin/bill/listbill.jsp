@@ -932,6 +932,15 @@
                     <form id="dateForm" action="/bill/table" method="get">
                         <div class="filter-grid">
                             <div class="form-group">
+                                <label for="storeId">Cửa hàng </label>
+                                <select id="storeId" name="storeId" class="form-control">
+                                    <option ${storeId == "0" ? "selected" : ""} value="0">Tất cả</option>
+                                    <c:forEach items="${stores}" var="s">
+                                        <option ${storeId == s.id ? "selected" : ""} value="${s.id}">${s.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="startDate">Từ ngày</label>
                                 <input type="date" id="startDate" name="startDate"
                                        class="form-control" value="${startDate}">
@@ -941,15 +950,15 @@
                                 <input type="date" id="endDate" name="endDate"
                                        class="form-control" value="${endDate}">
                             </div>
+
+
                             <div class="form-group">
-                            </div>
-                            <div class="form-group">
-                                <label for="minAmount">Số tiền tối thiểu</label>
+                                <label for="minAmount">Tổng tiền tối thiểu</label>
                                 <input type="number" id="minAmount" name="minAmount"
                                        class="form-control" value="${minAmount}">
                             </div>
                             <div class="form-group">
-                                <label for="maxAmount">Số tiền tối đa</label>
+                                <label for="maxAmount">Tổng tiền tối đa</label>
                                 <input type="number" id="maxAmount" name="maxAmount"
                                        class="form-control" value="${maxAmount}">
                             </div>
@@ -964,7 +973,7 @@
                 <div class="search-box">
                     <form id="search-form" action="/bill/table" method="get" class="search-form">
                         <input type="text" class="search-input" name="input"
-                               placeholder="Tìm tên cửa hàng hoặc sdt khách hàng"
+                               placeholder="Tìm theo số điện thoại khách hàng"
                                value="${input}">
                         <button type="submit" class="search-button">
                             <i class="fa fa-search"></i>
@@ -1040,7 +1049,17 @@
                                     <td >
                                             ${bill.billType}
                                     </td>
-                                    <td>${bill.totalLiftPrice}</td>  <!-- Total Lift Price -->
+                                    <td >   <fmt:setLocale value="vi_VN"/>
+                                        <c:choose>
+                                            <c:when test="${bill.totalLiftPrice % 1 == 0}">
+                                                <fmt:formatNumber value="${bill.totalLiftPrice}" type="number" groupingUsed="true"/>₫
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatNumber value="${bill.totalLiftPrice}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td><!-- Created At -->
+
                                     <td class="text-center">
                                         <button class="btn btn-default btn-sm view-button" title="Xem" data-id="${bill.id}">
                                             <i class="fa fa-eye"></i>
@@ -1119,9 +1138,6 @@
 
 
 <!-- Đoạn mã JavaScript của bạn -->
-
-<script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
-<script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
 
 
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>

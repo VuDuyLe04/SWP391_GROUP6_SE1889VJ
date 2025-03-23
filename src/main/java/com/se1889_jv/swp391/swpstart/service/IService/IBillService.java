@@ -20,12 +20,14 @@ public interface IBillService {
     Bill updateBill(BillRequest request, Long billId);
     Page<Bill> getBillsByAllStore(List<Store> stors, Pageable pageable);
     Bill createBillForImport(ImportRequest request);
+
     Page<Bill> filterBills(
             @Param("startDate") Instant startDate,
             @Param("endDate") Instant endDate,
             @Param("minAmount") Double minAmount,
             @Param("maxAmount") Double maxAmount,
             @Param("input") String input,
+            @Param("storeId") Long storeId,
             Pageable pageable
     );
 }

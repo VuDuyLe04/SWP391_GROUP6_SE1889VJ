@@ -22,15 +22,17 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             "AND (:minAmount IS NULL OR b.totalBillPrice >= :minAmount) " +
             "AND (:maxAmount IS NULL OR b.totalBillPrice <= :maxAmount) " +
             "AND (:input IS NULL OR " +
-            "LOWER(b.store.name) LIKE LOWER(CONCAT('%', :input, '%')) OR " +
-            "LOWER(b.customer.phone) LIKE LOWER(CONCAT('%', :input, '%'))) ")
+            "LOWER(COALESCE(b.customer.phone, '')) LIKE LOWER(CONCAT('%', :input, '%'))) " +
+            "AND (:storeId IS NULL OR b.store.id = :storeId)")
     Page<Bill> filterBills(
             @Param("startDate") Instant startDate,
             @Param("endDate") Instant endDate,
             @Param("minAmount") Double minAmount,
             @Param("maxAmount") Double maxAmount,
             @Param("input") String input,
+            @Param("storeId") Long storeId,
             Pageable pageable
     );
+
 
 }
