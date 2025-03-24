@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
@@ -22,4 +23,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     List<Product> findByNameContainingIgnoreCase(String name);
     Page<Product> findAllByStoreId(Long storeId, Pageable pageable);
     Page<Product> findAllByNameContainingIgnoreCase(String input, Pageable pageable);
+    List<Product> findAllByWarehouseId(Long warehouseId);
+    //san pham cua chu cua hang
+    @Query("SELECT p FROM Product p WHERE p.store.id IN :storeIds")
+    Page<Product> findByStoreIdIn(@Param("storeIds") List<Long> storeIds, Pageable pageable);
+
 }

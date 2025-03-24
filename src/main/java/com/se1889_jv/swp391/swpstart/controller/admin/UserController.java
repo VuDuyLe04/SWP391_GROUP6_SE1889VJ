@@ -297,7 +297,7 @@ public class UserController {
 
     @GetMapping("/createstaff")
     public String createStaff(Model model) {
-        List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
+        List<Store> storeList = Utility.getListStoreOfOwner(Utility.getUserInSession());
         model.addAttribute("stores", storeList);
         model.addAttribute("StaffDTO", new StaffDTO());
         return "admin/user/createstaff";

@@ -11,6 +11,7 @@ import com.se1889_jv.swp391.swpstart.service.implementservice.UserStoreService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import com.se1889_jv.swp391.swpstart.util.constant.StatusStoreEnum;
 import com.se1889_jv.swp391.swpstart.util.constant.UserAccessStoreStatusEnum;
+import com.se1889_jv.swp391.swpstart.util.validator.annotation.CheckPermission;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -76,6 +77,8 @@ public class    StoreController {
         }
         return "admin/store/createstore";
     }
+
+    @CheckPermission(condition = "statusService")
     @GetMapping("/stores")
     public String listStores(@RequestParam(value = "input", required = false) String input,
                              @RequestParam(value = "sort", required = false, defaultValue = "normal") String sortcreatedAt,

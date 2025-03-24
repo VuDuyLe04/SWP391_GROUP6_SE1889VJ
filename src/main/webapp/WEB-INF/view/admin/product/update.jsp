@@ -74,8 +74,6 @@
                 </div>
             </header>
 
-
-
             <!-- start: page -->
 
             <div class="row">
@@ -91,23 +89,20 @@
                         </header>
                         <div class="panel-body">
 
-<%--                            <c:if test="${not empty successMessage}">--%>
-<%--                                <div class="alert alert-success">${successMessage}</div>--%>
-<%--                            </c:if>--%>
-<%--                            <c:if test="${not empty errorMessage}">--%>
-<%--                                <div class="alert alert-danger">${errorMessage}</div>--%>
-<%--                            </c:if>--%>
+                            <c:if test="${not empty message}">
+                                <div class="alert alert-success">
+                                        ${message}
+                                </div>
+                            </c:if>
 
-                            <form:form method="post" modelAttribute="product" action="/product/update">
+                            <form:form method="post" modelAttribute="product" action="/update">
+                                <form:hidden path="storeId" id="hiddenStoreId"/>
                                 <form:hidden path="id"/>
 
-
-
-                                <div class="form-group ">
+                                <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputDefault">Tên gạo</label>
                                     <div class="col-md-6">
                                         <form:input path="name" type="text" class="form-control" id="inputDefault" />
-                                        <form:errors path="name" cssClass="text-danger"/>
                                     </div>
                                 </div>
 
@@ -115,8 +110,6 @@
                                     <label class="col-md-3 control-label" for="inputImage">Hình ảnh</label>
                                     <div class="col-md-6">
                                         <form:input path="image" class="form-control" id="inputImage" type="text" readonly="true"/>
-<%--                                        <form:errors path="image" cssClass="text-danger"/>--%>
-
                                     </div>
                                 </div>
 
@@ -124,16 +117,13 @@
                                     <label class="col-md-3 control-label" for="inputPrice">Giá gạo</label>
                                     <div class="col-md-6">
                                         <form:input path="unitPrice" type="number" id="inputPrice" class="form-control"/>
-                                        <form:errors path="unitPrice" cssClass="text-danger"/>
-
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Loại gạo</label>
+                                    <label class="col-md-3 control-label" for="inputCategory">Loại gạo</label>
                                     <div class="col-md-6">
-                                        <form:input path="category" type="text" class="form-control"/>
-                                        <form:errors path="category" cssClass="text-danger"/>
+                                        <form:input path="category" type="text"  class="form-control" id="inputCategory"/>
                                     </div>
                                 </div>
 
@@ -158,10 +148,32 @@
                                     <label class="col-md-3 control-label" for="inputDescription">Mô tả</label>
                                     <div class="col-md-6">
                                         <form:input path="description" type="text"  class="form-control" id="inputDescription"/>
-                                        <form:errors path="description" cssClass="text-danger"/>
-
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="inputDescription">Cửa hàng</label>
+                                    <div class="col-md-6">
+                                        <select name="storeId" class="form-control" id="inputStore" onchange="filterWarehouse.call(this)">
+                                            <option value="">-- Chọn cửa hàng --</option>
+                                            <c:forEach items="${stores}" var="store">
+                                                <option value="${store.id}" ${product.storeId == store.id ? 'selected' : ''}>
+                                                        ${store.name}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="inputWarehouse">Kho hàng</label>
+                                    <div class="col-md-6">
+                                        <form:select path="warehouseId" cssClass="form-control" id="inputWarehouse" style="display: none;">
+                                            <option value="">-- Chọn kho hàng --</option>
+                                            <!-- The warehouses will be populated here based on the selected store -->
+                                        </form:select>
+                                    </div>
+                                </div>
+
 
                                 <!-- Nút Create -->
                                 <div class="form-group">
@@ -170,24 +182,55 @@
                                     </div>
                                 </div>
                             </form:form>
-
                         </div>
                     </section>
-
-
                 </div>
             </div>
-
-
-
-
             <!-- end: page -->
         </section>
     </div>
 
-
-
 </section>
+<script>
+    function filterWarehouse() {
+        const selectElement = document.getElementById("inputStore");
+        const id = selectElement.value;
+        console.log("Selected store value:", id);
+        document.getElementById("hiddenStoreId").value = id;
+
+        const warehouseSelect = document.getElementById("inputWarehouse");
+        warehouseSelect.innerHTML = '<option value="">-- Chọn kho hàng --</option>';
+
+        if (id) {
+            warehouseSelect.style.display = "block";
+
+            const url = `http://localhost:8080/warehouse/` + id;
+            console.log("Fetching from URL:", url);
+
+            fetch(url)
+                .then(response => response.json())
+                .then(warehouses => {
+                    console.log("Received warehouses:", warehouses);
+                    if (warehouses && warehouses.length > 0) {
+                        warehouses.forEach(function(warehouse) {
+                            let option = document.createElement("option");
+                            option.value = warehouse.id;
+                            option.textContent = warehouse.name;
+                            warehouseSelect.appendChild(option);
+                        });
+                    } else {
+                        console.log("Không có kho hàng nào cho cửa hàng này");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching warehouses:', error);
+                });
+        } else {
+            warehouseSelect.style.display = "none";
+        }
+    }
+
+</script>
 
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>

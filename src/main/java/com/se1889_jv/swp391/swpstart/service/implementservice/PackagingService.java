@@ -15,8 +15,10 @@ import java.util.Optional;
 
 @Service
 public class PackagingService implements IPackagingService {
+
     @Autowired
     PackagingRepository packagingRepository;
+
     @Override
     public List<Packaging> getAllPackagingByStoreId(long storeId) {
         return packagingRepository.findPackagingByStoreId(storeId);

@@ -2,16 +2,19 @@ package com.se1889_jv.swp391.swpstart.repository;
 
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.Store;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSpecificationExecutor<Customer> {
@@ -52,4 +55,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSp
     Page<Customer> findAllByCreatedBy(Specification<Customer> specification,String createdBy, Pageable pageable);
     Page<Customer> findAllByCreatedBy(String createdBy, Pageable pageable);
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT c FROM Customer c WHERE c.id = :customerId")
+    Optional<Customer> findByIdWithLock(@Param("customerId") Long customerId);
 }

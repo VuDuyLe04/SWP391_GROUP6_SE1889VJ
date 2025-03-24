@@ -51,13 +51,16 @@ public class SignUpServiceController {
                 session.setAttribute("user", u);
                 session.setAttribute("service", service1);
                 session.setAttribute("message","Mua dịch vụ thành công");
+                return "redirect:/owner/service/history";
             }
             else {
+
                 session.setAttribute("message","Bạn không đủ tiền để mua dịch vụ, vui lòng nạp thêm tiền");
+                return "redirect:/service/signup";
             }
         }
 
-        return "redirect:/#services";
+        return "redirect:/owner/service/history";
     }
 
 

@@ -108,8 +108,8 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputDefault">Tên gạo</label>
                                     <div class="col-md-6">
-                                        <form:input path="name" type="text" class="form-control" id="inputDefault"/>
-                                        <form:errors path="name" cssClass="text-danger"/>
+                                        <form:input path="name" type="text" class="form-control" id="inputDefault"
+                                                    requiredpattern="[A-Za-z0-9 ]{1,50}" title="Chỉ cho phép chữ cái, số và tối đa 50 ký tự"/>
                                     </div>
                                 </div>
 
@@ -213,6 +213,7 @@
 
 
 </section>
+
 <script>
     function filterWarehouses() {
         var storeSelect = document.getElementById("inputStore");

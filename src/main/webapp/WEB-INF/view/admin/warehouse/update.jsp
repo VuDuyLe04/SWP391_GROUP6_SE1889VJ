@@ -110,8 +110,8 @@
 
                                 <div class="form-group row">
                                     <div class="col-sm-9 offset-sm-3">
-                                        <button type="submit" class="btn btn-primary">Update</button>
-                                        <a href="/warehouse" class="btn btn-secondary">Cancel</a>
+                                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                        <a href="/warehouse" class="btn btn-secondary">Hủy</a>
                                     </div>
                                 </div>
                             </form:form>

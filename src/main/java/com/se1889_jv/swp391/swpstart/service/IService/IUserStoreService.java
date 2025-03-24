@@ -16,4 +16,5 @@ public interface IUserStoreService {
 
 
     List<UserStore> getAllUserStoresByStoreIn(List<Store> stores);
+    List<Store> getStoresForUser(User user);
 }
