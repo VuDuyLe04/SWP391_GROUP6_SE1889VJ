@@ -284,10 +284,9 @@ public class UserController {
     public String handleUpdateProfile(Model model, HttpSession session, @Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
         User userSession = Utility.getUserInSession();
         if (bindingResult.hasErrors()) {
-
             return "admin/profile/profile";
         }
-
+        user.setId(userSession.getId());
         User updateUser = this.userService.updateUser(user);
         updateUser.setPassword(null);
         session.setAttribute("user", updateUser);

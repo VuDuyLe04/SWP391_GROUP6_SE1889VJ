@@ -72,8 +72,6 @@ public class ServiceService implements IServiceService {
         return this.serviceRepository.findAll(combined,pageable);
     }
 
-
-
     @Override
     public boolean existByName(String serviceName) {
         return this.serviceRepository.existsByName(serviceName);
