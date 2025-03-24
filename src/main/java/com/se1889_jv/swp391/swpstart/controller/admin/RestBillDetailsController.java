@@ -217,43 +217,37 @@ public class RestBillDetailsController {
             return new ApiResponse<>(400, "Bill ID is missing in session", null);
         }
 
-        ApiResponse<Bill> response = new ApiResponse<>();
-        response.setCode(200);
-        response.setMessage("Success");
-        // Cập nhật hóa đơn
-
-        Bill updatedBill = billService.updateBill(request, billId);
-        response.setData(updatedBill);
         try {
+            // Cập nhật hóa đơn
+            Bill updatedBill = billService.updateBill(request, billId);
+            ApiResponse<Bill> response = new ApiResponse<>(200, "Success", updatedBill);
+
             if (request.isCreateDebt()) {
-                if(request.getCustomerInfor().isEmpty() || request.getCustomerInfor() == null) {
+                if (request.getCustomerInfor() == null || request.getCustomerInfor().isEmpty()) {
                     throw new AppException(ErrorException.DEBT_DONT_HAVE_CUSTOMER);
                 }
                 // Tạo DebtReceipt
                 DebtReceipt debtReceipt = debtReceiptService.createDebtReceiption(request, Utility.getUserInSession(), billId);
-                log.info("Tạo hóa đơn nợ: {}", debtReceipt.toString());
+                log.info("Tạo hóa đơn nợ: {}", debtReceipt);
 
-                // Tạo DebtRequest để gửi đến RabbitMQ
+                // Gửi DebtRequest đến RabbitMQ
                 DebtRequest debtRequest = new DebtRequest(debtReceipt.getId());
-                log.info("Gửi DebtRequest đến RabbitMQ: {}", debtRequest);
-
                 rabbitTemplate.convertAndSend(RabbitMQConfig.DEBT_QUEUE, debtRequest);
                 log.info("Đã gửi DebtRequest vào RabbitMQ queue");
-
             }
 
-
-
-            // Xóa billId khỏi session sau khi xử lý xong
             session.removeAttribute("currentBillId");
-
             return response;
 
+        } catch (AppException e) {
+            // Bắt lỗi từ service và trả về phản hồi phù hợp
+            log.error("Lỗi nghiệp vụ: {}", e.getMessage());
+            return new ApiResponse<>(400, e.getMessage(), null);
         } catch (AmqpException e) {
             log.error("Lỗi RabbitMQ khi gửi DebtRequest", e);
             return new ApiResponse<>(500, "Lỗi khi gửi yêu cầu xử lý nợ: " + e.getMessage(), null);
         } catch (Exception e) {
-            log.error("Lỗi khi xử lý cập nhật hóa đơn", e);
+            log.error("Lỗi hệ thống khi cập nhật hóa đơn", e);
             return new ApiResponse<>(500, "Lỗi hệ thống: " + e.getMessage(), null);
         }
     }

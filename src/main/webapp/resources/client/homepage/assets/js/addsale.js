@@ -24,6 +24,31 @@ async function checkAndLoadBill() {
         console.error("Lỗi khi kiểm tra hóa đơn:", error);
     }
 }
+function restart() {
+    let paymentOptions = document.getElementById("paymentOptions");
+    let paymentInputs = document.getElementById("paymentInputs");
+
+    if (paymentOptions) {
+        paymentOptions.innerHTML = `
+            <option disabled selected>Chọn hành động</option>
+            <option value="order">Trả đơn hàng</option>
+            <option value="partial">Trả một phần</option>
+        `;
+
+        if (customerBalance !== 0) {
+            if (customerBalance < 0) {
+                paymentOptions.innerHTML += `<option value="all">Trả tất cả</option>`;
+            } else {
+                paymentOptions.innerHTML += `<option value="deduct">Trả trừ nợ</option>`;
+            }
+        }
+
+    }
+
+    if (paymentInputs) {
+        paymentInputs.style.display = "none"; // Ẩn các input nhập số tiền nếu có
+    }
+}
 
 async function addBillDetail(button) {
     let modal = button.closest(".modal");
@@ -80,6 +105,7 @@ async function addBillDetail(button) {
 
             await loadBillDetails();
             getBillDetailsAndCalculate();
+            restart();
         } else {
 
             showToast(responseData.message, false)
@@ -176,6 +202,7 @@ async function removeBillDetail(id) {
 
             await loadBillDetails();
             getBillDetailsAndCalculate();
+            restart();
         } else {
             alert(billData.message || "Có lỗi xảy ra khi xóa chi tiết hóa đơn.");
         }
@@ -202,6 +229,7 @@ async function updateActualPrice(billDetailId, newPrice, inputElement, oldPrice)
             inputElement.dataset.oldValue = newPrice;
             await loadBillDetails();
             getBillDetailsAndCalculate();
+            restart();
         } else {
             showToast("Cập nhật thất bại: " + data.message, false);
             inputElement.value = oldQuan;
@@ -237,6 +265,7 @@ async function updateQuantity(billDetailId, newQuantity, inputElement, oldQuan) 
             inputElement.dataset.oldValue = newQuantity;
             await loadBillDetails();
             getBillDetailsAndCalculate();
+            restart();
         } else {
             showToast("Cập nhật thất bại: " + data.message, false);
             inputElement.value = oldQuan;

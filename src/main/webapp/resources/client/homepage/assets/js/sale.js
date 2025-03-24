@@ -230,6 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("address-error").hidden = true;
     });
 });
+let customerBalance = 0;
 
 //search customer by Phone
 document.addEventListener("DOMContentLoaded", function () {
@@ -241,7 +242,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const amountDue = document.getElementById("amountDue");
     const customerPayment = document.getElementById("customerPayment");
     const billTotalElement = document.querySelector(".bill-summary .text-success");
-    let customerBalance = 0;
 
     async function searchCustomer(phone) {
         if (phone.length < 1) {
@@ -462,15 +462,23 @@ function getBillRequest() {
     const totalNeedPayInput = document.getElementById("amountDue");
     const actualPayInput = document.getElementById("customerPayment");
 
+    let customerInfor = customerInput ? customerInput.value.trim() : "";
+    let type = typeSelect ? typeSelect.value : "";
+
+    if (customerInfor === "") {
+        type = "order";
+    }
+
     return {
         description: descriptionInput ? descriptionInput.value.trim() : "",
-        customerInfor: customerInput ? customerInput.value.trim() : "",
-        type: typeSelect ? typeSelect.value : "",
-        createDebt: typeSelect && typeSelect.value !== "order",
+        customerInfor: customerInfor,
+        type: type,
+        createDebt: customerInfor !== "" && type !== "order", // Nếu rỗng hoặc type = "order" thì false
         totalNeedPay: totalNeedPayInput ? parseInt(totalNeedPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
         actualPay: actualPayInput ? parseInt(actualPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
     };
 }
+
 
 
 
@@ -485,7 +493,7 @@ async function updateFinalBill() {
 
         if (!billCheckData.data) {
             showToast("Hãy thêm sản phẩm vào hóa đơn", false);
-            return; // Dừng lại nếu không có hóa đơn
+            return;
         }
 
         const billRequest = getBillRequest(); // Lấy dữ liệu từ giao diện
@@ -511,7 +519,7 @@ async function updateFinalBill() {
             }
 
         } else {
-            alert("Lỗi cập nhật hóa đơn: " + result.message);
+            showToast("Lỗi cập nhật hóa đơn: " + result.message, false);
         }
     } catch (error) {
         console.error("Lỗi khi gửi yêu cầu cập nhật hóa đơn:", error);

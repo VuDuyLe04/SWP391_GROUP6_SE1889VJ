@@ -5,36 +5,57 @@ function attackEventAddBillImportProduct() {
     });
 }
 let billDetailsList = [];
-async function addBillDetailImport(button) {
+function addBillDetailImport(button) {
     let modal = button.closest(".modal");
     let productIdItem = modal.id.replace("productModal", "");
     let quantity = parseInt(modal.querySelector(".quantity-input").value);
-    console.log(quantity);
-    if(quantity< 0 ){
+    if (isNaN(quantity) || quantity < 1) {
         showToast("Số lượng phải lớn hơn 0", false);
         return;
     }
+
     let listed = parseFloat(modal.querySelector('.listed-input').value);
     let productName = modal.querySelector('.modal-title').textContent;
-    const storeId = parseInt(document.getElementById("storeId").textContent);
 
-    let requestData = {
-                productId: productIdItem,
-                quantity: quantity,
-                importPrice: listed,
-                productName: productName
-            };
     let existingItem = billDetailsList.find(item => item.productId === productIdItem);
     if (existingItem) {
-        existingItem.quantity += quantity;
+        existingItem.quantity += quantity; // Cộng dồn số lượng
     } else {
-        billDetailsList.push(requestData);
-        console.log(billDetailsList);
+        billDetailsList.push({
+            productId: productIdItem,
+            quantity: quantity,
+            importPrice: listed,
+            productName: productName
+        });
     }
+    console.log(billDetailsList)
     renderBillDetails();
-
 }
+function resetPaymentOptions() {
+    let paymentOptions = document.getElementById("paymentOptions");
+    let paymentInputs = document.getElementById("paymentInputs");
 
+    if (paymentOptions) {
+        paymentOptions.innerHTML = `
+            <option disabled selected>Chọn hành động</option>
+            <option value="order">Trả đơn hàng</option>
+            <option value="partial">Trả một phần</option>
+        `;
+
+        if (customerBalance !== 0) {
+            if (customerBalance < 0) {
+                paymentOptions.innerHTML += `<option value="all">Trả tất cả</option>`;
+            } else {
+                paymentOptions.innerHTML += `<option value="deduct">Trả trừ nợ</option>`;
+            }
+        }
+
+    }
+
+    if (paymentInputs) {
+        paymentInputs.style.display = "none"; // Ẩn các input nhập số tiền nếu có
+    }
+}
 function updateBillDetail(input, oldValue) {
     let row = input.closest(".row");
     let productId = input.getAttribute("data-id");
@@ -56,7 +77,8 @@ function updateBillDetail(input, oldValue) {
     let totalPriceElement = row.querySelector(".price-detail");
     totalPriceElement.textContent = totalProductPrice.toLocaleString() + "đ";
 
-    let billDetail = billDetailsList.find(detail => detail.id == productId);
+    let billDetail = billDetailsList.find(detail => detail.productId == productId);
+    console.log()
     if (billDetail) {
         billDetail.quantity = quantity;
         billDetail.listedPrice = listedPrice;
@@ -64,6 +86,7 @@ function updateBillDetail(input, oldValue) {
     }
 
     getBillDetailsAndCalculate();
+     resetPaymentOptions()
 }
 
 
@@ -91,7 +114,7 @@ function renderBillDetails() {
                     <div class="col-4 d-flex align-items-center justify-content-center">
                         <input type="number" class="form-control text-center me-2 flex-shrink-0 quantity-input" style="width: 60px;" 
                             value="${detail.quantity}" 
-                            data-id="${detail.id}"
+                            data-id="${detail.productId}"
                             oninput="updateBillDetail(this, this.value)"
                             id="quantity-in"/>
                             
@@ -100,14 +123,14 @@ function renderBillDetails() {
                     <div class="col-2 text-danger text-center justify-content-center">
                         <input type="number" class="form-control text-center me-2 flex-shrink-0 listed-price-input" style="width: 120px;" 
                             value="${detail.importPrice}" 
-                            data-id="${detail.id}"
+                            data-id="${detail.productId}"
                             oninput="updateBillDetail(this, this.value)"/>
                     </div>
                     <div class="col-3 fw-bold text-center price-detail">
                         ${totalProductPrice.toLocaleString()}đ
                     </div>
                     <div class="col-1 text-end">
-                        <button class="btn btn-danger btn-sm" onclick="removeBillItem(${detail.id})">
+                        <button class="btn btn-danger btn-sm" onclick="removeBillItem(${detail.productId})">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -116,8 +139,9 @@ function renderBillDetails() {
         `;
         billDetailsContainer.appendChild(billItem);
     });
-
     getBillDetailsAndCalculate();
+    resetPaymentOptions()
+
 }
 
 function getBillDetailsAndCalculate() {
@@ -137,9 +161,27 @@ function getBillDetailsAndCalculate() {
 }
 
 function removeBillItem(productId) {
-    billDetailsList = billDetailsList.filter(detail => detail.id !== productId);
+    console.log("Product ID cần xóa:"+ typeof productId);
+    console.log("Danh sách trước khi xóa:", billDetailsList);
+
+    let index = billDetailsList.findIndex(detail => parseInt(detail.productId) === productId);
+    console.log(index);
+    if (index !== -1) {
+        billDetailsList.splice(index, 1);
+        console.log("Sản phẩm đã bị xóa:", productId);
+    } else {
+        console.warn("Không tìm thấy sản phẩm để xóa!");
+    }
+
+    console.log("Danh sách sau khi xóa:", billDetailsList);
+    let totalBillElement = document.querySelector(".total-need-pay");
+    if (totalBillElement) {
+        totalBillElement.textContent =  "0đ";
+    }
     renderBillDetails();
+    resetPaymentOptions()
 }
+let customerBalance = 0;
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("search-phone");
     const suggestionBox = document.getElementById("suggestion-box");
@@ -149,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const amountDue = document.getElementById("amountDue");
     const customerPayment = document.getElementById("customerPayment");
     const billTotalElement = document.querySelector(".bill-summary .text-success");
-    let customerBalance = 0;
+
 
     async function searchCustomer(phone) {
         if (phone.length < 3) {
