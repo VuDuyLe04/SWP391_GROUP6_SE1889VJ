@@ -115,13 +115,13 @@ async function loadBillDetails() {
         <div class="container p-0 item-bill-details">
     <div class="row align-items-center g-0 py-2 border-bottom">
         <!-- Tên sản phẩm -->
-        <div class="col-3 overflow-hidden">
+        <div class="col-2 overflow-hidden">
             <h6 class="mb-0 text-truncate">${detail.nameProduct}</h6>
             <small class="text-muted">Loại: ${detail.packageType}</small>
         </div>
 
         <!-- Số lượng & Giá -->
-        <div class="col-3 d-flex align-items-center">
+        <div class="col-4 d-flex align-items-center justify-content-center">
             <input type="number" class="form-control text-center me-2 flex-shrink-0" style="width: 60px;" value="${detail.quantity}" onchange="updateQuantity(${detail.id}, this.value,this, ${detail.quantity})" />
             <span class="text-nowrap">x ${detail.listedPrice}đ</span>
         </div>

@@ -220,14 +220,17 @@ public class RestBillDetailsController {
         ApiResponse<Bill> response = new ApiResponse<>();
         response.setCode(200);
         response.setMessage("Success");
+        // Cập nhật hóa đơn
 
+        Bill updatedBill = billService.updateBill(request, billId);
+        response.setData(updatedBill);
         try {
             if (request.isCreateDebt()) {
                 if(request.getCustomerInfor().isEmpty() || request.getCustomerInfor() == null) {
                     throw new AppException(ErrorException.DEBT_DONT_HAVE_CUSTOMER);
                 }
                 // Tạo DebtReceipt
-                DebtReceipt debtReceipt = debtReceiptService.createDebtReceiption(request, Utility.getUserInSession());
+                DebtReceipt debtReceipt = debtReceiptService.createDebtReceiption(request, Utility.getUserInSession(), billId);
                 log.info("Tạo hóa đơn nợ: {}", debtReceipt.toString());
 
                 // Tạo DebtRequest để gửi đến RabbitMQ
@@ -239,9 +242,7 @@ public class RestBillDetailsController {
 
             }
 
-            // Cập nhật hóa đơn
-            Bill updatedBill = billService.updateBill(request, billId);
-            response.setData(updatedBill);
+
 
             // Xóa billId khỏi session sau khi xử lý xong
             session.removeAttribute("currentBillId");
@@ -285,7 +286,8 @@ public class RestBillDetailsController {
                 responses.add(response);
             }
         }
-        DebtReceipt debtReceipt = debtReceiptService.createDebtForImport(billDetail, Utility.getUserInSession());
+        Bill b = billService.updateImportBill(bill.getId(), billDetail);
+        DebtReceipt debtReceipt = debtReceiptService.createDebtForImport(billDetail, Utility.getUserInSession(), b.getTotalBillPrice());
         DebtRequest debtRequest = new DebtRequest(debtReceipt.getId());
         log.info("Gửi DebtRequest đến RabbitMQ: {}", debtRequest);
 
@@ -295,7 +297,7 @@ public class RestBillDetailsController {
                 return response;
             }
         }
-        Bill b = billService.updateImportBill(bill.getId(), billDetail);
+
         return new ApiResponse<>(200, "Đã nhập kho thành công", null);
     }
 

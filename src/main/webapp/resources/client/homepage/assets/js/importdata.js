@@ -9,9 +9,9 @@ async function addBillDetailImport(button) {
     let modal = button.closest(".modal");
     let productIdItem = modal.id.replace("productModal", "");
     let quantity = parseInt(modal.querySelector(".quantity-input").value);
+    console.log(quantity);
     if(quantity< 0 ){
         showToast("Số lượng phải lớn hơn 0", false);
-
         return;
     }
     let listed = parseFloat(modal.querySelector('.listed-input').value);
@@ -85,17 +85,19 @@ function renderBillDetails() {
         billItem.innerHTML = `
             <div class="container p-0 item-bill-details">
                 <div class="row align-items-center g-0 py-2 border-bottom">
-                    <div class="col-3 overflow-hidden">
+                    <div class="col-2 overflow-hidden">
                         <h6 class="mb-0 text-truncate">${detail.productName}</h6>
                     </div>
-                    <div class="col-3 d-flex align-items-center">
+                    <div class="col-4 d-flex align-items-center justify-content-center">
                         <input type="number" class="form-control text-center me-2 flex-shrink-0 quantity-input" style="width: 60px;" 
                             value="${detail.quantity}" 
                             data-id="${detail.id}"
-                            oninput="updateBillDetail(this, this.value)"/>
+                            oninput="updateBillDetail(this, this.value)"
+                            id="quantity-in"/>
+                            
                         <span class="text-nowrap">x ${detail.importPrice}đ</span>
                     </div>
-                    <div class="col-2 text-danger text-center">
+                    <div class="col-2 text-danger text-center justify-content-center">
                         <input type="number" class="form-control text-center me-2 flex-shrink-0 listed-price-input" style="width: 120px;" 
                             value="${detail.importPrice}" 
                             data-id="${detail.id}"
@@ -213,11 +215,17 @@ document.addEventListener("DOMContentLoaded", function () {
         if (customerBalance > 0) {
             debtInfo.textContent = `Khách còn nợ: ${customerBalance.toLocaleString()} VND`;
             debtInfo.className = "alert alert-danger";
-        } else {
+        } else if(customerBalance < 0){
+            debtInfo.textContent = `Cửa hàng còn nợ: ${customerBalance*(-1).toLocaleString()} VND`;
+            debtInfo.className = "alert alert-primary";
+        } else{
             debtInfo.textContent = "Không có nợ!";
             debtInfo.className = "alert alert-secondary";
         }
         debtInfo.style.display = "block";
+    }
+    function hiddenDebt(){
+        debtInfo.style.display = "none";
     }
     function updatePaymentOptions() {
         paymentOptions.innerHTML = "";
@@ -238,11 +246,18 @@ document.addEventListener("DOMContentLoaded", function () {
         partialOption.textContent = "Trả một phần";
         paymentOptions.appendChild(partialOption);
 
-        if (searchInput.value.trim() !== "" && customerBalance !== 0) {
-            const allOption = document.createElement("option");
-            allOption.value = "all";
-            allOption.textContent = "Trả tất cả";
-            paymentOptions.appendChild(allOption);
+        if (customerBalance !== 0) {
+            if (customerBalance < 0) {
+                const allOption = document.createElement("option");
+                allOption.value = "all";
+                allOption.textContent = "Trả tất cả";
+                paymentOptions.appendChild(allOption);
+            } else {
+                const deductOption = document.createElement("option");
+                deductOption.value = "deduct";
+                deductOption.textContent = "Trả trừ nợ";
+                paymentOptions.appendChild(deductOption);
+            }
         }
     }
 
@@ -258,11 +273,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 amountToPay = billTotal;
                 break;
             case "all":
-                amountToPay = billTotal + customerBalance;
+                amountToPay = billTotal - customerBalance;
+
                 break;
             case "partial":
                 amountToPay = billTotal;
                 allowInput = true;
+                break;
+            case "deduct":
+                console.log(customerBalance * -1);
+                if(customerBalance > billTotal){
+                    amountToPay = 0;
+                } else {
+                    amountToPay = billTotal - customerBalance;
+                }
+
+
                 break;
             default:
                 paymentInputs.style.display = "none";
@@ -283,7 +309,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     searchInput.addEventListener("input", () => {
-        searchCustomer(searchInput.value.trim());
+        const trimmedValue = searchInput.value.trim();
+        searchCustomer(trimmedValue);
+        if (trimmedValue === "") {
+            hiddenDebt();
+            paymentOptions.style.display = "none";
+            paymentInputs.style.display = "none";
+        } else {
+            paymentOptions.style.display = "block";
+        }
     });
     paymentOptions.addEventListener("change", updateAmountDue);
     document.addEventListener("click", function (event) {
@@ -302,7 +336,7 @@ function getBillRequest() {
     const typeSelect = document.getElementById("paymentOptions");
     const totalNeedPayInput = document.getElementById("amountDue");
     const actualPayInput = document.getElementById("customerPayment");
-
+    const quantityIn = document.getElementById("quantity-in");
     return {
         description: descriptionInput ? descriptionInput.value.trim() : "",
         customerInfor: customerInput ? customerInput.value.trim() : "",
@@ -310,6 +344,8 @@ function getBillRequest() {
         createDebt: typeSelect && typeSelect.value !== "order",
         totalNeedPay: totalNeedPayInput ? parseInt(totalNeedPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
         actualPay: actualPayInput ? parseInt(actualPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
+        // loi o day
+        quantity: parseFloat(quantityIn.value)
     };
 }
 function showToast(message, isSuccess = true) {
@@ -341,8 +377,6 @@ document.getElementById('create-bill').addEventListener('click', function (){
     };
 
     console.log("Dữ liệu gửi đi:", requestData);
-
-    // Gửi request đến server
     fetch("/api/importproduct", {
         method: "POST",
         headers: {
