@@ -32,12 +32,11 @@
                     </c:if>
 
                     <c:if test="${sessionScope.user.role.name == 'OWNER' || sessionScope.user.role.name == 'STAFF'}">
-                        <li >
+                        <li>
                             <a href="/customer">
                                 <i class="fa fa-copy" aria-hidden="true"></i>
                                 <span>Khách hàng</span>
                             </a>
-
                         </li>
                     </c:if>
 
@@ -47,12 +46,11 @@
                                 <i class="fa fa-tasks" aria-hidden="true"></i>
                                 <span>Sản phẩm</span>
                             </a>
-
                         </li>
                     </c:if>
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
-                            <a>
+                            <a href="/bill/table">
                                 <i class="fa fa-list-alt" aria-hidden="true"></i>
                                 <span>Hóa đơn</span>
                             </a>
@@ -74,7 +72,6 @@
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <span>Quy cách đóng gói</span>
                             </a>
-
                         </li>
                     </c:if>
 
@@ -84,7 +81,6 @@
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <span>Cửa hàng</span>
                             </a>
-
                         </li>
                     </c:if>
 
@@ -94,11 +90,8 @@
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <span>Dịch vụ</span>
                             </a>
-
                         </li>
                     </c:if>
-
-
 
                 </ul>
             </nav>
