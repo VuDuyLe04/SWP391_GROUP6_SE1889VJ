@@ -10,7 +10,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Giao dịch thanh toán </title>
+    <title>Giao dịch nạp tiền </title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -553,7 +553,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2><i class="fa fa-users mr-xs"></i> Giao dịch thanh toán </h2>
+                <h2><i class="fa fa-users mr-xs"></i> Giao dịch nạp tiền</h2>
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
                         <li>
@@ -561,7 +561,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Giao dịch thanh toán</span></li>
+                        <li><span>Giao dịch nạp tiền</span></li>
                     </ol>
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
@@ -634,6 +634,7 @@
                         <table class="table">
                             <thead>
                             <tr>
+                                <th>STT</th>
                                 <th>Mã giao dịch</th>
                                 <th>Số tiền</th>
                                 <th>Nội dung</th>
@@ -645,8 +646,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="transaction" items="${transactions.content}">
+                            <c:forEach var="transaction" items="${transactions.content}" varStatus="status">
                                 <tr>
+                                    <td>${status.index + 1}</td>
                                     <td><span class="transaction-id">${transaction.transactionId}</span></td>
 
                                     <td >   <fmt:setLocale value="vi_VN"/>

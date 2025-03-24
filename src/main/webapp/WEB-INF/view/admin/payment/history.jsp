@@ -12,7 +12,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Giao dịch thanh toán </title>
+    <title>Giao dịch nạp tiền người dùng</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -636,6 +636,7 @@
                         <table class="table">
                             <thead>
                             <tr>
+                                <th>STT</th>
                                 <th>Mã giao dịch</th>
                                 <th>Số tiền</th>
                                 <th>Nội dung</th>
@@ -647,8 +648,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="transaction" items="${transactions.content}">
+                            <c:forEach var="transaction" items="${transactions.content}" varStatus="status">
                                 <tr>
+                                    <td>${status.index + 1}</td>
                                     <td><span class="transaction-id">${transaction.transactionId}</span></td>
                                     <td >   <fmt:setLocale value="vi_VN"/>
                                         <c:choose>

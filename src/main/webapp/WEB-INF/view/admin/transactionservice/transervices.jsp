@@ -9,7 +9,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Lịch sử mua dịch vụ hệ thống  </title>
+    <title>Giao dịch dịch vụ hệ thống</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -560,7 +560,7 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Giao dịch dịch vụ </span></li>
+                        <li><span>Giao dịch dịch vụ</span></li>
                     </ol>
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
@@ -637,6 +637,7 @@
                         <table class="table">
                             <thead>
                             <tr>
+                                <th>STT</th>
                                 <th>Mã giao dịch</th>
                                 <th>Tên dịch vụ</th>
                                 <th>Khách hàng</th>
@@ -647,8 +648,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="transaction" items="${transactions.content}">
+                            <c:forEach var="transaction" items="${transactions.content}" varStatus="status">
                                 <tr>
+                                    <td>${status.index + 1}</td>
                                     <td><span class="transaction-id">${transaction.id}</span></td> <!-- Mã giao dịch -->
                                     <td>${transaction.serviceName}</td> <!-- Tên dịch vụ -->
                                     <td>${transaction.user.name}</td> <!-- Khách hàng -->

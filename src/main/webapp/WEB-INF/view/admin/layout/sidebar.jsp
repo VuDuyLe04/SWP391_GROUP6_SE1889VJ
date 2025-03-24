@@ -120,7 +120,7 @@
                         <li>
                             <a href="/transpayments">
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                <span>Giao dịch thanh toán  </span>
+                                <span>Giao dịch nạp tiền</span>
                             </a>
 
                         </li>
@@ -130,7 +130,7 @@
                         <li>
                             <a href="/transervices">
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                <span>Giao dịch dịch vụ </span>
+                                <span>Giao dịch dịch vụ</span>
                             </a>
 
                         </li>

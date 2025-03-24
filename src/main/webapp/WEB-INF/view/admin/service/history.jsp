@@ -637,6 +637,7 @@
                         <table class="table">
                             <thead>
                             <tr>
+                                <th>STT</th>
                                 <th>Mã giao dịch</th>
                                 <th>Tên dịch vụ</th>
                                 <th>Số tiền</th>
@@ -646,8 +647,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="transaction" items="${transactions.content}">
+                            <c:forEach var="transaction" items="${transactions.content}" varStatus="status">
                                 <tr>
+                                    <td>${status.index + 1}</td>
                                     <td><span class="transaction-id">${transaction.id}</span></td> <!-- Mã giao dịch -->
                                     <td>${transaction.serviceName}</td> <!-- Tên dịch vụ -->
 
