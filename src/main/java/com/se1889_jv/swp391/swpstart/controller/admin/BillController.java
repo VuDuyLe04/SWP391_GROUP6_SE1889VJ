@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,23 +52,63 @@ public class BillController {
     private UserStoreService userStoreService;
 
 
-    @GetMapping("bill/table")
-    public String showListBill(@RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "5") int size,
-                               Model model) {
+    @GetMapping("/bill/table")
+    public String showListBill(
+            @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String startDateStr,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  String endDateStr,
+            @RequestParam(value = "minAmount", required = false) Double minAmount,
+            @RequestParam(value = "maxAmount", required = false) Double maxAmount,
+            @RequestParam(value = "status", required = false, defaultValue = "ALL") String status,
+            @RequestParam(value = "input", required = false) String input,
+            @RequestParam(value = "storeId", required = false,defaultValue = "0") String storeId,
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            Model model
+    ) {
         User user = Utility.getUserInSession();
         List<Store> stores = Utility.getListStoreOfOwner(user);
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        Page<Bill> bills = billService.getBillsByAllStore(stores, pageable);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        Pageable pageable = PageRequest.of(page, 5, sort);
+        Instant startDate = null;
+        Instant endDate = null;
+        Long storeID = ("0").equals(storeId) ? null : Long.parseLong(storeId);
 
-        model.addAttribute("bills", bills.getContent()); // Danh sách bill hiển thị
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", bills.getTotalPages());
-        model.addAttribute("billPage", bills); // Add this line to include the Page object
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneId.systemDefault());
 
+        if (startDateStr != null && !startDateStr.isEmpty()) {
+            startDate = Instant.from(formatter.parse(startDateStr));
+        }
+
+        if (endDateStr != null && !endDateStr.isEmpty()) {
+            endDate = Instant.from(formatter.parse(endDateStr));
+        }
+        if(input != null && !input.isEmpty()) {
+            input = input.trim();
+        }
+        Page<Bill> list = billService.filterBills(startDate,endDate,minAmount,maxAmount,input,storeID,pageable);
+        if (list.hasContent()) {
+            model.addAttribute("bills", list);
+
+        } else {
+            model.addAttribute("emptyList", "Không có hóa đơn  nào được tìm thấy!");
+        }
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("minAmount", minAmount);
+        model.addAttribute("maxAmount", maxAmount);
+        model.addAttribute("stores", Utility.getListStoreOfOwner(user));
+        model.addAttribute("status", status);
+        model.addAttribute("input", input);
+        model.addAttribute("storeId", storeID);
         return "admin/bill/listbill";
     }
 
+
+    @GetMapping("/bill/details")
+    public ResponseEntity<List<BillDetail>> getBillDetails(@RequestParam("billId") Long billId) {
+
+        List<BillDetail> billDetails = billService.findBillById(billId).getBillDetails();
+        return ResponseEntity.ok(billDetails);
+    }
 
     @PostMapping("/createbill")
     public String createBill(HttpSession session, Model model, BillDTO billDTO, RedirectAttributes redirectAttributes){
