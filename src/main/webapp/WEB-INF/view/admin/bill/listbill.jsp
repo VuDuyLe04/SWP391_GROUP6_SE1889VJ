@@ -1065,6 +1065,8 @@
                                             <i class="fa fa-eye"></i>
                                         </button>
 
+
+
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -1101,104 +1103,110 @@
         </section>
     </div>
 </section>
-
-<!-- Modal để hiển thị chi tiết hóa đơn -->
-<div class="modal fade" id="billDetailModal" tabindex="-1" aria-labelledby="billDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="billModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="billDetailModalLabel">Bill Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Chi tiết hóa đơn</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered">
+                <h6>General Bill Information</h6>
+                <p><strong>Bill ID:</strong> <span id="billId"></span></p>
+                <p><strong>Created At:</strong> <span id="createdAt"></span></p>
+                <p><strong>Created By:</strong> <span id="createdBy"></span></p>
+
+                <h6>Product Details</h6>
+                <table class="table">
                     <thead>
                     <tr>
                         <th>Product Name</th>
                         <th>Quantity</th>
                         <th>Actual Price</th>
                         <th>Listed Price</th>
-                        <th>Total Product Price</th>
+                        <th>Total</th>
                         <th>Packaging</th>
-                        <th>Quantity/Package</th>
-                        <th>Lift Service</th>
+                        <th>Qty/Package</th>
+                        <th>Lift</th>
                         <th>Lift Price</th>
-                        <th>Total Lift Price</th>
+                        <th>Total Lift</th>
                     </tr>
                     </thead>
-                    <tbody id="billDetailTableBody">
-                    <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
-                    </tbody>
+                    <tbody id="billDetails"></tbody>
                 </table>
-                <h5>Total Amount: <span id="totalBillAmount"></span>₫</h5>
             </div>
         </div>
     </div>
 </div>
 
 
+
 <!-- Đoạn mã JavaScript của bạn -->
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
 
 <script>
 
-    document.getElementById("search-input").addEventListener("keypress",function(event){
-        if(event.key === "Enter"){
+    document.getElementById("search-input").addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
             event.preventDefault();
             document.getElementById("search-form").submit();
         }
     });
-    $(document).ready(function() {
-        $(".view-button").click(function() {
-            var billId = $(this).data("id"); // Lấy billId từ button
-            $("#billDetailModal").modal("show");
 
-            // Gửi AJAX đến Spring Controller
+    $(document).ready(function () {
+        $(".view-button").click(function () {
+            var billId = $(this).data("id");
+
             $.ajax({
-                url: "/bill/details",
+                url: "/bill/details/" + billId ,
                 type: "GET",
-                data: { billId: billId },
-                success: function(billDetails) {
-                    let totalAmount = 0;
-                    let tableBody = $("#billDetailTableBody");
-                    tableBody.empty(); // Xóa dữ liệu cũ
+                success: function (response) {
+                    if (!response || !response.billDetails || response.billDetails.length === 0) {
+                        alert("Không có chi tiết hóa đơn!");
+                        return;
+                    }
 
-                    billDetails.forEach(detail => {
-                        let liftService = detail.isLift ? "Yes" : "No";
-                        let totalProductPrice = detail.quantity * detail.actualSellPrice;
-                        let totalLiftPrice = detail.totalLiftProductPrice || 0;
-                        let row = `
+                    $("#billId").text(response.id);
+                    $("#createdAt").text(response.formattedDate || "N/A");
+                    $("#createdBy").text(response.createdBy || "N/A");
+                    $("#billDetails").empty();
+
+                    response.billDetails.forEach(function (detail) {
+                        $("#billDetails").append(`
                         <tr>
-                            <td>${detail.nameProduct}</td>
-                            <td>${detail.quantity}</td>
-                            <td>${detail.actualSellPrice.toLocaleString()}₫</td>
-                            <td>${detail.listedPrice.toLocaleString()}₫</td>
-                            <td>${totalProductPrice.toLocaleString()}₫</td>
-                            <td>${detail.packagingName || '-'}</td>
-                            <td>${detail.quantityPerPackage || '-'}</td>
-                            <td>${liftService}</td>
-                            <td>${detail.liftPrice.toLocaleString()}₫</td>
-                            <td>${totalLiftPrice.toLocaleString()}₫</td>
+                            <td>${detail.nameProduct || "N/A"}</td>
+                            <td>${detail.quantity || 0}</td>
+                            <td>${detail.actualSellPrice || 0}</td>
+                            <td>${detail.listedPrice || 0}</td>
+                            <td>${detail.totalProductPrice || 0}</td>
+                            <td>${detail.packagingName || "N/A"}</td>
+                            <td>${detail.quantityPerPackage || "N/A"}</td>
+                            <td>${detail.isLift ? "Yes" : "No"}</td>
+                            <td>${detail.liftPrice != null ? detail.liftPrice : 0}</td>
+                            <td>${detail.totalLiftProductPrice != null ? detail.totalLiftProductPrice : 0}</td>
                         </tr>
-                    `;
-                        tableBody.append(row);
-                        totalAmount += totalProductPrice + totalLiftPrice;
+                    `);
                     });
 
-                    $("#totalBillAmount").text(totalAmount.toLocaleString());
+                    $("#billModal").modal("show");
                 },
-                error: function(error) {
-                    console.log("Error fetching bill details", error);
+                error: function (xhr) {
+                    if (xhr.status === 404) {
+                        alert("Hóa đơn không tồn tại!");
+                    } else {
+                        alert("Lỗi hệ thống, vui lòng thử lại sau!");
+                    }
                 }
             });
         });
     });
 
 
-    document.addEventListener("DOMContentLoaded", function () {
+
+document.addEventListener("DOMContentLoaded", function () {
         function formatToDDMMYYYY(dateStr) {
             if (!dateStr) return "";
             let parts = dateStr.split("-");

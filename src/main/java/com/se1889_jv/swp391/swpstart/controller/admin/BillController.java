@@ -13,13 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Instant;
@@ -29,6 +27,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -102,13 +101,32 @@ public class BillController {
         return "admin/bill/listbill";
     }
 
+    @GetMapping("/bills/details/{id}")
+    @ResponseBody
+    public ResponseEntity<?> getBillDetails(@PathVariable Long id) {
+        Bill bill = billService.findBillById(id); // Trả về Bill, không cần Optional
 
-    @GetMapping("/bill/details")
-    public ResponseEntity<List<BillDetail>> getBillDetails(@RequestParam("billId") Long billId) {
+        if (bill == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bill not found");
+        }
 
-        List<BillDetail> billDetails = billService.findBillById(billId).getBillDetails();
-        return ResponseEntity.ok(billDetails);
+        List<BillDetail> billDetails = bill.getBillDetails();
+
+        if (billDetails == null || billDetails.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No bill details found");
+        }
+
+        return ResponseEntity.ok(bill); // Trả về trực tiếp Bill
     }
+
+
+
+//    @GetMapping("/bill/details")
+//    public ResponseEntity<List<BillDetail>> getBillDetails(@RequestParam("billId") Long billId) {
+//
+//        List<BillDetail> billDetails = billService.findBillById(billId).getBillDetails();
+//        return ResponseEntity.ok(billDetails);
+//    }
 
     @PostMapping("/createbill")
     public String createBill(HttpSession session, Model model, BillDTO billDTO, RedirectAttributes redirectAttributes){
