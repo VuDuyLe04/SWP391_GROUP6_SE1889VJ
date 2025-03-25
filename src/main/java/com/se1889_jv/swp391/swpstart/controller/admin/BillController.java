@@ -86,7 +86,6 @@ public class BillController {
         Page<Bill> list = billService.filterBills(startDate,endDate,minAmount,maxAmount,input,storeID,pageable);
         if (list.hasContent()) {
             model.addAttribute("bills", list);
-
         } else {
             model.addAttribute("emptyList", "Không có hóa đơn  nào được tìm thấy!");
         }
