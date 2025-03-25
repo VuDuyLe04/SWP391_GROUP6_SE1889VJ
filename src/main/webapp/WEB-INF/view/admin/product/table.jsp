@@ -211,6 +211,22 @@
                             </div>
 <%--                            talbe--%>
                             <div class="table-responsive">
+                                <!-- Thêm phần Total Products Info Section -->
+                                <div style="display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 8px;">
+                                    <div style="display: flex; align-items: center;">
+                                        <i class="fa fa-cube mr-xs" style="color: #0088cc; font-size: 11px;"></i>
+                                        <span style="font-weight: 400; color: #666; font-size: 11px;">Tổng số: 
+                                            <span style="color: #0088cc; font-weight: 500;">${productPage.totalElements}</span> sản phẩm
+                                        </span>
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <i class="fa fa-file mr-xs" style="color: #0088cc; font-size: 11px;"></i>
+                                        <span style="font-weight: 400; color: #666; font-size: 11px;">Trang: 
+                                            <span style="color: #0088cc; font-weight: 500;">${productPage.number + 1}/${productPage.totalPages}</span>
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
                                     <tr>
@@ -231,7 +247,8 @@
 
                                         <!-- Bảng dữ liệu -->
                                         <tr>
-                                            <td>${status.index + 1}</td>
+
+                                            <td>${productPage.number * productPage.size + status.index + 1}</td>
                                             <td class="hidden-xs hidden-sm">${product.name}</td>
                                             <td class="text-center">${product.unitPrice} đ/kg</td>
                                             <td class="text-center">${product.totalQuantity}</td>
@@ -264,30 +281,35 @@
 
                                 <c:set var="c" value="${productPage.number}" />
 
-                                <ul class="pagination justify-content-center">
-                                    <!-- Nút Previous -->
-                                    <li class="page-item ${c == 0 ? 'disabled' : ''}">
-                                        <a class="page-link"
-                                           href="${c == 0 ? '#' : 'product?page='}${c - 1}&sort=${param.sort}&order=${param.order}&store=${param.store}">Trước</a>
-                                    </li>
+                                <!-- Cập nhật phần phân trang để căn giữa -->
+                                <div style="display: flex; justify-content: center; margin-top: 20px;">
+                                    <ul class="pagination">
+                                        <!-- Nút Previous -->
+                                        <li class="page-item ${c == 0 ? 'disabled' : ''}">
+                                            <a class="page-link" href="${c == 0 ? '#' : 'product?page='}${c - 1}&sort=${param.sort}&order=${param.order}&store=${param.store}">
+                                                <i class="fa fa-angle-left"></i> Trước
+                                            </a>
+                                        </li>
 
-                                    <!-- Hiển thị các số trang -->
-                                    <c:if test="${productPage.totalPages > 0}">
-                                        <c:forEach begin="0" end="${productPage.totalPages - 1}" var="i">
-                                            <c:if test="${i >= c - 2 && i <= c + 2}">
-                                                <li class="page-item ${c == i ? 'active' : ''}">
-                                                    <a class="page-link" href="product?page=${i}&sort=${param.sort}&order=${param.order}&store=${param.store}">${i + 1}</a>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:if>
+                                        <!-- Hiển thị các số trang -->
+                                        <c:if test="${productPage.totalPages > 0}">
+                                            <c:forEach begin="0" end="${productPage.totalPages - 1}" var="i">
+                                                <c:if test="${i >= c - 2 && i <= c + 2}">
+                                                    <li class="page-item ${c == i ? 'active' : ''}">
+                                                        <a class="page-link" href="product?page=${i}&sort=${param.sort}&order=${param.order}&store=${param.store}">${i + 1}</a>
+                                                    </li>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:if>
 
-                                    <!-- Nút Next -->
-                                    <li class="page-item ${c >= productPage.totalPages - 1 ? 'disabled' : ''}">
-                                        <a class="page-link"
-                                           href="${c >= productPage.totalPages - 1 ? '#' : 'product?page='}${c + 1}&sort=${param.sort}&order=${param.order}&store=${param.store}">Sau</a>
-                                    </li>
-                                </ul>
+                                        <!-- Nút Next -->
+                                        <li class="page-item ${c >= productPage.totalPages - 1 ? 'disabled' : ''}">
+                                            <a class="page-link" href="${c >= productPage.totalPages - 1 ? '#' : 'product?page='}${c + 1}&sort=${param.sort}&order=${param.order}&store=${param.store}">
+                                                Sau <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
 
 
                             </div>
