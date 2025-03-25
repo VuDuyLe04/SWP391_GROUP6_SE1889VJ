@@ -172,7 +172,7 @@
                                     <tbody>
                                     <c:forEach items="${listService}" var="service" varStatus="status">
                                         <tr>
-                                            <td>${status.index + 1}</td>
+                                            <td>${servicePage.number * servicePage.size + status.index + 1}</td>
                                             <td class="text-center">${service.name}</td>
                                             <td class="text-center">${service.durationMonths} tháng</td>
                                             <td class="text-center">${service.price}</td>

@@ -79,6 +79,7 @@ public class ServiceController {
 
         Page<Service> servicePage = this.serviceService.findAllServices(pageable, serviceCriteriaDTO);
         model.addAttribute("currentPage", page);
+        model.addAttribute("servicePage", servicePage);
         model.addAttribute("totalPages", servicePage.getTotalPages());
         model.addAttribute("listService", servicePage.getContent());
         return "admin/service/table";
