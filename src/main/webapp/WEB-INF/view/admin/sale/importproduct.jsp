@@ -57,8 +57,8 @@
             </div>
             <div class="bill-items-con">
                 <div class="row fw-bold bg-light py-2 border-bottom">
-                    <div class="col-3">Sản phẩm</div>
-                    <div class="col-3 text-center">Số lượng & Giá</div>
+                    <div class="col-2">Sản phẩm</div>
+                    <div class="col-4 text-center">Số lượng & Giá</div>
                     <div class="col-2 text-center">Giá thực</div>
                     <div class="col-3 text-center">Tổng</div>
                     <div class="col-1 text-center">Xóa</div>
@@ -215,10 +215,10 @@
 
                     <!-- Ô nhập tiền -->
                     <div id="paymentInputs" class="mt-3" style="display: none;">
-                        <label for="amountDue" class="form-label">Số tiền phải trả</label>
+                        <label for="amountDue" class="form-label">Số tiền phải trả cho khách</label>
                         <input type="text" class="form-control" id="amountDue" disabled>
 
-                        <label for="customerPayment" class="form-label mt-2">Số tiền trả</label>
+                        <label for="customerPayment" class="form-label mt-2">Số tiền trả khách</label>
                         <input type="text" class="form-control" id="customerPayment">
                     </div>
 

@@ -230,6 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("address-error").hidden = true;
     });
 });
+let customerBalance = 0;
 
 //search customer by Phone
 document.addEventListener("DOMContentLoaded", function () {
@@ -241,10 +242,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const amountDue = document.getElementById("amountDue");
     const customerPayment = document.getElementById("customerPayment");
     const billTotalElement = document.querySelector(".bill-summary .text-success");
-    let customerBalance = 0;
 
     async function searchCustomer(phone) {
-        if (phone.length < 3) {
+        if (phone.length < 1) {
             suggestionBox.style.display = "none";
             return;
         }
@@ -307,17 +307,49 @@ document.addEventListener("DOMContentLoaded", function () {
         if (customerBalance > 0) {
             debtInfo.textContent = `Khách còn nợ: ${customerBalance.toLocaleString()} VND`;
             debtInfo.className = "alert alert-danger";
-        } else if (customerBalance == 0) {
+        } else if(customerBalance < 0){
+            debtInfo.textContent = `Cửa hàng còn nợ: ${customerBalance*(-1).toLocaleString()} VND`;
+            debtInfo.className = "alert alert-primary";
+        } else{
             debtInfo.textContent = "Không có nợ!";
             debtInfo.className = "alert alert-secondary";
-        } else{
-            debtInfo.textContent = `Cửa hàng còn nợ: ${(customerBalance*(-1)).toLocaleString()} VND`;
-            debtInfo.className = "alert alert-primary";
         }
         debtInfo.style.display = "block";
     }
-    function updatePaymentOptions() {
+    function hiddenDebt(){
+        debtInfo.style.display = "none";
+    }
+    async function checkBillExistence(storeId) {
+        try {
+            let billCheckResponse = await fetch(`/api/getCurrentBill?storeId=${encodeURIComponent(storeId)}`);
+            if (!billCheckResponse.ok) throw new Error(`Lỗi API: ${billCheckResponse.status}`);
+
+            let billData = await billCheckResponse.json();
+
+            // Kiểm tra xem billData có hợp lệ không
+            return billData && Object.keys(billData).length > 0;
+        } catch (error) {
+            console.error("Lỗi khi kiểm tra hóa đơn:", error);
+            return false; // Giả định là không có hóa đơn nếu có lỗi
+        }
+    }
+    async function updatePaymentOptions() {
         paymentOptions.innerHTML = "";
+
+        if (searchInput.value.trim() === "") {
+            paymentOptions.style.display = "none";
+            return;
+        }
+
+        // Kiểm tra xem có hóa đơn không
+        let hasBill = await checkBillExistence(storeId);
+        if (!hasBill) {
+            paymentOptions.style.display = "none";
+            console.warn("Không có hóa đơn hiện tại, vô hiệu hóa tùy chọn thanh toán.");
+            return;
+        }
+
+        paymentOptions.style.display = "block";
 
         const defaultOption = document.createElement("option");
         defaultOption.textContent = "Chọn hành động";
@@ -335,13 +367,21 @@ document.addEventListener("DOMContentLoaded", function () {
         partialOption.textContent = "Trả một phần";
         paymentOptions.appendChild(partialOption);
 
-        if (searchInput.value.trim() !== "" && customerBalance !== 0) {
-            const allOption = document.createElement("option");
-            allOption.value = "all";
-            allOption.textContent = "Trả tất cả";
-            paymentOptions.appendChild(allOption);
+        if (customerBalance !== 0) {
+            if (customerBalance > 0) {
+                const allOption = document.createElement("option");
+                allOption.value = "all";
+                allOption.textContent = "Trả tất cả";
+                paymentOptions.appendChild(allOption);
+            } else {
+                const deductOption = document.createElement("option");
+                deductOption.value = "deduct";
+                deductOption.textContent = "Trả trừ nợ";
+                paymentOptions.appendChild(deductOption);
+            }
         }
     }
+
 
 
     function updateAmountDue() {
@@ -355,16 +395,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 amountToPay = billTotal;
                 break;
             case "all":
-                if (customerBalance > 0){
-                    amountToPay = billTotal + customerBalance;
-                } else {
-                    amountToPay = billTotal + customerBalance * (-1);
-                }
-
+                amountToPay = billTotal + customerBalance;
                 break;
             case "partial":
                 amountToPay = billTotal;
                 allowInput = true;
+                break;
+            case "deduct":
+                console.log(customerBalance * -1);
+                if(billTotal == 0){
+                    amountToPay = customerBalance * -1;
+                } else if(billTotal < customerBalance *(-1)){
+                    console.log("Số tiền phải trả: " + 0);
+                    amountToPay = 0
+                } else {
+                    amountToPay = billTotal + customerBalance;
+                }
+
+
                 break;
             default:
                 paymentInputs.style.display = "none";
@@ -385,8 +433,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     searchInput.addEventListener("input", () => {
-        searchCustomer(searchInput.value.trim());
+        const trimmedValue = searchInput.value.trim();
+        searchCustomer(trimmedValue);
+        if (trimmedValue === "") {
+            hiddenDebt();
+            paymentOptions.style.display = "none";
+            paymentInputs.style.display = "none";
+        } else {
+            paymentOptions.style.display = "block";
+        }
     });
+
     paymentOptions.addEventListener("change", updateAmountDue);
     document.addEventListener("click", function (event) {
         if (!suggestionBox.contains(event.target) && event.target !== searchInput) {
@@ -405,15 +462,23 @@ function getBillRequest() {
     const totalNeedPayInput = document.getElementById("amountDue");
     const actualPayInput = document.getElementById("customerPayment");
 
+    let customerInfor = customerInput ? customerInput.value.trim() : "";
+    let type = typeSelect ? typeSelect.value : "";
+
+    if (customerInfor === "") {
+        type = "order";
+    }
+
     return {
         description: descriptionInput ? descriptionInput.value.trim() : "",
-        customerInfor: customerInput ? customerInput.value.trim() : "",
-        type: typeSelect ? typeSelect.value : "",
-        createDebt: typeSelect && typeSelect.value !== "order",
+        customerInfor: customerInfor,
+        type: type,
+        createDebt: customerInfor !== "" && type !== "order", // Nếu rỗng hoặc type = "order" thì false
         totalNeedPay: totalNeedPayInput ? parseInt(totalNeedPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
         actualPay: actualPayInput ? parseInt(actualPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
     };
 }
+
 
 
 
@@ -428,7 +493,7 @@ async function updateFinalBill() {
 
         if (!billCheckData.data) {
             showToast("Hãy thêm sản phẩm vào hóa đơn", false);
-            return; // Dừng lại nếu không có hóa đơn
+            return;
         }
 
         const billRequest = getBillRequest(); // Lấy dữ liệu từ giao diện
@@ -454,7 +519,7 @@ async function updateFinalBill() {
             }
 
         } else {
-            alert("Lỗi cập nhật hóa đơn: " + result.message);
+            showToast("Lỗi cập nhật hóa đơn: " + result.message, false);
         }
     } catch (error) {
         console.error("Lỗi khi gửi yêu cầu cập nhật hóa đơn:", error);

@@ -20,7 +20,8 @@ public enum ErrorException {
     DEBT_DONT_HAVE_CUSTOMER(109,"Hãy thêm khách hàng vào phiếu nợ"),
     ACTUAL_PRICE_NOT_POSITIVE(110, "Gía bán thực tế không thể âm"),
     PAY_NOT_POSITIVE(111, "Tiền trả ko thể âm"),
-    CUSTOMER_INFOR_IS_NULL(112, "Thông tin khách hàng đang trống")
+    CUSTOMER_INFOR_IS_NULL(112, "Thông tin khách hàng đang trống"),
+    DONT_HAVE_BILL_DETAIL(113,"Hãy thêm sản phẩm vào bill này")
     ;
     private int code;
     private String message;

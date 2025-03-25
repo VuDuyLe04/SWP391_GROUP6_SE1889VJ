@@ -5,36 +5,57 @@ function attackEventAddBillImportProduct() {
     });
 }
 let billDetailsList = [];
-async function addBillDetailImport(button) {
+function addBillDetailImport(button) {
     let modal = button.closest(".modal");
     let productIdItem = modal.id.replace("productModal", "");
     let quantity = parseInt(modal.querySelector(".quantity-input").value);
-    if(quantity< 0 ){
+    if (isNaN(quantity) || quantity < 1) {
         showToast("Số lượng phải lớn hơn 0", false);
-
         return;
     }
+
     let listed = parseFloat(modal.querySelector('.listed-input').value);
     let productName = modal.querySelector('.modal-title').textContent;
-    const storeId = parseInt(document.getElementById("storeId").textContent);
 
-    let requestData = {
-                productId: productIdItem,
-                quantity: quantity,
-                importPrice: listed,
-                productName: productName
-            };
     let existingItem = billDetailsList.find(item => item.productId === productIdItem);
     if (existingItem) {
-        existingItem.quantity += quantity;
+        existingItem.quantity += quantity; // Cộng dồn số lượng
     } else {
-        billDetailsList.push(requestData);
-        console.log(billDetailsList);
+        billDetailsList.push({
+            productId: productIdItem,
+            quantity: quantity,
+            importPrice: listed,
+            productName: productName
+        });
     }
+    console.log(billDetailsList)
     renderBillDetails();
-
 }
+function resetPaymentOptions() {
+    let paymentOptions = document.getElementById("paymentOptions");
+    let paymentInputs = document.getElementById("paymentInputs");
 
+    if (paymentOptions) {
+        paymentOptions.innerHTML = `
+            <option disabled selected>Chọn hành động</option>
+            <option value="order">Trả đơn hàng</option>
+            <option value="partial">Trả một phần</option>
+        `;
+
+        if (customerBalance !== 0) {
+            if (customerBalance < 0) {
+                paymentOptions.innerHTML += `<option value="all">Trả tất cả</option>`;
+            } else {
+                paymentOptions.innerHTML += `<option value="deduct">Trả trừ nợ</option>`;
+            }
+        }
+
+    }
+
+    if (paymentInputs) {
+        paymentInputs.style.display = "none"; // Ẩn các input nhập số tiền nếu có
+    }
+}
 function updateBillDetail(input, oldValue) {
     let row = input.closest(".row");
     let productId = input.getAttribute("data-id");
@@ -56,7 +77,8 @@ function updateBillDetail(input, oldValue) {
     let totalPriceElement = row.querySelector(".price-detail");
     totalPriceElement.textContent = totalProductPrice.toLocaleString() + "đ";
 
-    let billDetail = billDetailsList.find(detail => detail.id == productId);
+    let billDetail = billDetailsList.find(detail => detail.productId == productId);
+    console.log()
     if (billDetail) {
         billDetail.quantity = quantity;
         billDetail.listedPrice = listedPrice;
@@ -64,6 +86,7 @@ function updateBillDetail(input, oldValue) {
     }
 
     getBillDetailsAndCalculate();
+     resetPaymentOptions()
 }
 
 
@@ -85,27 +108,29 @@ function renderBillDetails() {
         billItem.innerHTML = `
             <div class="container p-0 item-bill-details">
                 <div class="row align-items-center g-0 py-2 border-bottom">
-                    <div class="col-3 overflow-hidden">
+                    <div class="col-2 overflow-hidden">
                         <h6 class="mb-0 text-truncate">${detail.productName}</h6>
                     </div>
-                    <div class="col-3 d-flex align-items-center">
+                    <div class="col-4 d-flex align-items-center justify-content-center">
                         <input type="number" class="form-control text-center me-2 flex-shrink-0 quantity-input" style="width: 60px;" 
                             value="${detail.quantity}" 
-                            data-id="${detail.id}"
-                            oninput="updateBillDetail(this, this.value)"/>
+                            data-id="${detail.productId}"
+                            oninput="updateBillDetail(this, this.value)"
+                            id="quantity-in"/>
+                            
                         <span class="text-nowrap">x ${detail.importPrice}đ</span>
                     </div>
-                    <div class="col-2 text-danger text-center">
+                    <div class="col-2 text-danger text-center justify-content-center">
                         <input type="number" class="form-control text-center me-2 flex-shrink-0 listed-price-input" style="width: 120px;" 
                             value="${detail.importPrice}" 
-                            data-id="${detail.id}"
+                            data-id="${detail.productId}"
                             oninput="updateBillDetail(this, this.value)"/>
                     </div>
                     <div class="col-3 fw-bold text-center price-detail">
                         ${totalProductPrice.toLocaleString()}đ
                     </div>
                     <div class="col-1 text-end">
-                        <button class="btn btn-danger btn-sm" onclick="removeBillItem(${detail.id})">
+                        <button class="btn btn-danger btn-sm" onclick="removeBillItem(${detail.productId})">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -114,8 +139,9 @@ function renderBillDetails() {
         `;
         billDetailsContainer.appendChild(billItem);
     });
-
     getBillDetailsAndCalculate();
+    resetPaymentOptions()
+
 }
 
 function getBillDetailsAndCalculate() {
@@ -135,9 +161,27 @@ function getBillDetailsAndCalculate() {
 }
 
 function removeBillItem(productId) {
-    billDetailsList = billDetailsList.filter(detail => detail.id !== productId);
+    console.log("Product ID cần xóa:"+ typeof productId);
+    console.log("Danh sách trước khi xóa:", billDetailsList);
+
+    let index = billDetailsList.findIndex(detail => parseInt(detail.productId) === productId);
+    console.log(index);
+    if (index !== -1) {
+        billDetailsList.splice(index, 1);
+        console.log("Sản phẩm đã bị xóa:", productId);
+    } else {
+        console.warn("Không tìm thấy sản phẩm để xóa!");
+    }
+
+    console.log("Danh sách sau khi xóa:", billDetailsList);
+    let totalBillElement = document.querySelector(".total-need-pay");
+    if (totalBillElement) {
+        totalBillElement.textContent =  "0đ";
+    }
     renderBillDetails();
+    resetPaymentOptions()
 }
+let customerBalance = 0;
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("search-phone");
     const suggestionBox = document.getElementById("suggestion-box");
@@ -147,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const amountDue = document.getElementById("amountDue");
     const customerPayment = document.getElementById("customerPayment");
     const billTotalElement = document.querySelector(".bill-summary .text-success");
-    let customerBalance = 0;
+
 
     async function searchCustomer(phone) {
         if (phone.length < 3) {
@@ -208,18 +252,22 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Lỗi khi lấy số dư khách hàng:", error);
         }
     }
+
     function updateDebtInfo() {
         if (customerBalance > 0) {
             debtInfo.textContent = `Khách còn nợ: ${customerBalance.toLocaleString()} VND`;
             debtInfo.className = "alert alert-danger";
-        } else if (customerBalance == 0) {
+        } else if(customerBalance < 0){
+            debtInfo.textContent = `Cửa hàng còn nợ: ${customerBalance*(-1).toLocaleString()} VND`;
+            debtInfo.className = "alert alert-primary";
+        } else{
             debtInfo.textContent = "Không có nợ!";
             debtInfo.className = "alert alert-secondary";
-        } else{
-            debtInfo.textContent = `Cửa hàng còn nợ: ${(customerBalance*(-1)).toLocaleString()} VND`;
-            debtInfo.className = "alert alert-primary";
         }
         debtInfo.style.display = "block";
+    }
+    function hiddenDebt(){
+        debtInfo.style.display = "none";
     }
     function updatePaymentOptions() {
         paymentOptions.innerHTML = "";
@@ -240,11 +288,18 @@ document.addEventListener("DOMContentLoaded", function () {
         partialOption.textContent = "Trả một phần";
         paymentOptions.appendChild(partialOption);
 
-        if (searchInput.value.trim() !== "" && customerBalance !== 0) {
-            const allOption = document.createElement("option");
-            allOption.value = "all";
-            allOption.textContent = "Trả tất cả";
-            paymentOptions.appendChild(allOption);
+        if (customerBalance !== 0) {
+            if (customerBalance < 0) {
+                const allOption = document.createElement("option");
+                allOption.value = "all";
+                allOption.textContent = "Trả tất cả";
+                paymentOptions.appendChild(allOption);
+            } else {
+                const deductOption = document.createElement("option");
+                deductOption.value = "deduct";
+                deductOption.textContent = "Trả trừ nợ";
+                paymentOptions.appendChild(deductOption);
+            }
         }
     }
 
@@ -260,15 +315,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 amountToPay = billTotal;
                 break;
             case "all":
-                if (customerBalance > 0){
-                    amountToPay = billTotal + customerBalance;
-                } else {
-                    amountToPay = billTotal + customerBalance * (-1);
-                }
+                amountToPay = billTotal - customerBalance;
+
                 break;
             case "partial":
                 amountToPay = billTotal;
                 allowInput = true;
+                break;
+            case "deduct":
+                console.log(customerBalance * -1);
+                if(customerBalance > billTotal){
+                    amountToPay = 0;
+                } else {
+                    amountToPay = billTotal - customerBalance;
+                }
+
+
                 break;
             default:
                 paymentInputs.style.display = "none";
@@ -289,7 +351,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     searchInput.addEventListener("input", () => {
-        searchCustomer(searchInput.value.trim());
+        const trimmedValue = searchInput.value.trim();
+        searchCustomer(trimmedValue);
+        if (trimmedValue === "") {
+            hiddenDebt();
+            paymentOptions.style.display = "none";
+            paymentInputs.style.display = "none";
+        } else {
+            paymentOptions.style.display = "block";
+        }
     });
     paymentOptions.addEventListener("change", updateAmountDue);
     document.addEventListener("click", function (event) {
@@ -308,7 +378,7 @@ function getBillRequest() {
     const typeSelect = document.getElementById("paymentOptions");
     const totalNeedPayInput = document.getElementById("amountDue");
     const actualPayInput = document.getElementById("customerPayment");
-
+    const quantityIn = document.getElementById("quantity-in");
     return {
         description: descriptionInput ? descriptionInput.value.trim() : "",
         customerInfor: customerInput ? customerInput.value.trim() : "",
@@ -316,6 +386,8 @@ function getBillRequest() {
         createDebt: typeSelect && typeSelect.value !== "order",
         totalNeedPay: totalNeedPayInput ? parseInt(totalNeedPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
         actualPay: actualPayInput ? parseInt(actualPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
+        // loi o day
+        quantity: parseFloat(quantityIn.value)
     };
 }
 function showToast(message, isSuccess = true) {
@@ -347,8 +419,6 @@ document.getElementById('create-bill').addEventListener('click', function (){
     };
 
     console.log("Dữ liệu gửi đi:", requestData);
-
-    // Gửi request đến server
     fetch("/api/importproduct", {
         method: "POST",
         headers: {

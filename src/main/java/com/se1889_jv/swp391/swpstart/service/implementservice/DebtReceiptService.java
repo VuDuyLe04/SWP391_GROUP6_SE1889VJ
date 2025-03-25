@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.service.implementservice;
 
+import com.se1889_jv.swp391.swpstart.domain.Bill;
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.DebtReceipt;
 import com.se1889_jv.swp391.swpstart.domain.User;
@@ -12,6 +13,7 @@ import com.se1889_jv.swp391.swpstart.domain.dto.response.DebtReceiptDetailRespon
 import com.se1889_jv.swp391.swpstart.domain.dto.response.PageResponse;
 import com.se1889_jv.swp391.swpstart.exception.AppException;
 import com.se1889_jv.swp391.swpstart.exception.ErrorException;
+import com.se1889_jv.swp391.swpstart.repository.BillRepository;
 import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import com.se1889_jv.swp391.swpstart.repository.DebtReceiptRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IDebtReceiptService;
@@ -42,6 +44,8 @@ public class DebtReceiptService implements IDebtReceiptService {
     private  CustomerRepository customerRepository;
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private BillRepository billRepository;
     @Override
     public PageResponse<DebtReceipt> getDebtsByCustomer(long id, int page) {
         var customer = customerRepository.findById(id)
@@ -164,7 +168,7 @@ public class DebtReceiptService implements IDebtReceiptService {
     }
 
     @Override
-    public DebtReceipt createDebtReceiption(BillRequest request, User user) {
+    public DebtReceipt createDebtReceiption(BillRequest request, User user, Long billId) {
         if(request.getCustomerInfor().isEmpty() || request.getCustomerInfor() == null) {
             throw new AppException(ErrorException.DEBT_DONT_HAVE_CUSTOMER);
         }
@@ -178,42 +182,64 @@ public class DebtReceiptService implements IDebtReceiptService {
             debtReceipt.setDebtType(DebtTypeEnum.DEBTREPAY);
         } else if (request.getActualPay().equals(request.getTotalNeedPay())) {
             Customer c = customerService.getCustomerByNameAndPhone(request.getCustomerInfor());
-            debtReceipt.setDebtAmount(c.getBalance());
-            debtReceipt.setDebtType(DebtTypeEnum.DEBTREPAY);
+            Bill b = billRepository.findById(billId).get();
+            log.info("bill hiện tại: " + b.getTotalBillPrice());
+            if(request.getType().compareTo("all") == 0){
+                debtReceipt.setDebtType(DebtTypeEnum.DEBTREPAY);
+                debtReceipt.setDebtAmount(c.getBalance());
+            } else if(request.getType().compareTo("deduct") == 0){
+                //nếu tổng bill < số dư
+                if(b.getTotalBillPrice() < c.getBalance()*(-1)){
+                    log.info("Case 1");
+                    debtReceipt.setDebtAmount(b.getTotalBillPrice());
+                } else {
+                    // case tiền bill > tiền cửa hàng nợ
+                    log.info("Case 2");
+                    debtReceipt.setDebtAmount(c.getBalance() * (-1));
+                }
+                debtReceipt.setDebtType(DebtTypeEnum.DEBIT);
+            }
+
         }
         debtReceipt.setCustomer(customerService.getCustomerByNameAndPhone(request.getCustomerInfor()));
         debtReceipt.setCreatedBy(user.getName());
         debtReceipt.setIsProcess(false);
         return debtReceiptRepository.save(debtReceipt);
-
     }
-
+    // sửa case này th nợ của khách < tổng bill (sai là cộng thêm số dư cho khách)
+    // case cửa hàng còn nợ và nhập thêm hàng,
     @Override
-    public DebtReceipt createDebtForImport(ImportRequest request, User user) {
+    public DebtReceipt createDebtForImport(ImportRequest request, User user, Double totalPrice) {
         if(request.getCustomerInfor().isEmpty() || request.getCustomerInfor() == null) {
             throw new AppException(ErrorException.DEBT_DONT_HAVE_CUSTOMER);
         }
         DebtReceipt debtReceipt = new DebtReceipt();
         if(request.getActualPay() < request.getTotalNeedPay()){
-
             debtReceipt.setDebtAmount(request.getTotalNeedPay() - request.getActualPay());
             debtReceipt.setDebtType(DebtTypeEnum.DEBTREPAY);
-
         } else if(request.getActualPay() > request.getTotalNeedPay()){
-
             debtReceipt.setDebtAmount(request.getActualPay() - request.getTotalNeedPay());
             debtReceipt.setDebtType(DebtTypeEnum.DEBIT);
-
         } else if (request.getActualPay().equals(request.getTotalNeedPay())) {
-
             Customer c = customerService.getCustomerByNameAndPhone(request.getCustomerInfor());
-            if (c.getBalance() < 0){
-                debtReceipt.setDebtAmount(c.getBalance() * -1);
-            } else {
-                debtReceipt.setDebtAmount(c.getBalance());
+            if(request.getType().compareTo("all") == 0){
+                if(c.getBalance() < 0){
+                    debtReceipt.setDebtAmount(c.getBalance() * (-1));
+                    debtReceipt.setDebtType(DebtTypeEnum.DEBIT);
+                }
+            } else if(request.getType().compareTo("deduct") == 0){
+                log.info(totalPrice.toString());
+                // kiem tra so du nguoi dung voi gia don hang
+                if(c.getBalance() > totalPrice){
+                    log.info("Case 1.1");
+                    debtReceipt.setDebtAmount(totalPrice);
+                }else {
+                    log.info("Case 1.2");
+                    debtReceipt.setDebtAmount(c.getBalance());
+                }
+                debtReceipt.setDebtType(DebtTypeEnum.DEBTREPAY);
             }
 
-            debtReceipt.setDebtType(DebtTypeEnum.DEBIT);
         }
         debtReceipt.setCustomer(customerService.getCustomerByNameAndPhone(request.getCustomerInfor()));
         debtReceipt.setCreatedBy(user.getName());
