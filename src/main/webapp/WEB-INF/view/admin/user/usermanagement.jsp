@@ -304,13 +304,20 @@
                                             <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>
                                         </c:if>
                                         <c:if test="${sessionScope.user.role.id == 2}">
-                                            <select id="storeId" name="storeId" class="form-control" onchange="filterByStore(this.value)">
-                                            <option value="-1" ${storeId == -1 ? 'selected' : ''}>Tất cả cửa hàng</option>
-                                            <c:forEach items="${stores}" var="s">
-                                                <option value="${s.id}" ${storeId == s.id ? 'selected' : ''}>${s.name}</option>
-                                            </c:forEach>
 
-                                        </select>
+
+                                            <div class="form-group mr-md">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
+                                                    <select id="storeId" name="storeId" class="form-control" onchange="filterByStore(this.value)">
+                                                        <option value="-1" ${storeId == -1 ? 'selected' : ''}>Tất cả cửa hàng</option>
+                                                        <c:forEach items="${stores}" var="s">
+                                                            <option value="${s.id}" ${storeId == s.id ? 'selected' : ''}>${s.name}</option>
+                                                        </c:forEach>
+
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="form-group mr-md">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
