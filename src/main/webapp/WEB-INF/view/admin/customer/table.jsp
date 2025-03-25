@@ -301,7 +301,10 @@ uri="http://www.springframework.org/tags/form" %>
                           varStatus="status"
                         >
                           <tr>
-                            <td>${customerPage.number * customerPage.size + status.index + 1}</td>
+                            <td>
+                              ${customerPage.number * customerPage.size +
+                              status.index + 1}
+                            </td>
                             <td><strong>${customer.name}</strong></td>
                             <td>${customer.phone}</td>
                             <td class="text-right">${customer.balance}</td>
@@ -333,52 +336,48 @@ uri="http://www.springframework.org/tags/form" %>
                       </tbody>
                     </table>
 
-                    <!-- Phân trang -->
-                    <div
-                      style="
-                        display: flex;
-                        justify-content: center;
-                        margin-top: 20px;
-                      "
-                    >
-                      <ul class="pagination">
-                        <c:if test="${currentPage > 0}">
-                          <li class="page-item">
-                            <a
-                              class="page-link"
-                              href="/customer/table?page=${currentPage - 1}"
-                            >
-                              <i class="fa fa-angle-left"></i> Trước
-                            </a>
-                          </li>
-                        </c:if>
-
-                        <c:if test="${totalPages > 0}">
-                          <c:forEach begin="0" end="${totalPages - 1}" var="i">
-                            <li
-                              class="page-item ${i == currentPage ? 'active' : ''}"
-                            >
+                    <c:if test="${customerPage.content != null }">
+                      <c:set var="c" value="${customerPage.number}"></c:set>
+                      <ul
+                        class="pagination"
+                        style="display: flex; justify-content: center"
+                      >
+                        <li class="page-item ${c==0 ?'disabled':''}">
+                          <a
+                            class="page-link"
+                            href="/customer/table?page=${c==0 ? 0 : (c - 1)}&nameOrPhone=${nameOrPhone != null ? nameOrPhone : ''}&sort=${sort != null ? sort : 'normal'}&status=${status != null ? status : 'ALL'}"
+                            >Trước</a
+                          >
+                        </li>
+                        <c:forEach
+                          begin="0"
+                          end="${customerPage.totalPages - 1}"
+                          var="i"
+                        >
+                          <c:if test="${i >= c - 1 && i <= c + 1}">
+                            <li class="page-item ${c == i ? 'active' : ''}">
                               <a
                                 class="page-link"
-                                href="/customer/table?page=${i}"
+                                href="/customer/table?page=${i}&nameOrPhone=${nameOrPhone != null ? nameOrPhone : ''}&sort=${sort != null ? sort : 'normal'}&status=${status != null ? status : 'ALL'}"
                                 >${i + 1}</a
                               >
                             </li>
-                          </c:forEach>
-                        </c:if>
-
-                        <c:if test="${currentPage < totalPages - 1}">
-                          <li class="page-item">
-                            <a
-                              class="page-link"
-                              href="/customer/table?page=${currentPage + 1}"
-                            >
-                              Sau <i class="fa fa-angle-right"></i>
-                            </a>
-                          </li>
-                        </c:if>
+                          </c:if>
+                          <c:if test="${i == c- 2 || i == c+ 2}">
+                            <li><span>...</span></li>
+                          </c:if>
+                        </c:forEach>
+                        <li
+                          class="page-item ${c== customerPage.totalPages -1?'disabled':''}"
+                        >
+                          <a
+                            class="page-link"
+                            href="/customer/table?page=${c== customerPage.totalPages -1? customerPage.totalPages -1: (c + 1)}&nameOrPhone=${nameOrPhone != null ? nameOrPhone : ''}&sort=${sort != null ? sort : 'normal'}&status=${status != null ? status : 'ALL'}"
+                            >Sau</a
+                          >
+                        </li>
                       </ul>
-                    </div>
+                    </c:if>
                   </div>
                 </div>
               </section>

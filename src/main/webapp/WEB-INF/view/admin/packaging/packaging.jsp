@@ -459,7 +459,7 @@
                                         <!-- Nút Previous -->
                                         <li class="page-item ${c == 0 ? 'disabled' : ''}">
                                             <a class="page-link" href="packaings?page=${c == 0 ? 0 : (c - 1)}&store=${param.store}&input=${param.input}&sort=${param.sort}&active=${param.active}">
-                                                <i class="fa fa-angle-left"></i> Trước
+                                                 Trước
                                             </a>
                                         </li>
 
@@ -477,7 +477,7 @@
                                         <!-- Nút Next -->
                                         <li class="page-item ${c == packagingPage.totalPages - 1 ? 'disabled' : ''}">
                                             <a class="page-link" href="packaings?page=${c == packagingPage.totalPages - 1 ? c : (c + 1)}&store=${param.store}&input=${param.input}&sort=${param.sort}&active=${param.active}">
-                                                Sau <i class="fa fa-angle-right"></i>
+                                                Sau </i>
                                             </a>
                                         </li>
                                     </ul>
