@@ -2,6 +2,7 @@ package com.se1889_jv.swp391.swpstart.config;
 
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.repository.UserRepository;
+import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,11 +27,14 @@ public class UserSessionUpdateService {
 
     @Scheduled(fixedRate = 2000)
     public void updateUserInSession() {
+        System.out.println("updateUserInSession");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
-            String username = auth.getName();
-            User freshUser = this.userRepository.findByPhone(username);
+        User user = Utility.getUserInSession();
+
+        if (user != null) {
+//            String username = user.getPhone();
+            User freshUser = this.userRepository.findById(user.getId()).orElse(null);
 
             if (freshUser != null) {
                 // Tạo một UserDetails mới từ dữ liệu cập nhật
@@ -52,6 +56,7 @@ public class UserSessionUpdateService {
 
                 // Lưu user mới vào session nếu cần
                 session.setAttribute("user", freshUser);
+                System.out.println(freshUser);
             }
         }
     }

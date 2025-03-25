@@ -130,6 +130,7 @@ public class WareHouseController {
         model.addAttribute("totalPages", result.getTotalPages());
         return "admin/warehouse/table";
     }
+
     @CheckPermission(condition = "statusService")
     @GetMapping("/warehouse/search")
     public String searchWarehouseByName(@RequestParam("name") String name, Model model) {
@@ -137,6 +138,7 @@ public class WareHouseController {
         model.addAttribute("listWareHouse", warehouses);
         return "admin/warehouse/table";
     }
+
     @CheckPermission(condition = "statusService")
     @GetMapping("/warehouse/{id}")
     @ResponseBody
