@@ -1,7 +1,9 @@
 package com.se1889_jv.swp391.swpstart.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -59,6 +61,7 @@ public class Product {
     @NotNull(message = "Phải chọn cửa hàng và kho")
     @ManyToOne
     @JoinColumn(name = "store_id")
+    @JsonBackReference
     @JsonIgnore
     private Store store;
 
@@ -66,9 +69,14 @@ public class Product {
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "warehouse_id")
+    @JsonBackReference
     private WareHouse warehouse;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<BillDetail> billDetails;
 
+    public boolean isStorage() {
+        return storage;
+    }
 }

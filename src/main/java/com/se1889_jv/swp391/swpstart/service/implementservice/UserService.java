@@ -164,6 +164,11 @@ public class UserService implements IUserService {
 
     }
 
+    @Override
+    public Double getBalanceFromUser(String phone) {
+        return userRepository.getBalanceByPhone(phone);
+    }
+
 
     @Override
     public List<UserStore> getAllUserStores(User user) {

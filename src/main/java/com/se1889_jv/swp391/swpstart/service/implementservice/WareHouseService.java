@@ -54,7 +54,6 @@ public class WareHouseService implements IWareHouseService {
         Sort.Direction direction = order.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
         Sort sortObj = Sort.by(direction, sort);
         PageRequest pageable = PageRequest.of(page, size, sortObj);
-
         return wareHouseRepository.findByStore(store, pageable);
     }
     @Override
@@ -64,7 +63,6 @@ public class WareHouseService implements IWareHouseService {
             return warehouse.get();
         }
         return null;
-
     }
 
     @Override

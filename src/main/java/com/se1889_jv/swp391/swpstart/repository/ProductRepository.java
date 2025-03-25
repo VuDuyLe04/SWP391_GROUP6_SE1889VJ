@@ -2,11 +2,14 @@ package com.se1889_jv.swp391.swpstart.repository;
 
 import com.se1889_jv.swp391.swpstart.domain.Product;
 
+import jakarta.persistence.LockModeType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     @Query("SELECT DISTINCT p.category FROM Product p")
     List<String> findDistinctCategories();
 
-    List<Product> findAllByStoreIdAndStorageIsTrue(Long storeId);
+    Page<Product> findAllByStoreIdAndStorageIsTrue(Long storeId, Pageable pageable);
 
     List<Product> findByNameContainingIgnoreCase(String name);
     Page<Product> findAllByStoreId(Long storeId, Pageable pageable);
@@ -27,5 +30,13 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     //san pham cua chu cua hang
     @Query("SELECT p FROM Product p WHERE p.store.id IN :storeIds")
     Page<Product> findByStoreIdIn(@Param("storeIds") List<Long> storeIds, Pageable pageable);
+    Page<Product> findAllByStoreIdAndNameContainingIgnoreCase(Long storeId, String name, Pageable pageable);
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT p FROM Product p WHERE p.id = :id")
+    Product getProductByIdForUpdate(@Param("id") Long id);
+    @Modifying
+    @Query("UPDATE Product p SET p.totalQuantity = p.totalQuantity - :quantity WHERE p.id = :productId AND p.totalQuantity >= :quantity")
+    int updateProductQuantity(@Param("productId") Long productId, @Param("quantity") int quantity);
 
 }
+

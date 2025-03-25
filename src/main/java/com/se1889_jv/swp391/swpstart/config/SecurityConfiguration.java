@@ -103,6 +103,7 @@ public class SecurityConfiguration {
 SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     UserService userService1 = null;
     http
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
                     .dispatcherTypeMatchers(DispatcherType.FORWARD,
                             DispatcherType.INCLUDE).permitAll()
@@ -130,6 +131,7 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                     .successHandler(customSuccessHandler(userService1))
                     .permitAll())
             .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
+
     return http.build();
 }
 

@@ -38,6 +38,8 @@ public interface IUserService {
 
     Page<User> getUsersByRoleIDAndActive(Long id, boolean active, Pageable pageable);
 
+    Double getBalanceFromUser(String phone);
+
     List<User> getAllUserByStoreIn(List<Store> store);
 
     User handleBuyService(User user,List<User> users, Service service);

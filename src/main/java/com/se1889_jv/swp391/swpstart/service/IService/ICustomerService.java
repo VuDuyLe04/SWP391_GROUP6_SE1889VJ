@@ -2,6 +2,8 @@ package com.se1889_jv.swp391.swpstart.service.IService;
 
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.Store;
+import com.se1889_jv.swp391.swpstart.domain.dto.CustomerRequest;
+import com.se1889_jv.swp391.swpstart.domain.dto.CustomerResponse;
 import com.se1889_jv.swp391.swpstart.domain.dto.response.PageResponse;
 import com.se1889_jv.swp391.swpstart.domain.dto.CustomerCriteriaDTO;
 import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
@@ -17,7 +19,7 @@ public interface ICustomerService {
     Customer getCustomerById(long id);
     void updateCustomer(Customer customer);
     public List<Customer> getAllCustomers();
-
+    CustomerResponse createCustomer(CustomerRequest customerRequest);
 
     //Search owner
     public default Page<Customer> searchCustomersByNameRoleOwner(String name ,List<Store> stores, Pageable pageable) {
@@ -56,6 +58,7 @@ public interface ICustomerService {
 
 
     boolean existsCustomerByNameAndPhone(String infor);
+    List<CustomerResponse> recomendedCustomer(String phone, Pageable pageable);
 
     Page<Customer> getAllCustomerOfOwner(String createdBy, Pageable pageable, CustomerCriteriaDTO customerCriteriaDTO);
 

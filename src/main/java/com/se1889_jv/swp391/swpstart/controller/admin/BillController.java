@@ -4,18 +4,30 @@ package com.se1889_jv.swp391.swpstart.controller.admin;
 import com.se1889_jv.swp391.swpstart.domain.*;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
 import com.se1889_jv.swp391.swpstart.service.implementservice.*;
+import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -29,7 +41,7 @@ public class BillController {
     @Autowired
     private StoreService storeService;
     @Autowired
-    private BillDetailService billDetailService;
+    BillDetailService billDetailService;
     @Autowired
     private CustomerService customerService;
     @Autowired
@@ -38,6 +50,76 @@ public class BillController {
     @Autowired
     private UserStoreService userStoreService;
 
+
+    @GetMapping("/bill/table")
+    public String showListBill(
+            @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String startDateStr,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  String endDateStr,
+            @RequestParam(value = "minAmount", required = false) Double minAmount,
+            @RequestParam(value = "maxAmount", required = false) Double maxAmount,
+            @RequestParam(value = "status", required = false, defaultValue = "ALL") String status,
+            @RequestParam(value = "input", required = false) String input,
+            @RequestParam(value = "storeId", required = false,defaultValue = "0") String storeId,
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            Model model
+    ) {
+        User user = Utility.getUserInSession();
+        List<Store> stores = Utility.getListStoreOfOwner(user);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        Pageable pageable = PageRequest.of(page, 5, sort);
+        Instant startDate = null;
+        Instant endDate = null;
+        Long storeID = ("0").equals(storeId) ? null : Long.parseLong(storeId);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneId.systemDefault());
+
+        if (startDateStr != null && !startDateStr.isEmpty()) {
+            startDate = Instant.from(formatter.parse(startDateStr));
+        }
+
+        if (endDateStr != null && !endDateStr.isEmpty()) {
+            endDate = Instant.from(formatter.parse(endDateStr));
+        }
+        if(input != null && !input.isEmpty()) {
+            input = input.trim();
+        }
+        Page<Bill> list = billService.filterBills(startDate,endDate,minAmount,maxAmount,input,storeID,pageable);
+        if (list.hasContent()) {
+            model.addAttribute("bills", list);
+
+        } else {
+            model.addAttribute("emptyList", "Không có hóa đơn  nào được tìm thấy!");
+        }
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("minAmount", minAmount);
+        model.addAttribute("maxAmount", maxAmount);
+        model.addAttribute("stores", Utility.getListStoreOfOwner(user));
+        model.addAttribute("status", status);
+        model.addAttribute("input", input);
+        model.addAttribute("storeId", storeID);
+        return "admin/bill/listbill";
+    }
+
+    @GetMapping("/bills/details/{id}")
+     public String getBillDetail(
+             @PathVariable(name = "id") Long billId,
+             Model model){
+        Bill bill = billService.findBillById(billId); //
+        List<BillDetail> billDetails = bill.getBillDetails();
+        model.addAttribute("billDetails", billDetails);
+        return "admin/bill/detail";
+
+    }
+
+
+
+//    @GetMapping("/bill/details")
+//    public ResponseEntity<List<BillDetail>> getBillDetails(@RequestParam("billId") Long billId) {
+//
+//        List<BillDetail> billDetails = billService.findBillById(billId).getBillDetails();
+//        return ResponseEntity.ok(billDetails);
+//    }
 
     @PostMapping("/createbill")
     public String createBill(HttpSession session, Model model, BillDTO billDTO, RedirectAttributes redirectAttributes){
@@ -84,18 +166,12 @@ public class BillController {
         if( user != null){
             Store store = storeService.findStoreById(storeId);
             if(store != null){
-                List<Product> productList = productService.getAllProductsByStoreIdAndIsStorage(storeId);
-                List<String> categoryList = productService.getAllCategories();
                 List<List<Packaging>> packagingList = new ArrayList<>();
                 List<WareHouse> wareHouseList = new ArrayList<>();
                 List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
-                for(Product product : productList){
-                    packagingList.add(packagingService.getAllPackagingForQuantityProduct(product.getTotalQuantity(), storeId));
-                    wareHouseList.add(wareHouseService.getWareHouseById(product.getWarehouse().getId()));
-                }
+
                 model.addAttribute("warehouse", wareHouseList);
-                model.addAttribute("productList", productList);
-                model.addAttribute("categoryList", categoryList);
+
                 model.addAttribute("packagingList", packagingList);
                 model.addAttribute("user", user);
                 model.addAttribute("storeId", storeId);
@@ -118,6 +194,8 @@ public class BillController {
         session.setAttribute("store",store);
         return "admin/sale/homesale";
     }
+
+
     @GetMapping("/saleproduct/{id}")
     public String sale(@PathVariable(name = "id") long storeId,HttpServletRequest request, Model model){
         HttpSession session = request.getSession(false);
@@ -127,22 +205,15 @@ public class BillController {
         if( user != null){
             Store store = storeService.findStoreById(storeId);
             if(store != null){
-                List<Product> productList = productService.getAllProductsByStoreIdAndIsStorage(storeId);
-                List<String> categoryList = productService.getAllCategories();
                 List<List<Packaging>> packagingList = new ArrayList<>();
                 List<WareHouse> wareHouseList = new ArrayList<>();
                 List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
-                for(Product product : productList){
-                    packagingList.add(packagingService.getAllPackagingForQuantityProduct(product.getTotalQuantity(), storeId));
-                    wareHouseList.add(wareHouseService.getWareHouseById(product.getWarehouse().getId()));
-                }
                 model.addAttribute("warehouse", wareHouseList);
-                model.addAttribute("productList", productList);
-                model.addAttribute("categoryList", categoryList);
                 model.addAttribute("packagingList", packagingList);
                 model.addAttribute("user", user);
                 model.addAttribute("storeId", storeId);
                 model.addAttribute("customerList", customerList);
+
             } else {
                 return "redirect:/access-deny";
             }
@@ -160,6 +231,42 @@ public class BillController {
         }
         session.setAttribute("store",store);
         return "admin/sale/saleproduct";
+    }
+    @GetMapping("/importproduct/{id}")
+    public String importProduct(@PathVariable(name = "id") long storeId,HttpServletRequest request, Model model){
+        HttpSession session = request.getSession(false);
+
+        User user = (User) session.getAttribute("user");
+
+        if( user != null){
+            Store store = storeService.findStoreById(storeId);
+            if(store != null){
+                List<List<Packaging>> packagingList = new ArrayList<>();
+                List<WareHouse> wareHouseList = new ArrayList<>();
+                List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
+                model.addAttribute("warehouse", wareHouseList);
+                model.addAttribute("packagingList", packagingList);
+                model.addAttribute("user", user);
+                model.addAttribute("storeId", storeId);
+                model.addAttribute("customerList", customerList);
+
+            } else {
+                return "redirect:/access-deny";
+            }
+        } else {
+            return "redirect:/access-deny";
+        }
+
+
+        Store store = this.storeService.findStoreById(storeId);
+
+        UserStore userStore = this.userStoreService.findUserStoreByUserAndStore(user,store );
+
+        if (userStore == null || userStore.getAccessStoreStatus().equals("ACCESSDENY")) {
+            return "redirect:/access-deny";
+        }
+        session.setAttribute("store",store);
+        return "admin/sale/importproduct";
     }
 
 }

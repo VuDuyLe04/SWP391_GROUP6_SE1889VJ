@@ -31,7 +31,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSp
     //
     List<Customer> getCustomersByStoreId(Long storeId);
     Customer getCustomersByNameAndPhone(String name, String phone);
-
+    Customer getCustomersByPhoneAndName(String phone, String name);
     //All customer role owner
     Page<Customer> findByStoreIn(List<Store> stores, Pageable pageable);
     //All customer role staff
@@ -41,7 +41,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSp
 
     boolean existsCustomerByNameAndPhone(String name, String phone);
 
-
+    Page<Customer> findAllByPhoneContainingAndStore(String phone,Store store, Pageable pageable);
 
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END " +
             "FROM Customer c " +

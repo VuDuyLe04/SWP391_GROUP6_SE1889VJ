@@ -602,6 +602,7 @@
             }
         }
     });
+
     document.addEventListener("DOMContentLoaded", function () {
         const viewButtons = document.querySelectorAll(".view-modal");
         const closeButtons = document.querySelectorAll(".close");

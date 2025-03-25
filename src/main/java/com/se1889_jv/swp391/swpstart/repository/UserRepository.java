@@ -17,10 +17,13 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
     User findByPhoneAndPassword(String phone, String password);
     User findByPhone(String phone);
+
     List<User> findByRoleIdIn(List<Long> roleIds);
     Page<User> findByNameContainingOrPhoneContainingAndRole_IdNot(String name, String phone, Long roleId, Pageable pageable);
     Page<User> findUsersByNameContainingOrPhoneContaining(String name, String phone, Pageable pageable);
+
     boolean existsByPhone(String phone);
+
     @Query("SELECT u FROM User u " +
             "WHERE u.id IN (" +
             "   SELECT MIN(u2.id) FROM User u2 " +
@@ -49,4 +52,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
 
     List<User> findAllByUserStoresIn(List<UserStore> userStores);
+
+    @Query(value = "SELECT balance FROM customers WHERE phone = :phone", nativeQuery = true)
+    Double getBalanceByPhone(@Param("phone") String phone);
+
 }

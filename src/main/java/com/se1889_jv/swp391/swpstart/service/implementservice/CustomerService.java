@@ -2,21 +2,31 @@ package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.Store;
+import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.dto.CustomerCriteriaDTO;
 import com.se1889_jv.swp391.swpstart.domain.dto.response.PageResponse;
+import com.se1889_jv.swp391.swpstart.domain.dto.CustomerRequest;
+import com.se1889_jv.swp391.swpstart.domain.dto.CustomerResponse;
+import com.se1889_jv.swp391.swpstart.exception.AppException;
+import com.se1889_jv.swp391.swpstart.exception.ErrorException;
 import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import com.se1889_jv.swp391.swpstart.repository.DebtReceiptRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.ICustomerService;
 import com.se1889_jv.swp391.swpstart.service.specification.CustomerSpecs;
 import com.se1889_jv.swp391.swpstart.service.specification.ServiceSpecs;
+import com.se1889_jv.swp391.swpstart.util.Utility;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -28,6 +38,8 @@ public class CustomerService implements ICustomerService {
     @Autowired
     private DebtReceiptRepository debtReceiptRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
     @Override
     public Customer createCustomer(Customer customer) {
         return this.customerRepository.save(customer);
@@ -91,6 +103,33 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    public CustomerResponse createCustomer(CustomerRequest customerRequest) {
+        User user = Utility.getUserInSession();
+        String createdBy = "";
+        if (user.getRole().getName().equals("OWNER")) {
+            createdBy = Long.toString(user.getId());
+        } else {
+            createdBy = user.getCreatedBy();
+        }
+        Store store = Utility.getStoreInSession();
+        if(customerRequest.getCusPhone() == null || customerRequest.getCusName() == null || customerRequest.getCusAddress() == null){
+            throw new AppException(ErrorException.NOT_NULL);
+        }
+
+        if(customerRepository.existsByPhoneAndCreatedBy(customerRequest.getCusPhone(), createdBy)){
+            throw new AppException(ErrorException.CUSTOMER_EXITED);
+        }
+        Customer customer = new Customer();
+        customer.setStore(store);
+        customer.setName(customerRequest.getCusName());
+        customer.setPhone(customerRequest.getCusPhone());
+        customer.setAddress(customerRequest.getCusAddress());
+        Customer saveCustomer =customerRepository.save(customer);
+        CustomerResponse customerResponse = modelMapper.map(saveCustomer, CustomerResponse.class);
+        return customerResponse;
+    }
+
+    @Override
     public List<Customer> getCustomersByStoreId(Long storeId) {
         return customerRepository.getCustomersByStoreId(storeId);
     }
@@ -98,9 +137,9 @@ public class CustomerService implements ICustomerService {
     @Override
     public Customer getCustomerByNameAndPhone(String infor) {
         String [] part  = infor.split(" - ");
-        String name = part[0].trim();
-        String phone = part[1].trim();
-        return customerRepository.getCustomersByNameAndPhone(name,phone);
+        String phone = part[0].trim();
+        String name = part[1].trim();
+        return customerRepository.getCustomersByPhoneAndName(phone,name);
     }
 
     @Override
@@ -134,4 +173,18 @@ public class CustomerService implements ICustomerService {
         return this.customerRepository.findAllByCreatedBy(combined, createdBy, pageable);
     }
 
+    @Override
+    public List<CustomerResponse> recomendedCustomer(String phone, Pageable pageable) {
+        Store store = Utility.getStoreInSession();
+        List<Customer> pageCustomer = customerRepository.findAllByPhoneContainingAndStore(phone, store, pageable).getContent();
+        List<CustomerResponse> customerResponses = pageCustomer.stream()
+                .map(customer -> modelMapper.map(customer, CustomerResponse.class))
+                .collect(Collectors.toList());
+        return customerResponses;
+    }
+    @Transactional
+    public void updateBalance(Customer customer, double balance) {
+        customer.setBalance(balance);
+        customerRepository.save(customer);
+    }
 }
