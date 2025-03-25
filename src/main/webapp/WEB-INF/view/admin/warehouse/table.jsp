@@ -132,6 +132,72 @@ uri="http://www.springframework.org/tags/form" %>
         border-radius: 20px;
         padding: 5px 15px;
       }
+
+      .panel-featured-primary {
+        border-color: #0088cc;
+      }
+      .panel-featured-primary .panel-heading {
+        background-color: #0088cc;
+        color: #fff;
+        border-radius: 5px 5px 0 0;
+      }
+      .input-group-addon {
+        background-color: #0088cc;
+        color: #fff;
+        border-color: #0088cc;
+      }
+      .table > thead > tr > th {
+        background-color: #f5f5f5;
+        border-bottom: 2px solid #0088cc;
+      }
+      .btn-primary {
+        background-color: #0088cc;
+        border-color: #0088cc;
+      }
+      .btn-primary:hover {
+        background-color: #006699;
+        border-color: #006699;
+      }
+      .label-sm {
+        font-size: 90%;
+        padding: 3px 8px;
+      }
+      .mr-xs {
+        margin-right: 5px;
+      }
+      .mb-xs {
+        margin-bottom: 5px;
+      }
+      .mt-xs {
+        margin-top: 5px;
+      }
+      .pagination {
+        margin: 20px auto;
+        display: inline-flex;
+        justify-content: center;
+        padding-left: 0;
+      }
+      .pagination .page-item {
+        margin: 0 2px;
+      }
+      .pagination .page-link {
+        border-radius: 3px;
+        padding: 6px 12px;
+        color: #0088cc;
+        background-color: #fff;
+        border: 1px solid #ddd;
+      }
+      .pagination .page-item.active .page-link {
+        background-color: #0088cc;
+        border-color: #0088cc;
+        color: #fff;
+      }
+      .pagination .page-item.disabled .page-link {
+        color: #777;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #ddd;
+      }
     </style>
   </head>
   <body>
@@ -168,170 +234,144 @@ uri="http://www.springframework.org/tags/form" %>
           <!-- start: page -->
 
           <div class="row">
-            <div class="col-lg-12">
-              <section class="panel">
-                <header
-                  class="panel-heading d-flex justify-content-between align-items-center"
-                >
-                  <!-- Ô tìm kiếm -->
-                  <div class="search-container">
-                    <input
-                      type="text"
-                      id="searchInput"
-                      class="form-control search-input"
-                      placeholder="Tìm kiếm khu vực..."
-                    />
-                    <button
-                      class="btn btn-primary search-btn"
-                      onclick="searchWarehouses()"
-                    >
-                      <i class="fa fa-search"></i> Tìm kiếm
-                    </button>
+            <div class="col-md-12">
+              <section class="panel panel-featured panel-featured-primary">
+                <header class="panel-heading">
+                  <div class="panel-actions">
+                    <a
+                      href="#"
+                      class="panel-action panel-action-toggle"
+                      data-panel-toggle
+                    ></a>
                   </div>
-
-                  <script>
-                    function searchWarehouses() {
-                      let searchValue = document
-                        .getElementById("searchInput")
-                        .value.trim();
-                      if (searchValue) {
-                        window.location.href =
-                          "/warehouse/search?name=" +
-                          encodeURIComponent(searchValue);
-                      } else {
-                        alert("Vui lòng nhập từ khóa tìm kiếm!");
-                      }
-                    }
-                  </script>
-
-                  <!-- Nút tạo khu vực mới -->
-                  <a href="/warehouse/create" class="btn btn-primary">
-                    <i class="fa fa-plus"></i> Tạo khu vực mới
-                  </a>
-                </header>
-                <div class="panel-body">
-                  <div class="table-responsive">
-                    <!-- Thêm phần Total Warehouse Info Section -->
-                    <div
-                      style="
-                        display: flex;
-                        justify-content: flex-end;
-                        gap: 15px;
-                        margin-bottom: 8px;
-                      "
-                    >
-                      <div style="display: flex; align-items: center">
-                        <i
-                          class="fa fa-building mr-xs"
-                          style="color: #0088cc; font-size: 11px"
-                        ></i>
-                        <span
-                          style="font-weight: 400; color: #666; font-size: 11px"
-                          >Tổng số:
-                          <span style="color: #0088cc; font-weight: 500"
-                            >${listWareHouse.size()}</span
-                          >
-                          khu vực
-                        </span>
-                      </div>
-                      <div style="display: flex; align-items: center">
-                        <i
-                          class="fa fa-file mr-xs"
-                          style="color: #0088cc; font-size: 11px"
-                        ></i>
-                        <span
-                          style="font-weight: 400; color: #666; font-size: 11px"
-                          >Trang:
-                          <span style="color: #0088cc; font-weight: 500"
-                            >${currentPage}/${totalPages}</span
-                          >
-                        </span>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <h2 class="panel-title">
+                        <i class="fa fa-list-alt mr-xs"></i>Danh sách khu vực
+                      </h2>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="pull-right">
+                        <div class="input-group input-search">
+                          <input
+                            type="text"
+                            id="searchInput"
+                            class="form-control"
+                            placeholder="Tìm kiếm khu vực..."
+                          />
+                          <span class="input-group-btn">
+                            <button
+                              class="btn btn-primary"
+                              type="button"
+                              onclick="searchWarehouses()"
+                            >
+                              <i class="fa fa-search"></i>
+                            </button>
+                          </span>
+                        </div>
                       </div>
                     </div>
+                  </div>
+                </header>
+
+                <div class="panel-body">
+                  <div class="row mb-md">
+                    <div class="col-sm-6">
+                      <!-- Có thể thêm các filter nếu cần -->
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="pull-right">
+                        <a
+                          href="/warehouse/create"
+                          class="btn btn-primary mb-xs mt-xs mr-xs"
+                        >
+                          <i class="fa fa-plus mr-xs"></i>Tạo khu vực mới
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="table-responsive">
+                    <!-- Total Info Section -->
+
 
                     <table
-                      class="table table-bordered table-striped table-condensed mb-none"
+                      class="table table-bordered table-striped table-hover mb-none"
                     >
                       <thead>
                         <tr>
-                          <th class="text-center">ID</th>
-                          <th class="text-center">Tên</th>
-                          <th class="text-center">Cửa hàng</th>
-                          <th class="text-right">Hoạt động</th>
+                          <th class="text-center" style="width: 50px">ID</th>
+                          <th>
+                            <i class="fa fa-building mr-xs"></i>Tên khu vực
+                          </th>
+                          <th><i class="fa fa-store mr-xs"></i>Cửa hàng</th>
+                          <th class="text-center" style="width: 200px">
+                            <i class="fa fa-cogs mr-xs"></i>Hoạt động
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
                         <c:forEach items="${listWareHouse}" var="warehouse">
                           <tr>
                             <td class="text-center">${warehouse.id}</td>
-                            <td class="text-center">${warehouse.name}</td>
-                            <td class="text-center">${warehouse.storeName}</td>
-                            <td class="text-right">
+                            <td><strong>${warehouse.name}</strong></td>
+                            <td>${warehouse.storeName}</td>
+                            <td class="text-center">
                               <a
                                 href="/warehouse/update/${warehouse.id}"
-                                class="btn btn-primary"
-                                >Cập nhật</a
+                                class="btn btn-primary btn-sm"
+                                title="Cập nhật"
                               >
+                                <i class="fa fa-pencil"></i>
+                              </a>
                               <a
                                 href="/warehouse/detail/${warehouse.id}"
-                                class="btn btn-primary"
-                                >Chi tiết</a
+                                class="btn btn-info btn-sm"
+                                title="Chi tiết"
                               >
+                                <i class="fa fa-eye"></i>
+                              </a>
                             </td>
                           </tr>
                         </c:forEach>
                       </tbody>
                     </table>
 
-                    <div class="pagination-container">
+                    <!-- Phân trang -->
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: center;
+                        margin-top: 20px;
+                      "
+                    >
                       <c:if test="${totalPages > 1}">
                         <ul class="pagination">
-                          <!-- Nút Trước -->
-                          <c:choose>
-                            <c:when test="${currentPage > 1}">
-                              <li>
-                                <a
-                                  href="/fetch-all-warehouse?page=${currentPage - 1}"
-                                  class="btn btn-default"
-                                  >Trước</a
-                                >
-                              </li>
-                            </c:when>
-                            <c:otherwise>
-                              <li>
-                                <span class="btn btn-default disabled"
-                                  >Trước</span
-                                >
-                              </li>
-                            </c:otherwise>
-                          </c:choose>
-
-                          <!-- Hiển thị trang hiện tại -->
-                          <li>
-                            <span class="btn btn-default disabled"
-                              >${currentPage}</span
+                          <li
+                            class="page-item ${currentPage == 1 ? 'disabled' : ''}"
+                          >
+                            <a
+                              class="page-link"
+                              href="/fetch-all-warehouse?page=${currentPage - 1}"
                             >
+                              <i class="fa fa-angle-left"></i> Trước
+                            </a>
                           </li>
 
-                          <!-- Nút Sau -->
-                          <c:choose>
-                            <c:when test="${currentPage < totalPages}">
-                              <li>
-                                <a
-                                  href="/fetch-all-warehouse?page=${currentPage + 1}"
-                                  class="btn btn-default"
-                                  >Sau</a
-                                >
-                              </li>
-                            </c:when>
-                            <c:otherwise>
-                              <li>
-                                <span class="btn btn-default disabled"
-                                  >Sau</span
-                                >
-                              </li>
-                            </c:otherwise>
-                          </c:choose>
+                          <li class="page-item active">
+                            <span class="page-link">${currentPage}</span>
+                          </li>
+
+                          <li
+                            class="page-item ${currentPage == totalPages ? 'disabled' : ''}"
+                          >
+                            <a
+                              class="page-link"
+                              href="/fetch-all-warehouse?page=${currentPage + 1}"
+                            >
+                              Sau <i class="fa fa-angle-right"></i>
+                            </a>
+                          </li>
                         </ul>
                       </c:if>
                     </div>
@@ -392,5 +432,17 @@ uri="http://www.springframework.org/tags/form" %>
 
     <!-- Examples -->
     <script src="/client/auth/assets/javascripts/dashboard/examples.dashboard.js"></script>
+
+    <script>
+      function searchWarehouses() {
+        let searchValue = document.getElementById("searchInput").value.trim();
+        if (searchValue) {
+          window.location.href =
+            "/warehouse/search?name=" + encodeURIComponent(searchValue);
+        } else {
+          alert("Vui lòng nhập từ khóa tìm kiếm!");
+        }
+      }
+    </script>
   </body>
 </html>
