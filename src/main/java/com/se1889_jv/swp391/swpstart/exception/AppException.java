@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-
 @NoArgsConstructor
 public class AppException extends RuntimeException{
     public ErrorException errorException;

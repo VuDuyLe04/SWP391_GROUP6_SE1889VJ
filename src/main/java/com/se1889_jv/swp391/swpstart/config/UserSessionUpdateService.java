@@ -30,7 +30,7 @@ public class UserSessionUpdateService {
 
         if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
             String username = auth.getName();
-            User freshUser = userRepository.findByPhone(username);
+            User freshUser = this.userRepository.findByPhone(username);
 
             if (freshUser != null) {
                 // Tạo một UserDetails mới từ dữ liệu cập nhật
@@ -51,7 +51,7 @@ public class UserSessionUpdateService {
                 SecurityContextHolder.getContext().setAuthentication(newAuth);
 
                 // Lưu user mới vào session nếu cần
-                session.setAttribute("currentUser", freshUser);
+                session.setAttribute("user", freshUser);
             }
         }
     }

@@ -314,6 +314,8 @@ public class UserController {
             model.addAttribute("stores", storeList);
             return "admin/user/createstaff";
         }
+        User us = Utility.getUserInSession();
+        User owner = this.userService.findById(us.getId());
         String userId = String.valueOf(Utility.getUserInSession().getId());
         User existingUser = userService.getUserByPhone(staffDTO.getPhone());
         if (existingUser != null) {
@@ -329,6 +331,9 @@ public class UserController {
             user.setRole(roleService.getRole(3L));
             user.setActive(true);
             user.setCreatedBy(userId);
+            user.setRenewalDate(owner.getRenewalDate());
+            user.setExpirationDate(owner.getExpirationDate());
+            user.setStatusService(owner.isStatusService());
             User savedUser = userService.createUser(user);
 
             UserStore userStore = new UserStore();

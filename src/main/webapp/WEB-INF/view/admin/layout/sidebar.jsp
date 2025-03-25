@@ -89,7 +89,7 @@
 
                     <c:if test="${sessionScope.user.role.name == 'OWNER'}">
                         <li>
-                            <a>
+                            <a href="/bill/table">
                                 <i class="fa fa-list-alt" aria-hidden="true"></i>
                                 <span>Hóa đơn</span>
                             </a>

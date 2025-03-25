@@ -69,7 +69,7 @@ public class WareHouseController {
         return "admin/warehouse/table";
     }
 
-    //--------------------------------------------------------------------------
+    //
     @CheckPermission(condition = "statusService")
     @GetMapping("/warehouse/update/{id}")
     public String getUpdatePage(@PathVariable("id") long id, Model model) {
@@ -95,7 +95,6 @@ public class WareHouseController {
         this.wareHouseService.updateWareHouse(wareHouse);
         return "redirect:/fetch-all-warehouse";
     }
-
 //    @Autowired
 //    private ProductService productService;
 
@@ -106,13 +105,11 @@ public class WareHouseController {
         if (warehouse == null) {
             return "redirect:/warehouse";
         }
-
         // Lấy user từ session
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/access-deny";
         }
-
         // Lấy danh sách sản phẩm thuộc cửa hàng của user
         List<Product> productList = wareHouseService.getProductsByWarehouseAndUser(id, user);
 
@@ -122,7 +119,7 @@ public class WareHouseController {
     }
 
 
-
+    @CheckPermission(condition = "statusService")
     @GetMapping("/fetch-all-warehouse")
     public String getAllWareHouse(@RequestParam(required = false, defaultValue = "1") int page,
                                   @RequestParam(required = false, defaultValue = "10") int size,

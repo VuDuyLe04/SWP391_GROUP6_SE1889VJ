@@ -13,6 +13,9 @@ import java.util.List;
 @Table(name = "ware_houses")
 @Setter
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class WareHouse {
 
     @Id

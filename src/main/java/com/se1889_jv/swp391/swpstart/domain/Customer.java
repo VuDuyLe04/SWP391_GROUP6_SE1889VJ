@@ -55,21 +55,5 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     @JsonManagedReference
     private List<Bill> bills;
-    // tự động thêm khi tạo
-    @PrePersist
-    public void handleBeforeCreate() {
-        User user = Utility.getUserInSession();
-        this.createdBy = user.getName();
-        this.createdAt = Instant.now();
-
-    }
-    // tự động thêm khi update
-    @PreUpdate
-    public void handleBeforeUpdate() {
-        User user = Utility.getUserInSession();
-        this.updatedBy = user.getName();
-        this.updatedAt = Instant.now();
-
-    }
     
 }
