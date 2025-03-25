@@ -119,8 +119,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Page<User> findStaffsByCreatedBy(String createdBy, Long storeId, String keyword, Pageable pageable) {
-        return userRepository.findStaffsByCreatedBy( createdBy,storeId,keyword,pageable);
+    public Page<User> findStaffsByCreatedBy(String createdBy, Long storeId, String keyword, Boolean active,Pageable pageable) {
+        return userRepository.findStaffsByCreatedBy( createdBy,storeId,keyword, active,pageable);
     }
 
     @Override

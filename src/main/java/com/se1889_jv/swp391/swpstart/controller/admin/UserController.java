@@ -51,6 +51,7 @@ public class UserController {
     public String getAllUser(@RequestParam(value = "input", required = false) String input,
                              @RequestParam(value = "role", required = false, defaultValue = "-1") String roleId,
                              @RequestParam(value = "active", required = false, defaultValue = "-1") String active,
+                             @RequestParam(value = "status", required = false, defaultValue = "-1") String status,
                              @RequestParam(value = "page", required = false, defaultValue = "0") String page,
                              @RequestParam(value = "storeId", required = false, defaultValue = "-1") String storeId,
                              Model model) {
@@ -84,13 +85,15 @@ public class UserController {
             List<Store> stores = Utility.getListStoreOfOwner(user);
             model.addAttribute("stores", stores);
             Long storeID = null;
+            Boolean isActive = "-1".equals(status)? null : Boolean.valueOf("1".equals(status));
             if(storeId != null && !storeId.isEmpty() && !"-1".equals(storeId)) {
                 storeID = Long.parseLong(storeId);
 
             }
             if(input!= null && !input.isEmpty()) input = input.trim();
-            users = userService.findStaffsByCreatedBy(userId,storeID,input,pageable);
+            users = userService.findStaffsByCreatedBy(userId,storeID,input,isActive,pageable);
             model.addAttribute("storeId", storeId);
+            model.addAttribute("status", status);
 
         }
 

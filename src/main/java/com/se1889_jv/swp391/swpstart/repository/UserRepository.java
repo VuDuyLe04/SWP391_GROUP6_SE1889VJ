@@ -29,15 +29,17 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
             "   JOIN u2.role r " +
             "   WHERE s.createdBy = :createdBy " +
             "   AND r.name = 'STAFF' " +
-            "   AND (:storeId IS NULL OR s.id = :storeId) " + // Lọc theo storeId nếu có
+            "   AND (:storeId IS NULL OR s.id = :storeId) " +
+            "   AND (:active IS NULL OR u2.active = :active) " +
             "   AND (:keyword IS NULL OR :keyword = '' OR " +  // Nếu keyword null hoặc rỗng, bỏ qua
-            "        u2.name LIKE %:keyword% OR u2.phone LIKE %:keyword%) " +
+            "    u2.name LIKE %:keyword% OR u2.phone LIKE %:keyword%) " +
             "   GROUP BY u2.phone" +
             ")")
     Page<User> findStaffsByCreatedBy(
             @Param("createdBy") String createdBy,
             @Param("storeId") Long storeId,
             @Param("keyword") String keyword,
+            @Param("active") Boolean active,
             Pageable pageable);
     Page<User> findByRoleIdNot(Long roleId, Pageable pageable);
 //    findByRoleIdNot(1L,pageable);

@@ -309,8 +309,18 @@
                                             <c:forEach items="${stores}" var="s">
                                                 <option value="${s.id}" ${storeId == s.id ? 'selected' : ''}>${s.name}</option>
                                             </c:forEach>
-                                        </select>
 
+                                        </select>
+                                            <div class="form-group mr-md">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
+                                                    <select id="status" name="status" class="form-control" onchange="filterByStatus(this.value)">
+                                                        <option ${status == -1 ? "selected" : ""} value="-1">Các trạng thái</option>
+                                                        <option ${status == 1 ? "selected" : ""} value="1">Hoạt động</option>
+                                                        <option ${status == 0 ? "selected" : ""} value="0">Bị cấm</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </c:if>
 
                                     </form>
@@ -575,6 +585,16 @@
         const url = new URL(window.location.href);//lay doi tuong url hien tai
         url.searchParams.delete('page');
         url.searchParams.set('storeId', value); // Luôn cập nhật giá trị status
+        url.searchParams.delete('input'); // Nếu input rỗng/null thì xóa khỏi URL
+        url.searchParams.delete('page'); // Nếu input rỗng/null thì xóa khỏi URL
+
+
+        window.location.href = url.toString(); // Điều hướng đến URL mới
+    }
+    function filterByStatus(value) {
+        const url = new URL(window.location.href);//lay doi tuong url hien tai
+        url.searchParams.delete('page');
+        url.searchParams.set('status', value); // Luôn cập nhật giá trị status
         url.searchParams.delete('input'); // Nếu input rỗng/null thì xóa khỏi URL
         url.searchParams.delete('page'); // Nếu input rỗng/null thì xóa khỏi URL
 
