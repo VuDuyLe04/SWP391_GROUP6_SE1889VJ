@@ -351,6 +351,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <div style="display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 8px;">
+                                <div style="display: flex; align-items: center;">
+                                    <i class="fa fa-users mr-xs" style="color: #0088cc; font-size: 11px;"></i>
+
+                                    <c:if test="${sessionScope.user.role.id == 1}">
+                                        <span style="font-weight: 400; color: #666; font-size: 11px;">Tổng số:
+                                        <span style="color: #0088cc; font-weight: 500;">${userPage.totalElements}</span> người dùng
+                                    </span>
+                                    </c:if>
+                                    <c:if test="${sessionScope.user.role.id == 2}">
+                                        <span style="font-weight: 400; color: #666; font-size: 11px;">Tổng số:
+                                        <span style="color: #0088cc; font-weight: 500;">${userPage.totalElements}</span> nhân viên
+                                    </span>
+                                    </c:if>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <i class="fa fa-file mr-xs" style="color: #0088cc; font-size: 11px;"></i>
+                                    <span style="font-weight: 400; color: #666; font-size: 11px;">Trang: 
+                                        <span style="color: #0088cc; font-weight: 500;">${userPage.number + 1}/${userPage.totalPages}</span>
+                                    </span>
+                                </div>
+                            </div>
                             <c:if test="${emptyList != null}">
                                 <div class="alert alert-info">
                                     <i class="fa fa-info-circle mr-xs"></i> ${emptyList}
@@ -377,7 +399,7 @@
                                     <c:if test="${userPage != null }">
                                     <c:forEach var="u" items="${userPage.content}" varStatus="status">
                                         <tr>
-                                            <td>${status.index + 1}</td>
+                                            <td>${userPage.number * userPage.size + status.index + 1}</td>
                                             <td><strong>${u.name}</strong></td>
                                             <td>${u.phone}
                                                 </td>
