@@ -147,10 +147,14 @@ async function loadBillDetails() {
         </div>
 
         <!-- Số lượng & Giá -->
-        <div class="col-4 d-flex align-items-center justify-content-center">
-            <input type="number" class="form-control text-center me-2 flex-shrink-0" style="width: 60px;" value="${detail.quantity}" onchange="updateQuantity(${detail.id}, this.value,this, ${detail.quantity})" />
-            <span class="text-nowrap">x ${detail.listedPrice}đ</span>
-        </div>
+        <div class="col-2 d-flex align-items-center justify-content-center">
+    <input  type="number" class="form-control text-center me-2 flex-shrink-0" 
+           style="width: 120px;" value="${detail.quantity}" 
+           onchange="updateQuantity(${detail.id}, this.value, this, ${detail.quantity})" />
+</div>
+<div class="col-2 d-flex align-items-center justify-content-center">
+    <span class="text-nowrap">${detail.listedPrice}đ</span>
+</div>
 
         <!-- Giảm giá -->
         <div class="col-2 text-danger text-center">

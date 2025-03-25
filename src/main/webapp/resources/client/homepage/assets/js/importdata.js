@@ -111,15 +111,18 @@ function renderBillDetails() {
                     <div class="col-2 overflow-hidden">
                         <h6 class="mb-0 text-truncate">${detail.productName}</h6>
                     </div>
-                    <div class="col-4 d-flex align-items-center justify-content-center">
-                        <input type="number" class="form-control text-center me-2 flex-shrink-0 quantity-input" style="width: 60px;" 
-                            value="${detail.quantity}" 
-                            data-id="${detail.productId}"
-                            oninput="updateBillDetail(this, this.value)"
-                            id="quantity-in"/>
-                            
-                        <span class="text-nowrap">x ${detail.importPrice}đ</span>
-                    </div>
+                    <div class="col-2 d-flex align-items-center justify-content-center">
+    <input type="number" class="form-control text-center me-2 flex-shrink-0 quantity-input" 
+           style="width: 60px;" 
+           value="${detail.quantity}" 
+           data-id="${detail.productId}" 
+           oninput="updateBillDetail(this, this.value)" 
+           id="quantity-in" />
+</div>
+<div class="col-2 d-flex align-items-center justify-content-center">
+    <span class="text-nowrap">x ${detail.importPrice}đ</span>
+</div>
+
                     <div class="col-2 text-danger text-center justify-content-center">
                         <input type="number" class="form-control text-center me-2 flex-shrink-0 listed-price-input" style="width: 120px;" 
                             value="${detail.importPrice}" 

@@ -58,7 +58,8 @@
             <div class="bill-items-con">
                 <div class="row fw-bold bg-light py-2 border-bottom">
                     <div class="col-2">Sản phẩm</div>
-                    <div class="col-4 text-center">Số lượng & Giá</div>
+                    <div class="col-2 text-center">Số lượng</div>
+                    <div class="col-2 text-center">Gía theo cân</div>
                     <div class="col-2 text-center">Giá thực</div>
                     <div class="col-3 text-center">Tổng</div>
                     <div class="col-1 text-center">Xóa</div>

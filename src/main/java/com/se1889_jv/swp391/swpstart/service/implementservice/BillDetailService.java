@@ -145,11 +145,12 @@ public class BillDetailService implements IBillDetailService {
             billDetail.setProduct(p);
             billDetail.setNameProduct(p.getName());
             billDetail.setTotalLiftProductPrice(request.getQuantity() * packaging.getLiftCost());
+            billDetail.setPackagingName(packaging.getPackageType());
+            billDetail.setQuantityPerPackage(packaging.getQuantityPerPackage());
             billDetail.setTotalProductPrice(
                     request.getActualSellPrice() * request.getQuantity() * packaging.getQuantityPerPackage()
             );
-            billDetail.setPackagingName(packaging.getPackageType());
-            billDetail.setQuantityPerPackage(packaging.getQuantityPerPackage());
+
             billDetail.setBill(bill);
         }
 
@@ -194,7 +195,7 @@ public class BillDetailService implements IBillDetailService {
         product.setTotalQuantity(product.getTotalQuantity() + di* p.getQuantityPerPackage());
         productRepository.save(product);
         billDetail.setQuantity(quantity);
-        billDetail.setTotalProductPrice(billDetail.getQuantity()*billDetail.getActualSellPrice());
+        billDetail.setTotalProductPrice(billDetail.getQuantity()*billDetail.getActualSellPrice()*billDetail.getQuantityPerPackage());
         billDetailRepository.save(billDetail);
     }
 
