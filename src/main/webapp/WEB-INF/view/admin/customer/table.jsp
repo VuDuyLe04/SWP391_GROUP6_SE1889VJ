@@ -144,6 +144,12 @@ uri="http://www.springframework.org/tags/form" %>
         background-color: #fff;
         border-color: #ddd;
       }
+      .status-label {
+        display: inline-block;
+        min-width: 85px;
+        text-align: center;
+        padding: 5px 10px;
+      }
     </style>
   </head>
   <body>
