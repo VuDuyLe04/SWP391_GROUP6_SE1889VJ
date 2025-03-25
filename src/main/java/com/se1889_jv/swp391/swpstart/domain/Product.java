@@ -58,16 +58,14 @@ public class Product {
     private String createdBy;
     private String updatedBy;
 
-    @NotNull(message = "Phải chọn cửa hàng và kho")
+//    @NotNull(message = "Phải chọn cửa hàng và kho")
     @ManyToOne
     @JoinColumn(name = "store_id")
     @JsonBackReference
-    @JsonIgnore
     private Store store;
 
-    @NotNull
+//    @NotNull
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "warehouse_id")
     @JsonBackReference
     private WareHouse warehouse;
