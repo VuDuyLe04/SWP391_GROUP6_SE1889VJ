@@ -196,23 +196,23 @@ public class BillController {
     }
 
 
-    @GetMapping("/saleproduct/{id}")
-    public String sale(@PathVariable(name = "id") long storeId,HttpServletRequest request, Model model){
+    @GetMapping("/saleproduct")
+    public String sale(HttpServletRequest request, Model model){
         HttpSession session = request.getSession(false);
 
         User user = (User) session.getAttribute("user");
-
+        Store storeInSession = Utility.getStoreInSession();
         if( user != null){
-            Store store = storeService.findStoreById(storeId);
+            Store store = this.storeService.findStoreById(storeInSession.getId());
             if(store != null){
                 List<List<Packaging>> packagingList = new ArrayList<>();
                 List<WareHouse> wareHouseList = new ArrayList<>();
-                List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
+//                List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
                 model.addAttribute("warehouse", wareHouseList);
                 model.addAttribute("packagingList", packagingList);
                 model.addAttribute("user", user);
-                model.addAttribute("storeId", storeId);
-                model.addAttribute("customerList", customerList);
+                model.addAttribute("storeId", store.getId());
+//                model.addAttribute("customerList", customerList);
 
             } else {
                 return "redirect:/access-deny";
@@ -222,7 +222,7 @@ public class BillController {
         }
 
 
-        Store store = this.storeService.findStoreById(storeId);
+        Store store = this.storeService.findStoreById(storeInSession.getId());
 
         UserStore userStore = this.userStoreService.findUserStoreByUserAndStore(user,store );
 
@@ -232,23 +232,23 @@ public class BillController {
         session.setAttribute("store",store);
         return "admin/sale/saleproduct";
     }
-    @GetMapping("/importproduct/{id}")
-    public String importProduct(@PathVariable(name = "id") long storeId,HttpServletRequest request, Model model){
+    @GetMapping("/importproduct")
+    public String importProduct(HttpServletRequest request, Model model){
         HttpSession session = request.getSession(false);
 
         User user = (User) session.getAttribute("user");
-
+        Store storeInSession = Utility.getStoreInSession();
         if( user != null){
-            Store store = storeService.findStoreById(storeId);
+            Store store = this.storeService.findStoreById(storeInSession.getId());
             if(store != null){
                 List<List<Packaging>> packagingList = new ArrayList<>();
                 List<WareHouse> wareHouseList = new ArrayList<>();
-                List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
+//                List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
                 model.addAttribute("warehouse", wareHouseList);
                 model.addAttribute("packagingList", packagingList);
                 model.addAttribute("user", user);
-                model.addAttribute("storeId", storeId);
-                model.addAttribute("customerList", customerList);
+                model.addAttribute("storeId", store.getId());
+//                model.addAttribute("customerList", customerList);
 
             } else {
                 return "redirect:/access-deny";
@@ -258,7 +258,7 @@ public class BillController {
         }
 
 
-        Store store = this.storeService.findStoreById(storeId);
+        Store store = this.storeService.findStoreById(storeInSession.getId());
 
         UserStore userStore = this.userStoreService.findUserStoreByUserAndStore(user,store );
 

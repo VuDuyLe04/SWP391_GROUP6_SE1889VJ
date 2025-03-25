@@ -31,8 +31,8 @@
                             Chọn loại
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="transactionDropdown">
-                            <li><a class="dropdown-item" href="http://localhost:8080/saleproduct/${storeId}" data-value="banhang">Bán hàng</a></li>
-                            <li><a class="dropdown-item" href="http://localhost:8080/importproduct/${storeId}" data-value="nhaphang">Nhập hàng</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:8080/saleproduct" data-value="banhang">Bán hàng</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:8080/importproduct" data-value="nhaphang">Nhập hàng</a></li>
                         </ul>
                     </div>
                     <div class="col-md-8 d-flex">
@@ -184,7 +184,7 @@
                         <span class="text-muted">10:55 01/10/2022</span>
                     </div>
                     <div class="summary-row">
-                        <span class="fw-bold">Khách cần trả</span>
+                        <span class="fw-bold">Tổng tiền hóa đơn</span>
                         <span class="fw-bold text-success total-need-pay">0đ</span>
                     </div>
                     <div class="mb-3 position-relative">
@@ -288,9 +288,9 @@
         let currentPath = window.location.pathname;
         let transactionDropdown = document.getElementById("transactionDropdown");
 
-        if (currentPath.includes("/saleproduct/")) {
+        if (currentPath.includes("/saleproduct")) {
             transactionDropdown.textContent = "Bán hàng";
-        } else if (currentPath.includes("/importproduct/")) {
+        } else if (currentPath.includes("/importproduct")) {
             transactionDropdown.textContent = "Nhập hàng";
         }
     });

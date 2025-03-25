@@ -31,8 +31,8 @@
                                 Chọn loại
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="transactionDropdown">
-                                <li><a class="dropdown-item" id="banhang" href="http://localhost:8080/saleproduct/${storeId}" data-value="banhang">Bán hàng</a></li>
-                                <li><a class="dropdown-item" id="nhaphang" href="http://localhost:8080/importproduct/${storeId}" data-value="nhaphang">Nhập hàng</a></li>
+                                <li><a class="dropdown-item" id="banhang" href="http://localhost:8080/saleproduct" data-value="banhang">Bán hàng</a></li>
+                                <li><a class="dropdown-item" id="nhaphang" href="http://localhost:8080/importproduct" data-value="nhaphang">Nhập hàng</a></li>
                             </ul>
                         </div>
                         <div class="col-md-8 d-flex">
@@ -288,9 +288,9 @@
     document.addEventListener("DOMContentLoaded", function () {
         let currentPath = window.location.pathname;
         let transactionDropdown = document.getElementById("transactionDropdown");
-        if (currentPath.includes("/saleproduct/")) {
+        if (currentPath.includes("/saleproduct")) {
             transactionDropdown.textContent = "Bán hàng";
-        } else if (currentPath.includes("/importproduct/")) {
+        } else if (currentPath.includes("/importproduct")) {
             transactionDropdown.textContent = "Nhập hàng";
         }
     });
