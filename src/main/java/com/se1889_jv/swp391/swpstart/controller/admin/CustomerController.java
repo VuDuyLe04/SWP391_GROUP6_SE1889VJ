@@ -249,6 +249,7 @@ public class CustomerController {
         model.addAttribute("listCustomer", customerPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", customerPage.getTotalPages());
+        model.addAttribute("customerPage", customerPage);
 
         return "admin/customer/table";
     }
