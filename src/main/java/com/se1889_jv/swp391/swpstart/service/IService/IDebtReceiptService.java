@@ -16,6 +16,6 @@ public interface IDebtReceiptService {
     PageResponse<DebtReceipt> getDebtsByCustomer(long id, int page);
     DebtReceiptCreationResponse createDebtReceipt(DebtReceiptCreationRequest request);
     PageResponse<DebtReceiptDetailResponse> getAllWithSearch(Long customerId, int page, Instant from, Instant to, Double debtAmount);
-    DebtReceipt createDebtReceiption(BillRequest request, User user);
-    DebtReceipt createDebtForImport(ImportRequest request, User user);
+    DebtReceipt createDebtReceiption(BillRequest request, User user, Long billId);
+    DebtReceipt createDebtForImport(ImportRequest request, User user, Double totalPrice);
 }

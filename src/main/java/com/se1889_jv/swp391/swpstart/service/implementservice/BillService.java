@@ -14,6 +14,8 @@ import com.se1889_jv.swp391.swpstart.repository.BillRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IBillService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import com.se1889_jv.swp391.swpstart.util.constant.BillTypeEnum;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class BillService implements IBillService {
 
     @Autowired
@@ -85,12 +88,17 @@ public class BillService implements IBillService {
     }
 
     @Override
+    @Transactional
     public Bill updateBill(BillRequest request, Long billId) {
         Optional<Bill> bill = billRepository.findById(billId);
 
         if (bill.isPresent()) {
 
             Bill b = bill.get();
+            if(b.getBillDetails().isEmpty()){
+                log.info(b.getBillDetails().toString());
+                throw new AppException(ErrorException.DONT_HAVE_BILL_DETAIL);
+            }
             b.setNote(request.getDescription());
             if(request.getCustomerInfor().isEmpty()){
                 b.setCustomer(null);
@@ -141,7 +149,7 @@ public class BillService implements IBillService {
     public Page<Bill> filterBills(Instant startDate, Instant endDate, Double minAmount, Double maxAmount, String input,Long storeId, Pageable pageable) {
         return billRepository.filterBills(startDate, endDate, minAmount, maxAmount, input,storeId, pageable);
     }
-
+    // sai logic ở đây về quantity
     public Bill updateImportBill(Long billId, ImportRequest request) {
         Optional<Bill> bill = billRepository.findById(billId);
         if (bill.isPresent()) {

@@ -725,13 +725,13 @@
                         <c:set var="c" value="${bills.number}"></c:set>
                         <ul class="pagination">
                             <li class="page-item ${c==0 ?'disabled':''}">
-                                <a class="page-link" href="bills?page=${c==0 ? 0 : (c - 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">Trước</a>
+                                <a class="page-link" href="table?page=${c==0 ? 0 : (c - 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">Trước</a>
                             </li>
 
                             <c:forEach begin="0" end="${bills.totalPages - 1}" var="i">
                                 <c:if test="${i >= c - 1 && i <= c + 1}">
                                     <li class="page-item ${c == i ? 'active' : ''}">
-                                        <a class="page-link" href="bills?page=${i}&input=${input != null ? input : ''}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">${i + 1}</a>
+                                        <a class="page-link" href="table?page=${i}&input=${input != null ? input : ''}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">${i + 1}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${i == c - 2 || i == c + 2}">
@@ -740,7 +740,7 @@
                             </c:forEach>
 
                             <li class="page-item ${c == bills.totalPages - 1 ? 'disabled' : ''}">
-                                <a class="page-link" href="bills?page=${c == bills.totalPages - 1 ? bills.totalPages - 1 : (c + 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">Sau</a>
+                                <a class="page-link" href="table?page=${c == bills.totalPages - 1 ? bills.totalPages - 1 : (c + 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">Sau</a>
                             </li>
                         </ul>
                     </div>
