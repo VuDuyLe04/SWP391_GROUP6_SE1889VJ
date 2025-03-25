@@ -1,49 +1,82 @@
-
-
-
-
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%--<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
-<!doctype html>
+<%@page contentType="text/html" pageEncoding="UTF-8" %> <%@ taglib prefix="c"
+                                                                   uri="http://java.sun.com/jsp/jstl/core" %> <%@ taglib prefix="form"
+                                                                                                                         uri="http://www.springframework.org/tags/form" %> <%@ taglib prefix="fmt"
+                                                                                                                                                                                      uri="http://java.sun.com/jsp/jstl/fmt" %> <%@ taglib
+        uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> <%--<%@ taglib
+prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
+<!DOCTYPE html>
 <html class="fixed" style="overflow: hidden">
 <head>
-
     <!-- Basic -->
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
 
-    <title>Giao dịch thanh toán </title>
+    <title>Giao dịch thanh toán</title>
     <meta name="keywords" content="HTML5 Admin Template" />
-    <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
-    <meta name="author" content="JSOFT.net">
+    <meta
+            name="description"
+            content="JSOFT Admin - Responsive HTML5 Template"
+    />
+    <meta name="author" content="JSOFT.net" />
 
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
 
     <!-- Web Fonts  -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+    <link
+            href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light"
+            rel="stylesheet"
+            type="text/css"
+    />
 
     <!-- Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
+    <link
+            rel="stylesheet"
+            href="/client/auth/assets/vendor/bootstrap/css/bootstrap.css"
+    />
+    <link
+            rel="stylesheet"
+            href="/client/auth/assets/vendor/font-awesome/css/font-awesome.css"
+    />
+    <link
+            rel="stylesheet"
+            href="/client/auth/assets/vendor/magnific-popup/magnific-popup.css"
+    />
+    <link
+            rel="stylesheet"
+            href="/client/auth/assets/vendor/bootstrap-datepicker/css/datepicker3.css"
+    />
 
     <!-- Specific Page Vendor CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
-    <link rel="stylesheet" href="/client/auth/assets/vendor/morris/morris.css" />
+    <link
+            rel="stylesheet"
+            href="/client/auth/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css"
+    />
+    <link
+            rel="stylesheet"
+            href="/client/auth/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css"
+    />
+    <link
+            rel="stylesheet"
+            href="/client/auth/assets/vendor/morris/morris.css"
+    />
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme.css" />
 
     <!-- Skin CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/stylesheets/skins/default.css" />
+    <link
+            rel="stylesheet"
+            href="/client/auth/assets/stylesheets/skins/default.css"
+    />
 
     <!-- Theme Custom CSS -->
-    <link rel="stylesheet" href="/client/auth/assets/stylesheets/theme-custom.css">
+    <link
+            rel="stylesheet"
+            href="/client/auth/assets/stylesheets/theme-custom.css"
+    />
 
     <!-- Head Libs -->
     <script src="/client/auth/assets/vendor/modernizr/modernizr.js"></script>
@@ -51,13 +84,13 @@
         /* Modern Dashboard Styles */
         body {
             background: #f4f7fa;
-            font-family: 'Open Sans', sans-serif;
+            font-family: "Open Sans", sans-serif;
         }
 
         /* Panel Styling */
         .panel-featured-primary {
             border: none;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
             border-radius: 12px;
             margin-bottom: 30px;
         }
@@ -107,10 +140,8 @@
             background: #fff;
             padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             margin-bottom: 25px;
-
-
         }
 
         .form-group {
@@ -136,7 +167,7 @@
 
         .form-control:focus {
             border-color: #0088cc;
-            box-shadow: 0 0 0 3px rgba(0,136,204,0.15);
+            box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.15);
         }
 
         /* Table Styling */
@@ -144,7 +175,7 @@
             background: #fff;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             margin-top: 25px;
         }
 
@@ -157,7 +188,7 @@
         .table th {
             background: #f8fafc;
             color: #344767;
-            font-weight: 600;
+            font-weight: bold;
             padding: 15px;
             font-size: 13px;
             text-transform: uppercase;
@@ -257,7 +288,7 @@
         .btn-primary:hover {
             background: #006699;
             transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(0,136,204,0.2);
+            box-shadow: 0 4px 10px rgba(0, 136, 204, 0.2);
         }
 
         /* User Info Styling */
@@ -311,7 +342,7 @@
         .dashboard-card {
             background: #fff;
             border-radius: 15px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
             margin-bottom: 25px;
         }
 
@@ -352,7 +383,7 @@
             background: #fff;
             padding: 20px;
             border-radius: 15px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
         }
 
         .search-form {
@@ -371,7 +402,7 @@
 
         .search-input:focus {
             border-color: #0088cc;
-            box-shadow: 0 0 0 3px rgba(0,136,204,0.15);
+            box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.15);
         }
 
         .search-button {
@@ -392,7 +423,7 @@
             background: #fff;
             padding: 15px;
             border-radius: 15px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
         }
 
         .filter-grid {
@@ -427,7 +458,7 @@
             background: #fff;
             padding: 20px;
             border-radius: 15px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
             margin-bottom: 25px; /* Giảm margin bottom */
             position: relative; /* Thêm position relative */
         }
@@ -543,9 +574,7 @@
     </style>
 </head>
 <body>
-
 <section class="body">
-
     <!-- start: header -->
     <jsp:include page="../layout/header.jsp" />
     <!-- end: header -->
@@ -557,7 +586,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2><i class="fa fa-users mr-xs"></i> Chi tiết hóa đơn  </h2>
+                <h2><i class="fa fa-users mr-xs"></i> Chi tiết hóa đơn</h2>
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
                         <li>
@@ -567,30 +596,35 @@
                         </li>
                         <li><span>Chi tiết hóa đơn </span></li>
                     </ol>
-                    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+                    <a class="sidebar-right-toggle" data-open="sidebar-right"
+                    ><i class="fa fa-chevron-left"></i
+                    ></a>
                 </div>
             </header>
             <section class="panel">
                 <div class="panel-body">
 
-
                     <div class="invoice">
                         <header class="clearfix">
                             <div class="row">
-                                <div class="col-sm-6 mt-md">
-                                    <h2 class="h2 mt-none mb-sm text-dark text-bold">HÓA ĐƠN</h2>
-                                    <h4 class="h4 m-none text-dark text-bold">#<c:out value="${billDetails[0].bill.id}"/></h4>
-                                </div>
-                                <div class="col-sm-6 text-right mt-md mb-md">
-                                    <address class="ib mr-xlg">
-                                        Công ty Okler Themes Ltd
-                                        <br />
-                                        24 Đường Henrietta, London, Anh
-                                        <br />
-                                        Điện thoại: +12 3 4567-8901
-                                        <br />
-                                        Email: okler@okler.net
-                                    </address>
+                                <div class="col-sm-12 mt-md">
+                                    <div
+                                            style="display: flex; align-items: center; gap: 15px"
+                                    >
+                                        <a
+                                                href="/bill/table"
+                                                class="btn btn-primary"
+                                                style="padding: 6px 12px"
+                                        >
+                                            <i class="fa fa-arrow-left mr-xs"></i>
+                                        </a>
+                                        <div>
+                                            <h4 class="text-dark text-bold mb-xs">HÓA ĐƠN</h4>
+                                            <p class="m-none text-dark">
+                                                #<c:out value="${billDetails[0].bill.id}" />
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </header>
@@ -599,14 +633,18 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="bill-to">
-                                        <p class="h5 mb-xs text-dark text-semibold">Người tạo hóa đơn:</p>
-                                        <p><c:out value="${billDetails[0].createdBy}"/></p>
+                                        <p class="h5 mb-xs text-dark text-semibold">
+                                            Người tạo hóa đơn:
+                                        </p>
+                                        <p><c:out value="${billDetails[0].createdBy}" /></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6 text-right">
                                     <p class="mb-none">
                                         <span class="text-dark">Ngày lập hóa đơn:</span>
-                                        <span class="value"><c:out value="${billDetails[0].createdAt}"/></span>
+                                        <span class="value"
+                                        ><c:out value="${billDetails[0].createdAt}"
+                                        /></span>
                                     </p>
                                 </div>
                             </div>
@@ -615,64 +653,182 @@
                         <div class="table-responsive">
                             <table class="table invoice-items">
                                 <thead>
-                                <tr class="h4 text-dark">
-                                    <th>#</th>
-                                    <th>Sản phẩm</th>
-                                    <th>Số lượng</th>
-                                    <th>Giá bán thực tế</th>
-                                    <th>Giá niêm yết</th>
-                                    <th>Tổng giá</th>
-                                    <th>Gói hàng</th>
-                                    <th>Bốc vác</th>
-                                    <th>Giá bốc vác</th>
+                                <tr
+                                        class="h4 text-dark"
+                                        style="color: #171717 !important; font-weight: 600"
+                                >
+                                    <th style="width: 50px">#</th>
+                                    <th  style="font-weight: bold">Sản phẩm</th>
+                                    <th  style="font-weight: bold">Số lượng</th>
+                                    <th  style="font-weight: bold">Giá bán thực tế</th>
+                                    <th  style="font-weight: bold">Giá niêm yết</th>
+                                    <th  style="font-weight: bold">Tổng giá</th>
+                                    <th  style="font-weight: bold">Gói hàng</th>
+                                    <th  style="font-weight: bold">Bốc vác</th>
+                                    <th  style="font-weight: bold"  >Giá bốc vác</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach var="billDetail" items="${billDetails}" varStatus="loop">
+                                <c:set var="totalPrice" value="0" />
+                                <c:set var="shippingFee" value="0" />
+                                <fmt:setLocale value="vi_VN" />
+                                <c:forEach
+                                        var="billDetail"
+                                        items="${billDetails}"
+                                        varStatus="loop"
+                                >
+                                    <c:set
+                                            var="totalPrice"
+                                            value="${totalPrice + billDetail.totalProductPrice}"
+                                    />
+                                    <c:set
+                                            var="shippingFee"
+                                            value="${shippingFee + billDetail.liftPrice}"
+                                    />
                                     <tr>
                                         <td>${loop.index + 1}</td>
-                                        <td class="text-semibold text-dark">${billDetail.nameProduct}</td>
-                                        <td class="text-center">${billDetail.quantity}</td>
-                                        <td class="text-center">${billDetail.actualSellPrice}</td>
-                                        <td class="text-center">${billDetail.listedPrice}</td>
-                                        <td class="text-center">${billDetail.totalProductPrice}</td>
-                                        <td class="text-center">
-                                            <c:choose>
-                                                <c:when test="${not empty billDetail.packagingName}">
-                                                    ${billDetail.packagingName} (SL: ${billDetail.quantityPerPackage})
-                                                </c:when>
-                                                <c:otherwise>-</c:otherwise>
-                                            </c:choose>
+                                        <td class="text-semibold text-dark">
+                                                ${billDetail.nameProduct}
                                         </td>
-                                        <td class="text-center">${billDetail.isLift ? 'Có' : 'Không'}</td>
-                                        <td class="text-center">${billDetail.liftPrice}</td>
+                                        <td class="text-center">${billDetail.quantity}</td>
+                                        <td class="text-center">
+                                            <fmt:formatNumber
+                                                    value="${billDetail.actualSellPrice}"
+                                                    type="number"
+                                                    groupingUsed="true"
+                                            />₫
+                                        </td>
+                                        <td class="text-center">
+                                            <fmt:formatNumber
+                                                    value="${billDetail.listedPrice}"
+                                                    type="number"
+                                                    groupingUsed="true"
+                                            />₫
+                                        </td>
+                                        <td class="text-center">
+                                            <fmt:formatNumber
+                                                    value="${billDetail.totalProductPrice}"
+                                                    type="number"
+                                                    groupingUsed="true"
+                                            />₫
+                                        </td>
+                                        <td class="text-center">
+                                            <c:if test="${not empty billDetail.packagingName}">
+                                                ${billDetail.packagingName} (SL:
+                                                ${billDetail.quantityPerPackage})
+                                            </c:if>
+                                            <c:if test="${empty billDetail.packagingName}">
+                                                -
+                                            </c:if>
+                                        </td>
+                                        <td class="text-center">
+                                            <c:if test="${billDetail.lift != null}">
+                                                ${billDetail.lift ? 'Có' : 'Không'}
+                                            </c:if>
+                                            <c:if test="${billDetail.lift == null}"> - </c:if>
+                                        </td>
+                                        <td class="text-center">
+                                            <c:if test="${billDetail.liftPrice != null}">
+                                                <fmt:formatNumber
+                                                        value="${billDetail.liftPrice}"
+                                                        type="number"
+                                                        groupingUsed="true"
+                                                />₫
+                                            </c:if>
+                                            <c:if test="${billDetail.liftPrice == null}">
+                                                -
+                                            </c:if>
+                                        </td>
                                     </tr>
-
                                 </c:forEach>
                                 </tbody>
                             </table>
                         </div>
+                        <div class="invoice-summary">
+                            <div class="row">
+                                <div class="col-sm-4 col-sm-offset-8">
+                                    <table class="table h5 text-dark">
+                                        <tbody>
+                                        <tr class="b-top-none">
+                                            <td colspan="2" style="font-weight: bold">Tạm tính</td>
+                                            <td class="text-left">
+                                                <fmt:formatNumber
+                                                        value="${totalPrice}"
+                                                        type="number"
+                                                        groupingUsed="true"
+                                                />₫
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"  style="font-weight: bold">Phí vận chuyển</td>
+                                            <td class="text-left">
+                                                <fmt:formatNumber
+                                                        value="${shippingFee}"
+                                                        type="number"
+                                                        groupingUsed="true"
+                                                />₫
+                                            </td>
+                                        </tr>
+                                        <tr class="h4">
+                                            <td colspan="2"  style="font-weight: bold">Tổng cộng</td>
+                                            <td class="text-left">
+                                                <fmt:formatNumber
+                                                        value="${totalPrice + shippingFee}"
+                                                        type="number"
+                                                        groupingUsed="true"
+                                                />₫
+                                            </td>
+                                        </tr>
+
+                                        <!-- Định dạng số tiền đã thanh toán -->
+                                        <%--
+                                        <tr>
+                                          --%> <%--
+                            <td colspan="2">Đã thanh toán</td>
+                            --%> <%--
+                            <td>
+                              --%> <%--
+                              <c:choose
+                                >--%> <%--
+                                <c:when test="${bill.paid % 1 == 0}"
+                                  >--%> <%--
+                                  <fmt:formatNumber
+                                    value="${bill.paid}"
+                                    type="number"
+                                    groupingUsed="true"
+                                  />₫--%> <%-- </c:when
+                                >--%> <%--
+                                <c:otherwise
+                                  >--%> <%--
+                                  <fmt:formatNumber
+                                    value="${bill.paid}"
+                                    type="number"
+                                    groupingUsed="true"
+                                    minFractionDigits="1"
+                                  />₫--%> <%-- </c:otherwise
+                                >--%> <%-- </c:choose
+                              >--%> <%--
+                            </td>
+                            --%> <%--
+                          </tr>
+                          --%>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
-
             </section>
         </section>
     </div>
 </section>
-
-
 
 <!-- Đoạn mã JavaScript của bạn -->
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
-
-
-
-
-
 
 <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
 
@@ -714,7 +870,6 @@
 
 <!-- Theme Initialization Files -->
 <script src="/client/auth/assets/javascripts/theme.init.js"></script>
-
 
 <!-- Examples -->
 <script src="/client/auth/assets/javascripts/dashboard/examples.dashboard.js"></script>
