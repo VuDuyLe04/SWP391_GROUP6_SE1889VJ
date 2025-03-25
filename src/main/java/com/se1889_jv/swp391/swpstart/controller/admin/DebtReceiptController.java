@@ -6,6 +6,7 @@ import com.se1889_jv.swp391.swpstart.domain.dto.response.DebtReceiptDetailRespon
 import com.se1889_jv.swp391.swpstart.domain.dto.response.PageResponse;
 import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import com.se1889_jv.swp391.swpstart.service.implementservice.DebtReceiptService;
+import com.se1889_jv.swp391.swpstart.util.validator.annotation.CheckPermission;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class DebtReceiptController {
     private final DebtReceiptService debtReceiptService;
     private final CustomerRepository customerRepository;
 
+    @CheckPermission(condition = "statusService")
     @GetMapping("/customer/debt-receipt/create/{customerId}")
     public String showCreateDebtReceiptForm(@PathVariable("customerId") long customerId, Model model) {
         var customer = customerRepository.findById(customerId)
@@ -37,6 +39,7 @@ public class DebtReceiptController {
         return "admin/customer/debtreceiptform";
     }
 
+    @CheckPermission(condition = "statusService")
     @PostMapping("/debt-receipt/creation")
     public String createDebtReceipt(@ModelAttribute DebtReceiptCreationRequest request, Model model) {
         log.info("Received data: debtType = {}, debtReason = {}, debtAmount = {}, customerId = {}",
@@ -47,7 +50,7 @@ public class DebtReceiptController {
         return "redirect:/debt-receipt/search/" + request.getCustomerId();
     }
 
-
+    @CheckPermission(condition = "statusService")
     @GetMapping("/customer/debt-history/{id}")
     public String getCustomerDebts(@PathVariable("id") long customerId,
                                    @RequestParam(required = false, defaultValue = "1") int page,
@@ -65,6 +68,7 @@ public class DebtReceiptController {
         return "admin/customer/debtlist";
     }
 
+    @CheckPermission(condition = "statusService")
     @GetMapping("/debt-receipt/search/{id}")
     public String getAllWithSearch(
             @PathVariable Long id,

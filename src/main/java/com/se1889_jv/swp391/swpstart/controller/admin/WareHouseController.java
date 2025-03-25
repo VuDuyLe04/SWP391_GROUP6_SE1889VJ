@@ -5,11 +5,10 @@ import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.WareHouse;
 import com.se1889_jv.swp391.swpstart.domain.dto.request.WareHouseCreationRequest;
-import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.WareHouseService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
-import jakarta.servlet.http.HttpServletRequest;
+import com.se1889_jv.swp391.swpstart.util.validator.annotation.CheckPermission;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +32,7 @@ public class WareHouseController {
     private StoreService storeService;
 
     // sang trang tạo mới khu vực
+    @CheckPermission(condition = "statusService")
     @GetMapping("/warehouse/create")
     public String getCreatePage(Model model) {
         model.addAttribute("warehouse", new WareHouse());
@@ -43,6 +43,7 @@ public class WareHouseController {
     }
 
     //tạo mới
+    @CheckPermission(condition = "statusService")
     @PostMapping("/warehouse/create")
     public String createWareHouse(@ModelAttribute("warehouse") @Valid WareHouseCreationRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -53,6 +54,7 @@ public class WareHouseController {
     }
 
     //bảng các khu vực
+    @CheckPermission(condition = "statusService")
     @GetMapping("/warehouse")
     public String getTableWarehouse(@RequestParam(defaultValue = "0") int page, Model model) {
         Store store = Utility.getStoreInSession();
@@ -68,7 +70,7 @@ public class WareHouseController {
     }
 
     //--------------------------------------------------------------------------
-
+    @CheckPermission(condition = "statusService")
     @GetMapping("/warehouse/update/{id}")
     public String getUpdatePage(@PathVariable("id") long id, Model model) {
         List<Store> listStore = storeService.getAllStores();
@@ -81,7 +83,7 @@ public class WareHouseController {
         return "admin/warehouse/update";
     }
 
-
+    @CheckPermission(condition = "statusService")
     @PostMapping("/warehouse/update")
     public String updateWareHouse(
             @Valid @ModelAttribute("warehouse") WareHouse wareHouse,
@@ -97,6 +99,7 @@ public class WareHouseController {
 //    @Autowired
 //    private ProductService productService;
 
+    @CheckPermission(condition = "statusService")
     @GetMapping("/warehouse/detail/{id}")
     public String getWarehouseDetail(@PathVariable("id") Long id, Model model, HttpSession session) {
         WareHouse warehouse = wareHouseService.getWareHouseById(id);
@@ -130,14 +133,14 @@ public class WareHouseController {
         model.addAttribute("totalPages", result.getTotalPages());
         return "admin/warehouse/table";
     }
-
+    @CheckPermission(condition = "statusService")
     @GetMapping("/warehouse/search")
     public String searchWarehouseByName(@RequestParam("name") String name, Model model) {
         List<WareHouse> warehouses = wareHouseService.searchWareHouseByName(name);
         model.addAttribute("listWareHouse", warehouses);
         return "admin/warehouse/table";
     }
-
+    @CheckPermission(condition = "statusService")
     @GetMapping("/warehouse/{id}")
     @ResponseBody
     public List<WareHouse> getWarehousesByStore(@PathVariable("id") Long id) {

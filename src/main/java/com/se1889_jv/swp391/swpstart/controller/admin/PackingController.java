@@ -8,6 +8,7 @@ import com.se1889_jv.swp391.swpstart.domain.dto.PackagingDTO;
 import com.se1889_jv.swp391.swpstart.service.implementservice.PackagingService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserStoreService;
+import com.se1889_jv.swp391.swpstart.util.validator.annotation.CheckPermission;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ public class PackingController {
 
     @Autowired
     private StoreService storeService;
+
+    @CheckPermission(condition = "statusService")
     @GetMapping("/packaings")
     public String packaings(HttpSession session, Model model,
                             @RequestParam(value = "page", required = false, defaultValue = "0") String page,
@@ -107,6 +110,7 @@ public class PackingController {
         }
     }
 
+    @CheckPermission(condition = "statusService")
     @PostMapping("/updatePackaging")
     public String updatePackaging(HttpSession session, Model model,@Valid @ModelAttribute("packaging") Packaging packaging,
                                   BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -123,6 +127,8 @@ public class PackingController {
             return "redirect:/access-deny";
         }
     }
+
+    @CheckPermission(condition = "statusService")
     @PostMapping("/addPackaging")
     public String addPackaging(HttpSession session, Model model,@Valid @ModelAttribute("packagingDTO") PackagingDTO packagingDTO
     , BindingResult bindingResult, RedirectAttributes redirectAttributes

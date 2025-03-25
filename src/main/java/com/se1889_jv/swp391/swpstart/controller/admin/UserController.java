@@ -12,6 +12,7 @@ import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserStoreService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import com.se1889_jv.swp391.swpstart.util.constant.UserAccessStoreStatusEnum;
+import com.se1889_jv.swp391.swpstart.util.validator.annotation.CheckPermission;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
+//    @CheckPermission(condition = "statusService")
     @GetMapping("/usermanagement")
     public String getAllUser(@RequestParam(value = "input", required = false) String input,
                              @RequestParam(value = "role", required = false, defaultValue = "-1") String roleId,
@@ -294,6 +295,7 @@ public class UserController {
         return "redirect:/profile";
     }
 
+    @CheckPermission(condition = "statusService")
     @GetMapping("/createstaff")
     public String createStaff(Model model) {
         List<Store> storeList = storeService.findStoresByCreatedBy(String.valueOf(Utility.getUserInSession().getId()));
@@ -302,6 +304,7 @@ public class UserController {
         return "admin/user/createstaff";
     }
 
+    @CheckPermission(condition = "statusService")
     @PostMapping("/createstaff")
     public String handleCreateStaff(@Valid @ModelAttribute("StaffDTO") StaffDTO staffDTO,
                                     BindingResult bindingResult,
@@ -342,6 +345,7 @@ public class UserController {
         }
     }
 
+    @CheckPermission(condition = "statusService")
     @GetMapping("/updatestaff/{id}")
     public String updateStaff(@PathVariable Long id, Model model) {
         User user = userService.findById(id);
@@ -358,6 +362,7 @@ public class UserController {
         return "admin/user/updatestaff";
     }
 
+    @CheckPermission(condition = "statusService")
     @GetMapping("/updatestatus")
     public String updateStaffStatus(
             @RequestParam(value= "userId") String userId,
@@ -408,6 +413,8 @@ if(status == null){
         return "redirect:/updatestaff/" + Long.parseLong(userId);
 
     }
+
+    @CheckPermission(condition = "statusService")
     @GetMapping("/savestore")
     public String saveSelectedStores(@RequestParam(value = "selectedStores", required = false) List<Long> selectedStoreIds,
                                      @RequestParam("userId") String userId,

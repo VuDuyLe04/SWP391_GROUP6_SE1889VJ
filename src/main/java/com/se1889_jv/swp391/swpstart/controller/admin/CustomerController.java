@@ -32,7 +32,7 @@ public class CustomerController {
     @Autowired
     private UserService userService;
 
-//    @CheckPermission(condition = "statusService")
+    @CheckPermission(condition = "statusService")
     @GetMapping("/customer/create")
     public String getCreateCustomerPage(Model model) {
         model.addAttribute("customer", new Customer());
@@ -44,14 +44,10 @@ public class CustomerController {
                 return "redirect:/dashboard";
             }
         }
-//
-//        if (user.getRole().getName().equals("OWNER")) {
-//            model.addAttribute("listStore", Utility.getListStoreOfOwner(user));
-//        }
         return "admin/customer/create";
     }
 
-//    @CheckPermission(condition = "statusService")
+    @CheckPermission(condition = "statusService")
     @PostMapping("/customer/create")
     public String createCustomer(Model model,
                                  @ModelAttribute("customer") @Valid Customer customer,
@@ -89,7 +85,7 @@ public class CustomerController {
         return "redirect:/customer/table";
     }
 
-//    @CheckPermission(condition = "statusService")
+    @CheckPermission(condition = "statusService")
     @GetMapping("/customer/detail/{id}")
     public String getCustomerDetail(@PathVariable("id") long id, Model model) {
 
@@ -109,20 +105,7 @@ public class CustomerController {
         return "admin/customer/customerdetail";
     }
 
-    //    @GetMapping("/customer")
-//    public String getCustomerTable(Model model ) {
-//        Store store = Utility.getStoreInSession();
-//        User user = Utility.getUserInSession();
-//        if (user.getRole().getName().equals("STAFF")) {
-//            if (store == null) {
-//                return "redirect:/dashboard";
-//            }
-//        }
-//        model.addAttribute("listCustomer", this.customerService.getAllCustomers(store));
-//        return "admin/customer/table";
-//    }
-
-//    @CheckPermission(condition = "statusService")
+    @CheckPermission(condition = "statusService")
     @GetMapping("/customer/update/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
         Store store = Utility.getStoreInSession();
@@ -138,7 +121,7 @@ public class CustomerController {
         return "admin/customer/update";
     }
 
-//    @CheckPermission(condition = "statusService")
+    @CheckPermission(condition = "statusService")
     @PostMapping("/customer/update")
     public String updateCustomer(
             @Valid @ModelAttribute("customer") Customer customer,
@@ -156,55 +139,6 @@ public class CustomerController {
         this.customerService.updateCustomer(customer);
         return "redirect:/customer";
     }
-
-//    @CheckPermission(condition = "statusService")
-//    @GetMapping("/customer/search")
-//    public String searchCustomer(@RequestParam(defaultValue = "0") int page,@RequestParam(required = false) String name,
-//                                 @RequestParam(required = false) String phone,
-//                                 Model model) {
-////        List<Customer> customers;
-//        Store store = Utility.getStoreInSession();
-//        User user = Utility.getUserInSession();
-//        if (user == null) {
-//            return "redirect:/login";
-//        }
-//
-//        if (user.getRole().getName().equals("STAFF")) {
-//            if (store == null) {
-//                return "redirect:/dashboard";
-//            }
-//        }
-//
-//        Pageable pageable = PageRequest.of(page, 5); // 5 sản phẩm mỗi trang
-//        if (user.getRole().getName().equals("OWNER")){
-//            Page<Customer> customers;
-//            if (name != null && !name.isEmpty()) {
-//                customers = customerService.searchCustomersByNameRoleOwner(name,Utility.getListStoreOfOwner(user),pageable );
-//            } else if (phone != null && !phone.isEmpty()) {
-//                customers = customerService.searchCustomersByPhoneRoleOwner(phone,Utility.getListStoreOfOwner(user),pageable );
-//            } else {
-//                customers = this.customerService.getAllCustomersRoleOwner(Utility.getListStoreOfOwner(user), pageable);
-//            }
-//            model.addAttribute("listCustomer", customers.getContent());
-//            model.addAttribute("currentPage", page);
-//            model.addAttribute("totalPages", customers.getTotalPages());
-//        } else {
-//            Page<Customer> customers;
-//            if (name != null && !name.isEmpty()) {
-//                customers = customerService.searchCustomersByNameRoleStaff(name,store,pageable );
-//            } else if (phone != null && !phone.isEmpty()) {
-//                customers = customerService.searchCustomersByPhoneRoleStaff(phone,store,pageable );
-//            } else {
-//                customers = this.customerService.getAllCustomersRoleStafff(store, pageable);
-//            }
-//            model.addAttribute("listCustomer", customers.getContent());
-//            model.addAttribute("currentPage", page);
-//            model.addAttribute("totalPages", customers.getTotalPages());
-//        }
-//
-////        model.addAttribute("listCustomer", customers);
-//        return "admin/customer/table";
-//    }
 
     @CheckPermission(condition = "statusService")
     @GetMapping("/customer/table")

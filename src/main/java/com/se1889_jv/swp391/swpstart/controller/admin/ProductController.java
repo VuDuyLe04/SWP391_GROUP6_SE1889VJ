@@ -13,6 +13,7 @@ import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.WareHouseService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
+import com.se1889_jv.swp391.swpstart.util.validator.annotation.CheckPermission;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,8 @@ public class ProductController {
     @Autowired
     private UserStoreService userStoreService;
     @GetMapping("/product")
+
+    @CheckPermission(condition = "statusService")
     public String getListProductPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "unitPrice") String sort,
@@ -89,7 +92,7 @@ public class ProductController {
     }
 
 
-
+    @CheckPermission(condition = "statusService")
     @GetMapping("/product/createProduct")
     public String getCreateProductPage(
             Model model, HttpSession session
@@ -108,6 +111,7 @@ public class ProductController {
         return "admin/product/create";
     }
 
+    @CheckPermission(condition = "statusService")
     @PostMapping("/product/create")
     public String createProduct(
             @Valid @ModelAttribute("product") Product product,
@@ -133,7 +137,7 @@ public class ProductController {
         return "redirect:/product";
     }
 
-
+    @CheckPermission(condition = "statusService")
     @PostMapping("/product/delete")
     public String deleteProduct(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
         try {
@@ -144,7 +148,7 @@ public class ProductController {
         }
         return "redirect:/product";
     }
-
+    @CheckPermission(condition = "statusService")
     @GetMapping("/product/update/{id}")
     public String getUpdateProductPage(@PathVariable("id") Long id, Model model) {
         User user = Utility.getUserInSession();
@@ -167,7 +171,7 @@ public class ProductController {
         model.addAttribute("stores", stores);
         return "admin/product/update";
     }
-
+    @CheckPermission(condition = "statusService")
     @PostMapping("/product/update")
     public String updateProduct(@ModelAttribute("product") @Valid Product product,
                                 BindingResult result, Model model) {
@@ -185,6 +189,7 @@ public class ProductController {
         return "redirect:/product";
     }
 
+    @CheckPermission(condition = "statusService")
     @PostMapping("/update")
     public String updateProduct(@ModelAttribute("product") ProductUpdateRequest request, RedirectAttributes redirectAttributes) {
         ProductUpdateResponse response = productService.updateProduct(request);
@@ -193,6 +198,7 @@ public class ProductController {
         return "redirect:/product/update/" + response.getId();
     }
 
+    @CheckPermission(condition = "statusService")
     @GetMapping("/product/search")
     public String searchProduct(
             @RequestParam(value = "name", required = false) String name,
@@ -222,41 +228,12 @@ public class ProductController {
         return "admin/product/table";
     }
 
+    @CheckPermission(condition = "statusService")
     @GetMapping("/product/view/{id}")
     public String viewProduct(@PathVariable("id") Long id, Model model) {
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
         return "admin/product/view";
     }
-
-//    @GetMapping("/product/sorted")
-//    public String getSortedProductPage(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "unitPrice") String sort,
-//            @RequestParam(defaultValue = "asc") String order,
-//            Model model) {
-//
-//        // Xác định hướng sắp xếp
-//        Sort.Direction direction = order.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
-//
-//        // Tạo Pageable với thông tin sắp xếp
-//        Pageable pageable = PageRequest.of(page, 5, Sort.by(direction, sort));
-//
-//        // Gọi ProductService để lấy dữ liệu đã sắp xếp
-//        Page<Product> productPage = productService.getAllProducts(pageable);
-//
-//        // Đưa dữ liệu vào Model
-//        model.addAttribute("listProduct", productPage.getContent());
-//        model.addAttribute("currentPage", page);
-//        model.addAttribute("totalPages", productPage.getTotalPages());
-//        model.addAttribute("sort", sort);
-//        model.addAttribute("order", order);
-//
-//        return "admin/product/table";
-//    }
-
-
-
-
 
 }

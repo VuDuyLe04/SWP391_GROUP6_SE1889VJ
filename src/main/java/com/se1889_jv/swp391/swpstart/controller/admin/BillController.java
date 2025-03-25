@@ -38,6 +38,7 @@ public class BillController {
     @Autowired
     private UserStoreService userStoreService;
 
+
     @PostMapping("/createbill")
     public String createBill(HttpSession session, Model model, BillDTO billDTO, RedirectAttributes redirectAttributes){
         User user = (User) session.getAttribute("user");

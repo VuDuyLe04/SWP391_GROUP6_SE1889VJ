@@ -20,4 +20,12 @@ public class SmsController {
 
         return new ResponseEntity("OTP sent successfully", HttpStatus.OK);
     }
+
+    public String generateOTP() {
+        String otp = "";
+
+        otp = Math.round(Math.random()*9+1)+"";
+        return otp;
+    }
+    
 }

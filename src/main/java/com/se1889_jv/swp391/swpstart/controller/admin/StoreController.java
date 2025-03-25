@@ -39,11 +39,14 @@ public class    StoreController {
     @Autowired
     private UserService userService;
 
+    @CheckPermission(condition = "statusService")
     @GetMapping("/createstore")
     public String createStore( Model model) {
         model.addAttribute("StoreDTO", new StoreDTO());
         return "admin/store/createstore";  // Return JSP page
     }
+
+    @CheckPermission(condition = "statusService")
     @PostMapping("/createstore")
     public String handleCreateStore(Model model,
                                     @Valid @ModelAttribute("StoreDTO") StoreDTO storeDTO,
@@ -131,6 +134,8 @@ public class    StoreController {
 
         return "admin/store/liststore";
     }
+
+    @CheckPermission(condition = "statusService")
     @GetMapping(value="/updatestore/{id}")
     public String updateStore(@PathVariable String id, Model model) {
         Store store = storeService.findStoreById(Long.parseLong(id));
@@ -138,6 +143,8 @@ public class    StoreController {
         model.addAttribute("StoreDTO", storeDTO);
         return "admin/store/updatestore";
     }
+
+    @CheckPermission(condition = "statusService")
     @PostMapping(value = "/updatestore")
     public String handleupdateStore(@Valid @ModelAttribute("StoreDTO") StoreDTO storeDTO,
                                     BindingResult bindingResult, RedirectAttributes redirectAttributes,
