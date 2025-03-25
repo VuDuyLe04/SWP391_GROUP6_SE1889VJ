@@ -102,21 +102,14 @@ public class BillController {
     }
 
     @GetMapping("/bills/details/{id}")
-    @ResponseBody
-    public ResponseEntity<?> getBillDetails(@PathVariable Long id) {
-        Bill bill = billService.findBillById(id); // Trả về Bill, không cần Optional
-
-        if (bill == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bill not found");
-        }
-
+     public String getBillDetail(
+             @PathVariable(name = "id") Long billId,
+             Model model){
+        Bill bill = billService.findBillById(billId); //
         List<BillDetail> billDetails = bill.getBillDetails();
+        model.addAttribute("billDetails", billDetails);
+        return "admin/bill/detail";
 
-        if (billDetails == null || billDetails.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No bill details found");
-        }
-
-        return ResponseEntity.ok(bill); // Trả về trực tiếp Bill
     }
 
 

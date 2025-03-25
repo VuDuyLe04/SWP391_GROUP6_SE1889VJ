@@ -557,7 +557,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2><i class="fa fa-users mr-xs"></i> Danh sách hóa đơn  </h2>
+                <h2><i class="fa fa-users mr-xs"></i> Chi tiết hóa đơn  </h2>
                 <div class="right-wrapper pull-right">
                     <ol class="breadcrumbs">
                         <li>
@@ -565,225 +565,101 @@
                                 <i class="fa fa-home"></i>
                             </a>
                         </li>
-                        <li><span>Danh sách hóa đơn </span></li>
+                        <li><span>Chi tiết hóa đơn </span></li>
                     </ol>
                     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                 </div>
             </header>
-
-            <div class="controls-section">
-
-
-                <div class="filter-form">
-                    <form id="dateForm" action="/bill/table" method="get">
-                        <div class="filter-grid">
-                            <div class="form-group">
-                                <label for="storeId">Cửa hàng </label>
-                                <select id="storeId" name="storeId" class="form-control">
-                                    <option ${storeId == "0" ? "selected" : ""} value="0">Tất cả</option>
-                                    <c:forEach items="${stores}" var="s">
-                                        <option ${storeId == s.id ? "selected" : ""} value="${s.id}">${s.name}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="startDate">Từ ngày</label>
-                                <input type="date" id="startDate" name="startDate"
-                                       class="form-control" value="${startDate}">
-                            </div>
-                            <div class="form-group">
-                                <label for="endDate">Đến ngày</label>
-                                <input type="date" id="endDate" name="endDate"
-                                       class="form-control" value="${endDate}">
-                            </div>
+            <section class="panel">
+                <div class="panel-body">
 
 
-                            <div class="form-group">
-                                <label for="minAmount">Tổng tiền tối thiểu</label>
-                                <input type="number" id="minAmount" name="minAmount"
-                                       class="form-control" value="${minAmount}">
+                    <div class="invoice">
+                        <header class="clearfix">
+                            <div class="row">
+                                <div class="col-sm-6 mt-md">
+                                    <h2 class="h2 mt-none mb-sm text-dark text-bold">HÓA ĐƠN</h2>
+                                    <h4 class="h4 m-none text-dark text-bold">#<c:out value="${billDetails[0].bill.id}"/></h4>
+                                </div>
+                                <div class="col-sm-6 text-right mt-md mb-md">
+                                    <address class="ib mr-xlg">
+                                        Công ty Okler Themes Ltd
+                                        <br />
+                                        24 Đường Henrietta, London, Anh
+                                        <br />
+                                        Điện thoại: +12 3 4567-8901
+                                        <br />
+                                        Email: okler@okler.net
+                                    </address>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="maxAmount">Tổng tiền tối đa</label>
-                                <input type="number" id="maxAmount" name="maxAmount"
-                                       class="form-control" value="${maxAmount}">
-                            </div>
-                            <div class="form-group" style="display: flex; align-items: flex-end;">
-                                <button type="submit" class="btn btn-primary w-100">
-                                    <i class="fa fa-filter mr-xs"></i> Lọc
-                                </button>
+                        </header>
+
+                        <div class="bill-info">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="bill-to">
+                                        <p class="h5 mb-xs text-dark text-semibold">Người tạo hóa đơn:</p>
+                                        <p><c:out value="${billDetails[0].createdBy}"/></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <p class="mb-none">
+                                        <span class="text-dark">Ngày lập hóa đơn:</span>
+                                        <span class="value"><c:out value="${billDetails[0].createdAt}"/></span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="search-box">
-                    <form id="search-form" action="/bill/table" method="get" class="search-form">
-                        <input type="text" class="search-input" name="input"
-                               placeholder="Tìm theo số điện thoại khách hàng"
-                               value="${input}">
-                        <button type="submit" class="search-button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
 
-            <div class="table-section">
-                <c:if test="${emptyList != null}">
-                    <div class="alert alert-info">
-                        <i class="fa fa-info-circle mr-xs"></i> ${emptyList}
-                    </div>
-                </c:if>
-
-                <c:if test="${emptyList == null}">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>Cửa hàng</th>
-                                <th>Thông tin người dùng</th>
-                                <th >Ngày tạo</th>
-                                <th >Tiền đã trả</th>
-                                <th >Tiền nợ</th>
-                                <th>Tổng tiền</th>
-                                <th>Loại Bill</th>
-                                <th >Bốc vác</th>
-                                <th>Hành động</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach var="bill" items="${bills.content}" varStatus="status">
-                                <tr>
-                                    <td>${status.index + 1}</td>  <!-- STT --><!-- Bill ID -->
-                                    <td >${bill.store.name}</td>  <!-- Store Name -->
-                                    <td >${bill.customer.name}
-                                           (${bill.customer.phone})
-                                    </td>  <!-- Customer Name -->
-                                    <td >${bill.formattedDate}</td>
-
-                                    <td >   <fmt:setLocale value="vi_VN"/>
-                                        <c:choose>
-                                            <c:when test="${bill.paid % 1 == 0}">
-                                                <fmt:formatNumber value="${bill.paid}" type="number" groupingUsed="true"/>₫
-                                            </c:when>
-                                            <c:otherwise>
-                                                <fmt:formatNumber value="${bill.paid}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td><!-- Created At -->
-                                    <td >   <fmt:setLocale value="vi_VN"/>
-                                        <c:choose>
-                                            <c:when test="${bill.inDebt% 1 == 0}">
-                                                <fmt:formatNumber value="${bill.inDebt}" type="number" groupingUsed="true"/>₫
-                                            </c:when>
-                                            <c:otherwise>
-                                                <fmt:formatNumber value="${bill.inDebt}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td><!-- Created At -->
-                                    <td >   <fmt:setLocale value="vi_VN"/>
-                                        <c:choose>
-                                            <c:when test="${bill.totalBillPrice % 1 == 0}">
-                                                <fmt:formatNumber value="${bill.totalBillPrice}" type="number" groupingUsed="true"/>₫
-                                            </c:when>
-                                            <c:otherwise>
-                                                <fmt:formatNumber value="${bill.totalBillPrice}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td><!-- Created At -->
-                                    <td >
-                                            ${bill.billType}
-                                    </td>
-                                    <td >   <fmt:setLocale value="vi_VN"/>
-                                        <c:choose>
-                                            <c:when test="${bill.totalLiftPrice % 1 == 0}">
-                                                <fmt:formatNumber value="${bill.totalLiftPrice}" type="number" groupingUsed="true"/>₫
-                                            </c:when>
-                                            <c:otherwise>
-                                                <fmt:formatNumber value="${bill.totalLiftPrice}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td><!-- Created At -->
-                                    <td class="text-center">
-                                        <a href="/bills/details/${bill.id}" class="btn btn-default btn-sm" title="View">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                    </td>
-
-
-
-                                    </td>
+                        <div class="table-responsive">
+                            <table class="table invoice-items">
+                                <thead>
+                                <tr class="h4 text-dark">
+                                    <th>#</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá bán thực tế</th>
+                                    <th>Giá niêm yết</th>
+                                    <th>Tổng giá</th>
+                                    <th>Gói hàng</th>
+                                    <th>Bốc vác</th>
+                                    <th>Giá bốc vác</th>
                                 </tr>
-                            </c:forEach>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="billDetail" items="${billDetails}" varStatus="loop">
+                                    <tr>
+                                        <td>${loop.index + 1}</td>
+                                        <td class="text-semibold text-dark">${billDetail.nameProduct}</td>
+                                        <td class="text-center">${billDetail.quantity}</td>
+                                        <td class="text-center">${billDetail.actualSellPrice}</td>
+                                        <td class="text-center">${billDetail.listedPrice}</td>
+                                        <td class="text-center">${billDetail.totalProductPrice}</td>
+                                        <td class="text-center">
+                                            <c:choose>
+                                                <c:when test="${not empty billDetail.packagingName}">
+                                                    ${billDetail.packagingName} (SL: ${billDetail.quantityPerPackage})
+                                                </c:when>
+                                                <c:otherwise>-</c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td class="text-center">${billDetail.isLift ? 'Có' : 'Không'}</td>
+                                        <td class="text-center">${billDetail.liftPrice}</td>
+                                    </tr>
 
-                            </tbody>
-                        </table>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
-                    <div class="pagination-section">
-                        <c:set var="c" value="${bills.number}"></c:set>
-                        <ul class="pagination">
-                            <li class="page-item ${c==0 ?'disabled':''}">
-                                <a class="page-link" href="bills?page=${c==0 ? 0 : (c - 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">Trước</a>
-                            </li>
+                </div>
 
-                            <c:forEach begin="0" end="${bills.totalPages - 1}" var="i">
-                                <c:if test="${i >= c - 1 && i <= c + 1}">
-                                    <li class="page-item ${c == i ? 'active' : ''}">
-                                        <a class="page-link" href="bills?page=${i}&input=${input != null ? input : ''}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">${i + 1}</a>
-                                    </li>
-                                </c:if>
-                                <c:if test="${i == c - 2 || i == c + 2}">
-                                    <li><span>...</span></li>
-                                </c:if>
-                            </c:forEach>
-
-                            <li class="page-item ${c == bills.totalPages - 1 ? 'disabled' : ''}">
-                                <a class="page-link" href="bills?page=${c == bills.totalPages - 1 ? bills.totalPages - 1 : (c + 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">Sau</a>
-                            </li>
-                        </ul>
-                    </div>
-                </c:if>
-            </div>
+            </section>
         </section>
     </div>
 </section>
-<div class="modal fade" id="billModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Chi tiết hóa đơn</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <h6>General Bill Information</h6>
-                <p><strong>Bill ID:</strong> <span id="billId"></span></p>
-                <p><strong>Created At:</strong> <span id="createdAt"></span></p>
-                <p><strong>Created By:</strong> <span id="createdBy"></span></p>
-
-                <h6>Product Details</h6>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>Actual Price</th>
-                        <th>Listed Price</th>
-                        <th>Total</th>
-                        <th>Packaging</th>
-                        <th>Qty/Package</th>
-                        <th>Lift</th>
-                        <th>Lift Price</th>
-                        <th>Total Lift</th>
-                    </tr>
-                    </thead>
-                    <tbody id="billDetails"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -793,95 +669,7 @@
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
 <script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
 
-<script>
 
-    document.getElementById("search-input").addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            document.getElementById("search-form").submit();
-        }
-    });
-
-    $(document).ready(function () {
-        $(".view-button").click(function () {
-            var billId = $(this).data("id");
-
-            $.ajax({
-                url: "/bill/details/" + billId ,
-                type: "GET",
-                success: function (response) {
-                    if (!response || !response.billDetails || response.billDetails.length === 0) {
-                        alert("Không có chi tiết hóa đơn!");
-                        return;
-                    }
-
-                    $("#billId").text(response.id);
-                    $("#createdAt").text(response.formattedDate || "N/A");
-                    $("#createdBy").text(response.createdBy || "N/A");
-                    $("#billDetails").empty();
-
-                    response.billDetails.forEach(function (detail) {
-                        $("#billDetails").append(`
-                        <tr>
-                            <td>${detail.nameProduct || "N/A"}</td>
-                            <td>${detail.quantity || 0}</td>
-                            <td>${detail.actualSellPrice || 0}</td>
-                            <td>${detail.listedPrice || 0}</td>
-                            <td>${detail.totalProductPrice || 0}</td>
-                            <td>${detail.packagingName || "N/A"}</td>
-                            <td>${detail.quantityPerPackage || "N/A"}</td>
-                            <td>${detail.isLift ? "Yes" : "No"}</td>
-                            <td>${detail.liftPrice != null ? detail.liftPrice : 0}</td>
-                            <td>${detail.totalLiftProductPrice != null ? detail.totalLiftProductPrice : 0}</td>
-                        </tr>
-                    `);
-                    });
-
-                    $("#billModal").modal("show");
-                },
-                error: function (xhr) {
-                    if (xhr.status === 404) {
-                        alert("Hóa đơn không tồn tại!");
-                    } else {
-                        alert("Lỗi hệ thống, vui lòng thử lại sau!");
-                    }
-                }
-            });
-        });
-    });
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-        function formatToDDMMYYYY(dateStr) {
-            if (!dateStr) return "";
-            let parts = dateStr.split("-");
-            return `${parts[2]}/${parts[1]}/${parts[0]}`;
-        }
-
-        function formatToYYYYMMDD(dateStr) {
-            if (!dateStr) return "";
-            let parts = dateStr.split("/");
-            return `${parts[2]}-${parts[1]}-${parts[0]}`;
-        }
-
-        let startDateInput = document.getElementById("startDate");
-        let endDateInput = document.getElementById("endDate");
-
-        // Lấy giá trị từ server (giả sử giá trị là YYYY-MM-DD)
-        let startDateValue = "${startDate}";
-        let endDateValue = "${endDate}";
-
-        // Hiển thị dưới dạng DD/MM/YYYY
-        startDateInput.value = formatToDDMMYYYY(startDateValue);
-        endDateInput.value = formatToDDMMYYYY(endDateValue);
-
-        document.getElementById("dateForm").addEventListener("submit", function () {
-            startDateInput.value = formatToYYYYMMDD(startDateInput.value);
-            endDateInput.value = formatToYYYYMMDD(endDateInput.value);
-        });
-    });
-</script>
 
 
 
