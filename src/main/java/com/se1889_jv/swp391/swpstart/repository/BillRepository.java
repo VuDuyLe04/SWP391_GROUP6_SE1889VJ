@@ -2,6 +2,7 @@ package com.se1889_jv.swp391.swpstart.repository;
 
 import com.se1889_jv.swp391.swpstart.domain.Bill;
 import com.se1889_jv.swp391.swpstart.domain.Store;
+import com.se1889_jv.swp391.swpstart.util.constant.BillTypeEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,7 +24,8 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             "AND (:maxAmount IS NULL OR b.totalBillPrice <= :maxAmount) " +
             "AND (:input IS NULL OR " +
             "LOWER(COALESCE(b.customer.phone, '')) LIKE LOWER(CONCAT('%', :input, '%'))) " +
-            "AND (:storeId IS NULL OR b.store.id = :storeId)")
+            "AND (:storeId IS NULL OR b.store.id = :storeId) " +
+            "AND (:billType IS NULL OR b.billType = :billType)")
     Page<Bill> filterBills(
             @Param("startDate") Instant startDate,
             @Param("endDate") Instant endDate,
@@ -31,8 +33,10 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             @Param("maxAmount") Double maxAmount,
             @Param("input") String input,
             @Param("storeId") Long storeId,
+            @Param("billType") BillTypeEnum billType,
             Pageable pageable
     );
+
 
 
 }

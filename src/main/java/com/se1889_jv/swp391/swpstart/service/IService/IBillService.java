@@ -5,6 +5,7 @@ import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.ImportRequest;
+import com.se1889_jv.swp391.swpstart.util.constant.BillTypeEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +29,7 @@ public interface IBillService {
             @Param("maxAmount") Double maxAmount,
             @Param("input") String input,
             @Param("storeId") Long storeId,
+            @Param("billType") BillTypeEnum billType,
             Pageable pageable
     );
 }
