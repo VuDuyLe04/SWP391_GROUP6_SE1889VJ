@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.service.specification;
 
+
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.Customer_;
 import org.springframework.data.jpa.domain.Specification;

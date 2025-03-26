@@ -10,6 +10,8 @@ import com.se1889_jv.swp391.swpstart.service.implementservice.CustomerService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
+
+
 import com.se1889_jv.swp391.swpstart.util.validator.annotation.CheckPermission;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,6 +183,7 @@ public class CustomerController {
         model.addAttribute("listCustomer", customerPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", customerPage.getTotalPages());
+        model.addAttribute("customerPage", customerPage);
 
         return "admin/customer/table";
     }

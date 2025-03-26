@@ -304,6 +304,22 @@
                             </div>
 
                             <div class="table-responsive">
+                                <!-- Thêm phần Total Packaging Info Section -->
+                                <div style="display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 8px;">
+                                    <div style="display: flex; align-items: center;">
+                                        <i class="fa fa-box mr-xs" style="color: #0088cc; font-size: 11px;"></i>
+                                        <span style="font-weight: 400; color: #666; font-size: 11px;">Tổng số: 
+                                            <span style="color: #0088cc; font-weight: 500;">${packagingPage.totalElements}</span> đóng gói
+                                        </span>
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <i class="fa fa-file mr-xs" style="color: #0088cc; font-size: 11px;"></i>
+                                        <span style="font-weight: 400; color: #666; font-size: 11px;">Trang: 
+                                            <span style="color: #0088cc; font-weight: 500;">${packagingPage.number + 1}/${packagingPage.totalPages}</span>
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <table class="table table-bordered table-striped table-hover mb-none">
                                     <thead>
                                     <tr>
@@ -411,7 +427,7 @@
 
                                         <!-- Bảng dữ liệu -->
                                         <tr>
-                                            <td>${status.index + 1}</td>
+                                            <td>${packagingPage.number * packagingPage.size + status.index + 1}</td>
                                             <td>${u.packageType}</td>
                                             <td>${u.liftCost}</td>
                                             <td>
@@ -437,29 +453,35 @@
                                 </table>
                                 <c:set var="c" value="${packagingPage.number}"></c:set>
 
-                                <ul class="pagination justify-content-center">
-                                    <!-- Nút Previous -->
-                                    <li class="page-item ${c == 0 ? 'disabled' : ''}">
-                                        <a class="page-link" href="packaings?page=${c == 0 ? 0 : (c - 1)}&store=${param.store}&input=${param.input}&sort${param.sort}&active=${param.active}">Trước</a>
-                                    </li>
+                                <!-- Cập nhật phần phân trang để căn giữa -->
+                                <div style="display: flex; justify-content: center; margin-top: 20px;">
+                                    <ul class="pagination">
+                                        <!-- Nút Previous -->
+                                        <li class="page-item ${c == 0 ? 'disabled' : ''}">
+                                            <a class="page-link" href="packaings?page=${c == 0 ? 0 : (c - 1)}&store=${param.store}&input=${param.input}&sort=${param.sort}&active=${param.active}">
+                                                 Trước
+                                            </a>
+                                        </li>
 
-                                    <!-- Hiển thị các số trang -->
-                                    <c:if test="${packagingPage.totalPages > 0}">
-                                        <c:forEach begin="0" end="${packagingPage.totalPages - 1}" var="i">
-                                            <c:if test="${i >= c - 1 && i <= c + 1}">
-                                                <li class="page-item ${c == i ? 'active' : ''}">
-                                                    <a class="page-link" href="packaings?page=${i}&store=${param.store}&input=${param.input}&sort${param.sort}&active=${param.active}">${i + 1}</a>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:if>
+                                        <!-- Hiển thị các số trang -->
+                                        <c:if test="${packagingPage.totalPages > 0}">
+                                            <c:forEach begin="0" end="${packagingPage.totalPages - 1}" var="i">
+                                                <c:if test="${i >= c - 2 && i <= c + 2}">
+                                                    <li class="page-item ${c == i ? 'active' : ''}">
+                                                        <a class="page-link" href="packaings?page=${i}&store=${param.store}&input=${param.input}&sort=${param.sort}&active=${param.active}">${i + 1}</a>
+                                                    </li>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:if>
 
-                                    <!-- Nút Next -->
-                                    <li class="page-item ${c == packagingPage.totalPages - 1 ? 'disabled' : ''}">
-                                        <a class="page-link" href="packaings?page=${c == packagingPage.totalPages - 1 ? c : (c + 1)}&store=${param.store}&input=${param.input}&sort${param.sort}&active=${param.active}">Sau</a>
-                                    </li>
-
-                                </ul>
+                                        <!-- Nút Next -->
+                                        <li class="page-item ${c == packagingPage.totalPages - 1 ? 'disabled' : ''}">
+                                            <a class="page-link" href="packaings?page=${c == packagingPage.totalPages - 1 ? c : (c + 1)}&store=${param.store}&input=${param.input}&sort=${param.sort}&active=${param.active}">
+                                                Sau </i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
 
                             </div>
 

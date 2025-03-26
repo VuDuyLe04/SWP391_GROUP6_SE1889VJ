@@ -34,6 +34,7 @@ public interface IUserService {
             @Param("createdBy") String createdBy,
             @Param("storeId") Long storeId,
             @Param("keyword") String keyword,
+            @Param("active") Boolean active,
             Pageable pageable);
 
     Page<User> getUsersByRoleIDAndActive(Long id, boolean active, Pageable pageable);

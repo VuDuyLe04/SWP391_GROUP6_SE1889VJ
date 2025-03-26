@@ -686,16 +686,19 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                                     </label>
                                     <div class="status-wrapper">
                                         <label class="switch">
-                                            <input type="checkbox" 
-                                                   name="active" 
-                                                   value="true" 
-                                                   ${user.active == 'true' ? 'checked' : ''}>
+                                            <input type="checkbox" id="activeSwitch"
+                                                   name="active"
+                                                   value="true"
+                                            ${user.active ? 'checked' : ''}>
+
                                             <span class="slider round"></span>
                                         </label>
-                                        <span class="status-text ${user.active == 'true' ? 'active' : 'inactive'}">
-                                            ${user.active == 'true' ? 'Đang hoạt động' : 'Ngừng hoạt động'}
+
+                                        <span id="statusText" class="status-text ${user.active ? 'active' : 'inactive'}">
+                                            ${user.active ? 'Đang hoạt động' : 'Ngừng hoạt động'}
                                         </span>
                                     </div>
+
                                 </div>
 
                                 <div class="form-group action-group">
@@ -800,43 +803,60 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 </section>
 
 <script>
-      function updateUserStoreAccess(userId, userStoreId, checkbox) {
+    function updateUserStoreAccess(userId, userStoreId, checkbox) {
         const status = checkbox.checked ? "ACCESSED" : "ACCESSDENY";
         const statusText = checkbox.parentElement.nextElementSibling;
 
         // Log để debug
         console.log("Updating access:", {
-          userId: userId,
-          userStoreId: userStoreId,
-          status: status,
+            userId: userId,
+            userStoreId: userStoreId,
+            status: status,
         });
 
         // Gửi request
         window.location.href =
-          "/updatestatus?" +
-          "userId=" +
-          userId +
-          "&userStoreId=" +
-          userStoreId +
-          "&status=" +
-          status;
-      }
-      function checkPhone(phone) {
-          const phoneRegex = /^[0-9]{10}$/; // Kiểm tra số điện thoại có đúng 10 chữ số
-          const phoneError = document.getElementById("phoneError");
-          const button = document.getElementById("submitBtn");
+            "/updatestatus?" +
+            "userId=" +
+            userId +
+            "&userStoreId=" +
+            userStoreId +
+            "&status=" +
+            status;
+    }
 
-          if (phone.length > 0 && !phoneRegex.test(phone.trim())) {
-              phoneError.textContent = "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số!";
-              phoneError.style.display = "block";
-              button.disabled = true;
-          }
-      }
+    function checkPhone(phone) {
+        const phoneRegex = /^[0-9]{10}$/; // Kiểm tra số điện thoại có đúng 10 chữ số
+        const phoneError = document.getElementById("phoneError");
+        const button = document.getElementById("submitBtn");
+
+        if (phone.length > 0 && !phoneRegex.test(phone.trim())) {
+            phoneError.textContent = "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số!";
+            phoneError.style.display = "block";
+            button.disabled = true;
+        }
+    }
+
+
+        document.getElementById("activeSwitch").addEventListener("change", function() {
+        let statusText = document.getElementById("statusText");
+        if (this.checked) {
+        statusText.textContent = "Đang hoạt động";
+        statusText.classList.remove("inactive");
+        statusText.classList.add("active");
+    } else {
+        statusText.textContent = "Ngừng hoạt động";
+        statusText.classList.remove("active");
+        statusText.classList.add("inactive");
+    }
+    });
+
+
 </script>
 
-    <!-- Vendor -->
+<!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
-    <script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
+<script src="/client/auth/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
 <script src="/client/auth/assets/vendor/bootstrap/js/bootstrap.js"></script>
 <script src="/client/auth/assets/vendor/nanoscroller/nanoscroller.js"></script>
 <script src="/client/auth/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>

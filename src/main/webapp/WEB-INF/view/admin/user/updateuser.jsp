@@ -453,17 +453,16 @@
 
 
 
-
     function checkName() {
         const name = document.getElementById("name").value.trim();
         const nameError = document.getElementById("nameError");
         const button = document.getElementById("submitBtn");
 
-        // Biểu thức chính quy kiểm tra tên hợp lệ
-        const nameRegex = /^[A-Za-zÀ-Ỹà-ỹ\s]+$/;
+        // Regex kiểm tra tên hợp lệ (cho phép dấu gạch ngang và nháy đơn)
+        const nameRegex = /^[A-Za-zÀ-Ỹà-ỹ\s'-]+$/;
 
-        if (name.length > 0 && !nameRegex.test(name.trim())) {
-            nameError.textContent = "Tên không đuợc chứa số và các kí tự đặc biệt! ";
+        if (name.length > 0 && !nameRegex.test(name)) {
+            nameError.textContent = "Tên không được chứa số hoặc ký tự đặc biệt (trừ '-' và dấu nháy đơn)!";
             button.disabled = true;
         } else {
             nameError.textContent = "";

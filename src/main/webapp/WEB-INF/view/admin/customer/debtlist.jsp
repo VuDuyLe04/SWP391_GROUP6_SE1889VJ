@@ -132,7 +132,7 @@
                                 <tr>
                                     <th>Mã nợ</th>
                                     <th>Số tiền</th>
-                                    <th>Loại nợ</th>
+                                    <th>Loại phiếu nợ</th>
                                     <th>Lý do</th>
                                     <th>Ngày tạo</th>
                                     <th>Người tạo</th>
@@ -143,7 +143,15 @@
                                     <tr>
                                         <td>${status.index + 1}</td>
                                         <td>${dept.debtAmount}</td>
-                                        <td>${dept.debtType}</td>
+                                        <td>
+                                            <c:if test="${dept.debtType == 'DEBIT'}">
+                                                Thêm nợ khách hàng
+                                            </c:if>
+
+                                            <c:if test="${dept.debtType == 'DEBTREPAY'}">
+                                                Trừ nợ khách hàng
+                                            </c:if>
+                                        </td>
                                         <td>${dept.debtReason}</td>
                                         <td>${dept.createdAt}</td>
                                         <td>${dept.createdBy}</td>
@@ -209,7 +217,7 @@
 
 
 
-                            <a href="/customer" class="btn btn-primary">
+                            <a href="/customer/table" class="btn btn-primary">
                                 Quay lại danh sách
                             </a>
                         </div>

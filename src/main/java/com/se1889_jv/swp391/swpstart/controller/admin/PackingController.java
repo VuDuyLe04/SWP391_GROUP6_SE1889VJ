@@ -56,7 +56,7 @@ public class PackingController {
                     ? Sort.Direction.DESC : Sort.Direction.ASC;
 
             Sort sorting = Sort.by(sortDirection, sortField);
-            Pageable pageable = PageRequest.of(Integer.parseInt(page), 4, sorting);
+            Pageable pageable = PageRequest.of(Integer.parseInt(page), 5, sorting);
 
             User user = (User) session.getAttribute("user");
             if (user == null) {
