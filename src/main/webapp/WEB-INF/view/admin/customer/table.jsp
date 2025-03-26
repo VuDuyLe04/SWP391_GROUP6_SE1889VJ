@@ -342,45 +342,29 @@ uri="http://www.springframework.org/tags/form" %>
                       </tbody>
                     </table>
 
-                    <c:if test="${customerPage.content != null }">
+                    <c:if test="${customerPage.content != null}">
                       <c:set var="c" value="${customerPage.number}"></c:set>
-                      <ul
-                        class="pagination"
-                        style="display: flex; justify-content: center"
-                      >
-                        <li class="page-item ${c==0 ?'disabled':''}">
-                          <a
-                            class="page-link"
-                            href="/customer/table?page=${c==0 ? 0 : (c - 1)}&nameOrPhone=${nameOrPhone != null ? nameOrPhone : ''}&sort=${sort != null ? sort : 'normal'}&status=${status != null ? status : 'ALL'}"
-                            >Trước</a
-                          >
+                      <ul class="pagination" style="display: flex; justify-content: center;">
+                        <!-- Nút "Trước" -->
+                        <li class="page-item ${c == 0 ? 'disabled' : ''}">
+                          <a class="page-link" href="/customer/table?page=${c == 0 ? 0 : (c - 1)}&input=${input}&sort=${sort}&status=${status}">Trước</a>
                         </li>
-                        <c:forEach
-                          begin="0"
-                          end="${customerPage.totalPages - 1}"
-                          var="i"
-                        >
+
+                        <!-- Hiển thị danh sách trang -->
+                        <c:forEach begin="0" end="${customerPage.totalPages - 1}" var="i">
                           <c:if test="${i >= c - 1 && i <= c + 1}">
                             <li class="page-item ${c == i ? 'active' : ''}">
-                              <a
-                                class="page-link"
-                                href="/customer/table?page=${i}&nameOrPhone=${nameOrPhone != null ? nameOrPhone : ''}&sort=${sort != null ? sort : 'normal'}&status=${status != null ? status : 'ALL'}"
-                                >${i + 1}</a
-                              >
+                              <a class="page-link" href="/customer/table?page=${i}&input=${input != null ? input : ''}&sort=${sort != null ? sort : 'normal'}&status=${status != null ? status : 'ALL'}">${i + 1}</a>
                             </li>
                           </c:if>
-                          <c:if test="${i == c- 2 || i == c+ 2}">
+                          <c:if test="${i == c - 2 || i == c + 2}">
                             <li><span>...</span></li>
                           </c:if>
                         </c:forEach>
-                        <li
-                          class="page-item ${c== customerPage.totalPages -1?'disabled':''}"
-                        >
-                          <a
-                            class="page-link"
-                            href="/customer/table?page=${c== customerPage.totalPages -1? customerPage.totalPages -1: (c + 1)}&nameOrPhone=${nameOrPhone != null ? nameOrPhone : ''}&sort=${sort != null ? sort : 'normal'}&status=${status != null ? status : 'ALL'}"
-                            >Sau</a
-                          >
+
+                        <!-- Nút "Sau" -->
+                        <li class="page-item ${c == customerPage.totalPages - 1 ? 'disabled' : ''}">
+                          <a class="page-link" href="/customer/table?page=${c == customerPage.totalPages - 1 ? customerPage.totalPages - 1 : (c + 1)}&input=${input}&sort=${sort}&status=${status}">Sau</a>
                         </li>
                       </ul>
                     </c:if>
