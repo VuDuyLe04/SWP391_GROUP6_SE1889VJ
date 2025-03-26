@@ -34,7 +34,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
             ")")
     Page<User> findDistinctUsersByStoreCreatedBy(@Param("createdBy") String createdBy, Pageable pageable);
 
-//    Page<User> findByCreatedByAndRole(String createdBy, Role role);
+    //    Page<User> findByCreatedByAndRole(String createdBy, Role role);
 //    Page<User> findDistinctUsersByUserStores_Store_CreatedByAndByNameContainingOrPhoneContaining(String createdBy,String name,String phone, Pageable pageable);
     Page<User> findUsersByActive(boolean active, Pageable pageable);
     Page<User> findUsersByRoleId(Long roleId,Pageable pageable);
@@ -42,4 +42,5 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
 
     List<User> findAllByUserStoresIn(List<UserStore> userStores);
+    Page<User> findUserByRole(Role role, Pageable pageable);
 }

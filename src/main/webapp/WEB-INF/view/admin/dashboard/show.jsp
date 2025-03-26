@@ -160,94 +160,163 @@
 
             <div class="row">
 
-                    <section class="panel">
-                        <header class="panel-heading">
-                            <div class="panel-actions">
-                                <a href="#" class="fa fa-caret-down"></a>
-                                <a href="#" class="fa fa-times"></a>
-                            </div>
-
-                            <h2 class="panel-title">Best Seller</h2>
-
-                        </header>
-                        <div class="panel-body">
-
-                            <!-- Flot: Basic -->
-                            <label for="yearSelect">Chọn năm:</label>
-                            <select id="yearSelect">
-                                <option value="2020">2020</option>
-                                <option value="2021">2021</option>
-                                <option value="2022">2022</option>
-                                <option value="2023">2023</option>
-                                <option value="2024">2024</option>
-                                <option value="2025">2025</option>
-                            </select>
-                            <div class="chart chart-md" id="flotDashBasic"></div>
-                            <script>
-                                $(document).ready(function() {
-                                    // Hàm để gửi yêu cầu đến API và vẽ biểu đồ
-                                    function loadRevenueData(year) {
-                                        fetch('http://localhost:8080/api/v1/revenue', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                            },
-                                            body: JSON.stringify({
-                                                year: year,
-                                                periodType: 'YEAR'  // Bạn có thể thay đổi 'YEAR' thành 'MONTH' hoặc 'WEEK' nếu cần
-                                            })
-                                        })
-                                            .then(response => response.json())  // Parse JSON
-                                            .then(data => {
-                                                // Tạo dữ liệu cho Flot.js từ dữ liệu API
-                                                let flotData = [
-                                                    {
-                                                        data: data.revenueDetails.map(detail => [detail.month - 1, detail.revenue]), // Sửa tháng cho phù hợp với chỉ số mảng (0-based)
-                                                        label: "Doanh thu",
-                                                        color: "#0088cc"
-                                                    }
-                                                ];
-
-                                                // Khởi tạo biểu đồ Flot.js với dữ liệu từ API
-                                                $.plot("#flotDashBasic", flotData, {
-                                                    series: {
-                                                        lines: { show: true },
-                                                        points: { show: true }
-                                                    },
-                                                    grid: {
-                                                        hoverable: true,
-                                                        clickable: true
-                                                    },
-                                                    xaxis: {
-                                                        ticks: [
-                                                            [0, "January"], [1, "February"], [2, "March"], [3, "April"],
-                                                            [4, "May"], [5, "June"], [6, "July"], [7, "August"],
-                                                            [8, "September"], [9, "October"], [10, "November"], [11, "December"]
-                                                        ]
-                                                    }
-                                                });
-                                            })
-                                            .catch(error => {
-                                                console.error("Lỗi khi lấy dữ liệu từ API:", error);
-                                            });
-                                    }
-
-                                    loadRevenueData(2025);
-                                    $('#yearSelect').change(function() {
-                                        var selectedYear = $(this).val();
-                                        loadRevenueData(selectedYear);  // Gửi yêu cầu với năm đã chọn
-                                    });
-                                });
-                            </script>
+                <section class="panel">
+                    <header class="panel-heading">
+                        <div class="panel-actions">
+                            <a href="#" class="fa fa-caret-down"></a>
+                            <a href="#" class="fa fa-times"></a>
                         </div>
-                    </section>
+
+                        <h2 class="panel-title">Best Seller</h2>
+
+                    </header>
+                    <div class="panel-body">
+                        <!-- Chọn năm -->
+                        <label for="yearSelect">Chọn năm:</label>
+                        <select id="yearSelect">
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025" selected>2025</option>
+                        </select>
+
+                        <!-- Hiển thị tổng doanh thu dịch vụ -->
+                        <div id="totalRevenueContainer">
+                            <p><strong>Tổng doanh thu (Dịch vụ): </strong><span id="totalRevenue">0</span></p>
+                            <p><strong>Tổng doanh thu (Thanh toán): </strong><span id="totalRevenuePayment">0</span></p>
+                        </div>
+
+                        <!-- Biểu đồ doanh thu -->
+                        <div class="chart chart-md" id="flotDashBasic"></div>
+
+                        <!-- Biểu đồ Doanh thu thanh toán -->
+                        <div class="chart chart-md" id="flotRevenuePaymentTransaction"></div>
+
+                        <script>
+                            $(document).ready(function() {
+                                // Hàm để gửi yêu cầu đến API và vẽ biểu đồ doanh thu
+                                function loadRevenueData(year) {
+                                    fetch('http://localhost:8080/api/v1/revenue', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                            year: year,
+                                            periodType: 'YEAR'  // Lọc theo năm
+                                        })
+                                    })
+                                        .then(response => response.json())  // Parse JSON
+                                        .then(data => {
+                                            // Hiển thị tổng doanh thu từ API
+                                            $('#totalRevenue').text(data.totalRevenue); // Hiển thị tổng doanh thu dịch vụ
+
+                                            // Tạo dữ liệu cho Flot.js từ dữ liệu API
+                                            let flotData = [
+                                                {
+                                                    data: data.revenueDetails.map(detail => [detail.month - 1, detail.revenue]), // Sửa tháng cho phù hợp với chỉ số mảng (0-based)
+                                                    label: "Doanh thu",
+                                                    color: "#0088cc"
+                                                }
+                                            ];
+
+                                            // Khởi tạo biểu đồ Flot.js với dữ liệu từ API
+                                            $.plot("#flotDashBasic", flotData, {
+                                                series: {
+                                                    lines: { show: true },
+                                                    points: { show: true }
+                                                },
+                                                grid: {
+                                                    hoverable: true,
+                                                    clickable: true
+                                                },
+                                                xaxis: {
+                                                    ticks: [
+                                                        [0, "January"], [1, "February"], [2, "March"], [3, "April"],
+                                                        [4, "May"], [5, "June"], [6, "July"], [7, "August"],
+                                                        [8, "September"], [9, "October"], [10, "November"], [11, "December"]
+                                                    ]
+                                                }
+                                            });
+                                        })
+                                        .catch(error => {
+                                            console.error("Lỗi khi lấy dữ liệu từ API:", error);
+                                        });
+                                }
+
+                                // Hàm để gửi yêu cầu đến API và vẽ biểu đồ doanh thu thanh toán
+                                function loadRevenuePaymentData(year) {
+                                    fetch('http://localhost:8080/api/v1/revenue-payment-service', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                            year: year,
+                                            periodType: 'YEAR'  // Lọc theo năm
+                                        })
+                                    })
+                                        .then(response => response.json())  // Parse JSON
+                                        .then(data => {
+                                            // Hiển thị tổng doanh thu thanh toán từ API
+                                            $('#totalRevenuePayment').text(data.totalRevenue); // Hiển thị tổng doanh thu thanh toán
+
+                                            // Tạo dữ liệu cho Flot.js từ dữ liệu API
+                                            let flotPaymentData = [
+                                                {
+                                                    data: data.revenueDetails.map(detail => [detail.month - 1, detail.revenue]), // Sửa tháng cho phù hợp với chỉ số mảng (0-based)
+                                                    label: "Doanh thu thanh toán",
+                                                    color: "#ff5733",  // Màu sắc khác để phân biệt
+                                                    bars: { show: true, barWidth: 0.6, align: 'center' }  // Cấu hình cho biểu đồ cột
+                                                }
+                                            ];
+
+                                            // Khởi tạo biểu đồ Flot.js với dữ liệu từ API
+                                            $.plot("#flotRevenuePaymentTransaction", flotPaymentData, {
+                                                series: {
+                                                    bars: { show: true, barWidth: 0.6, align: 'center' } // Đảm bảo dùng biểu đồ cột
+                                                },
+                                                grid: {
+                                                    hoverable: true,
+                                                    clickable: true
+                                                },
+                                                xaxis: {
+                                                    ticks: [
+                                                        [0, "January"], [1, "February"], [2, "March"], [3, "April"],
+                                                        [4, "May"], [5, "June"], [6, "July"], [7, "August"],
+                                                        [8, "September"], [9, "October"], [10, "November"], [11, "December"]
+                                                    ]
+                                                }
+                                            });
+                                        })
+                                        .catch(error => {
+                                            console.error("Lỗi khi lấy dữ liệu từ API:", error);
+                                        });
+                                }
+
+                                // Load dữ liệu cho năm 2025 khi trang được tải
+                                loadRevenueData(2025);
+                                loadRevenuePaymentData(2025);
+
+                                // Khi thay đổi năm trong dropdown, tải lại dữ liệu cho cả hai biểu đồ
+                                $('#yearSelect').change(function() {
+                                    var selectedYear = $(this).val();
+                                    loadRevenueData(selectedYear);  // Gửi yêu cầu với năm đã chọn cho doanh thu
+                                    loadRevenuePaymentData(selectedYear);  // Gửi yêu cầu cho doanh thu thanh toán
+                                });
+                            });
+                        </script>
+                    </div>
+
+                </section>
 
 
             </div>
 
             <!-- start: page -->
             <div class="row">
-
 
                 <div class="col-md-6 col-lg-12 col-xl-6">
                     <div class="row">
@@ -271,7 +340,7 @@
                                                 </div>
                                             </div>
                                             <div class="summary-footer">
-                                                <a class="text-muted text-uppercase">(view all)</a> <!-- Cập nhật thông tin -->
+                                                <a href="/users" class="text-muted text-uppercase">View all</a>
                                             </div>
                                         </div>
                                     </div>
@@ -295,9 +364,11 @@
                                                     <strong class="amount" id="countStaff">${countStaff}</strong>
                                                 </div>
                                             </div>
+
                                             <div class="summary-footer">
-                                                <a class="text-muted text-uppercase">(view all)</a>
+                                                <a href="/users?role=staff" class="text-muted text-uppercase">View all</a> <!-- Liên kết tới danh sách Staff -->
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -321,16 +392,16 @@
                                                     <strong class="amount" id="countOwner">${countOwner}</strong>
                                                 </div>
                                             </div>
+
                                             <div class="summary-footer">
-                                                <a class="text-muted text-uppercase">(view all)</a>
+                                                <a href="/users?role=owner" class="text-muted text-uppercase">View all</a> <!-- Liên kết tới danh sách Owners -->
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </section>
                         </div>
-
-
 
 
                     </div>
