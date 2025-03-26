@@ -822,18 +822,18 @@
 
                     response.billDetails.forEach(function (detail) {
                         $("#billDetails").append(`
-                        <tr>
-                            <td>${detail.nameProduct || "N/A"}</td>
-                            <td>${detail.quantity || 0}</td>
-                            <td>${detail.actualSellPrice || 0}</td>
-                            <td>${detail.listedPrice || 0}</td>
-                            <td>${detail.totalProductPrice || 0}</td>
-                            <td>${detail.packagingName || "N/A"}</td>
-                            <td>${detail.quantityPerPackage || "N/A"}</td>
-                            <td>${detail.isLift ? "Yes" : "No"}</td>
-                            <td>${detail.liftPrice != null ? detail.liftPrice : 0}</td>
-                            <td>${detail.totalLiftProductPrice != null ? detail.totalLiftProductPrice : 0}</td>
-                        </tr>
+                        <%--<tr>--%>
+                        <%--    <td>${detail.nameProduct || "N/A"}</td>--%>
+                        <%--    <td>${detail.quantity || 0}</td>--%>
+                        <%--    <td>${detail.actualSellPrice || 0}</td>--%>
+                        <%--    <td>${detail.listedPrice || 0}</td>--%>
+                        <%--    <td>${detail.totalProductPrice || 0}</td>--%>
+                        <%--    <td>${detail.packagingName || "N/A"}</td>--%>
+                        <%--    <td>${detail.quantityPerPackage || "N/A"}</td>--%>
+                        <%--    <td>${detail.isLift ? "Yes" : "No"}</td>--%>
+                        <%--    <td>${detail.liftPrice != null ? detail.liftPrice : 0}</td>--%>
+                        <%--    <td>${detail.totalLiftProductPrice != null ? detail.totalLiftProductPrice : 0}</td>--%>
+                        <%--</tr>--%>
                     `);
                     });
 
