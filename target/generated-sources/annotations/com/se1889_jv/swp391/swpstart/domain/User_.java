@@ -23,14 +23,29 @@ public abstract class User_ {
 	public static volatile SingularAttribute<User, String> updatedBy;
 	
 	/**
+	 * @see com.se1889_jv.swp391.swpstart.domain.User#otpSubmitCount
+	 **/
+	public static volatile SingularAttribute<User, Integer> otpSubmitCount;
+	
+	/**
 	 * @see com.se1889_jv.swp391.swpstart.domain.User#role
 	 **/
 	public static volatile SingularAttribute<User, Role> role;
 	
 	/**
+	 * @see com.se1889_jv.swp391.swpstart.domain.User#otpExpirationTime
+	 **/
+	public static volatile SingularAttribute<User, Instant> otpExpirationTime;
+	
+	/**
 	 * @see com.se1889_jv.swp391.swpstart.domain.User#active
 	 **/
 	public static volatile SingularAttribute<User, Boolean> active;
+	
+	/**
+	 * @see com.se1889_jv.swp391.swpstart.domain.User#otp
+	 **/
+	public static volatile SingularAttribute<User, String> otp;
 	
 	/**
 	 * @see com.se1889_jv.swp391.swpstart.domain.User#transactionServices
@@ -104,8 +119,11 @@ public abstract class User_ {
 
 	public static final String TRANSACTION_PAYMENTS = "transactionPayments";
 	public static final String UPDATED_BY = "updatedBy";
+	public static final String OTP_SUBMIT_COUNT = "otpSubmitCount";
 	public static final String ROLE = "role";
+	public static final String OTP_EXPIRATION_TIME = "otpExpirationTime";
 	public static final String ACTIVE = "active";
+	public static final String OTP = "otp";
 	public static final String TRANSACTION_SERVICES = "transactionServices";
 	public static final String RENEWAL_DATE = "renewalDate";
 	public static final String CREATED_AT = "createdAt";

@@ -51,7 +51,11 @@ public class User {
     private Instant renewalDate;
     private Instant expirationDate;
     private boolean statusService;
-
+    //lưu OTP
+    private String otp;
+    private Instant otpExpirationTime;
+    private int otpSubmitCount;
+    //
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
