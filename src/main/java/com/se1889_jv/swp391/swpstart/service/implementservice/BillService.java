@@ -148,8 +148,8 @@ public class BillService implements IBillService {
 
 
     @Override
-    public Page<Bill> filterBills(Instant startDate, Instant endDate, Double minAmount, Double maxAmount, String input,Long storeId, BillTypeEnum billType  , Pageable pageable) {
-        return billRepository.filterBills(startDate, endDate, minAmount, maxAmount, input,storeId,billType, pageable);
+    public Page<Bill> filterBills(Instant startDate, Instant endDate, Double minAmount, Double maxAmount, String input,Long storeId,List<Long> storeIds, BillTypeEnum billType  , Pageable pageable) {
+        return billRepository.filterBills(startDate, endDate, minAmount, maxAmount, input,storeId,storeIds,billType, pageable);
     }
     // sai logic ở đây về quantity
     public Bill updateImportBill(Long billId, ImportRequest request) {

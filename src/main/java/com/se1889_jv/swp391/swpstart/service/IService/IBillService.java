@@ -21,7 +21,6 @@ public interface IBillService {
     Bill updateBill(BillRequest request, Long billId);
     Page<Bill> getBillsByAllStore(List<Store> stors, Pageable pageable);
     Bill createBillForImport(ImportRequest request);
-
     Page<Bill> filterBills(
             @Param("startDate") Instant startDate,
             @Param("endDate") Instant endDate,
@@ -29,6 +28,7 @@ public interface IBillService {
             @Param("maxAmount") Double maxAmount,
             @Param("input") String input,
             @Param("storeId") Long storeId,
+            @Param("storeIds") List<Long> storeIds,
             @Param("billType") BillTypeEnum billType,
             Pageable pageable
     );

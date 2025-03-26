@@ -25,6 +25,7 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             "AND (:input IS NULL OR " +
             "LOWER(COALESCE(b.customer.phone, '')) LIKE LOWER(CONCAT('%', :input, '%'))) " +
             "AND (:storeId IS NULL OR b.store.id = :storeId) " +
+            "AND (:storeIds IS NULL OR b.store.id IN :storeIds) " +
             "AND (:billType IS NULL OR b.billType = :billType)")
     Page<Bill> filterBills(
             @Param("startDate") Instant startDate,
@@ -33,6 +34,7 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             @Param("maxAmount") Double maxAmount,
             @Param("input") String input,
             @Param("storeId") Long storeId,
+            @Param("storeIds") List<Long> storeIds,
             @Param("billType") BillTypeEnum billType,
             Pageable pageable
     );

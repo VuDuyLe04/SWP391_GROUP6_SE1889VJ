@@ -79,14 +79,17 @@ public class BillController {
         if (startDateStr != null && !startDateStr.isEmpty()) {
             startDate = Instant.from(formatter.parse(startDateStr));
         }
-
+        List<Store> storesList = Utility.getListStoreOfOwner(Utility.getUserInSession()); // Giả sử đây là danh sách store của bạn
+        List<Long> storeIds = storesList.stream()
+                .map(Store::getId)
+                .toList(); // Hoặc .collect(Collectors.toList()) nếu dùng Java 8
         if (endDateStr != null && !endDateStr.isEmpty()) {
             endDate = Instant.from(formatter.parse(endDateStr));
         }
         if(input != null && !input.isEmpty()) {
             input = input.trim();
         }
-        Page<Bill> list = billService.filterBills(startDate,endDate,minAmount,maxAmount,input,storeID,billType,pageable);
+        Page<Bill> list = billService.filterBills(startDate,endDate,minAmount,maxAmount,input,storeID,storeIds,billType,pageable);
         if (list.hasContent()) {
             model.addAttribute("bills", list);
 
