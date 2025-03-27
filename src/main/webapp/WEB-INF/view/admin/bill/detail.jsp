@@ -633,10 +633,10 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="bill-to">
-                                        <p class="h5 mb-xs text-dark text-semibold">
-                                            Người tạo hóa đơn:
-                                        </p>
-                                        <p><c:out value="${billDetails[0].createdBy}" /></p>
+<%--                                        <p class="h5 mb-xs text-dark text-semibold">--%>
+<%--                                            Người tạo hóa đơn:--%>
+<%--                                        </p>--%>
+<%--                                        <p><c:out value="${billDetails[0].createdBy}" /></p>--%>
                                     </div>
                                 </div>
                                 <div class="col-md-6 text-right">

@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -145,9 +146,10 @@ public class BillService implements IBillService {
         return billRepository.save(b);
     }
 
+
     @Override
-    public Page<Bill> filterBills(Instant startDate, Instant endDate, Double minAmount, Double maxAmount, String input,Long storeId, Pageable pageable) {
-        return billRepository.filterBills(startDate, endDate, minAmount, maxAmount, input,storeId, pageable);
+    public Page<Bill> filterBills(Instant startDate, Instant endDate, Double minAmount, Double maxAmount, String input,Long storeId,List<Long> storeIds, BillTypeEnum billType  , Pageable pageable) {
+        return billRepository.filterBills(startDate, endDate, minAmount, maxAmount, input,storeId,storeIds,billType, pageable);
     }
     // sai logic ở đây về quantity
     public Bill updateImportBill(Long billId, ImportRequest request) {
