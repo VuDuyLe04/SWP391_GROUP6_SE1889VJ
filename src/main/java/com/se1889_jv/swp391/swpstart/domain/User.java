@@ -51,7 +51,9 @@ public class User {
     private Instant renewalDate;
     private Instant expirationDate;
     private boolean statusService;
-
+    //Thêm trường để tránh spam reset password
+//    private boolean isReset;
+//    private Instant resetExpiryTime;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
@@ -88,6 +90,7 @@ public class User {
                 .withZone(ZoneId.of("Asia/Ho_Chi_Minh"));
         return formatter.format(instant);
     }
+
 //    public List<Store> getAllStores() {
 //        List<Store> stores = new ArrayList<>();
 //        for (UserStore userStore : userStores) {

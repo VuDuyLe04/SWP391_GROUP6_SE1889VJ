@@ -71,7 +71,7 @@
                     <div class="form-group mb-lg">
                         <div class="clearfix">
                             <label class="pull-left">Mật khẩu</label>
-                            <a href="" class="pull-right">Quên mật khẩu?</a>
+                            <a href="/reset/password" class="pull-right">Quên mật khẩu?</a>
                         </div>
                         <div class="input-group input-group-icon">
                             <input name="password" type="password" class="form-control input-lg" />

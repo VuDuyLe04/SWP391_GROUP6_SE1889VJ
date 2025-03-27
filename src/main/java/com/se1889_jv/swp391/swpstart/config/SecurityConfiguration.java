@@ -18,10 +18,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -108,7 +114,7 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                     .dispatcherTypeMatchers(DispatcherType.FORWARD,
                             DispatcherType.INCLUDE).permitAll()
 
-                    .requestMatchers("/", "/login", "/register", "/client/**", "/admin/**", "/api/**","/sendSms/**").permitAll()
+                    .requestMatchers("/", "/login", "/register","/reset/**", "/client/**", "/admin/**", "/api/**").permitAll()
                             .requestMatchers("/customer", "/customer/**").hasAnyRole("STAFF", "OWNER")
                             .requestMatchers("/warehouse", "/warehouse/**", "/product", "/product/**","/payment", "/payment/history", "/service/signup").hasRole("OWNER")
 
