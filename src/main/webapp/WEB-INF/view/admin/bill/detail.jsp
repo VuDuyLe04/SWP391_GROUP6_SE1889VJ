@@ -657,15 +657,14 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                         class="h4 text-dark"
                                         style="color: #171717 !important; font-weight: 600"
                                 >
-                                    <th style="width: 50px">#</th>
-                                    <th  style="font-weight: bold">Sản phẩm</th>
-                                    <th  style="font-weight: bold">Số lượng</th>
-                                    <th  style="font-weight: bold">Giá bán thực tế</th>
-                                    <th  style="font-weight: bold">Giá niêm yết</th>
-                                    <th  style="font-weight: bold">Tổng giá</th>
-                                    <th  style="font-weight: bold">Gói hàng</th>
-                                    <th  style="font-weight: bold">Bốc vác</th>
-                                    <th  style="font-weight: bold"  >Giá bốc vác</th>
+                                    <th class="text-center" style="width: 50px">#</th>
+                                    <th class="text-center"  style="font-weight: bold">Sản phẩm</th>
+                                    <th class="text-center"  style="font-weight: bold">Số lượng</th>
+                                    <th class="text-center"  style="font-weight: bold">Giá bán thực tế</th>
+                                    <th class="text-center"  style="font-weight: bold">Giá niêm yết</th>
+                                    <th class="text-center"  style="font-weight: bold">Tổng giá</th>
+                                    <th class="text-center"  style="font-weight: bold">Gói hàng</th>
+                                    <th class="text-center"  style="font-weight: bold"  >Giá bốc vác</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -721,12 +720,12 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                                 -
                                             </c:if>
                                         </td>
-                                        <td class="text-center">
-                                            <c:if test="${billDetail.lift != null}">
-                                                ${billDetail.lift ? 'Có' : 'Không'}
-                                            </c:if>
-                                            <c:if test="${billDetail.lift == null}"> - </c:if>
-                                        </td>
+<%--                                        <td class="text-center">--%>
+<%--                                            <c:if test="${billDetail.lift != null}">--%>
+<%--                                                ${billDetail.lift ? 'Có' : 'Không'}--%>
+<%--                                            </c:if>--%>
+<%--                                            <c:if test="${billDetail.lift == null}"> - </c:if>--%>
+<%--                                        </td>--%>
                                         <td class="text-center">
                                             <c:if test="${billDetail.liftPrice != null}">
                                                 <fmt:formatNumber
