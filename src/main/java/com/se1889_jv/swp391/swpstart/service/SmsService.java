@@ -50,7 +50,7 @@ public class SmsService {
         smsModel.setCustomerPhone(phoneNumber);
         smsModel.setSecretKey(SECRET_KEY);
         smsModel.setCustomerName(user.getName());
-        smsModel.setCustomerInfo("ngu");
+        smsModel.setCustomerInfo(genOTP());
         String jsonRequest = objectMapper.writeValueAsString(smsModel);
 
         URL url = new URL(API_URL);
