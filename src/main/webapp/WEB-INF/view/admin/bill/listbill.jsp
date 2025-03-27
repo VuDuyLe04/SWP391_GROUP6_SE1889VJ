@@ -14,7 +14,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Giao dịch thanh toán </title>
+    <title>Danh sách hóa đơn</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -608,6 +608,15 @@
                                 <input type="number" id="maxAmount" name="maxAmount"
                                        class="form-control" value="${maxAmount}">
                             </div>
+                            <div class="form-group">
+                                <label for="type">Loại hóa đơn  </label>
+                                <select id="type" name="type" class="form-control">
+                                    <option ${type == "ALL" ? "selected" : ""} value="ALL">Tất cả</option>
+                                    <option ${type == "EXPORT" ? "selected" : ""} value="EXPORT">Xuất hàng</option>
+                                    <option ${type == "IMPORT" ? "selected" : ""} value="IMPORT">Nhập hàng</option>
+                                </select>
+                            </div>
+
                             <div class="form-group" style="display: flex; align-items: flex-end;">
                                 <button type="submit" class="btn btn-primary w-100">
                                     <i class="fa fa-filter mr-xs"></i> Lọc
@@ -773,7 +782,7 @@
                         <th>Total</th>
                         <th>Packaging</th>
                         <th>Qty/Package</th>
-                        <th>Lift</th>
+<%--                        <th>Lift</th>--%>
                         <th>Lift Price</th>
                         <th>Total Lift</th>
                     </tr>
