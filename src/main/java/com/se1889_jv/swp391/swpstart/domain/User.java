@@ -52,8 +52,8 @@ public class User {
     private Instant expirationDate;
     private boolean statusService;
     //Thêm trường để tránh spam reset password
-    private boolean isReset;
-    private Instant resetExpiryTime;
+//    private boolean isReset;
+//    private Instant resetExpiryTime;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;

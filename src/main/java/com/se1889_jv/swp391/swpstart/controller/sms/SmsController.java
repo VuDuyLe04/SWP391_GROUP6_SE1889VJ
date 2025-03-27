@@ -54,13 +54,13 @@ public class SmsController {
             return "client/auth/reset-password";
         }
 
-        if (this.userRepository.findByPhone(phoneNumber).isReset() == false) {
-            Duration duration = Duration.between(this.userRepository.findByPhone(phoneNumber).getResetExpiryTime(), Instant.now());
-            int s = (int) duration.getSeconds();
-            model.addAttribute("error", "Vui lòng thử lại sau " + s + " giây." );
-            model.addAttribute("phoneNumber", phoneNumber);
-            return "client/auth/reset-password";
-        }
+//        if (this.userRepository.findByPhone(phoneNumber).isReset() == false) {
+//            Duration duration = Duration.between(this.userRepository.findByPhone(phoneNumber).getResetExpiryTime(), Instant.now());
+//            int s = (int) duration.getSeconds();
+//            model.addAttribute("error", "Vui lòng thử lại sau " + s + " giây." );
+//            model.addAttribute("phoneNumber", phoneNumber);
+//            return "client/auth/reset-password";
+//        }
 
         try {
 

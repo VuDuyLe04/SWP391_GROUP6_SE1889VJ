@@ -82,8 +82,8 @@ public class SmsService {
                 response.append(responseLine.trim());
             }
             user.setPassword(passwordEncoder.encode(password));
-            user.setReset(false);
-            user.setResetExpiryTime(Instant.now().plusSeconds(60));
+//            user.setReset(false);
+//            user.setResetExpiryTime(Instant.now().plusSeconds(60));
             this.userRepository.save(user);
 
             return objectMapper.readValue(response.toString(), ResponseView.class);
