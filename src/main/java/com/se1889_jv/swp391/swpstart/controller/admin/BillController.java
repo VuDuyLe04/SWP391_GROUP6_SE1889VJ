@@ -6,6 +6,7 @@ import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
 import com.se1889_jv.swp391.swpstart.service.implementservice.*;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import com.se1889_jv.swp391.swpstart.util.constant.BillTypeEnum;
+import com.se1889_jv.swp391.swpstart.util.validator.annotation.CheckPermission;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class BillController {
     @Autowired
     private UserStoreService userStoreService;
 
-
+    @CheckPermission(condition = "statusService")
     @GetMapping("/bill/table")
     public String showListBill(
             @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String startDateStr,
@@ -112,6 +113,7 @@ public class BillController {
         return "admin/bill/listbill";
     }
 
+    @CheckPermission(condition = "statusService")
     @GetMapping("/bills/details/{id}")
      public String getBillDetail(
              @PathVariable(name = "id") Long billId,

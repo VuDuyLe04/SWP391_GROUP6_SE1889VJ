@@ -78,7 +78,7 @@
                         <div class="panel-body row">
                             <!-- Hình ảnh -->
                             <div class="thumb-info mb-md col-lg-6">
-                                <img src="https://img.vietqr.io/image/mbbank-1910161104-print.jpg?amount=${paymentDTO.amount}&addInfo=ricechicken${sessionScope.user.id}&accountName=Vu%20Duy%20Le" class="rounded img-responsive" alt="John Doe">
+                                <img src="https://img.vietqr.io/image/mbbank-1910161104-print.jpg?amount=${paymentDTO.amount}&addInfo=rice${sessionScope.user.id}chicken&accountName=Vu%20Duy%20Le" class="rounded img-responsive" alt="John Doe">
                             </div>
 
                             <!-- Các bước -->

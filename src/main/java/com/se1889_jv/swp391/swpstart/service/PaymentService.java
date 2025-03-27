@@ -117,19 +117,19 @@ public class PaymentService {
                     String[] strings = content.split("\\.");
                     String id1 = "";
                     for (String string : strings) {
-                        if (string.contains("ricechicken")){
+                        if (string.contains("rice")){
                             id1 = string;
                         }
                     }
                     String[] strings1 = id1.split(" ");
                     String id2 = "";
                     for (String string : strings1) {
-                        if (string.contains("ricechicken")){
+                        if (string.contains("rice")){
                             id2 = string;
                         }
                     }
 
-                    id2 = id2.replaceAll("ricechicken", "").trim();
+                    id2 = id2.replaceAll("[^0-9]", "").trim();
 
 
                     // Check if id is not empty or null
