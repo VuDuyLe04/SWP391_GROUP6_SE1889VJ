@@ -8,6 +8,7 @@ import com.se1889_jv.swp391.swpstart.util.Utility;
 import com.se1889_jv.swp391.swpstart.util.constant.BillTypeEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +33,7 @@ import java.util.Optional;
 
 
 @Controller
+@Slf4j
 public class BillController {
     @Autowired
     private ProductService productService;
@@ -91,6 +93,7 @@ public class BillController {
         }
         Page<Bill> list = billService.filterBills(startDate,endDate,minAmount,maxAmount,input,storeID,storeIds,billType,pageable);
         if (list.hasContent()) {
+            log.info("có :"+list.getSize());
             model.addAttribute("bills", list);
 
         } else {
