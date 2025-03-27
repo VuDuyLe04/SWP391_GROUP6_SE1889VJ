@@ -17,4 +17,5 @@ public class ImportRequest {
     private Double totalNeedPay;
     private Double actualPay;
     private List<BillDetailImportRequest> billDetailsList;
+    private boolean liftInput;
 }

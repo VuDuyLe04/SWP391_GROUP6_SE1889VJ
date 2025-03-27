@@ -389,7 +389,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const billTotal = getAmount(billTotalElement);
         let amountToPay = 0;
         let allowInput = false;
-
+        console.log(selectedOption)
         switch (selectedOption) {
             case "order":
                 amountToPay = billTotal;
@@ -410,6 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     amountToPay = 0
                 } else {
                     amountToPay = billTotal + customerBalance;
+
                 }
 
 
@@ -461,7 +462,7 @@ function getBillRequest() {
     const typeSelect = document.getElementById("paymentOptions");
     const totalNeedPayInput = document.getElementById("amountDue");
     const actualPayInput = document.getElementById("customerPayment");
-
+    const liftInput = document.getElementById("bocVacCheckbox");
     let customerInfor = customerInput ? customerInput.value.trim() : "";
     let type = typeSelect ? typeSelect.value : "";
 
@@ -476,6 +477,7 @@ function getBillRequest() {
         createDebt: customerInfor !== "" && type !== "order", // Nếu rỗng hoặc type = "order" thì false
         totalNeedPay: totalNeedPayInput ? parseInt(totalNeedPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
         actualPay: actualPayInput ? parseInt(actualPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
+        liftInput: liftInput.checked
     };
 }
 

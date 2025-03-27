@@ -27,8 +27,6 @@ public class BillDetail {
     private double listedPrice;
     private double totalProductPrice;
     // co boc vac khong
-    private boolean isLift;
-    // gia boc vac
     private double liftPrice;
     // tong gia boc vac
     private double totalLiftProductPrice;

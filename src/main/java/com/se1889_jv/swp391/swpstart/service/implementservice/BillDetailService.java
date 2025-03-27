@@ -55,7 +55,6 @@ public class BillDetailService implements IBillDetailService {
         billDetail.setListedPrice(bd.getListedPrice());
         billDetail.setActualSellPrice(bd.getActualSellPrice());
         billDetail.setLiftPrice(bd.getLiftPrice());
-        billDetail.setLift(bd.getLiftPrice() > 0);
         billDetail.setTotalLiftProductPrice(bd.getQuantity() * bd.getLiftPrice());
         billDetail.setPackaging(packagingService.getPackagingByPackingType(bd.getPackaging().getPackageType()));
         billDetail.setBill(bill);
@@ -80,7 +79,6 @@ public class BillDetailService implements IBillDetailService {
         billDetail.setListedPrice(request.getListedPrice());
         billDetail.setActualSellPrice(request.getActualSellPrice());
         billDetail.setLiftPrice(packaging.getLiftCost());
-        billDetail.setLift(packaging.getLiftCost() > 0);
         billDetail.setPackaging(packagingService.getPackagingById(request.getPackagingId()));
         billDetail.setProduct(p);
         billDetail.setNameProduct(p.getName());
@@ -140,7 +138,6 @@ public class BillDetailService implements IBillDetailService {
             billDetail.setListedPrice(request.getListedPrice());
             billDetail.setActualSellPrice(request.getActualSellPrice());
             billDetail.setLiftPrice(packaging.getLiftCost());
-            billDetail.setLift(packaging.getLiftCost() > 0);
             billDetail.setPackaging(packaging);
             billDetail.setProduct(p);
             billDetail.setNameProduct(p.getName());

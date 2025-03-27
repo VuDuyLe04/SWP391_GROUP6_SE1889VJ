@@ -67,6 +67,10 @@
                 <div id="bill-items">
                     <!-- Các sản phẩm trong hóa đơn sẽ được thêm vào đây -->
                 </div>
+                <div class="mt-3 d-flex justify-content-between align-items-center">
+                    <span class="fw-bold fs-5">Tổng đơn hàng:</span>
+                    <span class="fw-bold fs-5 text-success" id="total-bill">0đ</span>
+                </div>
             </div>
 
             <div class="product-grid d-block" id="product-list">
@@ -180,12 +184,20 @@
                 <div hidden="hidden" id="storeId">${storeId}</div>
                 <div class="bill-summary" style="height: 100%">
                     <div class="bill-header">
-                        <h4>Hóa đơn #1234</h4>
-                        <span class="text-muted">10:55 01/10/2022</span>
+                        <h4>Thông tin Hóa đơn</h4>
+                        <span class="text-muted">10:55 30/03/2025</span>
                     </div>
                     <div class="summary-row">
                         <span class="fw-bold">Khách cần trả</span>
                         <span class="fw-bold text-success total-need-pay">0đ</span>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-6 fw-bold">Bốc vác</div>
+                        <div class="col-6 text-end">
+                            <div class="form-check form-switch d-flex justify-content-end">
+                                <input class="form-check-input" type="checkbox" id="bocVacCheckbox" checked>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3 position-relative">
                     <label for="search-phone" class="form-label">Khách hàng</label>
@@ -295,7 +307,11 @@
         }
     });
 
-
+    // const checkbox = document.getElementById("bocVacCheckbox");
+    //
+    // checkbox.addEventListener("change", function() {
+    //     console.log(checkbox.checked);
+    // });
 </script>
 </body>
 </html>
