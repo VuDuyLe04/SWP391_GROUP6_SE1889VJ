@@ -63,7 +63,6 @@ public class SmsController {
 //        }
 
         try {
-
             ResponseView response = smsService.sendSms(phoneNumber,SmsService.generateRandomPassword(10) );
             session.setAttribute("message", "Hệ thống đã gửi mật khẩu reset đến số điện thoại: " + phoneNumber);
             return "redirect:/login";
