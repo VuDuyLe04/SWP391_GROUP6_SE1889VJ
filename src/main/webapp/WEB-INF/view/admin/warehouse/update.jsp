@@ -109,9 +109,9 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <div class="col-sm-9 offset-sm-3">
+                                    <div class="col-sm-12 text-center">
                                         <button type="submit" class="btn btn-primary">Cập nhật</button>
-                                        <a href="/warehouse" class="btn btn-secondary">Hủy</a>
+                                        <button type="button" class="btn btn-danger" onclick="cancelAction()">Hủy</button>
                                     </div>
                                 </div>
                             </form:form>
@@ -129,6 +129,13 @@
 
 
 </section>
+
+<script>
+function cancelAction(){
+    window.location.href="/fetch-all-warehouse";
+}
+
+</script>
 
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>

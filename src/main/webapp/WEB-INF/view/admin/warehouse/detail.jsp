@@ -44,14 +44,14 @@
                                         <thead>
                                         <tr>
                                             <th>Tên gạo</th>
-                                            <%--                                            <th>Số lượng</th>--%>
+                                            <th>Số lượng trong kho</th>                                    
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${productList}" var="product">
                                             <tr>
                                                 <td>${product.name}</td>
-                                                    <%--                                                <td>${product.totalQuantity}</td>--%>
+                                                <td>${product.totalQuantity}</td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>

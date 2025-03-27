@@ -118,10 +118,12 @@
 
 
                                 <div class="form-group">
-                                    <div class="col-md-6 col-md-offset-3">
+                                    <div class="col-md-12 text-center">
                                         <button type="submit" class="btn btn-primary">Tạo</button>
+                                        <button type="button" class="btn btn-danger" onclick="cancelAction()">Hủy</button>
                                     </div>
                                 </div>
+
                             </form:form>
 
                         </div>
@@ -138,6 +140,12 @@
 
 
 </section>
+<script>
+    function cancelAction() {
+        window.location.href = "/fetch-all-warehouse";
+    }
+</script>
+
 
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>

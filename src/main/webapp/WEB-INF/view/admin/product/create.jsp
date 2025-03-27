@@ -90,92 +90,107 @@
                             <h2 class="panel-title">Sản phẩm mới</h2>
                         </header>
                         <div class="panel-body">
-                            <form:form class="form-horizontal form-bordered" action="/product/create" modelAttribute="product" method="post">
 
-<%--                                <div class="form-group">--%>
-<%--                                    <label class="col-md-3 control-label" for="inputId">Id</label>--%>
-<%--                                    <div class="col-md-6">--%>
-<%--                                        <form:input path="id" type="number" class="form-control" id="inputId" />--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-
+                            <form id="productForm" class="form-horizontal form-bordered" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputDefault">Tên gạo</label>
+                                    <label class="col-md-3 control-label" for="inputName">Tên gạo</label>
                                     <div class="col-md-6">
-                                        <form:input path="name" type="text" class="form-control" id="inputDefault"
-                                                    requiredpattern="[A-Za-z0-9 ]{1,50}" title="Chỉ cho phép chữ cái, số và tối đa 50 ký tự"/>
+                                        <input type="text" id="inputName" name="name" class="form-control"/>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputImage">Hình ảnh</label>
                                     <div class="col-md-6">
-                                        <form:input path="image" class="form-control" id="inputImage" type="text" readonly="true"/>
+                                        <input type="file" name="image" id="inputImage" class="form-control" onchange="previewImage(event)" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="imagePreview">Ảnh xem trước</label>
+                                    <div class="col-md-6">
+                                        <img id="imagePreview" src="" alt="Ảnh sản phẩm" style="max-width: 200px; display: none;" />
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputPrice">Giá gạo</label>
                                     <div class="col-md-6">
-                                        <form:input path="unitPrice" type="number" id="inputPrice" class="form-control"/>
+                                        <input type="number" id="inputPrice" name="unitPrice" class="form-control"/>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputCategory">Loại gạo</label>
                                     <div class="col-md-6">
-                                        <form:input path="category" type="text"  class="form-control" id="inputCategory"/>
+                                        <input type="text" id="inputCategory" name="category" class="form-control"/>
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="inputStorage">Trạng thái</label>
+                                    <div class="col-md-6">
+                                        <select id="inputStorage" name="storage" class="form-control">
+                                            <option value="true">Hoạt động</option>
+                                            <option value="false">Lưu trữ</option>
+                                        </select>
+                                    </div>
+                                </div>
 
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputQuantity">Số lượng trong kho</label>
                                     <div class="col-md-6">
-                                        <form:input path="totalQuantity" type="number"  class="form-control" id="inputQuantity" readonly="false"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputDescription">Mô tả</label>
-                                    <div class="col-md-6">
-                                        <form:input path="description" type="text"  class="form-control" id="inputDescription"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputDescription">Cửa hàng</label>
-                                    <div class="col-md-6">
-                                        <form:select path="store.id" cssClass="form-control" id="inputStore" onchange="filterWarehouses()">
-                                            <option value="">-- Chọn cửa hàng --</option>
-                                            <c:forEach items="${listStore}" var="storeIt">
-                                                <form:option value="${storeIt.id}">
-                                                    ${storeIt.name}
-                                                </form:option>
-                                            </c:forEach>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="form-group" id="warehouseGroup" style="display: none;">
-                                    <label class="col-md-3 control-label" for="inputWarehouse">Khu vực</label>
-                                    <div class="col-md-6">
-                                        <form:select path="warehouse.id" class="form-control" id="inputWarehouse">
-                                            <option value="">-- Chọn kho hàng --</option>
-                                            <c:forEach items="${wareHouses}" var="warehouse">
-                                                <form:option value="${warehouse.id}" data-store-id="${warehouse.store.id}">
-                                                    ${warehouse.name}
-                                                </form:option>
-                                            </c:forEach>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <!-- Nút Create -->
-                                <div class="form-group">
-                                    <div class="col-md-6 col-md-offset-3">
-                                        <button type="submit" class="btn btn-primary">Tạo mới</button>
-                                        <button type="button" class="btn btn-danger" onclick="cancelAction()">Hủy</button>
+                                        <input type="number" id="inputQuantity" name="totalQuantity" class="form-control"/>
                                     </div>
                                 </div>
 
-                            </form:form>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="inputDescription">Mô tả</label>
+                                    <div class="col-md-6">
+                                        <input type="text" id="inputDescription" name="description" class="form-control"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="inputStore">Cửa hàng</label>
+                                    <div class="col-md-6">
+                                        <select id="inputStore" name="storeId" class="form-control" onchange="filterWarehouses()">
+                                            <option value="">-- Chọn cửa hàng --</option>
+                                            <c:forEach items="${listStore}" var="storeIt">
+                                                <option value="${storeIt.id}">
+                                                        ${storeIt.name}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="warehouseGroup" style="display: none;">
+                                    <label class="col-md-3 control-label" for="inputWarehouse">Khu vực</label>
+                                    <div class="col-md-6">
+                                        <select id="inputWarehouse" name="warehouseId" class="form-control">
+                                            <option value="">-- Chọn kho hàng --</option>
+                                            <c:forEach items="${wareHouses}" var="warehouse">
+                                                <option value="${warehouse.id}" data-store-id="${warehouse.store.id}">
+                                                        ${warehouse.name}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <button type="button" class="btn btn-primary" onclick="submitForm()">Tạo mới</button>
+                                    </div>
+                                </div>
+
+                                <div id="spinner" style="display: none;" class="text-center">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </section>
 
@@ -190,6 +205,53 @@
 </section>
 
 <script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('imagePreview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function submitForm() {
+        var formData = new FormData(document.getElementById('productForm'));
+
+        var productData = {
+            name: formData.get('name'),
+            category: formData.get('category'),
+            description: formData.get('description'),
+            unitPrice: formData.get('unitPrice'),
+            totalQuantity: formData.get('totalQuantity'),
+            storage: formData.get('storage'),
+            storeId: formData.get('storeId'),
+            wareHouseId: formData.get('warehouseId')
+        };
+
+        formData.append('product', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
+
+        document.getElementById('spinner').style.display = 'block';
+
+        fetch('/product/create', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert("Create product success")
+                // dùng thư viện alertsweet2
+                window.location.href = "http://localhost:8080/product";
+            })
+            .catch(error => {
+                console.error('Error creating product:', error);
+            })
+            .finally(() => {
+                document.getElementById('spinner').style.display = 'none';
+            });
+    }
+
+
     function filterWarehouses() {
         var storeSelect = document.getElementById("inputStore");
         var warehouseSelect = document.getElementById("inputWarehouse");
@@ -216,8 +278,9 @@
         warehouseSelect.value = "";
     }
     function cancelAction() {
-        window.history.back();
+        window.location.href = "/product";
     }
+
 </script>
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>

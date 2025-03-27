@@ -107,9 +107,9 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputImage">Hình ảnh</label>
+                                    <label class="col-md-3 control-label">Hình ảnh</label>
                                     <div class="col-md-6">
-                                        <form:input path="image" class="form-control" id="inputImage" type="text" readonly="true"/>
+                                        <img id="imagePreview" src="${product.image}" alt="Ảnh sản phẩm" style="max-width: 200px; display: block;" />
                                     </div>
                                 </div>
 
@@ -169,7 +169,7 @@
                                     <div class="col-md-6">
                                         <form:select path="warehouseId" cssClass="form-control" id="inputWarehouse" style="display: none;">
                                             <option value="">-- Chọn kho hàng --</option>
-                                            <!-- The warehouses will be populated here based on the selected store -->
+
                                         </form:select>
                                     </div>
                                 </div>
@@ -177,8 +177,9 @@
 
                                 <!-- Nút Create -->
                                 <div class="form-group">
-                                    <div class="col-md-6 col-md-offset-3">
+                                    <div class="col-md-12 text-center">
                                         <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                        <button type="button" class="btn btn-danger" onclick="cancelAction()">Hủy</button>
                                     </div>
                                 </div>
                             </form:form>
@@ -192,6 +193,16 @@
 
 </section>
 <script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('imagePreview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
     function filterWarehouse() {
         const selectElement = document.getElementById("inputStore");
         const id = selectElement.value;
@@ -229,6 +240,11 @@
             warehouseSelect.style.display = "none";
         }
     }
+
+    function cancelAction() {
+        window.location.href = "/product";
+    }
+
 
 </script>
 
@@ -282,3 +298,4 @@
 <script src="/client/auth/assets/javascripts/dashboard/examples.dashboard.js"></script>
 </body>
 </html>
+

@@ -156,6 +156,8 @@
                                                     </button>
                                                 </span>
                                             </div>
+
+
                                         </form>
                                     </div>
                                 </div>
@@ -225,22 +227,23 @@
                                     </thead>
                                     <tbody>
                                     <c:forEach var="product" items="${listProduct}" varStatus="status">
-                                        <!-- Modal -->
-
-
-
-                                        <!-- Bảng dữ liệu -->
                                         <tr>
                                             <td>${status.index + 1}</td>
+                                            <td class="hidden-xs hidden-sm">
+                                                <!-- Hiển thị ảnh sản phẩm và căn giữa -->
+                                                <div style="text-align: center;">
+                                                    <img src="${product.image}" alt="${product.name}" class="img-fluid" style="max-width: 80px; max-height: 80px; margin: 0 auto; display: block;">
+                                                </div>
+                                            </td>
                                             <td class="hidden-xs hidden-sm">${product.name}</td>
                                             <td class="text-center">${product.unitPrice} đ/kg</td>
                                             <td class="text-center">${product.totalQuantity}</td>
                                             <td class="text-center">${product.category}</td>
                                             <td class="text-center">
-                                                <span class="label ${product.storage == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
-                                                    <i class="fa ${product.storage == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
-                                                    ${product.storage == "true" ? "Active" : "Banned"}
-                                                </span>
+            <span class="label ${product.storage == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
+                <i class="fa ${product.storage == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
+                ${product.storage == "true" ? "Active" : "Banned"}
+            </span>
                                             </td>
                                             <td class="text-center">
                                                 <button class="btn btn-default btn-sm mr-xs view-modal" title="View" onclick="window.location.href='/product/view/${product.id}'">
@@ -250,15 +253,16 @@
                                                     <i class="fa fa-pencil"></i>
                                                 </button>
 
-
-                                                    <%--                                            <form method="post" action="/product/delete" style="display:inline;">--%>
-                                                    <%--                                                <input type="hidden" name="_csrf" value="${_csrf.token}" />--%>
-                                                    <%--                                                <input type="hidden" name="id" value="${product.id}" />--%>
-                                                    <%--                                                <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure you want to delete this item?');">Xóa sản phẩm</button>--%>
-                                                    <%--                                            </form>--%>
+                                                    <%-- Xóa sản phẩm --%>
+                                                    <%-- <form method="post" action="/product/delete" style="display:inline;"> --%>
+                                                    <%--    <input type="hidden" name="_csrf" value="${_csrf.token}" /> --%>
+                                                    <%--    <input type="hidden" name="id" value="${product.id}" /> --%>
+                                                    <%--    <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure you want to delete this item?');">Xóa sản phẩm</button> --%>
+                                                    <%-- </form> --%>
                                             </td>
                                         </tr>
                                     </c:forEach>
+
                                     </tbody>
                                 </table>
 
