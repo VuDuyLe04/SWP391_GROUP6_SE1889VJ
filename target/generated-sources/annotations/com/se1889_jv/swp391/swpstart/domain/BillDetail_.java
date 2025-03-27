@@ -47,11 +47,6 @@ public abstract class BillDetail_ {
 	public static volatile SingularAttribute<BillDetail, String> packagingName;
 	
 	/**
-	 * @see com.se1889_jv.swp391.swpstart.domain.BillDetail#isLift
-	 **/
-	public static volatile SingularAttribute<BillDetail, Boolean> isLift;
-	
-	/**
 	 * @see com.se1889_jv.swp391.swpstart.domain.BillDetail#totalLiftProductPrice
 	 **/
 	public static volatile SingularAttribute<BillDetail, Double> totalLiftProductPrice;
@@ -103,7 +98,6 @@ public abstract class BillDetail_ {
 	public static final String PACKAGING = "packaging";
 	public static final String QUANTITY_PER_PACKAGE = "quantityPerPackage";
 	public static final String PACKAGING_NAME = "packagingName";
-	public static final String IS_LIFT = "isLift";
 	public static final String TOTAL_LIFT_PRODUCT_PRICE = "totalLiftProductPrice";
 	public static final String CREATED_AT = "createdAt";
 	public static final String CREATED_BY = "createdBy";
