@@ -32,7 +32,7 @@ public class FlowController {
             return "redirect:/saleproduct";
         } else {
             session.setAttribute("store", this.storeService.findStoreById(Long.parseLong(storeId)));
-            return "redirect:/dashboard";
+            return "redirect:/saleproduct";
         }
 
     }

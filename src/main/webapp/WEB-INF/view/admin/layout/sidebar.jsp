@@ -16,12 +16,14 @@
         <div class="nano-content">
             <nav id="menu" class="nav-main" role="navigation">
                 <ul class="nav nav-main">
+                    <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
                     <li class="nav-active">
-                        <a href="/dashboard">
+                        <a href="/dashboard/admin">
                             <i class="fa fa-home" aria-hidden="true"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
+                    </c:if>
                     <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
                         <li>
                             <a href="/usermanagement">
@@ -34,7 +36,7 @@
                         <li>
                             <a href="/usermanagement">
                                 <i class="fa fa-user" aria-hidden="true"></i>
-                                <span>Nhân viên </span>
+                                <span>Nhân viên</span>
                             </a>
                         </li>
                     </c:if>

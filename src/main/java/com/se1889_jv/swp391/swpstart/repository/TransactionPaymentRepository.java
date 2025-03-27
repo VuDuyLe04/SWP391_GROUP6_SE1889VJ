@@ -1,6 +1,7 @@
 package com.se1889_jv.swp391.swpstart.repository;
 
 import com.se1889_jv.swp391.swpstart.domain.TransactionPayment;
+import com.se1889_jv.swp391.swpstart.domain.TransactionService;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.util.constant.TransactionStatus;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -41,6 +43,13 @@ public interface TransactionPaymentRepository extends JpaRepository<TransactionP
     Page<TransactionPayment> findAll(Pageable pageable);
     Page<TransactionPayment> findByTransactionIdContainingOrUser_PhoneContaining(String transactionId, String phone, Pageable pageable);
 
+
+    @Query("SELECT t FROM TransactionPayment t WHERE t.transactionStatus = :status " +
+            "AND t.date >= :startDate AND t.date <= :endDate ")
+    List<TransactionPayment> findByStatusAndDateRange(
+            @Param("status") TransactionStatus status,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
 //    Page<TransactionPayment> findByUser(User user, Pageable pageable);
 
 }

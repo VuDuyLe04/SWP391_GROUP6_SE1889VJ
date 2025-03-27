@@ -99,7 +99,7 @@ public class CustomerController {
         // Get customer by ID
         Customer customer = customerService.getCustomerById(id);
         if (customer == null) {
-            return "redirect:/customer";
+            return "redirect:/customer/table";
         }
 
         // Add customer to model
@@ -139,7 +139,7 @@ public class CustomerController {
         }
 
         this.customerService.updateCustomer(customer);
-        return "redirect:/customer";
+        return "redirect:/customer/table";
     }
 
     @CheckPermission(condition = "statusService")

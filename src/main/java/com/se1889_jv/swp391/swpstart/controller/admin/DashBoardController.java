@@ -16,7 +16,7 @@ public class DashBoardController {
 
     private final RoleRepository roleRepository;
 
-    @GetMapping("/dashboard")
+    @GetMapping("/dashboard/admin")
     public String getDashboardPage(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");

@@ -6,6 +6,8 @@ import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.UserStore;
 import com.se1889_jv.swp391.swpstart.domain.dto.StaffDTO;
+import com.se1889_jv.swp391.swpstart.repository.RoleRepository;
+import com.se1889_jv.swp391.swpstart.repository.UserRepository;
 import com.se1889_jv.swp391.swpstart.service.implementservice.RoleService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
@@ -43,11 +45,16 @@ public class UserController {
     @Autowired
     UserStoreService userStoreService;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @CheckPermission(condition = "statusService")
+
     @GetMapping("/usermanagement")
     public String getAllUser(@RequestParam(value = "input", required = false) String input,
                              @RequestParam(value = "role", required = false, defaultValue = "-1") String roleId,
@@ -441,6 +448,32 @@ if(status == null){
 
         return "redirect:/updatestaff/" + Long.parseLong(userId);
     }
+
+    @GetMapping("/users")
+    public String getUsers(@RequestParam(value = "role", required = false) String role,
+                           @RequestParam(value = "page", defaultValue = "0") int page,
+                           @RequestParam(value = "size", defaultValue = "10") int size,
+                           Model model) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<User> userPage;
+        if (role != null) {
+            Role userRole = roleRepository.findByName(role.toUpperCase())
+                    .orElseThrow(() -> new RuntimeException("Role not found"));
+            userPage = userRepository.findUserByRole(userRole, pageable);
+        } else {
+            userPage = userRepository.findAll(pageable);
+        }
+        model.addAttribute("users", userPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", userPage.getTotalPages());
+        model.addAttribute("totalUsers", userPage.getTotalElements());
+
+        return "admin/user/users-details";
+    }
+
+
 }
 
 

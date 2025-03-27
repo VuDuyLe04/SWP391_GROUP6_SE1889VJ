@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.repository;
 
+import com.se1889_jv.swp391.swpstart.domain.Role;
 import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.UserStore;
 import org.springframework.data.domain.Page;
@@ -58,4 +59,5 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     @Query(value = "SELECT balance FROM customers WHERE phone = :phone", nativeQuery = true)
     Double getBalanceByPhone(@Param("phone") String phone);
 
+    Page<User> findUserByRole(Role role, Pageable pageable);
 }

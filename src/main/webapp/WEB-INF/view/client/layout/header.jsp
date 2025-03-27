@@ -82,11 +82,11 @@
         <c:choose>
             <c:when test="${sessionScope.user != null}">
                 <c:if test="${sessionScope.user.role.name == 'ADMIN'}">
-                    <a class="btn-getstarted" href="/dashboard">Quản lý hệ thống</a>
+                    <a class="btn-getstarted" href="/dashboard/admin">Quản lý hệ thống</a>
                 </c:if>
 
                 <c:if test="${sessionScope.user.role.name == 'OWNER'}">
-                    <a class="btn-getstarted" href="/dashboard">Quản lý các cửa hàng</a>
+                    <a class="btn-getstarted" href="/stores">Quản lý các cửa hàng</a>
                     <a class="btn-getstarted" href="#">
                         Số dư: <fmt:formatNumber value="${sessionScope.user.balance}" type="currency"
                                                  currencySymbol="₫"/>

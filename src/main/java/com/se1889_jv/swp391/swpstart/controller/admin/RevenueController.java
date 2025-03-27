@@ -19,8 +19,13 @@ public class RevenueController {
     private final RevenueService revenueService;
 
     @PostMapping("/revenue")
-    public RevenueSummaryResponse revenue(@RequestBody PeriodTypeRequest request) {
-        return revenueService.revenue(request);
+    public RevenueSummaryResponse revenueTransactionService(@RequestBody PeriodTypeRequest request) {
+        return revenueService.revenueTransactionService(request);
+    }
+
+    @PostMapping("/revenue-payment-service")
+    public RevenueSummaryResponse revenueTransactionPayment(@RequestBody PeriodTypeRequest request) {
+        return revenueService.revenueTransactionPayment(request);
     }
 
 }
