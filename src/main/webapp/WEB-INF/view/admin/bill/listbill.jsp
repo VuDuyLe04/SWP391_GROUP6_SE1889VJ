@@ -608,6 +608,15 @@
                                 <input type="number" id="maxAmount" name="maxAmount"
                                        class="form-control" value="${maxAmount}">
                             </div>
+                            <div class="form-group">
+                                <label for="type">Loại hóa đơn  </label>
+                                <select id="type" name="type" class="form-control">
+                                    <option ${type == "ALL" ? "selected" : ""} value="ALL">Tất cả</option>
+                                    <option ${type == "EXPORT" ? "selected" : ""} value="EXPORT">Xuất hàng</option>
+                                    <option ${type == "IMPORT" ? "selected" : ""} value="IMPORT">Nhập hàng</option>
+                                </select>
+                            </div>
+
                             <div class="form-group" style="display: flex; align-items: flex-end;">
                                 <button type="submit" class="btn btn-primary w-100">
                                     <i class="fa fa-filter mr-xs"></i> Lọc
@@ -773,7 +782,7 @@
                         <th>Total</th>
                         <th>Packaging</th>
                         <th>Qty/Package</th>
-                        <th>Lift</th>
+<%--                        <th>Lift</th>--%>
                         <th>Lift Price</th>
                         <th>Total Lift</th>
                     </tr>
@@ -822,18 +831,18 @@
 
                     response.billDetails.forEach(function (detail) {
                         $("#billDetails").append(`
-                        <tr>
-                            <td>${detail.nameProduct || "N/A"}</td>
-                            <td>${detail.quantity || 0}</td>
-                            <td>${detail.actualSellPrice || 0}</td>
-                            <td>${detail.listedPrice || 0}</td>
-                            <td>${detail.totalProductPrice || 0}</td>
-                            <td>${detail.packagingName || "N/A"}</td>
-                            <td>${detail.quantityPerPackage || "N/A"}</td>
-                            <td>${detail.isLift ? "Yes" : "No"}</td>
-                            <td>${detail.liftPrice != null ? detail.liftPrice : 0}</td>
-                            <td>${detail.totalLiftProductPrice != null ? detail.totalLiftProductPrice : 0}</td>
-                        </tr>
+                        <%--<tr>--%>
+                        <%--    <td>${detail.nameProduct || "N/A"}</td>--%>
+                        <%--    <td>${detail.quantity || 0}</td>--%>
+                        <%--    <td>${detail.actualSellPrice || 0}</td>--%>
+                        <%--    <td>${detail.listedPrice || 0}</td>--%>
+                        <%--    <td>${detail.totalProductPrice || 0}</td>--%>
+                        <%--    <td>${detail.packagingName || "N/A"}</td>--%>
+                        <%--    <td>${detail.quantityPerPackage || "N/A"}</td>--%>
+                        <%--    &lt;%&ndash;<td>${detail.isLift ? "Yes" : "No"}</td>&ndash;%&gt;--%>
+                        <%--    <td>${detail.liftPrice != null ? detail.liftPrice : 0}</td>--%>
+                        <%--    <td>${detail.totalLiftProductPrice != null ? detail.totalLiftProductPrice : 0}</td>--%>
+                        <%--</tr>--%>
                     `);
                     });
 
