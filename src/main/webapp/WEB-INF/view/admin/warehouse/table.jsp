@@ -141,34 +141,42 @@
             <div class="row">
                 <div class="col-lg-12">
                     <section class="panel">
-                        <header class="panel-heading d-flex justify-content-between align-items-center">
-                            <!-- Ô tìm kiếm -->
-                            <div class="search-container">
-                                <input type="text" id="searchInput" class="form-control search-input" placeholder="Tìm kiếm khu vực...">
-                                <button class="btn btn-primary search-btn" onclick="searchWarehouses()">
-                                    <i class="fa fa-search"></i> Tìm kiếm
-                                </button>
+                        <header class="panel-heading p-3 bg-white shadow-sm rounded">
+                            <!-- Hàng 1: Tìm kiếm + Thêm khu vực -->
+                            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                <!-- Ô tìm kiếm -->
+                                <div class="search-container d-flex flex-grow-1 me-3">
+                                    <input type="text" id="searchInput" class="form-control search-input" placeholder="Tìm kiếm khu vực...">
+                                    <button class="btn btn-primary search-btn ms-2" onclick="searchWarehouses()">
+                                        <i class="fa fa-search"></i> Tìm kiếm
+                                    </button>
+                                </div>
+
+                                <!-- Nút tạo khu vực mới -->
+                                <a href="/warehouse/create" class="btn btn-primary">
+                                    <i class="fa fa-plus"></i> Tạo khu vực mới
+                                </a>
                             </div>
 
-                            <script>
-                                function searchWarehouses() {
-                                    let searchValue = document.getElementById("searchInput").value.trim();
-                                    if (searchValue) {
-                                        window.location.href = "/warehouse/search?name=" + encodeURIComponent(searchValue);
-                                    } else {
-                                        alert("Vui lòng nhập từ khóa tìm kiếm!");
-                                    }
-                                }
-
-
-                            </script>
-
-
-                            <!-- Nút tạo khu vực mới -->
-                            <a href="/warehouse/create" class="btn btn-primary">
-                                <i class="fa fa-plus"></i> Tạo khu vực mới
-                            </a>
+                            <!-- Hàng 2: Bộ lọc nằm dưới -->
+                            <div class="mt-3">
+                                <form action="/fetch-all-warehouse" method="GET" class="d-flex align-items-center gap-2 flex-wrap">
+                                    <label class="fw-bold text-nowrap">Lọc theo cửa hàng:</label>
+                                    <select name="storeId" class="form-select w-auto">
+                                        <option value="">Tất cả</option>
+                                        <c:forEach var="store" items="${listStore}">
+                                            <option value="${store.id}" ${store.id == storeId ? 'selected="selected"' : ''}>${store.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-filter"></i> Lọc
+                                    </button>
+                                </form>
+                            </div>
                         </header>
+
+
+
                         <div class="panel-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-condensed mb-none">
@@ -238,6 +246,22 @@
         </section>
     </div>
 </section>
+
+<script>
+    document.getElementById("filterButton").addEventListener("click", function() {
+        let storeId = document.getElementById("store").value;
+        window.location.href = "/warehouse/list?storeId=" + storeId;
+    });
+
+    function searchWarehouses() {
+        let searchValue = document.getElementById("searchInput").value.trim();
+        if (searchValue) {
+            window.location.href = "/warehouse/search?name=" + encodeURIComponent(searchValue);
+        } else {
+            alert("Vui lòng nhập từ khóa tìm kiếm!");
+        }
+    }
+</script>
 
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>

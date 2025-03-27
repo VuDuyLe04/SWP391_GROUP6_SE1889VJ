@@ -121,11 +121,19 @@ public class WareHouseController {
     @GetMapping("/fetch-all-warehouse")
     public String getAllWareHouse(@RequestParam(required = false, defaultValue = "1") int page,
                                   @RequestParam(required = false, defaultValue = "3") int size,
+                                  @RequestParam(required = false) Long storeId,
                                   Model model) {
-        var result = wareHouseService.getAll(page, size);
+        var result = wareHouseService.getAll(page, size, storeId);
         model.addAttribute("listWareHouse", result.getData());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", result.getTotalPages());
+
+        List<Store> stores = storeService.getAllStores();
+        System.out.println("Danh sách cửa hàng: " + stores);
+        model.addAttribute("listStore", stores);
+
+
+
         return "admin/warehouse/table";
     }
 
@@ -137,7 +145,7 @@ public class WareHouseController {
     }
 
 
-    @GetMapping("/warehouse/{id}")
+    @GetMapping("/warehouse/store/{id}")
     @ResponseBody
     public List<WareHouse> getWarehousesByStore(@PathVariable("id") Long id) {
         return wareHouseService.findByStore(id);

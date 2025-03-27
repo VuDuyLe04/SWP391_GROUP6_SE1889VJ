@@ -60,7 +60,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12 text-center">
-                                    <a href="/warehouse" class="btn btn-default">Quay lại</a>
+                                    <a href="/fetch-all-warehouse" class="btn btn-default">Quay lại</a>
                                     <a href="/warehouse/update/${warehouse.id}" class="btn btn-warning">Cập nhật</a>
                                 </div>
                             </div>

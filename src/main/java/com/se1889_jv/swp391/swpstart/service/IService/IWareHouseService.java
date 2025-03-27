@@ -16,5 +16,7 @@ public interface IWareHouseService {
     boolean existsWareHouseByName(String name, Store store);
     void updateWareHouse(WareHouse warehouse);
     List<WareHouse> getAllWareHouseByListStore(List<Store> store);
-    PageResponse<WareHouseDetailResponse> getAll(int page, int size);
+//    PageResponse<WareHouseDetailResponse> getAll(int page, int size);
+    PageResponse<WareHouseDetailResponse> getAll(int page, int size, Long storeId);
+
 }

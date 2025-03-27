@@ -29,4 +29,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     Page<Product> findByStoreIdIn(@Param("storeIds") List<Long> storeIds, Pageable pageable);
 
 
+
+
+
 }

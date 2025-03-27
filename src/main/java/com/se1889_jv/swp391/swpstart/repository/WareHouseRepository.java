@@ -5,6 +5,8 @@ import com.se1889_jv.swp391.swpstart.domain.WareHouse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,4 +18,7 @@ public interface WareHouseRepository extends JpaRepository<WareHouse, Long> {
     List<WareHouse> findAllByStoreIn(List<Store> stores);
     Page<WareHouse> findByStore(Store store, Pageable pageable);
     List<WareHouse> findByNameContaining(String name);
+
+    List<WareHouse> findAllByStoreId(Long storeId);
+
 }

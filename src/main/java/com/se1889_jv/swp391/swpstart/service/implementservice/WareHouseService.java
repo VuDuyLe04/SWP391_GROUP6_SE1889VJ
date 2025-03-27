@@ -90,19 +90,25 @@ public class WareHouseService implements IWareHouseService {
 
     @Override
     @Transactional
-    public PageResponse<WareHouseDetailResponse> getAll(int page, int size) {
+    public PageResponse<WareHouseDetailResponse> getAll(int page, int size, Long storeId) {
         User user = Utility.getUserInSession();
         assert user != null;
+
         List<Store> stores = user.getUserStores().stream()
                 .map(UserStore::getStore)
                 .toList();
 
-        List<WareHouse> allWareHouses = stores.stream()
-                .flatMap(store -> store.getWareHouses().stream())
-                .toList();
+        List<WareHouse> allWareHouses;
 
-//        List<WareHouse> allWareHouses = wareHouseRepository.findAllByStoreIn(stores);
-
+        if (storeId != null) {
+            // Nếu có storeId -> lấy danh sách kho của cửa hàng đó
+            allWareHouses = wareHouseRepository.findAllByStoreId(storeId);
+        } else {
+            // Nếu không có storeId -> lấy tất cả kho của các cửa hàng user sở hữu
+            allWareHouses = stores.stream()
+                    .flatMap(store -> store.getWareHouses().stream())
+                    .toList();
+        }
 
         int totalElements = allWareHouses.size();
         int totalPages = (int) Math.ceil((double) totalElements / size);
@@ -130,6 +136,7 @@ public class WareHouseService implements IWareHouseService {
                 .data(wareHouseDetails)
                 .build();
     }
+
 
     public List<WareHouse> searchWareHouseByName(String name) {
         return wareHouseRepository.findByNameContaining(name);

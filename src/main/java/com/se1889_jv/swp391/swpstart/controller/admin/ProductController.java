@@ -54,6 +54,7 @@ ProductController {
             @RequestParam(defaultValue = "asc") String order,
             @RequestParam(defaultValue = "0") String store,
             @RequestParam(defaultValue = "0") String warehouseId,
+            @RequestParam(name = "activeOnly", required = false) Boolean activeOnly,
             Model model,
             HttpSession session) {
 

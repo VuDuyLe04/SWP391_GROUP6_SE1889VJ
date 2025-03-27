@@ -186,11 +186,8 @@
                                                 </select>
                                             </div>
                                         </div>
-
-
-
-
                                         <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Filter</button>
+
 
                                     </form>
                                     <div class="col-md-12 sort-select">
@@ -203,6 +200,10 @@
                                             <input type="hidden" name="sort" value="unitPrice">
                                         </form>
                                     </div>
+
+
+
+
                                 </div>
 
                                 <div class="col-sm-6">
@@ -283,15 +284,11 @@
                                     </li>
 
                                     <!-- Hiển thị các số trang -->
-                                    <c:if test="${productPage.totalPages > 0}">
-                                        <c:forEach begin="0" end="${productPage.totalPages - 1}" var="i">
-                                            <c:if test="${i >= c - 2 && i <= c + 2}">
-                                                <li class="page-item ${c == i ? 'active' : ''}">
-                                                    <a class="page-link" href="product?page=${i}&sort=${param.sort}&order=${param.order}&store=${param.store}">${i + 1}</a>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:if>
+                                    <c:forEach begin="0" end="${productPage.totalPages - 1}" var="i">
+                                        <li class="page-item ${c == i ? 'active' : ''}">
+                                            <a class="page-link" href="product?page=${i}&sort=${param.sort}&order=${param.order}&store=${param.store}">${i + 1}</a>
+                                        </li>
+                                    </c:forEach>
 
                                     <!-- Nút Next -->
                                     <li class="page-item ${c >= productPage.totalPages - 1 ? 'disabled' : ''}">
@@ -299,6 +296,7 @@
                                            href="${c >= productPage.totalPages - 1 ? '#' : 'product?page='}${c + 1}&sort=${param.sort}&order=${param.order}&store=${param.store}">Sau</a>
                                     </li>
                                 </ul>
+
 
 
                             </div>
