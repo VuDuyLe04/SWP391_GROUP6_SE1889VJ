@@ -28,4 +28,5 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     @Query("SELECT p FROM Product p WHERE p.store.id IN :storeIds")
     Page<Product> findByStoreIdIn(@Param("storeIds") List<Long> storeIds, Pageable pageable);
 
+
 }

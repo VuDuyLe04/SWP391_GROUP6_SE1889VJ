@@ -198,6 +198,11 @@
                                 <div class="chart" id="flotBarChart"></div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-3 text-center">
+                                <a href="/stores" class="btn btn-primary">Quay lại</a>
+                            </div>
+                        </div>
                     </section>
                 </div>
             </div>

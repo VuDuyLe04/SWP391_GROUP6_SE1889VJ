@@ -95,7 +95,13 @@
                                 </div>
                             </c:if>
 
-                            <form:form method="post" modelAttribute="product" action="/update">
+                            <c:if test="${not empty errorMessage}">
+                                <div class="alert alert-error">
+                                        ${errorMessage}
+                                </div>
+                            </c:if>
+
+                            <form:form method="post" id="updateproduct" modelAttribute="product" action="/update">
                                 <form:hidden path="storeId" id="hiddenStoreId"/>
                                 <form:hidden path="id"/>
 
@@ -179,7 +185,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
                                         <button type="submit" class="btn btn-primary">Cập nhật</button>
-                                        <button type="button" class="btn btn-danger" onclick="cancelAction()">Hủy</button>
+                                        <button type="button" class="btn btn-warning" onclick="cancelAction()">Quay lại</button>
                                     </div>
                                 </div>
                             </form:form>
@@ -246,6 +252,7 @@
     }
 
 
+
 </script>
 
 <!-- Vendor -->
@@ -296,6 +303,8 @@
 
 <!-- Examples -->
 <script src="/client/auth/assets/javascripts/dashboard/examples.dashboard.js"></script>
+<script src="/client/auth/assets/javascripts/validation.js"></script>
+
 </body>
 </html>
 

@@ -182,6 +182,7 @@
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-3">
                                         <button type="button" class="btn btn-primary" onclick="submitForm()">Tạo mới</button>
+                                        <button type="button" class="btn btn-danger" onclick="cancelAction()">Hủy</button>
                                     </div>
                                 </div>
 
@@ -281,6 +282,92 @@
         window.location.href = "/product";
     }
 
+    function validateForm() {
+        let isValid = true;
+        let name = document.getElementById('inputName').value.trim();
+        let price = document.getElementById('inputPrice').value;
+        let category = document.getElementById('inputCategory').value.trim();
+        let quantity = document.getElementById('inputQuantity').value;
+        let description = document.getElementById('inputDescription').value.trim();
+        let storeId = document.getElementById('inputStore').value;
+        let image = document.getElementById('inputImage').files.length;
+
+        let errorMessages = [];
+
+        if (!name) {
+            errorMessages.push("Tên gạo không được để trống.");
+            isValid = false;
+        }
+        if (!price || price <= 0) {
+            errorMessages.push("Giá gạo phải là số dương.");
+            isValid = false;
+        }
+        if (!category) {
+            errorMessages.push("Loại gạo không được để trống.");
+            isValid = false;
+        }
+        if (!quantity || quantity < 0) {
+            errorMessages.push("Số lượng trong kho không hợp lệ.");
+            isValid = false;
+        }
+        if (!description) {
+            errorMessages.push("Mô tả không được để trống.");
+            isValid = false;
+        }
+        if (!storeId) {
+            errorMessages.push("Vui lòng chọn cửa hàng.");
+            isValid = false;
+        }
+        if (image === 0) {
+            errorMessages.push("Vui lòng chọn hình ảnh sản phẩm.");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            alert(errorMessages.join("\n"));
+        }
+        return isValid;
+    }
+
+    function submitForm() {
+        if (!validateForm()) {
+            return;
+        }
+
+        var formData = new FormData(document.getElementById('productForm'));
+
+        var productData = {
+            name: formData.get('name'),
+            category: formData.get('category'),
+            description: formData.get('description'),
+            unitPrice: formData.get('unitPrice'),
+            totalQuantity: formData.get('totalQuantity'),
+            storage: formData.get('storage'),
+            storeId: formData.get('storeId'),
+            wareHouseId: formData.get('warehouseId')
+        };
+
+        formData.append('product', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
+
+        document.getElementById('spinner').style.display = 'block';
+
+        fetch('/product/create', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert("Tạo sản phẩm thành công!");
+                window.location.href = "/product";
+            })
+            .catch(error => {
+                console.error('Lỗi khi tạo sản phẩm:', error);
+            })
+            .finally(() => {
+                document.getElementById('spinner').style.display = 'none';
+            });
+    }
+
 </script>
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>
@@ -330,5 +417,8 @@
 
 <!-- Examples -->
 <script src="/client/auth/assets/javascripts/dashboard/examples.dashboard.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
 </html>

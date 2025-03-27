@@ -166,6 +166,9 @@
                         <div class="panel-body">
                             <div class="row mb-md">
 
+                                <c:if test="${not empty errorMessage}">
+                                    <div class="alert alert-warning">${errorMessage}</div>
+                                </c:if>
 
                                 <div class="col-sm-6">
                                     <form action="product" method="get" class="form-inline">
@@ -183,6 +186,9 @@
                                                 </select>
                                             </div>
                                         </div>
+
+
+
 
                                         <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Filter</button>
 
@@ -217,10 +223,11 @@
                                     <thead>
                                     <tr>
                                         <th>STT</th>
+                                        <th>Hình ảnh</th>
                                         <th>Tên gạo</th>
                                         <th class="text-center">Giá gạo</th>
-                                        <th class="text-center">Số lượng</th>
                                         <th class="text-center">Loại gạo</th>
+                                        <th class="text-center">Cửa hàng</th>
                                         <th class="text-center">Lưu trữ</th>
                                         <th class="text-center" style="width: 350px;">Hành động</th>
                                     </tr>
@@ -237,8 +244,8 @@
                                             </td>
                                             <td class="hidden-xs hidden-sm">${product.name}</td>
                                             <td class="text-center">${product.unitPrice} đ/kg</td>
-                                            <td class="text-center">${product.totalQuantity}</td>
                                             <td class="text-center">${product.category}</td>
+                                            <td class="text-center">${product.store.name}</td>
                                             <td class="text-center">
             <span class="label ${product.storage == 'true' ? 'label-success' : 'label-danger'} label-sm status-label">
                 <i class="fa ${product.storage == 'true' ? 'fa-check' : 'fa-ban'} mr-xs"></i>
@@ -316,6 +323,7 @@
 
 
 </section>
+
 
 <!-- Vendor -->
 <script src="/client/auth/assets/vendor/jquery/jquery.js"></script>

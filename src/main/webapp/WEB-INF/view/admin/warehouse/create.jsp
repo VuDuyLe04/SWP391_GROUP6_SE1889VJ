@@ -144,6 +144,46 @@
     function cancelAction() {
         window.location.href = "/fetch-all-warehouse";
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector("form").addEventListener("submit", function (event) {
+            let isValid = true;
+
+            // Lấy giá trị của các input
+            let name = document.querySelector("input[name='name']").value.trim();
+            let store = document.querySelector("select[name='id']").value;
+
+            // Xóa thông báo lỗi cũ
+            document.querySelectorAll(".error-message").forEach(e => e.remove());
+
+            // Kiểm tra tên khu vực
+            if (name === "") {
+                showError("input[name='name']", "Tên khu vực không được để trống!");
+                isValid = false;
+            }
+
+            // Kiểm tra chọn cửa hàng
+            if (store === "") {
+                showError("select[name='id']", "Vui lòng chọn cửa hàng!");
+                isValid = false;
+            }
+
+            // Nếu có lỗi thì ngăn form submit
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        // Hàm hiển thị lỗi
+        function showError(selector, message) {
+            let input = document.querySelector(selector);
+            let errorDiv = document.createElement("div");
+            errorDiv.className = "error-message text-danger";
+            errorDiv.innerText = message;
+            input.parentNode.appendChild(errorDiv);
+        }
+    });
+
 </script>
 
 

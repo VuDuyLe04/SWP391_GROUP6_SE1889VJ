@@ -11,6 +11,7 @@ import com.se1889_jv.swp391.swpstart.service.IService.IWareHouseService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class WareHouseService implements IWareHouseService {
     private final UserRepository userRepository;
 
     @Override
-    public void createWareHouse(WareHouseCreationRequest request) {
+    public void createWareHouse(@Valid WareHouseCreationRequest request) {
         Store store = storeRepository.findById(request.getId()).orElse(null);
         WareHouse wareHouse = WareHouse.builder()
                 .name(request.getName())
