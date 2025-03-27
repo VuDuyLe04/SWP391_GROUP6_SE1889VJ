@@ -115,17 +115,25 @@ public class PaymentService {
                 if (transactionPayment != null) {
                     String content = transactionPayment.getContent();
                     String[] strings = content.split("\\.");
-                    String id = "";
+                    String id1 = "";
                     for (String string : strings) {
                         if (string.contains("ricechicken")){
-                            id = string;
+                            id1 = string;
+                        }
+                    }
+                    String[] strings1 = id1.split(" ");
+                    String id2 = "";
+                    for (String string : strings1) {
+                        if (string.contains("ricechicken")){
+                            id2 = string;
                         }
                     }
 
-                    id = id.replaceAll("ricechicken", "").trim();
+                    id2 = id2.replaceAll("ricechicken", "").trim();
+
 
                     // Check if id is not empty or null
-                    if (id.isEmpty() || id.equals("")) {
+                    if (id2.isEmpty() || id2.equals("")) {
                         transactionPayment.setTransactionStatus(TransactionStatus.FAILURE);
 
                         transactionPaymentRepository.save(transactionPayment);
@@ -136,7 +144,7 @@ public class PaymentService {
 
                     try {
                         // Parse the userId and find the user
-                        long userId = Long.parseLong(id);
+                        long userId = Long.parseLong(id2);
                         User user = userService.findById(userId);
 
                         if (user != null) {
@@ -156,7 +164,7 @@ public class PaymentService {
                         // Handle the case where the id is not a valid number
                         transactionPayment.setTransactionStatus(TransactionStatus.FAILURE);
                         transactionPaymentRepository.save(transactionPayment);
-                        System.out.println("Invalid userId format: " + id);
+                        System.out.println("Invalid userId format: " + id2);
                     }
 
 

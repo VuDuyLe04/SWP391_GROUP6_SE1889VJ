@@ -41,7 +41,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSp
 
     boolean existsCustomerByNameAndPhone(String name, String phone);
 
-    Page<Customer> findAllByPhoneContainingAndStore(String phone,Store store, Pageable pageable);
+    Page<Customer> findAllByPhoneContainingAndCreatedBy(String phone,String createdBy, Pageable pageable);
 
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END " +
             "FROM Customer c " +

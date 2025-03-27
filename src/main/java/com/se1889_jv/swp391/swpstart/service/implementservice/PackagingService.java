@@ -69,6 +69,7 @@ public class PackagingService implements IPackagingService {
             pNew.setPackageType(packaging.getPackageType());
             pNew.setLiftCost(packaging.getLiftCost());
             pNew.setStorage(packaging.isStorage());
+            pNew.setQuantityPerPackage(packaging.getQuantityPerPackage());
             packagingRepository.save(pNew);
         }
     }

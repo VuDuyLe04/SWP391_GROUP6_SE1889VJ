@@ -31,8 +31,8 @@
                             Chọn loại
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="transactionDropdown">
-                            <li><a class="dropdown-item" href="http://localhost:8080/saleproduct/${storeId}" data-value="banhang">Bán hàng</a></li>
-                            <li><a class="dropdown-item" href="http://localhost:8080/importproduct/${storeId}" data-value="nhaphang">Nhập hàng</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:8080/saleproduct" data-value="banhang">Bán hàng</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:8080/importproduct" data-value="nhaphang">Nhập hàng</a></li>
                         </ul>
                     </div>
                     <div class="col-md-8 d-flex">
@@ -58,7 +58,8 @@
             <div class="bill-items-con">
                 <div class="row fw-bold bg-light py-2 border-bottom">
                     <div class="col-2">Sản phẩm</div>
-                    <div class="col-4 text-center">Số lượng & Giá</div>
+                    <div class="col-2 text-center">Số lượng</div>
+                    <div class="col-2 text-center">Gía theo cân</div>
                     <div class="col-2 text-center">Giá thực</div>
                     <div class="col-3 text-center">Tổng</div>
                     <div class="col-1 text-center">Xóa</div>
@@ -183,7 +184,7 @@
                         <span class="text-muted">10:55 01/10/2022</span>
                     </div>
                     <div class="summary-row">
-                        <span class="fw-bold">Khách cần trả</span>
+                        <span class="fw-bold">Tổng tiền hóa đơn</span>
                         <span class="fw-bold text-success total-need-pay">0đ</span>
                     </div>
                     <div class="mb-3 position-relative">
@@ -287,9 +288,9 @@
         let currentPath = window.location.pathname;
         let transactionDropdown = document.getElementById("transactionDropdown");
 
-        if (currentPath.includes("/saleproduct/")) {
+        if (currentPath.includes("/saleproduct")) {
             transactionDropdown.textContent = "Bán hàng";
-        } else if (currentPath.includes("/importproduct/")) {
+        } else if (currentPath.includes("/importproduct")) {
             transactionDropdown.textContent = "Nhập hàng";
         }
     });

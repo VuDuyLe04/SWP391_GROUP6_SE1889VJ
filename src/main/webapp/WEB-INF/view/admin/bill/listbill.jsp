@@ -657,9 +657,16 @@
                                 <tr>
                                     <td>${status.index + 1}</td>  <!-- STT --><!-- Bill ID -->
                                     <td >${bill.store.name}</td>  <!-- Store Name -->
-                                    <td >${bill.customer.name}
-                                           (${bill.customer.phone})
-                                    </td>  <!-- Customer Name -->
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${bill.customer != null}">
+                                                ${bill.customer.name} (${bill.customer.phone})
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span style="color: red;">Không có khách hàng</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                     <td >${bill.formattedDate}</td>
 
                                     <td >   <fmt:setLocale value="vi_VN"/>
@@ -822,18 +829,18 @@
 
                     response.billDetails.forEach(function (detail) {
                         $("#billDetails").append(`
-                        <tr>
-                            <td>${detail.nameProduct || "N/A"}</td>
-                            <td>${detail.quantity || 0}</td>
-                            <td>${detail.actualSellPrice || 0}</td>
-                            <td>${detail.listedPrice || 0}</td>
-                            <td>${detail.totalProductPrice || 0}</td>
-                            <td>${detail.packagingName || "N/A"}</td>
-                            <td>${detail.quantityPerPackage || "N/A"}</td>
-                            <td>${detail.isLift ? "Yes" : "No"}</td>
-                            <td>${detail.liftPrice != null ? detail.liftPrice : 0}</td>
-                            <td>${detail.totalLiftProductPrice != null ? detail.totalLiftProductPrice : 0}</td>
-                        </tr>
+                        <%--<tr>--%>
+                        <%--    <td>${detail.nameProduct || "N/A"}</td>--%>
+                        <%--    <td>${detail.quantity || 0}</td>--%>
+                        <%--    <td>${detail.actualSellPrice || 0}</td>--%>
+                        <%--    <td>${detail.listedPrice || 0}</td>--%>
+                        <%--    <td>${detail.totalProductPrice || 0}</td>--%>
+                        <%--    <td>${detail.packagingName || "N/A"}</td>--%>
+                        <%--    <td>${detail.quantityPerPackage || "N/A"}</td>--%>
+                        <%--    <td>${detail.isLift ? "Yes" : "No"}</td>--%>
+                        <%--    <td>${detail.liftPrice != null ? detail.liftPrice : 0}</td>--%>
+                        <%--    <td>${detail.totalLiftProductPrice != null ? detail.totalLiftProductPrice : 0}</td>--%>
+                        <%--</tr>--%>
                     `);
                     });
 

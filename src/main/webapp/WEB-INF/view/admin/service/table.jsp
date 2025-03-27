@@ -88,7 +88,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <section class="panel">
-                        <header class="panel-heading">
+                        <header class="panel-heading" style=" background-color: #0088cc;">
 
                             <div class="panel-actions">
                                 <a href="#" class="panel-action panel-action-toggle" data-panel-toggle></a>
@@ -172,7 +172,7 @@
                                     <tbody>
                                     <c:forEach items="${listService}" var="service" varStatus="status">
                                         <tr>
-                                            <td>${status.index + 1}</td>
+                                            <td>${servicePage.number * servicePage.size + status.index + 1}</td>
                                             <td class="text-center">${service.name}</td>
                                             <td class="text-center">${service.durationMonths} tháng</td>
                                             <td class="text-center">${service.price}</td>
@@ -193,41 +193,29 @@
                                     </tbody>
 
                                 </table>
-                                <div class="pagination-container text-center mt-3">
-                                    <ul class="pagination justify-content-center">
-                                        <c:if test="${currentPage > 0}">
-                                            <li class="page-item">
-                                                <a class="page-link"
-                                                   href="?page=${currentPage - 1}&durationMonths=${param.durationMonths}&status=${param.status}&name=${param.name}"
-                                                   aria-label="Previous">
-                                                    <span aria-hidden="true">&laquo; Trước</span>
-                                                </a>
-                                            </li>
-                                        </c:if>
+                                <c:if test="${totalPages > 0}">
+                                    <c:set var="c" value="${currentPage}"></c:set>
+                                    <ul class="pagination" style="display: flex; justify-content: center;">
+                                        <li class="page-item ${c == 0 ? 'disabled' : ''}">
+                                            <a class="page-link" href="/service/table?page=${c == 0 ? 0 : (c - 1)}&durationMonths=${param.durationMonths}&status=${param.status}&name=${param.name}">Trước</a>
+                                        </li>
 
-                                        <c:if test="${totalPages > 0}">
-                                            <c:forEach var="i" begin="0" end="${totalPages - 1}">
-                                                <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                    <a class="page-link"
-                                                       href="/service/table?page=${i}&durationMonths=${param.durationMonths}&status=${param.status}&name=${param.name}">
-                                                            ${i + 1}
-                                                    </a>
+                                        <c:forEach begin="0" end="${totalPages - 1}" var="i">
+                                            <c:if test="${i >= c - 1 && i <= c + 1}">
+                                                <li class="page-item ${c == i ? 'active' : ''}">
+                                                    <a class="page-link" href="/service/table?page=${i}&durationMonths=${param.durationMonths != null ? param.durationMonths : ''}&status=${param.status != null ? param.status : 'ALL'}&name=${param.name != null ? param.name : ''}">${i + 1}</a>
                                                 </li>
-                                            </c:forEach>
-                                        </c:if>
+                                            </c:if>
+                                            <c:if test="${i == c - 2 || i == c + 2}">
+                                                <li><span>...</span></li>
+                                            </c:if>
+                                        </c:forEach>
 
-                                        <c:if test="${currentPage < totalPages - 1}">
-                                            <li class="page-item">
-                                                <a class="page-link"
-                                                   href="?page=${currentPage + 1}&durationMonths=${param.durationMonths}&status=${param.status}&name=${param.name}"
-                                                   aria-label="Next">
-                                                    <span aria-hidden="true">Sau &raquo;</span>
-                                                </a>
-                                            </li>
-                                        </c:if>
-
+                                        <li class="page-item ${c == totalPages - 1 ? 'disabled' : ''}">
+                                            <a class="page-link" href="/service/table?page=${c == totalPages - 1 ? totalPages - 1 : (c + 1)}&durationMonths=${param.durationMonths}&status=${param.status}&name=${param.name}">Sau</a>
+                                        </li>
                                     </ul>
-                                </div>
+                                </c:if>
                             </div>
                         </div>
 

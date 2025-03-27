@@ -304,13 +304,30 @@
                                             <button type="submit" class="btn btn-primary"><i class="fa fa-filter mr-xs"></i>Lọc</button>
                                         </c:if>
                                         <c:if test="${sessionScope.user.role.id == 2}">
-                                            <select id="storeId" name="storeId" class="form-control" onchange="filterByStore(this.value)">
-                                            <option value="-1" ${storeId == -1 ? 'selected' : ''}>Tất cả cửa hàng</option>
-                                            <c:forEach items="${stores}" var="s">
-                                                <option value="${s.id}" ${storeId == s.id ? 'selected' : ''}>${s.name}</option>
-                                            </c:forEach>
-                                        </select>
 
+
+                                            <div class="form-group mr-md">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
+                                                    <select id="storeId" name="storeId" class="form-control" onchange="filterByStore(this.value)">
+                                                        <option value="-1" ${storeId == -1 ? 'selected' : ''}>Tất cả cửa hàng</option>
+                                                        <c:forEach items="${stores}" var="s">
+                                                            <option value="${s.id}" ${storeId == s.id ? 'selected' : ''}>${s.name}</option>
+                                                        </c:forEach>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mr-md">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
+                                                    <select id="status" name="status" class="form-control" onchange="filterByStatus(this.value)">
+                                                        <option ${status == -1 ? "selected" : ""} value="-1">Các trạng thái</option>
+                                                        <option ${status == 1 ? "selected" : ""} value="1">Hoạt động</option>
+                                                        <option ${status == 0 ? "selected" : ""} value="0">Bị cấm</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </c:if>
 
                                     </form>
@@ -332,6 +349,28 @@
                                         </c:if>
 
                                     </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 8px;">
+                                <div style="display: flex; align-items: center;">
+                                    <i class="fa fa-users mr-xs" style="color: #0088cc; font-size: 11px;"></i>
+
+                                    <c:if test="${sessionScope.user.role.id == 1}">
+                                        <span style="font-weight: 400; color: #666; font-size: 11px;">Tổng số:
+                                        <span style="color: #0088cc; font-weight: 500;">${userPage.totalElements}</span> người dùng
+                                    </span>
+                                    </c:if>
+                                    <c:if test="${sessionScope.user.role.id == 2}">
+                                        <span style="font-weight: 400; color: #666; font-size: 11px;">Tổng số:
+                                        <span style="color: #0088cc; font-weight: 500;">${userPage.totalElements}</span> nhân viên
+                                    </span>
+                                    </c:if>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <i class="fa fa-file mr-xs" style="color: #0088cc; font-size: 11px;"></i>
+                                    <span style="font-weight: 400; color: #666; font-size: 11px;">Trang: 
+                                        <span style="color: #0088cc; font-weight: 500;">${userPage.number + 1}/${userPage.totalPages}</span>
+                                    </span>
                                 </div>
                             </div>
                             <c:if test="${emptyList != null}">
@@ -360,7 +399,7 @@
                                     <c:if test="${userPage != null }">
                                     <c:forEach var="u" items="${userPage.content}" varStatus="status">
                                         <tr>
-                                            <td>${status.index + 1}</td>
+                                            <td>${userPage.number * userPage.size + status.index + 1}</td>
                                             <td><strong>${u.name}</strong></td>
                                             <td>${u.phone}
                                                 </td>
@@ -575,6 +614,16 @@
         const url = new URL(window.location.href);//lay doi tuong url hien tai
         url.searchParams.delete('page');
         url.searchParams.set('storeId', value); // Luôn cập nhật giá trị status
+        url.searchParams.delete('input'); // Nếu input rỗng/null thì xóa khỏi URL
+        url.searchParams.delete('page'); // Nếu input rỗng/null thì xóa khỏi URL
+
+
+        window.location.href = url.toString(); // Điều hướng đến URL mới
+    }
+    function filterByStatus(value) {
+        const url = new URL(window.location.href);//lay doi tuong url hien tai
+        url.searchParams.delete('page');
+        url.searchParams.set('status', value); // Luôn cập nhật giá trị status
         url.searchParams.delete('input'); // Nếu input rỗng/null thì xóa khỏi URL
         url.searchParams.delete('page'); // Nếu input rỗng/null thì xóa khỏi URL
 

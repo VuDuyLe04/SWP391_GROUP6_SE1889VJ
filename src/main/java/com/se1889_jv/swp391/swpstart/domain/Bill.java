@@ -40,7 +40,7 @@ public class Bill {
     private double totalLiftPrice;
     private String note;
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = true)
     @JsonBackReference
     private Customer customer;
 

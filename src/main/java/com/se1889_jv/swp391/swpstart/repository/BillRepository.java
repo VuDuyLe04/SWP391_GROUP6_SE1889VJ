@@ -17,13 +17,16 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     Page<Bill> findAllByStoreIn(List<Store> store, Pageable pageable);
 
     @Query("SELECT b FROM Bill b " +
+            "LEFT JOIN b.customer c " +
             "WHERE (:startDate IS NULL OR b.createdAt >= :startDate) " +
             "AND (:endDate IS NULL OR b.createdAt <= :endDate) " +
             "AND (:minAmount IS NULL OR b.totalBillPrice >= :minAmount) " +
             "AND (:maxAmount IS NULL OR b.totalBillPrice <= :maxAmount) " +
             "AND (:input IS NULL OR " +
-            "LOWER(COALESCE(b.customer.phone, '')) LIKE LOWER(CONCAT('%', :input, '%'))) " +
+            "(c IS NOT NULL AND LOWER(c.phone) LIKE LOWER(CONCAT('%', :input, '%'))) " +
+            "OR (:input IS NOT NULL AND c IS NULL)) " +
             "AND (:storeId IS NULL OR b.store.id = :storeId)")
+
     Page<Bill> filterBills(
             @Param("startDate") Instant startDate,
             @Param("endDate") Instant endDate,
@@ -33,6 +36,7 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             @Param("storeId") Long storeId,
             Pageable pageable
     );
+
 
 
 }

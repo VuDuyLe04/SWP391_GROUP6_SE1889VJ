@@ -54,12 +54,12 @@ public class BillController {
     @GetMapping("/bill/table")
     public String showListBill(
             @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String startDateStr,
-            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  String endDateStr,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String endDateStr,
             @RequestParam(value = "minAmount", required = false) Double minAmount,
             @RequestParam(value = "maxAmount", required = false) Double maxAmount,
             @RequestParam(value = "status", required = false, defaultValue = "ALL") String status,
             @RequestParam(value = "input", required = false) String input,
-            @RequestParam(value = "storeId", required = false,defaultValue = "0") String storeId,
+            @RequestParam(value = "storeId", required = false, defaultValue = "0") String storeId,
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             Model model
     ) {
@@ -71,35 +71,38 @@ public class BillController {
         Instant endDate = null;
         Long storeID = ("0").equals(storeId) ? null : Long.parseLong(storeId);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneId.systemDefault());
-
         if (startDateStr != null && !startDateStr.isEmpty()) {
-            startDate = Instant.from(formatter.parse(startDateStr));
+            startDate = LocalDate.parse(startDateStr, DateTimeFormatter.ISO_DATE)
+                    .atStartOfDay(ZoneId.systemDefault()).toInstant();
         }
 
         if (endDateStr != null && !endDateStr.isEmpty()) {
-            endDate = Instant.from(formatter.parse(endDateStr));
+            endDate = LocalDate.parse(endDateStr, DateTimeFormatter.ISO_DATE)
+                    .atTime(23, 59, 59)
+                    .atZone(ZoneId.systemDefault())
+                    .toInstant();
         }
-        if(input != null && !input.isEmpty()) {
+
+        if (input != null && !input.isEmpty()) {
             input = input.trim();
         }
-        Page<Bill> list = billService.filterBills(startDate,endDate,minAmount,maxAmount,input,storeID,pageable);
-        if (list.hasContent()) {
-            model.addAttribute("bills", list);
 
-        } else {
-            model.addAttribute("emptyList", "Không có hóa đơn  nào được tìm thấy!");
-        }
-        model.addAttribute("startDate", startDate);
-        model.addAttribute("endDate", endDate);
+        Page<Bill> list = billService.filterBills(startDate, endDate, minAmount, maxAmount, input, storeID, pageable);
+
+        model.addAttribute("bills", list.hasContent() ? list : null);
+        model.addAttribute("emptyList", list.hasContent() ? null : "Không có hóa đơn nào được tìm thấy!");
+        model.addAttribute("startDate", startDateStr);
+        model.addAttribute("endDate", endDateStr);
         model.addAttribute("minAmount", minAmount);
         model.addAttribute("maxAmount", maxAmount);
-        model.addAttribute("stores", Utility.getListStoreOfOwner(user));
+        model.addAttribute("stores", stores);
         model.addAttribute("status", status);
         model.addAttribute("input", input);
-        model.addAttribute("storeId", storeID);
+        model.addAttribute("storeId", storeId);
+
         return "admin/bill/listbill";
     }
+
 
     @GetMapping("/bills/details/{id}")
      public String getBillDetail(
@@ -196,23 +199,23 @@ public class BillController {
     }
 
 
-    @GetMapping("/saleproduct/{id}")
-    public String sale(@PathVariable(name = "id") long storeId,HttpServletRequest request, Model model){
+    @GetMapping("/saleproduct")
+    public String sale(HttpServletRequest request, Model model){
         HttpSession session = request.getSession(false);
 
         User user = (User) session.getAttribute("user");
-
+        Store storeInSession = Utility.getStoreInSession();
         if( user != null){
-            Store store = storeService.findStoreById(storeId);
+            Store store = this.storeService.findStoreById(storeInSession.getId());
             if(store != null){
                 List<List<Packaging>> packagingList = new ArrayList<>();
                 List<WareHouse> wareHouseList = new ArrayList<>();
-                List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
+//                List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
                 model.addAttribute("warehouse", wareHouseList);
                 model.addAttribute("packagingList", packagingList);
                 model.addAttribute("user", user);
-                model.addAttribute("storeId", storeId);
-                model.addAttribute("customerList", customerList);
+                model.addAttribute("storeId", store.getId());
+//                model.addAttribute("customerList", customerList);
 
             } else {
                 return "redirect:/access-deny";
@@ -222,7 +225,7 @@ public class BillController {
         }
 
 
-        Store store = this.storeService.findStoreById(storeId);
+        Store store = this.storeService.findStoreById(storeInSession.getId());
 
         UserStore userStore = this.userStoreService.findUserStoreByUserAndStore(user,store );
 
@@ -232,23 +235,23 @@ public class BillController {
         session.setAttribute("store",store);
         return "admin/sale/saleproduct";
     }
-    @GetMapping("/importproduct/{id}")
-    public String importProduct(@PathVariable(name = "id") long storeId,HttpServletRequest request, Model model){
+    @GetMapping("/importproduct")
+    public String importProduct(HttpServletRequest request, Model model){
         HttpSession session = request.getSession(false);
 
         User user = (User) session.getAttribute("user");
-
+        Store storeInSession = Utility.getStoreInSession();
         if( user != null){
-            Store store = storeService.findStoreById(storeId);
+            Store store = this.storeService.findStoreById(storeInSession.getId());
             if(store != null){
                 List<List<Packaging>> packagingList = new ArrayList<>();
                 List<WareHouse> wareHouseList = new ArrayList<>();
-                List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
+//                List<Customer> customerList = customerService.getCustomersByStoreId(storeId);
                 model.addAttribute("warehouse", wareHouseList);
                 model.addAttribute("packagingList", packagingList);
                 model.addAttribute("user", user);
-                model.addAttribute("storeId", storeId);
-                model.addAttribute("customerList", customerList);
+                model.addAttribute("storeId", store.getId());
+//                model.addAttribute("customerList", customerList);
 
             } else {
                 return "redirect:/access-deny";
@@ -258,7 +261,7 @@ public class BillController {
         }
 
 
-        Store store = this.storeService.findStoreById(storeId);
+        Store store = this.storeService.findStoreById(storeInSession.getId());
 
         UserStore userStore = this.userStoreService.findUserStoreByUserAndStore(user,store );
 

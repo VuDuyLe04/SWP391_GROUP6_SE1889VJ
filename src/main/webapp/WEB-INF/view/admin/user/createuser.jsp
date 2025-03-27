@@ -465,15 +465,16 @@
             }
         }
     }
-
     function checkPassword() {
-        const password = document.getElementById("password").value;
+        const password = document.getElementById("password").value.trim();
         const passError = document.getElementById("passError");
         const button = document.getElementById("submitBtn");
-        const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/;
+
+        // Regex kiểm tra mật khẩu (8-64 ký tự, chữ hoa, chữ thường, số, ký tự đặc biệt)
+        const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,64}$/;
 
         if (password.length > 0 && !passRegex.test(password)) {
-            passError.textContent = "Mật khẩu không hợp lệ. Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!";
+            passError.textContent = "Mật khẩu phải có 8-64 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!";
             button.disabled = true;
         } else {
             passError.textContent = "";
@@ -482,35 +483,37 @@
     }
 
     function checkRePassword() {
-        const password = document.getElementById("password").value;
-        const repassword = document.getElementById("repassword").value;
+        const password = document.getElementById("password").value.trim();
+        const repassword = document.getElementById("repassword").value.trim();
         const repassError = document.getElementById("repassError");
         const button = document.getElementById("submitBtn");
 
         if (repassword.length > 0 && password !== repassword) {
-            repassError.textContent = "Mật khẩu không khớp. Xin vui lòng nhập lại!";
+            repassError.textContent = "Mật khẩu không khớp. Vui lòng nhập lại!";
             button.disabled = true;
         } else {
             repassError.textContent = "";
             button.disabled = false;
         }
     }
+
     function checkName() {
         const name = document.getElementById("name").value.trim();
         const nameError = document.getElementById("nameError");
         const button = document.getElementById("submitBtn");
 
-        // Biểu thức chính quy kiểm tra tên hợp lệ
-        const nameRegex = /^[A-Za-zÀ-Ỹà-ỹ\s]+$/;
+        // Regex kiểm tra tên hợp lệ (cho phép dấu gạch ngang và nháy đơn)
+        const nameRegex = /^[A-Za-zÀ-Ỹà-ỹ\s'-]+$/;
 
-        if (name.length > 0 && !nameRegex.test(name.trim())) {
-            nameError.textContent = "Tên không đuợc chứa số và các kí tự đặc biệt! ";
+        if (name.length > 0 && !nameRegex.test(name)) {
+            nameError.textContent = "Tên không được chứa số hoặc ký tự đặc biệt (trừ '-' và dấu nháy đơn)!";
             button.disabled = true;
         } else {
             nameError.textContent = "";
             button.disabled = false;
         }
     }
+
     document.getElementById("submitBtn").addEventListener("click", function(event) {
         let isValid = true;
 

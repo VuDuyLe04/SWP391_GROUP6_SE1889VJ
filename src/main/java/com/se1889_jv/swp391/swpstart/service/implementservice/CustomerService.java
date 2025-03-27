@@ -1,5 +1,6 @@
 package com.se1889_jv.swp391.swpstart.service.implementservice;
 
+
 import com.se1889_jv.swp391.swpstart.domain.Customer;
 import com.se1889_jv.swp391.swpstart.domain.Store;
 import com.se1889_jv.swp391.swpstart.domain.User;
@@ -12,6 +13,7 @@ import com.se1889_jv.swp391.swpstart.exception.ErrorException;
 import com.se1889_jv.swp391.swpstart.repository.CustomerRepository;
 import com.se1889_jv.swp391.swpstart.repository.DebtReceiptRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.ICustomerService;
+
 import com.se1889_jv.swp391.swpstart.service.specification.CustomerSpecs;
 import com.se1889_jv.swp391.swpstart.service.specification.ServiceSpecs;
 import com.se1889_jv.swp391.swpstart.util.Utility;
@@ -27,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -58,10 +59,10 @@ public class CustomerService implements ICustomerService {
         }
         return null;
     }
+
     @Override
     public void updateCustomer(Customer customer) {
         Customer customer1 = getCustomerById(customer.getId());
-
         if(customer1 != null){
             customer1.setName(customer.getName());
             customer1.setPhone(customer.getPhone());
@@ -149,16 +150,14 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public boolean existsCustomerByNameAndPhone(String infor) {
-        String [] part  = infor.split(" - ");
+        String[] part = infor.split(" - ");
         String name = part[0].trim();
         String phone = part[1].trim();
-        return customerRepository.existsCustomerByNameAndPhone(name,phone);
+        return customerRepository.existsCustomerByNameAndPhone(name, phone);
     }
 
     @Override
     public Page<Customer> getAllCustomerOfOwner(String createdBy, Pageable pageable, CustomerCriteriaDTO customerCriteriaDTO) {
-
-        // When nameOrPhone is not provided, use the simpler method
         if (customerCriteriaDTO.getName() == null) {
             return this.customerRepository.findAllByCreatedBy(createdBy, pageable);
         }
@@ -168,20 +167,27 @@ public class CustomerService implements ICustomerService {
             Specification<Customer> currentSpecs = CustomerSpecs.nameOrPhoneLike(customerCriteriaDTO.getName().get());
             combined = combined.and(currentSpecs);
         }
-
-        // Pass the specification along with createdBy and pageable
         return this.customerRepository.findAllByCreatedBy(combined, createdBy, pageable);
     }
 
     @Override
     public List<CustomerResponse> recomendedCustomer(String phone, Pageable pageable) {
+        User user = Utility.getUserInSession();
+        String createdBy = "";
+        if (user.getRole().getName().equals("OWNER")) {
+            createdBy = Long.toString(user.getId());
+        } else {
+            createdBy = user.getCreatedBy();
+        }
+
         Store store = Utility.getStoreInSession();
-        List<Customer> pageCustomer = customerRepository.findAllByPhoneContainingAndStore(phone, store, pageable).getContent();
+        List<Customer> pageCustomer = customerRepository.findAllByPhoneContainingAndCreatedBy(phone, createdBy, pageable).getContent();
         List<CustomerResponse> customerResponses = pageCustomer.stream()
                 .map(customer -> modelMapper.map(customer, CustomerResponse.class))
                 .collect(Collectors.toList());
         return customerResponses;
     }
+
     @Transactional
     public void updateBalance(Customer customer, double balance) {
         customer.setBalance(balance);
