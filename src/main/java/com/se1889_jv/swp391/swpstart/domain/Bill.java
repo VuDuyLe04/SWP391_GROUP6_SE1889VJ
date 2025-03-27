@@ -39,6 +39,7 @@ public class Bill {
     private double totalBillPrice;
     private double totalLiftPrice;
     private String note;
+    private Boolean isLift;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     @JsonBackReference

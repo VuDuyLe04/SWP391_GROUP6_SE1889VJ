@@ -160,6 +160,8 @@ function getBillDetailsAndCalculate() {
     let totalBillElement = document.querySelector(".total-need-pay");
     if (totalBillElement) {
         totalBillElement.textContent = totalBill.toLocaleString() + "đ";
+        document.getElementById("total-bill").textContent = totalBill.toLocaleString() + "d";
+
     }
 }
 
@@ -182,7 +184,8 @@ function removeBillItem(productId) {
         totalBillElement.textContent =  "0đ";
     }
     renderBillDetails();
-    resetPaymentOptions()
+    resetPaymentOptions();
+    getBillDetailsAndCalculate()
 }
 let customerBalance = 0;
 document.addEventListener("DOMContentLoaded", function () {
@@ -382,6 +385,8 @@ function getBillRequest() {
     const totalNeedPayInput = document.getElementById("amountDue");
     const actualPayInput = document.getElementById("customerPayment");
     const quantityIn = document.getElementById("quantity-in");
+    const liftInput = document.getElementById("bocVacCheckbox");
+
     return {
         description: descriptionInput ? descriptionInput.value.trim() : "",
         customerInfor: customerInput ? customerInput.value.trim() : "",
@@ -390,7 +395,8 @@ function getBillRequest() {
         totalNeedPay: totalNeedPayInput ? parseInt(totalNeedPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
         actualPay: actualPayInput ? parseInt(actualPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
         // loi o day
-        quantity: parseFloat(quantityIn.value)
+        quantity: parseFloat(quantityIn.value),
+        liftInput: liftInput.checked
     };
 }
 function showToast(message, isSuccess = true) {
@@ -411,6 +417,8 @@ document.getElementById('create-bill').addEventListener('click', function (){
     const typeSelect = document.getElementById("paymentOptions");
     const totalNeedPayInput = document.getElementById("amountDue");
     const actualPayInput = document.getElementById("customerPayment");
+    const liftInput = document.getElementById("bocVacCheckbox");
+
     const requestData = {
         description: descriptionInput ? descriptionInput.value.trim() : "",
         customerInfor: customerInput ? customerInput.value.trim() : "",
@@ -419,6 +427,7 @@ document.getElementById('create-bill').addEventListener('click', function (){
         totalNeedPay: totalNeedPayInput ? parseInt(totalNeedPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
         actualPay: actualPayInput ? parseInt(actualPayInput.value.replace(/[^\d]/g, ""), 10) || 0 : 0,
         billDetailsList: billDetailsList,
+        liftInput: liftInput.checked
     };
 
     console.log("Dữ liệu gửi đi:", requestData);
