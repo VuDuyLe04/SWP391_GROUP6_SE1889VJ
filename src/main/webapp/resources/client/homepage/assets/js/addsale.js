@@ -37,9 +37,9 @@ function restart() {
 
         if (customerBalance !== 0) {
             if (customerBalance < 0) {
-                paymentOptions.innerHTML += `<option value="all">Trả tất cả</option>`;
-            } else {
                 paymentOptions.innerHTML += `<option value="deduct">Trả trừ nợ</option>`;
+            } else {
+                paymentOptions.innerHTML += `<option value="all">Trả tất cả</option>`;
             }
         }
 
@@ -312,7 +312,7 @@ function getBillDetailsAndCalculate() {
 
     // Cập nhật vào giao diện
     document.querySelector(".total-need-pay").textContent = totalPrice.toLocaleString() + "đ";
-
+    document.getElementById("total-bill").textContent = totalPrice.toLocaleString() + "d";
     return {
         billDetails,
         totalPrice,

@@ -16,7 +16,6 @@ public class BillDetailResponse {
     private double listedPrice;
     private double actualSellPrice;
     private double liftPrice;
-    private boolean lift;
     private String nameProduct;
     private double totalLiftProductPrice;
     private double totalProductPrice;
@@ -32,7 +31,6 @@ public class BillDetailResponse {
         this.listedPrice = billDetail.getListedPrice();
         this.actualSellPrice = billDetail.getActualSellPrice();
         this.liftPrice = billDetail.getLiftPrice();
-        this.lift = billDetail.isLift();
         this.nameProduct = billDetail.getNameProduct();
         this.totalLiftProductPrice = billDetail.getTotalLiftProductPrice();
         this.totalProductPrice = billDetail.getTotalProductPrice();
