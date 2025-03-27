@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -118,6 +119,12 @@ public class BillService implements IBillService {
             } else {
                 b.setInDebt(0);
             }
+            b.setIsLift(request.isLiftInput());
+            if(request.isLiftInput()){
+                b.setTotalLiftPrice(getTotalLiftPrice(billId));
+            } else {
+                b.setTotalLiftPrice(0);
+            }
             b.setBillType(BillTypeEnum.EXPORT);
             return billRepository.save(b);
         } else {
@@ -140,16 +147,18 @@ public class BillService implements IBillService {
             Customer cus = customerService.getCustomerByNameAndPhone(request.getCustomerInfor());
             b.setCustomer(cus);
         }
+        b.setIsLift(request.isLiftInput());
+
         b.setBillType(BillTypeEnum.IMPORT);
         b.setStore(Utility.getStoreInSession());
         return billRepository.save(b);
     }
 
+
     @Override
-    public Page<Bill> filterBills(Instant startDate, Instant endDate, Double minAmount, Double maxAmount, String input,Long storeId, Pageable pageable) {
-        return billRepository.filterBills(startDate, endDate, minAmount, maxAmount, input,storeId, pageable);
+    public Page<Bill> filterBills(Instant startDate, Instant endDate, Double minAmount, Double maxAmount, String input,Long storeId,List<Long> storeIds, BillTypeEnum billType  , Pageable pageable) {
+        return billRepository.filterBills(startDate, endDate, minAmount, maxAmount, input,storeId,storeIds,billType, pageable);
     }
-    // sai logic ở đây về quantity
     public Bill updateImportBill(Long billId, ImportRequest request) {
         Optional<Bill> bill = billRepository.findById(billId);
         if (bill.isPresent()) {
@@ -165,6 +174,12 @@ public class BillService implements IBillService {
             } else {
                 b.setInDebt(0);
             }
+            // gia boc vac import 1 can la 50đ
+            if (request.isLiftInput()) {
+                b.setTotalLiftPrice(getTotalQuantityImport(billId)*50);
+            } else {
+                b.setTotalLiftPrice(0);
+            }
             return billRepository.save(b);
         } else {
             throw new AppException(ErrorException.BILL_NOT_FOUND);
@@ -175,5 +190,10 @@ public class BillService implements IBillService {
     public Bill findBillById(Long id) {
         return billRepository.findById(id).orElseThrow(() ->  new AppException(ErrorException.BILL_NOT_FOUND));
     }
-
+    public double getTotalLiftPrice(Long billId){
+        return billDetailRepository.findAllByBillId(billId).stream().map(BillDetail::getTotalLiftProductPrice).reduce(0.0, Double::sum);
+    }
+    public double getTotalQuantityImport(Long billId){
+        return billDetailRepository.findAllByBillId(billId).stream().map(BillDetail::getQuantity).reduce(0.0, Double::sum);
+    }
 }

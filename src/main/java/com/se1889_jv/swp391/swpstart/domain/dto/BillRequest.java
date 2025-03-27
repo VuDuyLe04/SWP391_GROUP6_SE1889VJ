@@ -16,4 +16,5 @@ public class BillRequest implements Serializable {
     private boolean createDebt;
     private Double totalNeedPay;
     private Double actualPay;
+    private boolean liftInput;
  }

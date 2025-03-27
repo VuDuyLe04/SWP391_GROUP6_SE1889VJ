@@ -44,6 +44,11 @@ public abstract class Bill_ {
 	public static volatile SingularAttribute<Bill, Store> store;
 	
 	/**
+	 * @see com.se1889_jv.swp391.swpstart.domain.Bill#isLift
+	 **/
+	public static volatile SingularAttribute<Bill, Boolean> isLift;
+	
+	/**
 	 * @see com.se1889_jv.swp391.swpstart.domain.Bill#createdAt
 	 **/
 	public static volatile SingularAttribute<Bill, Instant> createdAt;
@@ -84,6 +89,7 @@ public abstract class Bill_ {
 	public static final String TOTAL_BILL_PRICE = "totalBillPrice";
 	public static final String BILL_TYPE = "billType";
 	public static final String STORE = "store";
+	public static final String IS_LIFT = "isLift";
 	public static final String CREATED_AT = "createdAt";
 	public static final String TOTAL_LIFT_PRICE = "totalLiftPrice";
 	public static final String CREATED_BY = "createdBy";

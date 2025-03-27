@@ -14,7 +14,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Giao dịch thanh toán </title>
+    <title>Danh sách hóa đơn</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -608,6 +608,15 @@
                                 <input type="number" id="maxAmount" name="maxAmount"
                                        class="form-control" value="${maxAmount}">
                             </div>
+                            <div class="form-group">
+                                <label for="type">Loại hóa đơn  </label>
+                                <select id="type" name="type" class="form-control">
+                                    <option ${type == "ALL" ? "selected" : ""} value="ALL">Tất cả</option>
+                                    <option ${type == "EXPORT" ? "selected" : ""} value="EXPORT">Xuất hàng</option>
+                                    <option ${type == "IMPORT" ? "selected" : ""} value="IMPORT">Nhập hàng</option>
+                                </select>
+                            </div>
+
                             <div class="form-group" style="display: flex; align-items: flex-end;">
                                 <button type="submit" class="btn btn-primary w-100">
                                     <i class="fa fa-filter mr-xs"></i> Lọc
@@ -732,13 +741,13 @@
                         <c:set var="c" value="${bills.number}"></c:set>
                         <ul class="pagination">
                             <li class="page-item ${c==0 ?'disabled':''}">
-                                <a class="page-link" href="table?page=${c==0 ? 0 : (c - 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">Trước</a>
+                                <a class="page-link" href="table?page=${c==0 ? 0 : (c - 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&type=${type}">Trước</a>
                             </li>
 
                             <c:forEach begin="0" end="${bills.totalPages - 1}" var="i">
                                 <c:if test="${i >= c - 1 && i <= c + 1}">
                                     <li class="page-item ${c == i ? 'active' : ''}">
-                                        <a class="page-link" href="table?page=${i}&input=${input != null ? input : ''}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">${i + 1}</a>
+                                        <a class="page-link" href="table?page=${i}&input=${input != null ? input : ''}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&type=${type}">${i + 1}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${i == c - 2 || i == c + 2}">
@@ -747,7 +756,7 @@
                             </c:forEach>
 
                             <li class="page-item ${c == bills.totalPages - 1 ? 'disabled' : ''}">
-                                <a class="page-link" href="table?page=${c == bills.totalPages - 1 ? bills.totalPages - 1 : (c + 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}">Sau</a>
+                                <a class="page-link" href="table?page=${c == bills.totalPages - 1 ? bills.totalPages - 1 : (c + 1)}&input=${input}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}&type=${type}">Sau</a>
                             </li>
                         </ul>
                     </div>
@@ -780,7 +789,7 @@
                         <th>Total</th>
                         <th>Packaging</th>
                         <th>Qty/Package</th>
-                        <th>Lift</th>
+<%--                        <th>Lift</th>--%>
                         <th>Lift Price</th>
                         <th>Total Lift</th>
                     </tr>

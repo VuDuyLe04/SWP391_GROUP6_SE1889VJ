@@ -5,6 +5,7 @@ import com.se1889_jv.swp391.swpstart.domain.*;
 import com.se1889_jv.swp391.swpstart.domain.dto.BillDTO;
 import com.se1889_jv.swp391.swpstart.service.implementservice.*;
 import com.se1889_jv.swp391.swpstart.util.Utility;
+import com.se1889_jv.swp391.swpstart.util.constant.BillTypeEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,7 @@ public class BillController {
             @RequestParam(value = "minAmount", required = false) Double minAmount,
             @RequestParam(value = "maxAmount", required = false) Double maxAmount,
             @RequestParam(value = "status", required = false, defaultValue = "ALL") String status,
+            @RequestParam(value = "type", required = false, defaultValue = "ALL") String type,
             @RequestParam(value = "input", required = false) String input,
             @RequestParam(value = "storeId", required = false, defaultValue = "0") String storeId,
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -71,11 +73,17 @@ public class BillController {
         Instant endDate = null;
         Long storeID = ("0").equals(storeId) ? null : Long.parseLong(storeId);
 
+//        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneId.systemDefault());
+        BillTypeEnum billType = null;
+        billType = "ALL".equals(type) ? null : BillTypeEnum.valueOf(type);
         if (startDateStr != null && !startDateStr.isEmpty()) {
             startDate = LocalDate.parse(startDateStr, DateTimeFormatter.ISO_DATE)
                     .atStartOfDay(ZoneId.systemDefault()).toInstant();
         }
-
+        List<Store> storesList = Utility.getListStoreOfOwner(Utility.getUserInSession());
+        List<Long> storeIds = storesList.stream()
+                .map(Store::getId)
+                .toList();
         if (endDateStr != null && !endDateStr.isEmpty()) {
             endDate = LocalDate.parse(endDateStr, DateTimeFormatter.ISO_DATE)
                     .atTime(23, 59, 59)
@@ -86,11 +94,12 @@ public class BillController {
         if (input != null && !input.isEmpty()) {
             input = input.trim();
         }
-
-        Page<Bill> list = billService.filterBills(startDate, endDate, minAmount, maxAmount, input, storeID, pageable);
-
-        model.addAttribute("bills", list.hasContent() ? list : null);
-        model.addAttribute("emptyList", list.hasContent() ? null : "Không có hóa đơn nào được tìm thấy!");
+        Page<Bill> list = billService.filterBills(startDate,endDate,minAmount,maxAmount,input,storeID,storeIds,billType,pageable);
+        if (list.hasContent()) {
+            model.addAttribute("bills", list);
+        } else {
+            model.addAttribute("emptyList", "Không có hóa đơn  nào được tìm thấy!");
+        }
         model.addAttribute("startDate", startDateStr);
         model.addAttribute("endDate", endDateStr);
         model.addAttribute("minAmount", minAmount);
@@ -98,11 +107,10 @@ public class BillController {
         model.addAttribute("stores", stores);
         model.addAttribute("status", status);
         model.addAttribute("input", input);
-        model.addAttribute("storeId", storeId);
-
+        model.addAttribute("type", type);
+        model.addAttribute("storeId", storeID);
         return "admin/bill/listbill";
     }
-
 
     @GetMapping("/bills/details/{id}")
      public String getBillDetail(
