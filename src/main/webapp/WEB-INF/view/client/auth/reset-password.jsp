@@ -53,7 +53,7 @@
             </div>
             <div class="panel-body">
                 <div class="alert alert-info">
-                    <p class="m-none text-semibold h6">Nhập số điện thoại và chúng tôi sẽ gửi OTP reset mật khẩu!</p>
+                    <p class="m-none text-semibold h6">Nhập số điện thoại và chúng tôi sẽ gửi reset mật khẩu!</p>
                 </div>
 
                 <form method="post" action="/reset/password">

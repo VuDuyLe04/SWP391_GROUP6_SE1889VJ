@@ -15,6 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,6 +26,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.http.HttpHeaders;
+import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.Random;
 
 @Service
@@ -36,6 +39,9 @@ public class SmsService {
     private UserService userService;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private UserRepository userRepository;
 
     private final ObjectMapper objectMapper;
@@ -44,13 +50,13 @@ public class SmsService {
         this.objectMapper = objectMapper;
     }
 
-    public ResponseView sendSms(String phoneNumber) throws Exception {
+    public ResponseView sendSms(String phoneNumber, String password) throws Exception {
         User user = this.userRepository.findByPhone(phoneNumber);
         SendSmsModel smsModel = new SendSmsModel();
         smsModel.setCustomerPhone(phoneNumber);
         smsModel.setSecretKey(SECRET_KEY);
         smsModel.setCustomerName(user.getName());
-        smsModel.setCustomerInfo(genOTP());
+        smsModel.setCustomerInfo(password);
         String jsonRequest = objectMapper.writeValueAsString(smsModel);
 
         URL url = new URL(API_URL);
@@ -75,6 +81,10 @@ public class SmsService {
             while ((responseLine = br.readLine()) != null) {
                 response.append(responseLine.trim());
             }
+            user.setPassword(passwordEncoder.encode(password));
+            user.setReset(false);
+            user.setResetExpiryTime(Instant.now().plusSeconds(60));
+            this.userRepository.save(user);
 
             return objectMapper.readValue(response.toString(), ResponseView.class);
         }
@@ -86,5 +96,17 @@ public class SmsService {
         return String.valueOf(otp); // Trả về OTP dưới dạng chuỗi
     }
 
+    public static String generateRandomPassword(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            password.append(characters.charAt(index));
+        }
+
+        return password.toString();
+    }
 
 }

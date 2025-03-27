@@ -61,6 +61,7 @@ public class HomePageController {
 
         user.setPassword(hashPassword);
         user.setRole(this.userService.getRoleByName("OWNER"));
+        user.setReset(true);
         // save
         this.userService.createUser(user);
         session.setAttribute("message", "Đăng ký tài khoản thành công.");

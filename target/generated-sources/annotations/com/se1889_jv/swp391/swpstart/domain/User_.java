@@ -88,6 +88,16 @@ public abstract class User_ {
 	public static volatile SingularAttribute<User, Long> id;
 	
 	/**
+	 * @see com.se1889_jv.swp391.swpstart.domain.User#isReset
+	 **/
+	public static volatile SingularAttribute<User, Boolean> isReset;
+	
+	/**
+	 * @see com.se1889_jv.swp391.swpstart.domain.User#resetExpiryTime
+	 **/
+	public static volatile SingularAttribute<User, Instant> resetExpiryTime;
+	
+	/**
 	 * @see com.se1889_jv.swp391.swpstart.domain.User
 	 **/
 	public static volatile EntityType<User> class_;
@@ -117,6 +127,8 @@ public abstract class User_ {
 	public static final String NAME = "name";
 	public static final String USER_STORES = "userStores";
 	public static final String ID = "id";
+	public static final String IS_RESET = "isReset";
+	public static final String RESET_EXPIRY_TIME = "resetExpiryTime";
 	public static final String UPDATED_AT = "updatedAt";
 	public static final String EXPIRATION_DATE = "expirationDate";
 
