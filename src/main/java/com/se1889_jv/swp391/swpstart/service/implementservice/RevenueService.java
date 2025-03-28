@@ -2,9 +2,9 @@ package com.se1889_jv.swp391.swpstart.service.implementservice;
 
 import com.se1889_jv.swp391.swpstart.domain.TransactionService;
 import com.se1889_jv.swp391.swpstart.domain.common.PeriodType;
-import com.se1889_jv.swp391.swpstart.domain.dto.PeriodTypeRequest;
-import com.se1889_jv.swp391.swpstart.domain.dto.RevenueDetailResponse;
-import com.se1889_jv.swp391.swpstart.domain.dto.RevenueSummaryResponse;
+import com.se1889_jv.swp391.swpstart.domain.dto.request.PeriodTypeRequest;
+import com.se1889_jv.swp391.swpstart.domain.dto.response.RevenueDetailResponse;
+import com.se1889_jv.swp391.swpstart.domain.dto.response.RevenueSummaryResponse;
 import com.se1889_jv.swp391.swpstart.repository.TransactionPaymentRepository;
 import com.se1889_jv.swp391.swpstart.repository.TransactionServiceRepository;
 import com.se1889_jv.swp391.swpstart.util.constant.TransactionStatus;

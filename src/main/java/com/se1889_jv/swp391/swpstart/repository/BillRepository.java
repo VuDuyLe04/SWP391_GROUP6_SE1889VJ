@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -41,5 +42,8 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             Pageable pageable
     );
 
+
+    @Query("SELECT b FROM Bill b WHERE b.store = :store AND b.createdAt >= :start AND b.createdAt <= :end")
+    List<Bill> findByStoreAndCreatedAt(Store store, LocalDateTime start, LocalDateTime end);
 
 }

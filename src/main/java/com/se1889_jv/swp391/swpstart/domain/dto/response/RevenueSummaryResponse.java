@@ -1,4 +1,4 @@
-package com.se1889_jv.swp391.swpstart.domain.dto;
+package com.se1889_jv.swp391.swpstart.domain.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

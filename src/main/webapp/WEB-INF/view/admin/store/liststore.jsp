@@ -357,6 +357,7 @@
                                         <th><i class="fa fa-phone mr-xs"></i>Địa chỉ </th>
                                         <th><i class="fa fa-check-circle mr-xs"></i>Trạng thái</th>
                                         <th><i class="fa fa-cogs mr-xs"></i>Hành động</th>
+                                        <th><i class="fa fa-money mr-xs"></i>Doanh thu</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -397,6 +398,11 @@
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
                                             </td>
+                                                <td>
+                                                    <a href="/revenue/${s.id}" class="btn btn-primary btn-sm btn-revenue">
+                                                        <i class="fa fa-eye mr-xs"></i> Xem chi tiết
+                                                    </a>
+                                                </td>
                                             </tr>
                                         </c:forEach>
                                     </c:if>

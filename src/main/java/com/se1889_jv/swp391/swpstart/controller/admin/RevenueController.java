@@ -1,7 +1,7 @@
 package com.se1889_jv.swp391.swpstart.controller.admin;
 
-import com.se1889_jv.swp391.swpstart.domain.dto.PeriodTypeRequest;
-import com.se1889_jv.swp391.swpstart.domain.dto.RevenueSummaryResponse;
+import com.se1889_jv.swp391.swpstart.domain.dto.request.PeriodTypeRequest;
+import com.se1889_jv.swp391.swpstart.domain.dto.response.RevenueSummaryResponse;
 import com.se1889_jv.swp391.swpstart.service.implementservice.RevenueService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,9 +1,9 @@
-package com.se1889_jv.swp391.swpstart.domain.dto;
+package com.se1889_jv.swp391.swpstart.domain.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.se1889_jv.swp391.swpstart.domain.common.PeriodType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import java.math.BigDecimal;
 
 @Setter
 @Getter
@@ -12,9 +12,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RevenueDetailResponse {
-    Integer week;
-    Integer month;
+public class PeriodTypeRequest {
     Integer year;
-    BigDecimal revenue;
+    Integer month;
+    PeriodType periodType;
 }

@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Dashboard | JSOFT Themes | JSOFT-Admin</title>
+    <title>Cập nhật sản phẩm</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -110,6 +110,13 @@
                                     <label class="col-md-3 control-label" for="inputImage">Hình ảnh</label>
                                     <div class="col-md-6">
                                         <form:input path="image" class="form-control" id="inputImage" type="text" readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="inputImage">Hình ảnh</label>
+                                    <div class="col-md-6">
+                                        <!-- Sử dụng EL để hiển thị hình ảnh -->
+                                        <img src="/images/${product.image}" alt="Image" class="img-fluid" id="imagePreview"/>
                                     </div>
                                 </div>
 

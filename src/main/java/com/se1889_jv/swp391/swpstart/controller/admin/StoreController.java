@@ -177,5 +177,9 @@ public class    StoreController {
         return "admin/store/updatestore";
     }
 
-
+    @GetMapping("/revenue/{id}")
+    public String revenueByStoreId(@PathVariable Long id) {
+//        log.info("Store Id {}", id);
+        return "admin/store/detail-revenue";
+    }
 }
