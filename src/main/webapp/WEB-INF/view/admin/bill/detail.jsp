@@ -657,14 +657,15 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                         class="h4 text-dark"
                                         style="color: #171717 !important; font-weight: 600"
                                 >
-                                    <th class="text-center" style="width: 50px">#</th>
+                                    <th class="text-center" style="width: 50px">No</th>
                                     <th class="text-center"  style="font-weight: bold">Sản phẩm</th>
                                     <th class="text-center"  style="font-weight: bold">Số lượng</th>
+                                    <th class="text-center"  style="font-weight: bold">Quy cách đóng gói</th>
                                     <th class="text-center"  style="font-weight: bold">Giá bán thực tế</th>
                                     <th class="text-center"  style="font-weight: bold">Giá niêm yết</th>
                                     <th class="text-center"  style="font-weight: bold">Tổng giá</th>
-                                    <th class="text-center"  style="font-weight: bold">Gói hàng</th>
-                                    <th class="text-center"  style="font-weight: bold"  >Giá bốc vác</th>
+
+<%--                                    <th class="text-center"  style="font-weight: bold"  >Giá bốc vác</th>--%>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -685,11 +686,20 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                             value="${shippingFee + billDetail.liftPrice}"
                                     />
                                     <tr>
-                                        <td>${loop.index + 1}</td>
-                                        <td class="text-semibold text-dark">
+                                        <td class="text-center">${loop.index + 1}</td>
+                                        <td class="text-semibold text-center">
                                                 ${billDetail.nameProduct}
                                         </td>
                                         <td class="text-center">${billDetail.quantity}</td>
+                                        <td class="text-center">
+                                            <c:if test="${not empty billDetail.packagingName}">
+                                                ${billDetail.packagingName} (SL:
+                                                ${billDetail.quantityPerPackage} kg)
+                                            </c:if>
+                                            <c:if test="${empty billDetail.packagingName}">
+                                                -
+                                            </c:if>
+                                        </td>
                                         <td class="text-center">
                                             <fmt:formatNumber
                                                     value="${billDetail.actualSellPrice}"
@@ -711,33 +721,24 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                                     groupingUsed="true"
                                             />₫
                                         </td>
-                                        <td class="text-center">
-                                            <c:if test="${not empty billDetail.packagingName}">
-                                                ${billDetail.packagingName} (SL:
-                                                ${billDetail.quantityPerPackage})
-                                            </c:if>
-                                            <c:if test="${empty billDetail.packagingName}">
-                                                -
-                                            </c:if>
-                                        </td>
 <%--                                        <td class="text-center">--%>
 <%--                                            <c:if test="${billDetail.lift != null}">--%>
 <%--                                                ${billDetail.lift ? 'Có' : 'Không'}--%>
 <%--                                            </c:if>--%>
 <%--                                            <c:if test="${billDetail.lift == null}"> - </c:if>--%>
 <%--                                        </td>--%>
-                                        <td class="text-center">
-                                            <c:if test="${billDetail.liftPrice != null}">
-                                                <fmt:formatNumber
-                                                        value="${billDetail.liftPrice}"
-                                                        type="number"
-                                                        groupingUsed="true"
-                                                />₫
-                                            </c:if>
-                                            <c:if test="${billDetail.liftPrice == null}">
-                                                -
-                                            </c:if>
-                                        </td>
+<%--                                        <td class="text-center">--%>
+<%--                                            <c:if test="${billDetail.liftPrice != null}">--%>
+<%--                                                <fmt:formatNumber--%>
+<%--                                                        value="${billDetail.liftPrice}"--%>
+<%--                                                        type="number"--%>
+<%--                                                        groupingUsed="true"--%>
+<%--                                                />₫--%>
+<%--                                            </c:if>--%>
+<%--                                            <c:if test="${billDetail.liftPrice == null}">--%>
+<%--                                                ---%>
+<%--                                            </c:if>--%>
+<%--                                        </td>--%>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
@@ -758,8 +759,18 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                                 />₫
                                             </td>
                                         </tr>
+                                        <tr class="h4">
+                                            <td colspan="2"  style="font-weight: bold">Tổng cộng</td>
+                                            <td class="text-left">
+                                                <fmt:formatNumber
+                                                        value="${totalPrice}"
+                                                        type="number"
+                                                        groupingUsed="true"
+                                                />₫
+                                            </td>
+                                        </tr>
                                         <tr>
-                                            <td colspan="2"  style="font-weight: bold">Phí vận chuyển</td>
+                                            <td colspan="2"  style="font-weight: bold">Phí bốc vác (Cửa hàng chịu)</td>
                                             <td class="text-left">
                                                 <fmt:formatNumber
                                                         value="${shippingFee}"
@@ -768,16 +779,7 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                                 />₫
                                             </td>
                                         </tr>
-                                        <tr class="h4">
-                                            <td colspan="2"  style="font-weight: bold">Tổng cộng</td>
-                                            <td class="text-left">
-                                                <fmt:formatNumber
-                                                        value="${totalPrice + shippingFee}"
-                                                        type="number"
-                                                        groupingUsed="true"
-                                                />₫
-                                            </td>
-                                        </tr>
+
 
                                         <!-- Định dạng số tiền đã thanh toán -->
                                         <%--

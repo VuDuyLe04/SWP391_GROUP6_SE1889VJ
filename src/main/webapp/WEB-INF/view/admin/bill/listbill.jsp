@@ -650,14 +650,20 @@
                             <thead>
                             <tr>
                                 <th>STT</th>
+                                <th>Mã hóa đơn</th>
                                 <th>Cửa hàng</th>
                                 <th>Thông tin người dùng</th>
-                                <th >Ngày tạo</th>
-                                <th >Tiền đã trả</th>
-                                <th >Tiền nợ</th>
+                                <th>Loại hóa đơn</th>
                                 <th>Tổng tiền</th>
-                                <th>Loại Bill</th>
-                                <th >Bốc vác</th>
+                                <th>Tiền đã trả</th>
+                                <th>Tiền nợ</th>
+                                <th>Bốc vác</th>
+                                <th>Ngày tạo</th>
+
+
+
+
+
                                 <th>Hành động</th>
                             </tr>
                             </thead>
@@ -665,6 +671,7 @@
                             <c:forEach var="bill" items="${bills.content}" varStatus="status">
                                 <tr>
                                     <td>${status.index + 1}</td>  <!-- STT --><!-- Bill ID -->
+                                    <td class="text-center">${bill.id}</td>
                                     <td >${bill.store.name}</td>  <!-- Store Name -->
                                     <td>
                                         <c:choose>
@@ -676,28 +683,9 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
-                                    <td >${bill.formattedDate}</td>
-
-                                    <td >   <fmt:setLocale value="vi_VN"/>
-                                        <c:choose>
-                                            <c:when test="${bill.paid % 1 == 0}">
-                                                <fmt:formatNumber value="${bill.paid}" type="number" groupingUsed="true"/>₫
-                                            </c:when>
-                                            <c:otherwise>
-                                                <fmt:formatNumber value="${bill.paid}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td><!-- Created At -->
-                                    <td >   <fmt:setLocale value="vi_VN"/>
-                                        <c:choose>
-                                            <c:when test="${bill.inDebt% 1 == 0}">
-                                                <fmt:formatNumber value="${bill.inDebt}" type="number" groupingUsed="true"/>₫
-                                            </c:when>
-                                            <c:otherwise>
-                                                <fmt:formatNumber value="${bill.inDebt}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td><!-- Created At -->
+                                    <td >
+                                            ${bill.billType}
+                                    </td>
                                     <td >   <fmt:setLocale value="vi_VN"/>
                                         <c:choose>
                                             <c:when test="${bill.totalBillPrice % 1 == 0}">
@@ -707,10 +695,29 @@
                                                 <fmt:formatNumber value="${bill.totalBillPrice}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
                                             </c:otherwise>
                                         </c:choose>
-                                    </td><!-- Created At -->
-                                    <td >
-                                            ${bill.billType}
                                     </td>
+                                    <td >   <fmt:setLocale value="vi_VN"/>
+                                        <c:choose>
+                                            <c:when test="${bill.paid % 1 == 0}">
+                                                <fmt:formatNumber value="${bill.paid}" type="number" groupingUsed="true"/>₫
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatNumber value="${bill.paid}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td >   <fmt:setLocale value="vi_VN"/>
+                                        <c:choose>
+                                            <c:when test="${bill.inDebt% 1 == 0}">
+                                                <fmt:formatNumber value="${bill.inDebt}" type="number" groupingUsed="true"/>₫
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatNumber value="${bill.inDebt}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+
+
                                     <td >   <fmt:setLocale value="vi_VN"/>
                                         <c:choose>
                                             <c:when test="${bill.totalLiftPrice % 1 == 0}">
@@ -720,7 +727,9 @@
                                                 <fmt:formatNumber value="${bill.totalLiftPrice}" type="number" groupingUsed="true" minFractionDigits="1"/>₫
                                             </c:otherwise>
                                         </c:choose>
-                                    </td><!-- Created At -->
+                                    </td>
+                                    <td >${bill.formattedDate}</td>
+
                                     <td class="text-center">
                                         <a href="/bills/details/${bill.id}" class="btn btn-default btn-sm" title="View">
                                             <i class="fa fa-eye"></i>
@@ -728,8 +737,6 @@
                                     </td>
 
 
-
-                                    </td>
                                 </tr>
                             </c:forEach>
 
