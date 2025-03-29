@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -67,8 +68,12 @@ public class PaymentService {
 
                         String dateString = (String) payment.get("date");
                         DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-                        LocalDateTime date = LocalDateTime.parse(dateString, formatter.withZone(ZoneOffset.UTC));
-                        transactionPayment.setDate(date);
+                        ZonedDateTime dateTime = ZonedDateTime.parse(dateString, formatter);
+                        //Chuyển sang múi giờ Việt Nam
+                        ZonedDateTime vietnamTime = dateTime.withZoneSameInstant(ZoneOffset.ofHours(7));
+
+                        transactionPayment.setDate(vietnamTime.toLocalDateTime());
+
 
                         transactionPayment.setAccountReceiver((String) payment.get("account_receiver"));
                         transactionPayment.setGate((String) payment.get("gate"));
