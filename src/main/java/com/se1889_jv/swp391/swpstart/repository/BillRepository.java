@@ -29,7 +29,8 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             "OR (:input IS NOT NULL AND c IS NULL)) " +
             "AND (:storeId IS NULL OR b.store.id = :storeId) " +
             "AND (:storeIds IS NULL OR b.store.id IN :storeIds) " +
-            "AND (:billType IS NULL OR b.billType = :billType)")
+            "AND (:billType IS NULL OR b.billType = :billType) " +
+            "AND b.billType IS NOT NULL")
     Page<Bill> filterBills(
             @Param("startDate") Instant startDate,
             @Param("endDate") Instant endDate,
