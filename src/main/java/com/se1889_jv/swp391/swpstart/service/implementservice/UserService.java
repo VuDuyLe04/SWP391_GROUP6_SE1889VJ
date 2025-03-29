@@ -22,10 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
-import java.time.Instant;
+import java.time.*;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -136,25 +134,30 @@ public class UserService implements IUserService {
 
     @Override
     public User handleBuyService(User user,List<User> users, com.se1889_jv.swp391.swpstart.domain.Service service) {
+        Instant now1 = Instant.now();
+        ZonedDateTime vietnamTime = now1.atZone(ZoneOffset.ofHours(7));
+        Instant now = vietnamTime.withZoneSameLocal(ZoneOffset.UTC).toInstant();
+        ZonedDateTime expirationDateTime = vietnamTime.plusMonths(1);
+        Instant expirationDate = vietnamTime.withZoneSameLocal(ZoneOffset.UTC).toInstant();
+
+//        LocalDateTime expirationDate = now.atOffset(ZoneOffset.ofHours(7)).toLocalDateTime().plus(service.getDurationMonths(), ChronoUnit.MONTHS);
 
         for (User user1 : users) {
-            user1.setRenewalDate(Instant.now()); // Cập nhật ngày gia hạn hiện tại
-            LocalDateTime expirationDate = LocalDateTime.now().plus(service.getDurationMonths(), ChronoUnit.MONTHS);
-            user1.setExpirationDate(expirationDate.atZone(ZoneId.systemDefault()).toInstant());
+            user1.setRenewalDate(now);
+            user1.setExpirationDate(expirationDate);
             user1.setStatusService(true);
         }
-        Instant now = Instant.now();
+
         user.setBalance(user.getBalance()- service.getPrice());
         user.setRenewalDate(now);
-        LocalDateTime expirationDate = now.atZone(ZoneId.systemDefault()).toLocalDateTime().plus(service.getDurationMonths(), ChronoUnit.MONTHS);
-        user.setExpirationDate(expirationDate.atZone(ZoneId.systemDefault()).toInstant());
+        user.setExpirationDate(expirationDate);
         user.setStatusService(true);
         this.userRepository.save(user);
 
         TransactionService transactionService = new TransactionService();
         transactionService.setServiceName(service.getName());
         transactionService.setAmount(service.getPrice());
-        transactionService.setTransactionDate(now.atZone(ZoneId.systemDefault()).toLocalDateTime());
+        transactionService.setTransactionDate(now1.atZone(ZoneId.systemDefault()).toLocalDateTime());
         transactionService.setDurationMonths(service.getDurationMonths());
         transactionService.setTransactionStatus(TransactionStatus.COMPLETED);
         transactionService.setUser(user);
