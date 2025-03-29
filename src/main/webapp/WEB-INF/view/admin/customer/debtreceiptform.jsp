@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Dashboard | JSOFT Themes | JSOFT-Admin</title>
+    <title>Tạo phiếu nợ</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -51,31 +51,72 @@
         <section role="main" class="content-body">
             <header class="page-header">
                 <h2>Tạo phiếu nợ cho khách hàng: ${customer.name}</h2>
+
+                <div class="right-wrapper pull-right">
+                    <ol class="breadcrumbs">
+                        <li>
+                            <a href="/">
+                                <i class="fa fa-home"></i>
+                            </a>
+                        </li>
+                        <li><span>Tạo phiếu nợ</span></li>
+                    </ol>
+
+                    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+                </div>
             </header>
+
+            <%--            <header class="page-header">--%>
+            <%--                <h2>Tạo phiếu nợ cho khách hàng: ${customer.name}</h2>--%>
+            <%--            </header>--%>
 
             <div class="row">
                 <div class="col-lg-12">
                     <section class="panel">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+
+                            </div>
+
+                            <h2 class="panel-title">Thông tin phiếu nợ</h2>
+                        </header>
+
+
                         <div class="panel-body">
-                            <form action="/debt-receipt/creation" method="POST" id="createDebtReceiptForm">
+                            <form action="/debt-receipt/creation" method="POST" id="createDebtReceiptForm"
+                                  class="form-horizontal form-bordered">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                 <div class="form-group">
-                                    <label for="debtType">Loại nợ:</label>
-                                    <select id="debtType" name="debtType" class="form-control">
-                                        <option value="DEBIT">Thêm Nợ</option>
-                                        <option value="DEBTREPAY">Trả Nợ</option>
-                                    </select>
+                                    <label for="debtType" class="col-md-3 control-label">Loại nợ:</label>
+                                    <div class="col-md-6">
+                                        <select id="debtType" name="debtType" class="form-control">
+                                            <option value="DEBIT">Thêm Nợ</option>
+                                            <option value="DEBTREPAY">Trả Nợ</option>
+                                        </select>
+                                    </div>
+
                                 </div>
                                 <div class="form-group">
-                                    <label for="debtReason">Lý do:</label>
-                                    <input type="text" id="debtReason" name="debtReason" class="form-control" placeholder="Nhập lý do" required>
+                                    <label for="debtReason" class="col-md-3 control-label">Lý do:</label>
+                                    <div class="col-md-6">
+                                        <input type="text" id="debtReason" name="debtReason" class="form-control" placeholder="Nhập lý do" required>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="debtAmount">Số tiền:</label>
-                                    <input type="number" id="debtAmount" name="debtAmount" class="form-control" placeholder="Nhập số tiền" required>
+                                    <label for="debtAmount" class="col-md-3 control-label">Số tiền:</label>
+                                    <div class="col-md-6">
+                                        <input type="number" id="debtAmount" name="debtAmount" class="form-control" placeholder="Nhập số tiền" required>
+                                    </div>
+
+
                                 </div>
                                 <input type="hidden" name="customerId" value="${customer.id}">
-                                <button type="submit" class="btn btn-primary">Lưu phiếu nợ</button>
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <button type="submit" class="btn btn-primary">Lưu phiếu nợ</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </section>
