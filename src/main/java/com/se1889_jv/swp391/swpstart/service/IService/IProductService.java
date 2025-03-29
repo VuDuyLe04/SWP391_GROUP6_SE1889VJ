@@ -23,7 +23,7 @@ public interface IProductService {
     Page<Product> getProductByStoreId(Long storeId, Pageable pageable);
 
     Page<Product> getAllProducts(Pageable pageable);
-//
+    void updateProduct(Product product);
     List<Product> getProductsByWarehouseId(Long warehouseId);
 
     ProductUpdateResponse updateProduct(ProductUpdateRequest request);
@@ -31,6 +31,6 @@ public interface IProductService {
     Page<Product> getProductsByStoreIds(List<Long> storeIds, Pageable pageable);
 
     void createProduct(ProductCreationRequest request, MultipartFile image);
-
+    void updateProduct(ProductUpdateRequest request, MultipartFile image);
 
 }

@@ -156,10 +156,34 @@
                                         <form:input path="description" type="text"  class="form-control" id="inputDescription"/>
                                     </div>
                                 </div>
+<%--                                <div class="form-group">--%>
+<%--                                    <label class="col-md-3 control-label" for="inputDescription">Cửa hàng</label>--%>
+<%--                                    <div class="col-md-6">--%>
+<%--                                        <select name="storeId" class="form-control" id="inputStore" onchange="filterWarehouse.call(this)">--%>
+<%--                                            <option value="">-- Chọn cửa hàng --</option>--%>
+<%--                                            <c:forEach items="${stores}" var="store">--%>
+<%--                                                <option value="${store.id}" ${product.storeId == store.id ? 'selected' : ''}>--%>
+<%--                                                        ${store.name}--%>
+<%--                                                </option>--%>
+<%--                                            </c:forEach>--%>
+<%--                                        </select>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+
+<%--                                <div class="form-group">--%>
+<%--                                    <label class="col-md-3 control-label" for="inputWarehouse">Khu vực</label>--%>
+<%--                                    <div class="col-md-6">--%>
+<%--                                        <form:select path="warehouseId" cssClass="form-control" id="inputWarehouse" style="display: none;">--%>
+<%--                                            <option value="">-- Chọn kho hàng --</option>--%>
+
+<%--                                        </form:select>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="inputDescription">Cửa hàng</label>
+                                    <label class="col-md-3 control-label" for="inputStore">Cửa hàng</label>
                                     <div class="col-md-6">
-                                        <select name="storeId" class="form-control" id="inputStore" onchange="filterWarehouse.call(this)">
+                                        <select id="inputStore" name="storeId" class="form-control" onchange="filterWarehouses()">
                                             <option value="">-- Chọn cửa hàng --</option>
                                             <c:forEach items="${stores}" var="store">
                                                 <option value="${store.id}" ${product.storeId == store.id ? 'selected' : ''}>
@@ -170,15 +194,20 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="warehouseGroup" style="display: none;">
                                     <label class="col-md-3 control-label" for="inputWarehouse">Khu vực</label>
                                     <div class="col-md-6">
-                                        <form:select path="warehouseId" cssClass="form-control" id="inputWarehouse" style="display: none;">
+                                        <select id="inputWarehouse" name="warehouseId" class="form-control">
                                             <option value="">-- Chọn kho hàng --</option>
-
-                                        </form:select>
+                                            <c:forEach items="${wareHouses}" var="warehouse">
+                                                <option value="${warehouse.id}" data-store-id="${warehouse.store.id}">
+                                                        ${warehouse.name}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
                                 </div>
+
 
 
                                 <!-- Nút Create -->
@@ -209,43 +238,34 @@
         reader.readAsDataURL(event.target.files[0]);
     }
 
-    function filterWarehouse() {
-        const selectElement = document.getElementById("inputStore");
-        const id = selectElement.value;
-        console.log("Selected store value:", id);
-        document.getElementById("hiddenStoreId").value = id;
+    function filterWarehouses() {
+        var storeSelect = document.getElementById("inputStore");
+        var warehouseSelect = document.getElementById("inputWarehouse");
+        var warehouseGroup = document.getElementById("warehouseGroup");
 
-        const warehouseSelect = document.getElementById("inputWarehouse");
-        warehouseSelect.innerHTML = '<option value="">-- Chọn kho hàng --</option>';
+        var selectedStoreId = storeSelect.value;
 
-        if (id) {
-            warehouseSelect.style.display = "block";
-
-            const url = `http://localhost:8080/warehouse/` + id;
-            console.log("Fetching from URL:", url);
-
-            fetch(url)
-                .then(response => response.json())
-                .then(warehouses => {
-                    console.log("Received warehouses:", warehouses);
-                    if (warehouses && warehouses.length > 0) {
-                        warehouses.forEach(function(warehouse) {
-                            let option = document.createElement("option");
-                            option.value = warehouse.id;
-                            option.textContent = warehouse.name;
-                            warehouseSelect.appendChild(option);
-                        });
-                    } else {
-                        console.log("Không có kho hàng nào cho cửa hàng này");
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching warehouses:', error);
-                });
-        } else {
-            warehouseSelect.style.display = "none";
+        if (!selectedStoreId) {
+            warehouseGroup.style.display = "none";
+            return;
         }
+
+        warehouseGroup.style.display = "block";
+        var options = warehouseSelect.options;
+        for (var i = 0; i < options.length; i++) {
+            var storeId = options[i].getAttribute("data-store-id");
+            if (storeId === selectedStoreId || options[i].value === "") {
+                options[i].style.display = "block";
+            } else {
+                options[i].style.display = "none";
+            }
+        }
+
+        warehouseSelect.value = "";
     }
+
+
+
 
     function cancelAction() {
         window.location.href = "/product";

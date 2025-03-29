@@ -104,10 +104,7 @@ public class WareHouseService implements IWareHouseService {
             // Nếu có storeId -> lấy danh sách kho của cửa hàng đó
             allWareHouses = wareHouseRepository.findAllByStoreId(storeId);
         } else {
-            // Nếu không có storeId -> lấy tất cả kho của các cửa hàng user sở hữu
-            allWareHouses = stores.stream()
-                    .flatMap(store -> store.getWareHouses().stream())
-                    .toList();
+            allWareHouses = wareHouseRepository.findAll();
         }
 
         int totalElements = allWareHouses.size();

@@ -37,7 +37,6 @@ public class WareHouseController {
     public String getCreatePage(Model model) {
         model.addAttribute("warehouse", new WareHouse());
         List<Store> listStore = storeService.getAllStores();
-
         model.addAttribute("listStore", listStore);
         return "admin/warehouse/create";
     }

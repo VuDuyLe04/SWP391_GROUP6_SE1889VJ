@@ -7,7 +7,6 @@ import com.se1889_jv.swp391.swpstart.domain.WareHouse;
 import com.se1889_jv.swp391.swpstart.domain.dto.request.ProductCreationRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.request.ProductUpdateRequest;
 import com.se1889_jv.swp391.swpstart.domain.dto.response.ProductUpdateResponse;
-import com.se1889_jv.swp391.swpstart.service.UploadImageService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.ProductService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.UserStoreService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.WareHouseService;
@@ -45,8 +44,6 @@ ProductController {
     private final ProductService productService;
     private final WareHouseService wareHouseService;
     private final UserStoreService userStoreService;
-    private final UploadImageService uploadImageService;
-
     @GetMapping("/product")
     public String getListProductPage(
             @RequestParam(defaultValue = "0") int page,
@@ -93,6 +90,7 @@ ProductController {
 
         return "admin/product/table";
     }
+
 
 
     @GetMapping("/product/createProduct")
@@ -150,6 +148,9 @@ ProductController {
         Product product = productService.getProductById(id);
         List<Store> stores = userStoreService.getStoresForUser(user);
 
+        List<WareHouse> wareHouses = wareHouseService.getAllWareHouseByListStore(stores);
+
+
         ProductUpdateRequest productDTO = new ProductUpdateRequest();
         productDTO.setId(product.getId());
         productDTO.setName(product.getName());
@@ -161,29 +162,28 @@ ProductController {
         productDTO.setDescription(product.getDescription());
         productDTO.setStoreId(product.getStore() != null ? product.getStore().getId() : null);
         productDTO.setWarehouseId(product.getWarehouse() != null ? product.getWarehouse().getId() : null);
-
+        model.addAttribute("wareHouses", wareHouses);
         model.addAttribute("product", productDTO);
         model.addAttribute("stores", stores);
         return "admin/product/update";
     }
 
-//    @PostMapping("/product/update")
-//    public String updateProduct(@ModelAttribute("product") @Valid Product product,
-//                                BindingResult result, Model model) {
-//        if (result.hasErrors()) {
-//            System.out.println("Validation Errors: " + result.getAllErrors());
-//            model.addAttribute("product", product);
-//            return "admin/product/update";
-//        }
-//
-//        try {
-//            productService.updateProduct(product);
-//            model.addAttribute("successMessage", "Cập nhật sản phẩm thành công.");
-//        } catch (Exception e) {
-//            model.addAttribute("errorMessage", "Lỗi khi cập nhật sản phẩm: " + e.getMessage());
-//        }
-//        return "redirect:/product";
-//    }
+    @PostMapping("/product/update")
+    public String updateProduct(@ModelAttribute("product") @Valid Product product,
+                                BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("product", product);
+            return "admin/product/update";
+        }
+
+        try {
+            productService.updateProduct(product);
+            model.addAttribute("successMessage", "Cập nhật sản phẩm thành công.");
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Lỗi khi cập nhật sản phẩm: " + e.getMessage());
+        }
+        return "redirect:/product";
+    }
 
     @PostMapping("/update")
     public String updateProduct(@Valid @ModelAttribute("product")  ProductUpdateRequest request, BindingResult result, RedirectAttributes redirectAttributes) {
@@ -223,7 +223,6 @@ ProductController {
 
         // Nếu name không có giá trị -> Redirect về trang /product
         if (name == null || name.trim().isEmpty()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Vui lòng nhập từ khóa tìm kiếm!");
             return "redirect:/product?page=" + page + "&size=" + size + "&sort=" + sort + "&direction=" + direction;
         }
 
@@ -255,8 +254,6 @@ ProductController {
             @RequestPart("product") ProductCreationRequest request,
             @RequestPart("image") MultipartFile image) {
         Map<String, String> response = new HashMap<>();
-
-
         try {
             productService.createProduct(request, image);
             response.put("message", "Product created successfully.");

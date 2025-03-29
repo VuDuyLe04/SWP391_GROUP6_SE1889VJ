@@ -14,8 +14,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -24,7 +23,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -92,20 +91,22 @@ public class ProductService implements IProductService {
         return productRepository.findAll(pageable);
     }
 
-//    @Override
-//    public void updateProduct(Product product) {
-//        Optional<Product> productOptional = productRepository.findById(product.getId());
-//        if (productOptional.isPresent()) {
-//            productOptional.get().setName(product.getName());
-//            productOptional.get().setDescription(product.getDescription());
-//            productOptional.get().setStorage(product.isStorage());
-//            productOptional.get().setCategory(product.getCategory());
-//            productOptional.get().setTotalQuantity(product.getTotalQuantity());
-//            productOptional.get().setImage(product.getImage());
-//            productOptional.get().setUnitPrice(product.getUnitPrice());
-//            productRepository.save(productOptional.get());
-//        }
-//    }
+
+
+    @Override
+    public void updateProduct(Product product) {
+        Optional<Product> productOptional = productRepository.findById(product.getId());
+        if (productOptional.isPresent()) {
+            productOptional.get().setName(product.getName());
+            productOptional.get().setDescription(product.getDescription());
+            productOptional.get().setStorage(product.isStorage());
+            productOptional.get().setCategory(product.getCategory());
+            productOptional.get().setTotalQuantity(product.getTotalQuantity());
+            productOptional.get().setImage(product.getImage());
+            productOptional.get().setUnitPrice(product.getUnitPrice());
+            productRepository.save(productOptional.get());
+        }
+    }
 
     @Override
     public List<Product> getProductsByWarehouseId(Long warehouseId) {
@@ -199,47 +200,48 @@ public class ProductService implements IProductService {
 
     }
 
-//    @Override
-//    public void updateProduct(@Valid ProductUpdateRequest request, MultipartFile image) {
-//        Product product = productRepository.findById(request.getId())
-//                .orElseThrow(() -> new RuntimeException("Product not found"));
-//        if(image != null) {
-//            String imageUrl = cloudinaryService.uploadImage(image);
-//            product.setImage(imageUrl);
-//        }
-//        if (request.getName() != null) {
-//            product.setName(request.getName());
-//        }
-//        if (request.getUnitPrice() != null) {
-//            product.setUnitPrice(request.getUnitPrice());
-//        }
-//        if (request.getCategory() != null) {
-//            product.setCategory(request.getCategory());
-//        }
-//        if (request.getStorage() != null) {
-//            product.setStorage(request.getStorage());
-//        }
-//        if (request.getTotalQuantity() != null) {
-//            product.setTotalQuantity(request.getTotalQuantity());
-//        }
-//        if (request.getDescription() != null) {
-//            product.setDescription(request.getDescription());
-//        }
-//
-//        if(request.getStoreId() != null && product.getStore().getId() != request.getStoreId()) {
-//            Store store = storeRepository.findById(request.getStoreId())
-//                    .orElseThrow(() -> new RuntimeException("Store not found"));
-//            product.setStore(store);
-//        }
-//
-//        if(request.getWarehouseId() != null && product.getWarehouse().getId() != request.getWarehouseId()) {
-//            WareHouse wareHouse = wareHouseRepository.findById(request.getWarehouseId())
-//                    .orElseThrow(() -> new RuntimeException("Warehouse not found"));
-//            product.setWarehouse(wareHouse);
-//        }
-//        productRepository.save(product);
-//        log.info("Product updated");
-//    }
+    @Override
+    public void updateProduct(@Valid ProductUpdateRequest request, MultipartFile image) {
+        Product product = productRepository.findById(request.getId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        if(image != null) {
+            String imageUrl = cloudinaryService.uploadImage(image);
+            product.setImage(imageUrl);
+        }
+        if (request.getName() != null) {
+            product.setName(request.getName());
+        }
+        if (request.getUnitPrice() != null) {
+            product.setUnitPrice(request.getUnitPrice());
+        }
+        if (request.getCategory() != null) {
+            product.setCategory(request.getCategory());
+        }
+        if (request.getStorage() != null) {
+            product.setStorage(request.getStorage());
+        }
+        if (request.getTotalQuantity() != null) {
+            product.setTotalQuantity(request.getTotalQuantity());
+        }
+        if (request.getDescription() != null) {
+            product.setDescription(request.getDescription());
+        }
+
+        if(request.getStoreId() != null && product.getStore().getId() != request.getStoreId()) {
+            Store store = storeRepository.findById(request.getStoreId())
+                    .orElseThrow(() -> new RuntimeException("Store not found"));
+            product.setStore(store);
+        }
+
+        if(request.getWarehouseId() != null && product.getWarehouse().getId() != request.getWarehouseId()) {
+            WareHouse wareHouse = wareHouseRepository.findById(request.getWarehouseId())
+                    .orElseThrow(() -> new RuntimeException("Warehouse not found"));
+            product.setWarehouse(wareHouse);
+        }
+
+        productRepository.save(product);
+        log.info("Product updated");
+    }
 
 
 
