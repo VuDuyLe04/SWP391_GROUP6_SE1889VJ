@@ -106,4 +106,7 @@ public class PackagingService implements IPackagingService {
             return packagingRepository.findAllByStoreIdInAndStorageIsFalse(storeId, pageable);
         }
     }
+    public boolean isExistedByPackNameAndStore(String packType, long storeId) {
+        return packagingRepository.existsByPackageTypeAndStoreId(packType, storeId);
+    }
 }

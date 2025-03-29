@@ -141,9 +141,17 @@ public class PackingController {
             redirectAttributes.addFlashAttribute("errorModal", "true");
             return "redirect:/packaings";
         }
+
         if(user != null) {
             Packaging pkg = new Packaging();
             Store store = storeService.findStoreById(packagingDTO.getStoreIdDTO());
+            if(packagingService.isExistedByPackNameAndStore(packagingDTO.getPackageTypeDTO(), store.getId())){
+                redirectAttributes.addFlashAttribute("packagingDTOError", packagingDTO);
+                redirectAttributes.addFlashAttribute("errorModal", "true1");
+                redirectAttributes.addFlashAttribute("errorInput", "Loại gói đã tồn tại trong cửa hàng.");
+
+                return "redirect:/packaings";
+            }
             pkg.setPackageType(packagingDTO.getPackageTypeDTO());
             pkg.setLiftCost(packagingDTO.getLiftCostDTO());
             pkg.setQuantityPerPackage(packagingDTO.getQuantityPerPackageDTO());
