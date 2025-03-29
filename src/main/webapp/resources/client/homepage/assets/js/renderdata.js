@@ -131,7 +131,7 @@ function renderModals(productList) {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                            <button type="button" class="btn btn-primary add-bill-detail">Xác nhận</button>
+                            <button type="button" class="btn btn-primary add-bill-detail" data-bs-dismiss="modal">Xác nhận</button>
                         </div>
                     </div>
                 </div>
@@ -159,7 +159,7 @@ function renderModals(productList) {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                            <button type="button" class="btn btn-primary add-bill-detail">Xác nhận</button>
+                            <button type="button" class="btn btn-primary add-bill-detail" data-bs-dismiss="modal">Xác nhận</button>
                         </div>
                     </div>
                 </div>

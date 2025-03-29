@@ -110,15 +110,13 @@ public class BillService implements IBillService {
             b.setTotalBillPrice(getTotalPriceBill(billId));
             if(request.getActualPay() > b.getTotalBillPrice()){
                 b.setPaid(b.getTotalBillPrice());
+            } else if(b.getTotalBillPrice() > request.getActualPay()) {
+                b.setPaid(b.getTotalBillPrice() - request.getActualPay());
             } else {
-                b.setPaid(request.getActualPay());
+                b.setPaid(b.getTotalBillPrice());
             }
 
-            if(b.getTotalBillPrice() > request.getActualPay()){
-                b.setInDebt(b.getTotalBillPrice() - request.getActualPay());
-            } else {
-                b.setInDebt(0);
-            }
+            b.setInDebt(b.getTotalBillPrice() - b.getPaid());
             b.setIsLift(request.isLiftInput());
             if(request.isLiftInput()){
                 b.setTotalLiftPrice(getTotalLiftPrice(billId));
