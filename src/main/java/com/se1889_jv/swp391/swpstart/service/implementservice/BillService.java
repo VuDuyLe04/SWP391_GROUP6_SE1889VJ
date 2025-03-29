@@ -164,16 +164,18 @@ public class BillService implements IBillService {
         if (bill.isPresent()) {
             Bill b = bill.get();
             b.setTotalBillPrice(getTotalPriceBill(billId));
-            if(request.getActualPay() > b.getTotalBillPrice()){
+            if(request.getActualPay() == 0) {
                 b.setPaid(b.getTotalBillPrice());
-            } else {
+            } else if(request.getActualPay() > b.getTotalBillPrice()){
+                b.setPaid(b.getTotalBillPrice());
+            } else if(b.getTotalBillPrice() > request.getActualPay()){
+//                b.setInDebt(b.getTotalBillPrice() - request.getActualPay());
+                b.setPaid(request.getActualPay());
+            } else if(b.getTotalBillPrice() == request.getActualPay()){
                 b.setPaid(request.getActualPay());
             }
-            if(b.getTotalBillPrice() > request.getActualPay()){
-                b.setInDebt(b.getTotalBillPrice() - request.getActualPay());
-            } else {
-                b.setInDebt(0);
-            }
+            b.setInDebt(b.getTotalBillPrice() - b.getPaid());
+
             // gia boc vac import 1 can la 50đ
             if (request.isLiftInput()) {
                 b.setTotalLiftPrice(getTotalQuantityImport(billId)*50);
