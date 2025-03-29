@@ -8,7 +8,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Dashboard | JSOFT Themes | JSOFT-Admin</title>
+    <title>Tạo khách hàng mới</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
     <meta name="author" content="JSOFT.net">
@@ -85,7 +85,7 @@
 
                             </div>
 
-                            <h2 class="panel-title">Tạo mới khách hàng</h2>
+                            <h2 class="panel-title">Thông tin khác hàng</h2>
                         </header>
                         <div class="panel-body">
                             <form:form modelAttribute="customer" class="form-horizontal form-bordered" method="post" action="/customer/create">
@@ -99,12 +99,6 @@
                                     <form:errors path="phone"
                                                  cssClass="invalid-feedback" cssStyle="color: red"/>
                                 </c:set>
-
-<%--                                <c:set var="errorBalance">--%>
-<%--                                    <form:errors path="balance"--%>
-<%--                                                 cssClass="invalid-feedback" cssStyle="color: red"/>--%>
-<%--                                </c:set>--%>
-
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" >Tên</label>
                                     <div class="col-md-6">
@@ -112,7 +106,6 @@
                                             ${errorName}
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" >Số điện thoại</label>
                                     <div class="col-md-6">
@@ -120,48 +113,12 @@
                                             ${errorPhone}
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="inputReadOnly">Địa chỉ</label>
                                     <div class="col-md-6">
                                         <form:input path="address" class="form-control" id="inputReadOnly" />
                                     </div>
                                 </div>
-
-<%--                                <div class="form-group">--%>
-<%--                                    <label class="col-md-3 control-label" for="inputHelpText">Tiền nợ</label>--%>
-<%--                                    <div class="col-md-6">--%>
-<%--                                        <form:input path="balance" class="form-control ${not empty errorBalance ? 'is-invalid' : ''}" id="inputHelpText" readonly="true"/>--%>
-<%--                                        ${errorBalance}--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-
-<%--                                <c:if test="${sessionScope.user.role.name == 'STAFF'}">--%>
-<%--                                    <div class="form-group">--%>
-<%--                                        <label class="col-md-3 control-label" for="inputHelpText">Cửa hàng</label>--%>
-<%--                                        <div class="col-md-6">--%>
-<%--                                            <input value="${sessionScope.store.name}"--%>
-<%--                                                   class="form-control" id="inputHelpText" readonly="true"/>--%>
-<%--                                        </div>--%>
-<%--                                    </div>--%>
-<%--                                </c:if>--%>
-
-<%--                                <c:if test="${sessionScope.user.role.name == 'OWNER'}">--%>
-<%--                                    <div class="form-group">--%>
-<%--                                        <label class="col-md-3 control-label" for="inputHelpText">Cửa hàng</label>--%>
-<%--                                        <div class="col-md-6">--%>
-<%--                                            <select name="storeId">--%>
-<%--                                                <c:forEach items="${listStore}" var="store">--%>
-<%--                                                    <option value="${store.id}">${store.name}</option>--%>
-<%--                                                </c:forEach>--%>
-<%--                                            </select>--%>
-
-<%--                                        </div>--%>
-<%--                                    </div>--%>
-<%--                                </c:if>--%>
-
-
-
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-3">
                                         <button type="submit" class="btn btn-primary">Tạo</button>

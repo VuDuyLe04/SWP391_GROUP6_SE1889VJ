@@ -7,7 +7,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 <head>
     <!-- Basic -->
     <meta charset="UTF-8" />
-    <title>Tạo nhân viên mới | JSOFT Admin</title>
+    <title>Cập nhân thông tin nhân viên</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta
       name="description"

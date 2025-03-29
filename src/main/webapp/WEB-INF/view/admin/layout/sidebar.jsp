@@ -55,7 +55,7 @@
                         <li>
                             <a href="/fetch-all-warehouse">
                                 <i class="fa fa-table" aria-hidden="true"></i>
-                                <span>Kho hàng</span>
+                                <span>Khu vực</span>
                             </a>
                         </li>
                     </c:if>
