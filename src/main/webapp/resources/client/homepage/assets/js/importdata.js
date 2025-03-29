@@ -56,78 +56,37 @@ function resetPaymentOptions() {
         paymentInputs.style.display = "none"; // Ẩn các input nhập số tiền nếu có
     }
 }
-function updateQuantity(input) {
+function updateBillDetail(input, oldValue) {
     let row = input.closest(".row");
     let productId = input.getAttribute("data-id");
-    let oldValue = input.getAttribute("data-old-value");
-    let quantity = parseInt(input.value);
 
-    // Kiểm tra tính hợp lệ
-    if (isNaN(quantity) || quantity <= 0) {
+    let quantityInput = row.querySelector(".quantity-input");
+    let priceInput = row.querySelector(".listed-price-input");
+
+    let quantity = parseInt(quantityInput.value);
+    let listedPrice = parseFloat(priceInput.value) || 0;
+    console.log(oldValue)
+    if (isNaN(quantity) || quantity < 0) {
         showToast("Số lượng phải lớn hơn 0", false);
-        // Reset về giá trị cũ
-        input.value = oldValue;
+        quantityInput.value = oldValue;
         return;
     }
 
-    // Cập nhật giá trị cũ
-    input.setAttribute("data-old-value", input.value);
-
-    // Tính toán giá tiền
-    let priceInput = row.querySelector(".listed-price-input");
-    let listedPrice = parseFloat(priceInput.value) || 0;
     let totalProductPrice = quantity * listedPrice;
 
-    // Cập nhật UI
     let totalPriceElement = row.querySelector(".price-detail");
     totalPriceElement.textContent = totalProductPrice.toLocaleString() + "đ";
 
-    // Cập nhật đối tượng billDetail
     let billDetail = billDetailsList.find(detail => detail.productId == productId);
+    console.log()
     if (billDetail) {
         billDetail.quantity = quantity;
-        billDetail.totalProductPrice = totalProductPrice;
-    }
-
-    getBillDetailsAndCalculate();
-    resetPaymentOptions();
-}
-
-function updatePrice(input) {
-    let row = input.closest(".row");
-    let productId = input.getAttribute("data-id");
-    let oldValue = input.getAttribute("data-old-value");
-    let listedPrice = parseFloat(input.value) || 0;
-
-    // Kiểm tra tính hợp lệ
-    if (listedPrice < 0) {
-        showToast("Giá phải lớn hơn hoặc bằng 0", false);
-        // Reset về giá trị cũ
-        input.value = oldValue;
-        return;
-    }
-
-    // Cập nhật giá trị cũ
-    input.setAttribute("data-old-value", input.value);
-
-    // Tính toán giá tiền
-    let quantityInput = row.querySelector(".quantity-input");
-    let quantity = parseInt(quantityInput.value) || 0;
-    let totalProductPrice = quantity * listedPrice;
-
-    // Cập nhật UI
-    let totalPriceElement = row.querySelector(".price-detail");
-    totalPriceElement.textContent = totalProductPrice.toLocaleString() + "đ";
-
-    // Cập nhật đối tượng billDetail
-    let billDetail = billDetailsList.find(detail => detail.productId == productId);
-    if (billDetail) {
         billDetail.listedPrice = listedPrice;
         billDetail.totalProductPrice = totalProductPrice;
     }
 
     getBillDetailsAndCalculate();
-    resetPaymentOptions();
+    resetPaymentOptions()
 }
 
 
@@ -154,11 +113,10 @@ function renderBillDetails() {
                     </div>
                     <div class="col-2 d-flex align-items-center justify-content-center">
     <input type="number" class="form-control text-center me-2 flex-shrink-0 quantity-input" 
-           style="width: 120px;" 
+           style="width: 60px;" 
            value="${detail.quantity}" 
            data-id="${detail.productId}" 
-           data-old-value="${detail.quantity}"
-           oninput="updateQuantity(this)" 
+           oninput="updateBillDetail(this, this.value)" 
            id="quantity-in" />
 </div>
 <div class="col-2 d-flex align-items-center justify-content-center">
@@ -166,13 +124,11 @@ function renderBillDetails() {
 </div>
 
                     <div class="col-2 text-danger text-center justify-content-center">
-    <input type="number" class="form-control text-center me-2 flex-shrink-0 listed-price-input" 
-           style="width: 120px;" 
-           value="${detail.importPrice}" 
-           data-id="${detail.productId}"
-           data-old-value="${detail.importPrice}"
-           oninput="updatePrice(this)"/>
-</div>
+                        <input type="number" class="form-control text-center me-2 flex-shrink-0 listed-price-input" style="width: 120px;" 
+                            value="${detail.importPrice}" 
+                            data-id="${detail.productId}"
+                            oninput="updateBillDetail(this, this.value)"/>
+                    </div>
                     <div class="col-3 fw-bold text-center price-detail">
                         ${totalProductPrice.toLocaleString()}đ
                     </div>
@@ -197,15 +153,20 @@ function getBillDetailsAndCalculate() {
 
     billItems.forEach(item => {
         let totalPriceElement = item.querySelector(".price-detail");
-        let totalPrice = parseFloat(totalPriceElement.textContent.replace("đ", "").replace(/\./g, "").trim()) || 0;
+        let priceText = totalPriceElement.textContent.trim();
+        // Remove currency symbol đ
+        priceText = priceText.replace("đ", "");
+        // Replace all dots and commas with empty string (remove them completely)
+        priceText = priceText.replace(/[.,]/g, "");
+        // Convert to number
+        let totalPrice = parseFloat(priceText) || 0;
         totalBill += totalPrice;
     });
 
     let totalBillElement = document.querySelector(".total-need-pay");
     if (totalBillElement) {
         totalBillElement.textContent = totalBill.toLocaleString() + "đ";
-        document.getElementById("total-bill").textContent = totalBill.toLocaleString() + "d";
-
+        document.getElementById("total-bill").textContent = totalBill.toLocaleString() + "đ";
     }
 }
 
@@ -499,82 +460,5 @@ document.getElementById('create-bill').addEventListener('click', function (){
             alert("Có lỗi xảy ra khi tạo hóa đơn. Vui lòng thử lại!");
         });
 });
-
-async function addCustomer() {
-    let customerData = {
-        cusName: document.getElementById("customer-name").value.trim(),
-        cusPhone: document.getElementById("customer-phone").value.trim(),
-        cusAddress: document.getElementById("customer-address").value.trim()
-    };
-
-    console.log(customerData);
-    try {
-        let response = await fetch("/api/addcustomer", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(customerData)
-        });
-
-        let result = await response.json();
-
-        if (response.ok) {
-            showToast("Thêm khách hàng thành công!", true);
-            let modal = bootstrap.Modal.getInstance(document.getElementById("customerModal"));
-            modal.hide();
-        } else {
-            showToast("Lỗi: " + result.message, false);
-        }
-    } catch (error) {
-        console.error("Lỗi khi gửi yêu cầu:", error);
-        showToast("Có lỗi xảy ra, vui lòng thử lại!", false);
-    }
-}
-const buttonAddCustomer = document.getElementById("save-customer-button");
-buttonAddCustomer.addEventListener("click", function (event){
-    if(!validateCustomerForm()){
-        event.preventDefault();
-    } else {
-        addCustomer();
-    }
-
-});
-function validateCustomerForm() {
-    let isValid = true;
-
-    let name = document.getElementById("customer-name").value.trim();
-    let phone = document.getElementById("customer-phone").value.trim();
-    let address = document.getElementById("customer-address").value.trim();
-
-    let phoneError = document.getElementById("phone-error");
-    let nameError = document.getElementById("name-error");
-    let addressError = document.getElementById("address-error");
-
-    // Kiểm tra tên
-    if (name === "") {
-        nameError.hidden = false;
-        isValid = false;
-    } else {
-        nameError.hidden = true;  // Ẩn lỗi nếu nhập đúng
-    }
-
-    // Kiểm tra số điện thoại
-    let phoneRegex = /^(0[2-9]{1}[0-9]{8,9})$/;
-    if (!phoneRegex.test(phone)) {
-        phoneError.hidden = false;
-        isValid = false;
-    } else {
-        phoneError.hidden = true;
-    }
-
-    // Kiểm tra địa chỉ
-    if (address === "") {
-        addressError.hidden = false;
-        isValid = false;
-    } else {
-        addressError.hidden = true;
-    }
-
-    return isValid;
-}
 
 

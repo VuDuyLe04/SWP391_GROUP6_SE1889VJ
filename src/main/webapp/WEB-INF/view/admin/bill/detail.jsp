@@ -10,7 +10,7 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
     <!-- Basic -->
     <meta charset="UTF-8" />
 
-    <title>Giao dịch thanh toán</title>
+    <title>Chi tiết hóa đơn</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta
             name="description"
@@ -619,7 +619,7 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                             <i class="fa fa-arrow-left mr-xs"></i>
                                         </a>
                                         <div>
-                                            <h4 class="text-dark text-bold mb-xs">HÓA ĐƠN</h4>
+                                            <h4 class="text-dark text-bold mb-xs">HÓA ĐƠN </h4>
                                             <p class="m-none text-dark">
                                                 #<c:out value="${billDetails[0].bill.id}" />
                                             </p>
@@ -661,9 +661,20 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                     <th class="text-center"  style="font-weight: bold">Sản phẩm</th>
                                     <th class="text-center"  style="font-weight: bold">Số lượng</th>
                                     <th class="text-center"  style="font-weight: bold">Quy cách đóng gói</th>
-                                    <th class="text-center"  style="font-weight: bold">Giá bán thực tế</th>
-                                    <th class="text-center"  style="font-weight: bold">Giá niêm yết</th>
-                                    <th class="text-center"  style="font-weight: bold">Tổng giá</th>
+                                    <c:if test="${bill.billType == 'EXPORT'}">
+                                        <th class="text-center"  style="font-weight: bold">Giá niêm yết</th>
+                                    </c:if>
+
+                                    <c:if test="${bill.billType == 'IMPORT'}">
+                                        <th class="text-center"  style="font-weight: bold">Giá nhập hàng</th>
+                                    </c:if>
+                                    <c:if test="${bill.billType == 'EXPORT'}">
+                                        <th class="text-center"  style="font-weight: bold">Giá bán thực tế</th>
+                                    </c:if>
+
+
+
+                                    <th class="text-center"  style="font-weight: bold">Tổng tiền</th>
 
 <%--                                    <th class="text-center"  style="font-weight: bold"  >Giá bốc vác</th>--%>
                                 </tr>
@@ -681,10 +692,12 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                             var="totalPrice"
                                             value="${totalPrice + billDetail.totalProductPrice}"
                                     />
-                                    <c:set
-                                            var="shippingFee"
-                                            value="${shippingFee + billDetail.liftPrice}"
-                                    />
+
+                                        <c:set
+                                                var="shippingFee"
+                                                value="${shippingFee + billDetail.liftPrice}"
+                                        />
+
                                     <tr>
                                         <td class="text-center">${loop.index + 1}</td>
                                         <td class="text-semibold text-center">
@@ -697,9 +710,20 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                                 ${billDetail.quantityPerPackage} kg)
                                             </c:if>
                                             <c:if test="${empty billDetail.packagingName}">
-                                                -
+                                                kg
                                             </c:if>
                                         </td>
+                                        <c:if test="${bill.billType == 'EXPORT'}">
+                                            <td class="text-center">
+                                                <fmt:formatNumber
+                                                        value="${billDetail.listedPrice}"
+                                                        type="number"
+                                                        groupingUsed="true"
+                                                />₫
+                                            </td>
+                                        </c:if>
+
+
                                         <td class="text-center">
                                             <fmt:formatNumber
                                                     value="${billDetail.actualSellPrice}"
@@ -707,13 +731,7 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                                     groupingUsed="true"
                                             />₫
                                         </td>
-                                        <td class="text-center">
-                                            <fmt:formatNumber
-                                                    value="${billDetail.listedPrice}"
-                                                    type="number"
-                                                    groupingUsed="true"
-                                            />₫
-                                        </td>
+
                                         <td class="text-center">
                                             <fmt:formatNumber
                                                     value="${billDetail.totalProductPrice}"
@@ -773,7 +791,7 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                             <td colspan="2"  style="font-weight: bold">Phí bốc vác (Cửa hàng chịu)</td>
                                             <td class="text-left">
                                                 <fmt:formatNumber
-                                                        value="${shippingFee}"
+                                                        value="${bill.totalLiftPrice}"
                                                         type="number"
                                                         groupingUsed="true"
                                                 />₫

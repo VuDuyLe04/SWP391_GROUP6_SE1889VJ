@@ -121,6 +121,7 @@ public class BillController {
         Bill bill = billService.findBillById(billId); //
         List<BillDetail> billDetails = bill.getBillDetails();
         model.addAttribute("billDetails", billDetails);
+        model.addAttribute("bill", bill);
         return "admin/bill/detail";
 
     }

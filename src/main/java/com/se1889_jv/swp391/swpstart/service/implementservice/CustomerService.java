@@ -123,6 +123,7 @@ public class CustomerService implements ICustomerService {
         Customer customer = new Customer();
         customer.setStore(store);
         customer.setName(customerRequest.getCusName());
+        customer.setCreatedBy(createdBy);
         customer.setPhone(customerRequest.getCusPhone());
         customer.setAddress(customerRequest.getCusAddress());
         Customer saveCustomer =customerRepository.save(customer);

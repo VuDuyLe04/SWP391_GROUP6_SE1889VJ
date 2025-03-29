@@ -6,6 +6,7 @@ import com.se1889_jv.swp391.swpstart.domain.User;
 import com.se1889_jv.swp391.swpstart.domain.WareHouse;
 import com.se1889_jv.swp391.swpstart.domain.dto.request.WareHouseCreationRequest;
 import com.se1889_jv.swp391.swpstart.service.implementservice.StoreService;
+import com.se1889_jv.swp391.swpstart.service.implementservice.UserService;
 import com.se1889_jv.swp391.swpstart.service.implementservice.WareHouseService;
 import com.se1889_jv.swp391.swpstart.util.Utility;
 import com.se1889_jv.swp391.swpstart.util.validator.annotation.CheckPermission;
@@ -31,12 +32,16 @@ public class WareHouseController {
     @Autowired
     private StoreService storeService;
 
+    @Autowired
+    private UserService userService;
     // sang trang tạo mới khu vực
     @CheckPermission(condition = "statusService")
     @GetMapping("/warehouse/create")
     public String getCreatePage(Model model) {
         model.addAttribute("warehouse", new WareHouse());
-        List<Store> listStore = storeService.getAllStores();
+        User user = Utility.getUserInSession();
+        User currentUser = this.userService.findById(user.getId());
+        List<Store> listStore = Utility.getListStoreOfOwner(currentUser);
 
         model.addAttribute("listStore", listStore);
         return "admin/warehouse/create";
