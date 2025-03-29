@@ -18,6 +18,7 @@ import com.se1889_jv.swp391.swpstart.repository.BillRepository;
 import com.se1889_jv.swp391.swpstart.repository.ProductRepository;
 import com.se1889_jv.swp391.swpstart.service.IService.IBillDetailService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class BillDetailService implements IBillDetailService {
     @Autowired
     private ProductService productService;
@@ -137,11 +139,14 @@ public class BillDetailService implements IBillDetailService {
             billDetail.setQuantity(request.getQuantity());
             billDetail.setListedPrice(request.getListedPrice());
             billDetail.setActualSellPrice(request.getActualSellPrice());
+            log.info("giá bốc vác: "+packaging.getLiftCost());
             billDetail.setLiftPrice(packaging.getLiftCost());
             billDetail.setPackaging(packaging);
             billDetail.setProduct(p);
             billDetail.setNameProduct(p.getName());
-            billDetail.setTotalLiftProductPrice(request.getQuantity() * packaging.getLiftCost());
+            log.info("giá tổng bốc vác: "+packaging.getLiftCost() * request.getQuantity());
+
+            billDetail.setTotalLiftProductPrice(request.getQuantity() * billDetail.getLiftPrice());
             billDetail.setPackagingName(packaging.getPackageType());
             billDetail.setQuantityPerPackage(packaging.getQuantityPerPackage());
             billDetail.setTotalProductPrice(
@@ -193,6 +198,7 @@ public class BillDetailService implements IBillDetailService {
         productRepository.save(product);
         billDetail.setQuantity(quantity);
         billDetail.setTotalProductPrice(billDetail.getQuantity()*billDetail.getActualSellPrice()*billDetail.getQuantityPerPackage());
+        billDetail.setTotalLiftProductPrice(quantity*billDetail.getLiftPrice());
         billDetailRepository.save(billDetail);
     }
 

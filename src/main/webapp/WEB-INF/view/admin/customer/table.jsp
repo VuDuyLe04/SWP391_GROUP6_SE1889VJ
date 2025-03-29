@@ -351,16 +351,18 @@ uri="http://www.springframework.org/tags/form" %>
                         </li>
 
                         <!-- Hiển thị danh sách trang -->
-                        <c:forEach begin="0" end="${customerPage.totalPages - 1}" var="i">
-                          <c:if test="${i >= c - 1 && i <= c + 1}">
-                            <li class="page-item ${c == i ? 'active' : ''}">
-                              <a class="page-link" href="/customer/table?page=${i}&input=${input != null ? input : ''}&sort=${sort != null ? sort : 'normal'}&status=${status != null ? status : 'ALL'}">${i + 1}</a>
-                            </li>
-                          </c:if>
-                          <c:if test="${i == c - 2 || i == c + 2}">
-                            <li><span>...</span></li>
-                          </c:if>
-                        </c:forEach>
+                        <c:if test="${customerPage.totalPages > 0}">
+                          <c:forEach begin="0" end="${customerPage.totalPages - 1}" var="i">
+                            <c:if test="${i >= c - 1 && i <= c + 1}">
+                              <li class="page-item ${c == i ? 'active' : ''}">
+                                <a class="page-link" href="/customer/table?page=${i}&input=${input != null ? input : ''}&sort=${sort != null ? sort : 'normal'}&status=${status != null ? status : 'ALL'}">${i + 1}</a>
+                              </li>
+                            </c:if>
+                            <c:if test="${i == c - 2 || i == c + 2}">
+                              <li><span>...</span></li>
+                            </c:if>
+                          </c:forEach>
+                        </c:if>
 
                         <!-- Nút "Sau" -->
                         <li class="page-item ${c == customerPage.totalPages - 1 ? 'disabled' : ''}">

@@ -739,24 +739,6 @@ prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
                                                     groupingUsed="true"
                                             />₫
                                         </td>
-<%--                                        <td class="text-center">--%>
-<%--                                            <c:if test="${billDetail.lift != null}">--%>
-<%--                                                ${billDetail.lift ? 'Có' : 'Không'}--%>
-<%--                                            </c:if>--%>
-<%--                                            <c:if test="${billDetail.lift == null}"> - </c:if>--%>
-<%--                                        </td>--%>
-<%--                                        <td class="text-center">--%>
-<%--                                            <c:if test="${billDetail.liftPrice != null}">--%>
-<%--                                                <fmt:formatNumber--%>
-<%--                                                        value="${billDetail.liftPrice}"--%>
-<%--                                                        type="number"--%>
-<%--                                                        groupingUsed="true"--%>
-<%--                                                />₫--%>
-<%--                                            </c:if>--%>
-<%--                                            <c:if test="${billDetail.liftPrice == null}">--%>
-<%--                                                ---%>
-<%--                                            </c:if>--%>
-<%--                                        </td>--%>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

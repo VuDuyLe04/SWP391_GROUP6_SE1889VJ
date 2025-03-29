@@ -229,7 +229,7 @@ public class RestBillDetailsController {
                 // Tạo DebtReceipt
                 DebtReceipt debtReceipt = debtReceiptService.createDebtReceiption(request, Utility.getUserInSession(), billId);
                 log.info("Tạo hóa đơn nợ: {}", debtReceipt);
-
+                
                 // Gửi DebtRequest đến RabbitMQ
                 DebtRequest debtRequest = new DebtRequest(debtReceipt.getId());
                 rabbitTemplate.convertAndSend(RabbitMQConfig.DEBT_QUEUE, debtRequest);
